@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.employee.mapper.EmployeeMapper">
+
+    <resultMap id="EmployeeResultMap" type="EmployeeDetail">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="hireDate" column="hire_date"/>
+        <result property="email" column="email"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="vacationDays" column="vacation_days"/>
+        <result property="joinState" column="join_state"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="position" column="position"/>
+        <result property="authority" column="authority"/>
+        <result property="verified" column="verified"/>
+    </resultMap>
+
+    <select id="findAll" parameterType="int" resultMap="EmployeeResultMap">
+        SELECT e.id, e.name, e.password, e.hire_date, e.email, e.phone_number,
+        e.vacation_days, e.join_state, d.name AS dept_name,
+        e.position, e.authority, e.verified
+        FROM employee e
+        JOIN department d ON e.dept_id = d.id
+    </select>
+</mapper>
