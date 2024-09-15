@@ -1,0 +1,30 @@
+/* header.css */
+#customHeader {
+  display: flex;
+  align-items: center;
+  height: 52.22px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid #dee2e6;
+  z-index: 10;
+  font-weight: bold;
+  font-style: italic;
+  background-color: #073082;
+  padding: 0.5rem;
+  margin-bottom: 50px;
+}
+
+#imgContainer {
+  margin-right: 0.5rem; /* 'me-2' class equivalent */
+}
+
+#imgContainer img {
+  width: 40px;
+}
+
+#customHeader p {
+  margin: 10px; /* Remove default margin for consistency */
+  color: white;
+  font-size: 28px;
+}

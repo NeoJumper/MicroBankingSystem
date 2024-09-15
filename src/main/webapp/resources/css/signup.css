@@ -1,0 +1,78 @@
+/* header.css */
+#customHeader {
+
+  display: flex;
+  align-items: center;
+  height: 52.22px;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0.5rem;
+  margin: 1.0rem;
+  margin-bottom: 30px;
+}
+
+#imgContainer {
+  margin-right: 0.5rem;
+  /* 'me-2' class equivalent */
+}
+
+#imgContainer img {
+  width: 40px;
+}
+
+#customHeader p {
+  margin: 10px;
+  /* Remove default margin for consistency */
+  color: black;
+  font-size: 28px;
+}
+
+#mainContent {}
+
+.text-color-gray1 {
+  color: rgb(100, 100, 100);
+  font-weight: bold;
+}
+
+.text-color-gray2 {
+  color: rgb(140, 140, 140);
+  margin-top: 4px;
+}
+
+.text-color-white {
+  color: white;
+  font-weight: bold;
+
+}
+
+.btn-color-blue {
+  background-color: rgb(76, 165, 255);
+}
+
+.login-img>img {
+  width: 25px;
+}
+
+.google-login-img>img {
+  width: 25px;
+}
+.code-input{
+  border: none;
+  padding: 0px 20px;
+  height: 30px;
+  text-align: center;
+
+}
+input:focus {
+  outline: none;
+}
+
+.loginFailMessage
+{
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
