@@ -1,0 +1,51 @@
+#pageTitle {
+    font-weight: bold;
+    color: #5F5F5F;
+}
+
+.commonTable {
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.commonTable th, .commonTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.1rem;
+}
+
+.commonTable th {
+    background-color: #F5F5F5;
+    color: #5F5F5F;
+}
+
+.table th {
+    background-color: #F5F5F5;
+}
+
+.commonTable input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+    width: 90%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* 마지막 행 아래에 테두리 제거 */
+.commonTable tr:last-child td, .commonTable tr:last-child th {
+    border-bottom: none;
+}
+
+#employee-add-list{
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.table th, .table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.1rem;
+    text-align: center;
+}

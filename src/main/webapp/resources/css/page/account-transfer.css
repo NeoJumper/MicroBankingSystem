@@ -1,0 +1,34 @@
+body, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.button-group {
+    display: flex;
+    gap: 5px;
+}
+
+/* 공통 버튼 스타일 */
+.button-group button, .button-main {
+    padding: 10px 20px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 5px;
+    border: none;
+}
+
+.button-main {
+    background-color: #007bff; /* 파란색 버튼 */
+    color: white;
+}
+
+.button-group button {
+    background-color: #f2f2f2; /* 회색 버튼 */
+    color: black;
+}
+
