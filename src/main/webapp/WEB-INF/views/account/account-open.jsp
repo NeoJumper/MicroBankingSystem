@@ -20,7 +20,7 @@
     <br><br>
 
 
-    <table id="commonTable">
+    <table class="commonTable">
         <tr>
             <th>고객번호</th>
             <td><input type="text"></td>
