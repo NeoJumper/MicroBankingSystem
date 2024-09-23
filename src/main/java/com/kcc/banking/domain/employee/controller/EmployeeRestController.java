@@ -3,8 +3,7 @@ package com.kcc.banking.domain.employee.controller;
 import com.kcc.banking.domain.employee.dto.response.EmployeeDetail;
 import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,4 +17,12 @@ public class EmployeeRestController {
     public List<EmployeeDetail> getAllEmployees() {
         return employeeService.getEmployeeList();
     }
+
+    // 해지 페이지에 필요한 Customer DETAIL 데이터
+    @GetMapping("/api/employee/account-close-details/{accountNumber}")
+    public EmployeeDetail getEmployeeDetail(@PathVariable("accountNumber") String accountNumber) {}
+
+    // DemandDeposit테이블의  status컬럼 상태 변경 기능
+    @PatchMapping("/api/employee/account/status")
+    public void updateDemandDepositStatus(@RequestBody EmployeeDetail employeeDetail) {}
 }
