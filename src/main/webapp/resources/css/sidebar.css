@@ -2,11 +2,13 @@
 #leftSidebar-wrapper {
   position: fixed;
   left: 0;
-  top: 100px;
-  height: calc(100% - 60px);
+  top: 0;
+  padding-top: 100px;
+  height: 100%;
   transition: width 0.3s ease-in-out;
   box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
   background-color: #f7f7f7;
+  z-index: 5;
 }
 
 #leftSidebar-wrapper.open {
