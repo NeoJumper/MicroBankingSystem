@@ -29,25 +29,25 @@
 
         <tr>
             <th>이름</th>
-            <td><input type="text" disabled></td>
+            <td><input type="text" ></td>
             <th>생년월일</th>
-            <td><input type="text" disabled></td>
+            <td><input type="text" ></td>
         </tr>
         <tr>
             <th>직급</th>
-            <td><input type="date" disabled></td>
+            <td><input type="date" ></td>
             <td colspan="2"></td>
         </tr>
         <tr>
             <th>전화번호</th>
-            <td><input type="text" disabled></td>
+            <td><input type="text" ></td>
 
             <th>이메일</th>
-            <td><input type="text" disabled></td>
+            <td><input type="text" ></td>
         </tr>
         <tr>
             <th>지점명</th>
-            <td><input type="text" disabled></td>
+            <td><input type="text" ></td>
             <td colspan="2"></td>
         </tr>
     </table>
