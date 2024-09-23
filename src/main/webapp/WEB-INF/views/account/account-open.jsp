@@ -28,7 +28,7 @@
 <body>
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
-<%@ include file="/resources/components/account/showSearchCustomerModal.jsp" %>
+<%@ include file="/resources/components/modal/show-search-customer-modal.jsp" %>
 <div id="mainArea">
     <h3 style="font-weight:bold; color:#5F5F5F;">계좌 개설</h3>
 
@@ -71,6 +71,10 @@
         </tr>
     </table>
 
+    <div id="accountOpenInsertBtn" style="text-align:center;">
+        <button>추가</button>
+
+    </div>
     <div id="modalArea">
 
     </div>
