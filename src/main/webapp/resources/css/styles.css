@@ -23,8 +23,8 @@ body {
 
 #mainArea {
   font-family: 'Pretendard-Regular', sans-serif;
-  padding-top: 70px;
-  padding-left: 100px;
+  padding-top: 30px;
+  padding-left: 300px;
   font-size: 1.2rem;
   transition: padding-left 0.3s ease-in-out; /* 패딩 애니메이션 추가 */
 }
