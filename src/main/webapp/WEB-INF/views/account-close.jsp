@@ -1,14 +1,23 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<!doctype html>
-<html lang="en">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+
+    <title>Insert title here</title>
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
+
 </head>
+
 <body>
-    <h1>account-close</h1>
+<%@ include file="/resources/components/header.jsp" %>
+<%@ include file="/resources/components/sidebar.jsp" %>
+<div id="mainArea">
+    <h1>accont-close Page</h1>
+</div>
+<script src="/resources/js/footer.js"></script>
 </body>
+
 </html>
