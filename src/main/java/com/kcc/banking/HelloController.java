@@ -13,4 +13,10 @@ public class HelloController {
         model.addAttribute("test", "test");
         return "index";
     }
+
+    @GetMapping("/account-open")
+    public String accountOpen(Model model) {
+        model.addAttribute("test", "test");
+        return "account/account-open";
+    }
 }
