@@ -31,14 +31,14 @@
         menubar.classList.remove("show-content");
         menubar.classList.add("hidden-content"); // 숨기기
 
-        mainArea.style.paddingLeft = "100px";
+        mainArea.style.paddingLeft = "150px";
       } else {
         sidebar.classList.remove("closed");
         sidebar.classList.add("open");
         menubar.classList.remove("hidden-content"); // 표시하기
         menubar.classList.add("show-content");
 
-        mainArea.style.paddingLeft = "300px";
+        mainArea.style.paddingLeft = "350px";
       }
     }
   </script>
