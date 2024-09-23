@@ -1,0 +1,37 @@
+#pageTitle {
+    font-weight: bold;
+    color: #5F5F5F;
+}
+
+#commonTable {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#commonTable th, #commonTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+#commonTable th {
+    background-color: #F5F5F5;
+    color: #5F5F5F;
+}
+
+input[type="text"], input[type="number"], input[type="date"] {
+    width: 90%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* 마지막 행 아래에 테두리 제거 */
+#commonTable tr:last-child td {
+    border-bottom: none;
+}
