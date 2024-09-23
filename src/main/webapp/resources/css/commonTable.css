@@ -15,7 +15,7 @@
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    font-size: 14px;
+    font-size: 1.1rem;
 }
 
 .commonTable th {
@@ -39,4 +39,10 @@ input[type="text"], input[type="number"], input[type="date"] {
 #employee-add-list{
     border-bottom: 1px solid #ddd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.table th, .table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.1rem;
+    text-align: center;
 }
