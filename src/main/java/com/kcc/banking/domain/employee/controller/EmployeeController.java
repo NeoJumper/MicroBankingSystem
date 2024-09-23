@@ -13,6 +13,12 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
+    @GetMapping("/page/employee/login-form")
+    public String loginPage(Model model) {
+
+        return "auth/login-form";
+    }
+
     @GetMapping("/page/manager/employee-save")
     public String employeeSavePage(Model model) {
 
@@ -27,5 +33,10 @@ public class EmployeeController {
     public String employeeDetailPage(@PathVariable(value = "id") long id, Model model) {
         model.addAttribute("id", id);
         return "employee-detail";
+    }
+    @GetMapping("/page/manager/employee-update/{id}")
+    public String employeeUpdatePage(@PathVariable(value = "id") long id, Model model) {
+        model.addAttribute("id", id);
+        return "employee-update";
     }
 }
