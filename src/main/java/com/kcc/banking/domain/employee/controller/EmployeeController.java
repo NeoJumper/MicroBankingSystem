@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,5 +23,9 @@ public class EmployeeController {
 
         return "employee-list";
     }
-
+    @GetMapping("/page/manager/employee-list/{id}")
+    public String employeeDetailPage(@PathVariable(value = "id") long id, Model model) {
+        model.addAttribute("id", id);
+        return "employee-detail";
+    }
 }

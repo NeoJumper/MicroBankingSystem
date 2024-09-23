@@ -1,0 +1,42 @@
+#accountSearchModal .modal-dialog {
+    min-width: 70%;
+}
+
+#accountSearchModal .modal-body {
+    padding: 5% 10%;
+}
+
+#accountSearchModal .modal-body h5,
+#accountSearchModal .modal-header h1 {
+    font-weight: bold;
+}
+
+#accountSearchModal hr {
+    margin: 0;
+    border: 2px solid black;
+}
+
+#accountSearchModal .modal-body #inputBox {
+    background-color: #F5F5F5;
+    padding: 10px;
+}
+
+#modalCenterBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#accountSearchModal .modal-body label {
+    font-weight: bold;
+}
+
+
+#accountSearchModal .modal-body table {
+    width: 100%;
+}
+
+#accountSearchModal .modal-body th {
+    text-align: left;
+    padding: 8px;
+}
