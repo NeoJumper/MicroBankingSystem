@@ -5,10 +5,12 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Insert title here</title>
+    <title>계좌관리 >
+        계좌이체 >
+        즉시이체</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/page/account-transfer.css" />
-    <link rel="stylesheet" type="text/css" href="/resources/css/commonTable.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
 </head>
 
 <body>
@@ -28,7 +30,9 @@
         <table class="commonTable">
             <tr>
                 <th><label for="withdrawal-account-number">출금계좌번호</label></th>
-                <td id="inputWithBtn"><input type="text" id="withdrawal-account-number"><button id="check-account" class="button-main">계좌조회</button></td>
+                <td id="inputWithBtn"><input type="text" id="withdrawal-account-number">
+                    <button id="check-account" class="button-main" type="button" data-bs-toggle="modal" data-bs-target="#accountSearchModal">계좌조회</button>
+                </td>
             </tr>
             <tr>
                 <th><label for="account-password">계좌비밀번호</label></th>
@@ -81,15 +85,7 @@
         <button class="col-1 button-main">이체하기</button>
     </div>
     </div>
-
-<!-- 모달 -->
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h1>계좌 조회 결과</h1>
-        <p>계좌 조회 내용이 여기에 표시됩니다.</p>
-    </div>
-</div>
+<%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/account-transfer.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>
