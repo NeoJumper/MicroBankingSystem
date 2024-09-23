@@ -8,6 +8,7 @@ pageEncoding="UTF-8"%>
 
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
+
   </head>
 
   <body>
@@ -16,5 +17,7 @@ pageEncoding="UTF-8"%>
     <div id="mainArea">
         <h1>${test}</h1>
     </div>
+    <script src="/resources/js/footer.js"></script>
   </body>
+
 </html>
