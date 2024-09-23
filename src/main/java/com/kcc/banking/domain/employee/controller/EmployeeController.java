@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,8 +35,8 @@ public class EmployeeController {
         model.addAttribute("id", id);
         return "employee-detail";
     }
-    @GetMapping("/page/manager/employee-update/{id}")
-    public String employeeUpdatePage(@PathVariable(value = "id") long id, Model model) {
+    @GetMapping("/page/manager/employee-update")
+    public String employeeUpdatePage(@RequestParam(value = "id") long id, Model model) {
         model.addAttribute("id", id);
         return "employee-update";
     }

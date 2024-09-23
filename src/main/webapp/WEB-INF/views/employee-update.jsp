@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
-    <link rel="stylesheet" type="text/css" href="/resources/css/commonTable.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
 </head>
 <body>
 <%@ include file="/resources/components/header.jsp" %>
@@ -19,6 +19,10 @@
     </div>
     <div>
         <h3>행원 검색</h3>
+        <th><label >사원 번호</label></th>
+        <td id="inputWithBtn"><input type="text">
+            <button id="check-account" class="search-btn" type="button" data-bs-toggle="modal" data-bs-target="#employeeSearchModal">사원조회</button>
+        </td>
         <hr>
     </div>
     <div>
@@ -62,7 +66,7 @@
 
 </div>
 
-
+<%@ include file="/resources/components/modal/employee-search-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
 </body>
 </html>
