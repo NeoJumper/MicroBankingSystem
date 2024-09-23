@@ -2,16 +2,15 @@
 #leftSidebar-wrapper {
   position: fixed;
   left: 0;
-  top: 0;
-  height: 100vh;
-  z-index: 5;
+  top: 100px;
+  height: calc(100% - 60px);
   transition: width 0.3s ease-in-out;
   box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
   background-color: #f7f7f7;
 }
 
 #leftSidebar-wrapper.open {
-  width: 300px;
+  width: 250px;
 }
 
 #leftSidebar-wrapper.closed {
@@ -45,7 +44,7 @@
 }
 
 #menubar {
-  margin-top: 50px;
+  margin-top: 10px;
 }
 
 #sidebar {
@@ -61,7 +60,7 @@
 .list-unstyled li a {
   font-size: 1.4rem;
   font-weight: bold;
-  color: #757575;
+  color: black;
   text-decoration: none;
   display: block;
   transition: background-color 0.3s, color 0.3s;
@@ -70,10 +69,14 @@
 .submenu li a {
   font-size: 1rem;
   font-weight: normal;
+  margin-left:5px;
+  padding : 5px;
 }
 
-.list-unstyled li a:hover {
-  color: #073082;
+.submenu li a:hover {
+  background-color: #073082;
+  color:white;
+  font-weight: bold;
 }
 
 .list-unstyled .active > a {
@@ -86,10 +89,14 @@
 
 .menu{
   margin: 10px;
+  padding-bottom: 10px;
+
 }
 
 .menu li {
   margin: 10px;
+  padding-left: 10px;
+
 }
 
 .sidebar-submenu {
