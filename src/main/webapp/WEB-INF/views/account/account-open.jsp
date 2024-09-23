@@ -9,56 +9,7 @@
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
 
-    <style>
-
-
-        table {
-            width: 100%;
-            height: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            font-size: 14px;
-        }
-
-        th {
-            background-color: #F5F5F5;
-            color: #5F5F5F;
-
-
-        }
-
-
-        input[type="text"], input[type="number"], input[type="date"] {
-            width: 90%;
-            padding: 8px;
-            border: 1px solid #ccc;
-
-            box-sizing: border-box;
-        }
-
-        input[type="text"]::placeholder {
-
-        }
-
-        /* 테이블 가장자리 둥글게 */
-        table {
-
-            overflow: hidden;
-        }
-
-        /* 마지막 행 아래에 테두리 제거 */
-        table tr:last-child td {
-            border-bottom: none;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/resources/css/commonTable.css"/>
 </head>
 
 <body>
@@ -70,7 +21,7 @@
     <br><br>
 
 
-    <table>
+    <table id="commonTable">
         <tr>
             <th>고객번호</th>
             <td><input type="text"></td>
