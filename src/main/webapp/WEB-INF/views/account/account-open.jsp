@@ -8,7 +8,6 @@
 
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
-
     <link rel="stylesheet" type="text/css" href="/resources/css/commonTable.css"/>
     <!-- jquery 소스-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
