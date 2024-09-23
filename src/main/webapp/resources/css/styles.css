@@ -49,3 +49,21 @@ body {
   color: initial; /* 마지막 h3는 기본 스타일로 설정 */
   font-weight: bold;
 }
+.update-btn {
+  background: #007bff;
+  color: #F5F5F5;
+  font-weight: bold;
+  font-size: 1.0rem;
+  padding: 6px 6px;
+  margin: 0 6px;
+  border: none;
+}
+.cancel-btn {
+  background: #FF0000;
+  color: #F5F5F5;
+  font-weight: bold;
+  font-size: 1.0rem;
+  padding: 6px 6px;
+  margin: 0 6px;
+  border: none;
+}
