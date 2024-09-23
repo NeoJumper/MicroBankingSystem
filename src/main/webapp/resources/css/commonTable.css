@@ -27,7 +27,7 @@
     background-color: #F5F5F5;
 }
 
-input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+.commonTable input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
     width: 90%;
     padding: 8px;
     border: 1px solid #ccc;

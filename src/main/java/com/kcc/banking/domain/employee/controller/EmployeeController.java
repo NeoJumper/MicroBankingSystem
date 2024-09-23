@@ -17,5 +17,10 @@ public class EmployeeController {
 
         return "employee-save";
     }
+    @GetMapping("/page/manager/employee-list")
+    public String employeeListPage(Model model) {
+
+        return "employee-list";
+    }
 
 }
