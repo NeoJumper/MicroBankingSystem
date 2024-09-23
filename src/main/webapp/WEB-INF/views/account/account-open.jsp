@@ -34,13 +34,8 @@
 
     <br><br>
 
-    <%--    <button type="button" class="btn btn-primary" onclick="customerSearchModalPopup()">--%>
-    <%--        모달 열기--%>
-    <%--    </button>--%>
 
-
-
-    <table id="commonTable">
+    <table class="commonTable">
         <tr>
             <th>고객번호</th>
             <td><input type="text" id="customerNumber"></td>
