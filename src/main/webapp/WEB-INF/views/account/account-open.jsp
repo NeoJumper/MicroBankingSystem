@@ -8,7 +8,6 @@
 
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
-
     <link rel="stylesheet" type="text/css" href="/resources/css/commonTable.css"/>
 </head>
 

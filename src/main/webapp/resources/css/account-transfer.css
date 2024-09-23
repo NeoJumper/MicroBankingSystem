@@ -1,30 +1,11 @@
 body, input, button {
-    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.container {
-    width: 80%;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-}
 
-table {
-    width: 100%;
-}
-
-tr {
-    max-height: 50px; /* 모든 행의 높이를 50px로 설정 */
-}
-
-td {
-    padding: 10px;
-}
-
-#inputWithBtn{
+.inputWithBtn{
     display: flex;
     width: 70%;
 }
@@ -46,12 +27,6 @@ td {
 .button-group button, .button-main {
     padding: 5px 10px;
     cursor: pointer;
-}
-
-.button-main {
-    background-color: #007bff;
-    color: white;
-    border: none;
 }
 
 .modal {
@@ -97,6 +72,7 @@ input[type="text"], input[type="password"], input[type="date"] {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 5px;
+    border: none;
 }
 
 .button-group button {
