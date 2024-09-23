@@ -4,21 +4,6 @@ body, input, button {
     box-sizing: border-box;
 }
 
-
-.inputWithBtn{
-    display: flex;
-    width: 70%;
-}
-
-.input-group label {
-    margin-bottom: 5px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 8px;
-}
-
 .button-group {
     display: flex;
     gap: 5px;

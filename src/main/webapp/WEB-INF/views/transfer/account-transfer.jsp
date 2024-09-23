@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
-<%--    <link rel="stylesheet" type="text/css" href="/resources/css/account-transfer.css" />--%>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/account-transfer.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/commonTable.css"/>
 </head>
 
@@ -15,10 +15,16 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="mainArea">
-    <div>
-        <h3>즉시이체</h3>
-        <hr>
-        <h5>출금계좌정보</h5>
+        <div>
+            <h5>계좌관리 > </h5>
+            <h5>&nbsp;계좌이체 > </h5>
+            <h5>&nbsp;즉시이체</h5>
+
+        </div>
+        <div>
+            <h3>출금계좌정보</h3>
+            <hr>
+        </div>
         <table class="commonTable">
             <tr>
                 <th><label for="withdrawal-account-number">출금계좌번호</label></th>
@@ -55,8 +61,10 @@
                 <td><input type="text" id="remark"></td>
             </tr>
         </table>
-        <h5 class="mt-3">입금계좌정보</h5>
-        <hr>
+        <div>
+            <h3 class="mt-3">입금계좌정보</h3>
+            <hr>
+        </div>
         <table class="commonTable">
             <tbody>
             <tr>
@@ -69,15 +77,17 @@
             </tr>
             </tbody>
         </table>
+    <div class="row justify-content-center">
+        <button class="col-1 button-main">이체하기</button>
+    </div>
     </div>
 
-    <!-- 모달 -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h1>계좌 조회 결과</h1>
-            <p>계좌 조회 내용이 여기에 표시됩니다.</p>
-        </div>
+<!-- 모달 -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h1>계좌 조회 결과</h1>
+        <p>계좌 조회 내용이 여기에 표시됩니다.</p>
     </div>
 </div>
 <script src="/resources/js/account-transfer.js"></script>
