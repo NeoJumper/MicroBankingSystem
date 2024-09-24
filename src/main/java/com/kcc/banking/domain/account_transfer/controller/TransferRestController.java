@@ -1,4 +1,4 @@
-package com.kcc.banking.domain.transfer.controller;
+package com.kcc.banking.domain.account_transfer.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

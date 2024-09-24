@@ -40,3 +40,7 @@
     text-align: left;
     padding: 8px;
 }
+
+#accountSearchModal .modal-body th {
+    text-align: center;
+}
