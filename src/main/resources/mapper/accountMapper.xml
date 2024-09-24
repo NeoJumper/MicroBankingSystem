@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.account.mapper.AccountMapper">
+
+    <!-- Insert new account -->
+<!--    <insert id="insertAccount" parameterType="AccountCreate">-->
+<!--        INSERT INTO Account (-->
+<!--            id, branch_id, customer_id, product_id, emp_id, start_date, preferential_interest_rate,-->
+<!--            password, balance, open_date, status-->
+<!--        ) VALUES (-->
+<!--                     #{id}, #{branchId}, #{customerId}, #{productId}, #{empId}, #{startDate}, #{preferentialInterestRate},-->
+<!--                     #{password}, #{balance}, sysdate, #{status}-->
+<!--                 )-->
+<!--    </insert>-->
+</mapper>

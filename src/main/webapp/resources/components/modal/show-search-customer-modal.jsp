@@ -70,21 +70,37 @@
                         </select>
                     </div>
                     <div id="searchInput">
-                        <input type="text" placeholder="입력하시오">
+                        <input type="text" id="searchQuery" placeholder="입력하시오">
                     </div>
                     <div id="searchButton">
-                        <button type="button">검색</button>
+                        <button type="button" id="searchBtn">검색</button>
                     </div>
-                    <div id="tableContainer">
 
-                    </div>
+                </div>
+                <br><br>
+                <div id="searchResult">
+
+                    <h5>고객정보</h5>
+                    <hr>
+                    <table class="commonTable">
+                        <thead>
+                        <th><label>선택</label></th>
+                        <th><label id="modal-customer-id">고객번호</label></th>
+                        <th><label id="modal-customer-name">이름</label></th>
+                        <th><label id="modal-customer-birth">생년월일</label></th>
+                        <th><label id="modal-customer-phone">전화번호</label></th>
+                        <th><label id="modal-branch-name">관리지점</label></th>
+                        </thead>
+                        <tbody id="customer-info">
+
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
             <div class="modal-footer">
+                <button type="button" id="modal-customer-select" class="btn btn-primary" data-bs-dismiss="modal">선택</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" id="approveBtn" class="btn btn-success" style="display: none;">승인</button>
-                <button type="button" id="rejectBtn" class="btn btn-danger" style="display: none;">반려</button>
             </div>
         </div>
     </div>
