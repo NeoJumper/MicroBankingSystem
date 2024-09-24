@@ -16,12 +16,12 @@
     border: 2px solid black;
 }
 
-#accountSearchModal .modal-body #inputBox {
+#accountSearchModal .modal-body #modal-input-box {
     background-color: #F5F5F5;
     padding: 10px;
 }
 
-#modalCenterBox {
+#modal-center-box {
     display: flex;
     align-items: center;
     justify-content: center;

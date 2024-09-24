@@ -1,7 +1,6 @@
 $(document).ready(function() {
     $('#modal-check-account').click(function() {
         var accountNumber = $('#modal-input-account').val();
-        alert(accountNumber);
         $.ajax({
             url: "/api/employee/accounts",
             type: "GET",
@@ -14,8 +13,9 @@ $(document).ready(function() {
                 // 데이터 배열을 반복하면서 테이블에 행을 추가
                 $.each(data, function(index, account) {
                     var row = "<tr>" +
+                        "<td><button>선택</button></td>" +
                         "<td>" + account.id + "</td>" +
-                        "<td>" + account.branchId + "</td>" +
+                        "<td>" + account.startDate + "</td>" +
                         "<td>" + account.customerId + "</td>" +
                         "<td>" + account.productId + "</td>" +
                         "<td>" + account.balance + "</td>" +
