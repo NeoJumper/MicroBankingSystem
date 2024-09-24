@@ -45,6 +45,11 @@ public class EmployeeController {
         model.addAttribute("id", id);
         return "deadline-management";
     }
+    @GetMapping("/page/manager/deadline-management")
+    public String managerDeadlineManagement(@RequestParam(value = "id") long id, Model model) {
+        model.addAttribute("id", id);
+        return "deadline-management2";
+    }
 
 
 }
