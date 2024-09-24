@@ -24,7 +24,7 @@
     <table class="commonTable">
         <tr>
             <th>고객번호</th>
-            <td><input type="text"></td>
+            <td><input type="text" readonly></td>
             <th>비밀번호</th>
             <td><input type="text"></td>
         </tr>
