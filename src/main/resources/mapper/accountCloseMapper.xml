@@ -7,6 +7,8 @@
         UPDATE ACCOUNT
         SET
             status = #{status},
+            expire_date = SYSTIMESTAMP,
+            balance = 0,
             modification_date = SYSTIMESTAMP,
             modifier = #{modifier}
         WHERE
