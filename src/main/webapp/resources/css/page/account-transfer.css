@@ -11,7 +11,7 @@ body, input, button {
 
 /* 공통 버튼 스타일 */
 .button-group button, .button-main {
-    padding: 10px 20px;
+    padding: 6px 12px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
@@ -25,10 +25,5 @@ body, input, button {
 .button-main {
     background-color: #007bff; /* 파란색 버튼 */
     color: white;
-}
-
-.button-group button {
-    background-color: #f2f2f2; /* 회색 버튼 */
-    color: black;
 }
 
