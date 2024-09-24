@@ -1,6 +1,7 @@
 package com.kcc.banking.domain.accountclose.controller;
 
 import com.kcc.banking.domain.accountclose.dto.request.AccountStatus;
+import com.kcc.banking.domain.accountclose.dto.request.CloseTrade;
 import com.kcc.banking.domain.accountclose.service.AccountCloseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,21 @@ public class AccountCloseRestController {
 
     // DemandDeposit테이블의  status컬럼 상태 변경 기능
     @PatchMapping("/api/employee/account/status")
-    public ResponseEntity<AccountStatus> updateDemandDepositStatus(@RequestBody AccountStatus accountStatus) {
+    public ResponseEntity<?> updateDemandDepositStatus(@RequestBody AccountStatus accountStatus) {
         AccountStatus result = accountCloseService.updateStatus(accountStatus);
 
         if(result == null){
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PostMapping("/api/employee/close-trade")
+    public ResponseEntity<?> addCloseTrade(@RequestBody CloseTrade closeTrade) {
+        CloseTrade result = accountCloseService.addCloseTrade(closeTrade);
+
+        if(result == null){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("계좌해지 거래 실패");
         }
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
