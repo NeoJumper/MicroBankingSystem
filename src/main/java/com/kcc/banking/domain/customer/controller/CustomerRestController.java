@@ -21,9 +21,6 @@ public class CustomerRestController {
                                                     @RequestParam(required = false) String customerNumber,
                                                     @RequestParam(required = false) String customerPhone) {
 
-        System.out.println("customerName"+customerName);
-        System.out.println("customerNumber"+customerNumber);
-        System.out.println("customerPhone"+customerPhone);
         CustomerSearchDTO searchDTO = new CustomerSearchDTO();
         searchDTO.setCustomerName(customerName);
         searchDTO.setCustomerNumber(customerNumber);
@@ -31,14 +28,6 @@ public class CustomerRestController {
 
         // 고객 정보 검색
         List<CustomerSearchInfo> customers = customerService.findCustomers(searchDTO);
-
-        for (CustomerSearchInfo  customer : customers) {
-            System.out.println(customer.getBirthDate());
-            System.out.println(customer.getCustomerName());
-        }
-
-        // DB에서 검색된 값 출력
-        System.out.println("Retrieved customers: " + customers);
 
 
         return customers;

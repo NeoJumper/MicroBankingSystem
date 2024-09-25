@@ -12,6 +12,8 @@
     <!-- jquery 소스-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
+
+
         function customerSearchModalPopup() {
             $("#showSearchCustomerModal").modal("show");
 
@@ -20,10 +22,10 @@
 
         function customerSearchModalEvent() {
             // 셀렉트 요소 가져오기
-            $('#searchBtn').on('click', function () {
+            $('#modal-search-btn').on('click', function () {
                 // 드롭다운에서 선택된 값과 입력 필드의 값 가져오기
-                const searchType = $('#customerSearch').val();
-                const searchQuery = $('#searchQuery').val();
+                const searchType = $('#modal-search-customerSearch').val();
+                const searchQuery = $('#modal-search-query').val();
 
                 alert(searchType + "searchType" + searchQuery + "searchQuery");
 
@@ -46,15 +48,15 @@
                     alert(searchType);
                 }
 
-                // AJAX 요청 (GET 방식)
+
                 $.ajax({
                     url: '/api/employee/customer?' + queryParam,
                     method: 'GET',
                     success: function (response) {
                         console.log("Response from server:", response);
-                        var newBody = $('<tbody id="customer-info">');
+                        var newBody = $('<tbody id="modal-search-customer-info">');
 
-                        response.forEach(function(item) {
+                        response.forEach(function (item) {
                             console.log("Item:", item); // 개별 항목 확인
 
                             var row = $('<tr>')
@@ -68,8 +70,8 @@
                             newBody.append(row);
                         });
 
-                        $('#customer-info').empty();
-                        $('#customer-info').replaceWith(newBody);
+                        $('#modal-search-customer-info').empty();
+                        $('#modal-search-customer-info').replaceWith(newBody);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
 
@@ -80,34 +82,129 @@
             });
         }
 
-        function insertCustomerId(){
+        function insertCustomerId() {
 
-            $('#modal-customer-select').on('click', function() {
-                // 선택된 고객의 라디오 버튼을 확인
+            $('#modal-search-customer-select').on('click', function () {
+
                 const selectedCustomer = $('input[name="selectedCustomer"]:checked');
 
                 if (selectedCustomer.length > 0) {
 
                     const selectedRow = selectedCustomer.closest('tr');
                     const customerId = selectedRow.find('td:nth-child(2)').text();
+                    $('#customerIdText').val(customerId);
 
-                    // customerId를 입력 필드에 설정
-                    $('#customerNumber').val(customerId);
+                    const customerName = selectedRow.find('td:nth-child(3)').text();
+                    $('#customerName').val(customerName);
 
-                    // 모달 닫기 (부트스트랩5 사용 시 자동으로 dismiss됨)
-                    $('[data-bs-dismiss="modal"]').click();
+
+                    $('#showSearchCustomerModal').modal('hide');
+
                 } else {
                     alert('고객을 선택해 주세요.');
                 }
             });
 
         }
+
+
+        function accoutOpenProductInfo(){
+            // 상품이율 구하기
+            $.ajax({
+                url: '/api/employee/account/productInterest',
+                method: 'GET',
+                success: function(data) {
+                    $('#productInterest').val(data.interestRate);
+                    $('#productId').val(data.id)
+                },
+                error: function(error) {
+                    console.error('Error fetching product interest:', error);
+                    $('#productInterest').val('Failed to load data.');
+                }
+            });
+
+        }
+
+        // 기준이율 + 우대이율 = 총 이자율 계산
+        function calculateTotalInterest() {
+            const productInterest = parseFloat($('#productInterest').val()) || 0; // 기준이율
+            const preferredInterest = parseFloat($('#preferredInterest').val()) || 0; // 우대이율
+
+            const totalInterest = productInterest + preferredInterest;
+            $('#totalInterest').val(totalInterest.toFixed(2)); // 소수점 2자리까지 출력
+        }
+
+        // 계좌 생성 함수
+        function accountOpen(){
+
+            $('#accountCreateBtn').on("click",function (){
+
+                alert("click #accountCreateBtn");
+                const customerId = $('#customerIdText').val();
+                const productId = $('#productId').val();
+
+                //const startDate = $('startDate').val();
+                const preferentialInterestRate =$('#preferredInterest').val();
+                const password =$('#password').val();
+                const balance =$('#balance').val();
+
+                const empId =$('#empId').val();
+                const branchId = $('#branchId').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/employee/account/open',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        branchId: branchId,
+                        customerId: customerId,
+                        empId: empId,
+                        productId: productId,
+                        preferentialInterestRate: preferentialInterestRate,
+                        password: password,
+                        balance: balance
+
+                    }),
+                    success: function(response) {
+                        alert('계좌가 성공적으로 생성되었습니다.');
+                        $('#accountConfirmationModal').hide(); // 모달 닫기
+                    },
+                    error: function() {
+                        alert('계좌 생성에 실패했습니다.');
+                    }
+                });
+
+            });
+        }
+
+        function clearCustomerSearchModal() {
+            $('#customerIdText').val('');
+            $('#customerName').val('');
+            $('#customerBirth').val('');
+            $('#customerPhone').val('');
+            $('#searchQuery').val('');
+            $('#customerSearch').prop('selectedIndex', 0);
+            $('#customer-info').empty();
+        }
+
         $(document).ready(function () {
-            $("#customerNumber").on("click", function () {
+            accoutOpenProductInfo();
+
+
+            $("#customerIdSearchBtn").on("click", function () {
+
                 customerSearchModalPopup();
                 customerSearchModalEvent();
                 insertCustomerId();
+
             });
+
+            // 상품의 기존이율 뿌리기
+            $('#preferredInterest').on('input', function() {
+                calculateTotalInterest();
+            });
+
+            accountOpen();
         });
 
     </script>
@@ -118,54 +215,73 @@
 <%@ include file="/resources/components/sidebar.jsp" %>
 <%@ include file="/resources/components/modal/show-search-customer-modal.jsp" %>
 <div id="mainArea">
-    <h3 style="font-weight:bold; color:#5F5F5F;">계좌 개설</h3>
+    <div>
+        <h5>예금 관리 > </h5>
+        <h5>&nbsp 계좌 개설 </h5>
+    </div>
 
-    <br><br>
-
-
+    <div>
+        <h3>계좌 개설 정보 입력</h3>
+        <hr>
+    </div>
     <table class="commonTable">
         <tr>
             <th>고객번호</th>
-            <td><input type="text" id="customerNumber"></td>
+            <td style="display: flex; align-items: center;">
+                <input type="text" id="customerIdText" readonly >
+                <button type="button" id="customerIdSearchBtn" class="btn btn-primary" style="margin-left: 10px; padding: 5px; width:80px;height:40px">
+                    <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
+                </button>
+            </td>
             <th>비밀번호</th>
-            <td><input type="text"></td>
+            <td><input type="text" id="password"></td>
         </tr>
         <tr>
-            <th>계약일자</th>
-            <td><input type="date"></td>
-            <td colspan="2"></td>
+            <th>고객명</th>
+            <td><input type="text" id="customerName" disabled></td>
+            <th>이자시작일자</th>
+            <td><input type="text" id="startDate" value="20241025" disabled></td>
+
         </tr>
         <tr>
-            <th>잔액(KRW)</th>
-            <td><input type="text"></td>
+            <th>초기 예치금(KRW)</th>
+            <td><input type="text" id="balance"></td>
             <td colspan="2"></td>
         </tr>
         <tr>
             <th>기준이율</th>
-            <td><input type="text" placeholder="%"></td>
+            <td><input type="text" id="productInterest" disabled> %</td>
 
             <th>우대이율</th>
-            <td><input type="text" placeholder="%"></td>
+            <td><input type="text" id="preferredInterest"> %</td>
         </tr>
         <tr>
-            <th>축 이자율</th>
-            <td><input type="text" placeholder="%"></td>
+            <th>총 이자율</th>
+            <td><input type="text" id="totalInterest" disabled> %</td>
             <td colspan="2"></td>
         </tr>
         <tr>
             <th>담당자</th>
-            <td><input type="text"></td>
+            <td><input type="text" id="empName" value="유은서" disabled></td>
             <td colspan="2"></td>
         </tr>
+        <input type="hidden" id="empId" name="empId" value="1">  <!-- employeeId는 실제 값으로 설정 -->
+        <input type="hidden" id="branchName" name="branchName" value="서울지점">  <!-- branchName도 실제 값으로 설정 -->
+        <input type="hidden" id="branchId" name="branchId" value="001">  <!-- branchId도 실제 값으로 설정 -->
+        <input type="hidden" id="productId" name="productId" >  <!-- branchId도 실제 값으로 설정 -->
+
+
     </table>
 
-    <div id="accountOpenInsertBtn" style="text-align:center;">
-        <button>추가</button>
+    <div  style="text-align:center;">
+        <button class="btn btn-primary" id="accountCreateBtn">계좌 개설</button>
 
     </div>
+
     <div id="modalArea">
 
     </div>
+
 </div>
 <script src="/resources/js/footer.js"></script>
 </body>

@@ -27,7 +27,7 @@
     background-color: #F5F5F5;
 }
 
-.commonTable input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+.commonTable select, input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
     width: 90%;
     padding: 8px;
     border: 1px solid #ccc;
@@ -48,4 +48,8 @@
     border-bottom: 1px solid #ddd;
     font-size: 1.0rem;
     text-align: center;
+}
+
+input[disabled] {
+    background-color: #F5F5F5;
 }
