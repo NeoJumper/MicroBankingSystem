@@ -13,12 +13,12 @@ import java.util.Date;
 public class AccountCreate {
 
 
-
-    private int  id;
+    // 계좌번호
+    private String id;
     private int branchId;
     private int customerId;
-    private int productId;
     private int empId;
+    private int productId;
     private Date startDate;
     private Date expireDate;
     private float preferentialInterestRate;
@@ -26,13 +26,17 @@ public class AccountCreate {
     private int balance;
     private Date openDate;
     private String status;
-
+    
+    // 입력된 고객의 관리지점명 가져오기
+    private String branchName;
+    // 입력된 행원의 이름 가져오기
+    private String empName;
 
     private String tradeNumber;
 
 
     @Builder
-    public AccountCreate(int id, int branchId, int customerId, int productId, int empId, Date startDate, Date expireDate, float preferentialInterestRate, String password, int balance, Date openDate, String status, String tradeNumber) {
+    public AccountCreate(String id, int branchId, int customerId, int productId, int empId, Date startDate, Date expireDate, float preferentialInterestRate, String password, int balance, Date openDate, String status, String tradeNumber) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;
