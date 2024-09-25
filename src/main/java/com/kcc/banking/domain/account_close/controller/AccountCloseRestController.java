@@ -2,6 +2,7 @@ package com.kcc.banking.domain.account_close.controller;
 
 import com.kcc.banking.domain.account_close.dto.request.AccountStatus;
 import com.kcc.banking.domain.account_close.dto.request.CloseTrade;
+import com.kcc.banking.domain.account_close.dto.request.StatusWithTrade;
 import com.kcc.banking.domain.account_close.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account_close.service.AccountCloseService;
 import lombok.RequiredArgsConstructor;
@@ -23,21 +24,21 @@ public class AccountCloseRestController {
     }
 
     // DemandDeposit테이블의  status컬럼 상태 변경 기능
-    @PatchMapping("/api/employee/account/status")
-    public ResponseEntity<?> updateDemandDepositStatus(@RequestBody AccountStatus accountStatus) {
-        AccountStatus result = accountCloseService.updateStatus(accountStatus);
-
-        if(result == null){
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(null);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
+//    @PatchMapping("/api/employee/account/status")
+//    public ResponseEntity<?> updateDemandDepositStatus(@RequestBody AccountStatus accountStatus) {
+//        AccountStatus result = accountCloseService.updateStatus(accountStatus);
+//
+//        if(result == null){
+//            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(null);
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(result);
+//    }
 
     @PostMapping("/api/employee/close-trade")
-    public ResponseEntity<?> addCloseTrade(@RequestBody CloseTrade closeTrade) {
-        CloseTrade result = accountCloseService.addCloseTrade(closeTrade);
+    public ResponseEntity<?> addCloseTrade(@RequestBody StatusWithTrade statusWithTrade) {
+        String result = accountCloseService.addCloseTrade(statusWithTrade);
 
-        if(result == null){
+        if(!result.equals("SUCCESS")) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("계좌해지 거래 실패");
         }
         return ResponseEntity.status(HttpStatus.OK).body(result);
