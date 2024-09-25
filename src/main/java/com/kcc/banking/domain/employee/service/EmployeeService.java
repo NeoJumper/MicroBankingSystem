@@ -2,7 +2,7 @@ package com.kcc.banking.domain.employee.service;
 
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.response.CreatedEmployee;
-import com.kcc.banking.domain.employee.dto.response.EmployeeDetail;
+import com.kcc.banking.domain.employee.dto.response.EmployeeDataOfList;
 import com.kcc.banking.domain.employee.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 public class EmployeeService {
     private final EmployeeMapper employeeMapper;
 
-    public List<EmployeeDetail> getEmployeeList() {
+    public List<EmployeeDataOfList> getEmployeeList() {
         return employeeMapper.findAll();
     }
 

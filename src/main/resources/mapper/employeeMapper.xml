@@ -12,4 +12,12 @@
         VALUES (#{id}, #{branchId}, #{name},  #{phoneNumber}, #{email},#{birthDate}, #{password}, #{roles})
     </insert>
 
+
+    <select id="findAll" >
+        select e.id as "id", e.name as "name", e.birth_date, e.phone_number ,e.email, b.name as "branch_name", roles
+        from employee e join branch b on e.branch_id = b.id
+    </select>
+
+
+
 </mapper>

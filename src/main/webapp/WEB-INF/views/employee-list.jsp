@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +23,7 @@
         <h3>행원 목록</h3>
         <hr>
     </div>
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-end mb-3">
         <div style="width: 10%; margin-left: 15px;">
             <input style="width: 100%" type="text" placeholder="검색 조건">
         </div>
@@ -48,142 +50,17 @@
         <div id="employee-add-list" style="overflow-y: auto; height: 550px;">
             <table class="table table-hover">
                 <tbody>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-
+                <c:forEach var="employee" items="${employeeList}">
+                    <tr class="employee-element">
+                        <td style="width: 10%;">${employee.id}</td>
+                        <td style="width: 10%;">${employee.name}</td>
+                        <td style="width: 20%;"><fmt:formatDate value="${employee.birthDate}" pattern="yyyy-MM-dd" /></td>
+                        <td style="width: 20%;">${employee.phoneNumber}</td>
+                        <td style="width: 20%;">${employee.email}</td>
+                        <td style="width: 10%;">${employee.branchName}</td>
+                        <td style="width: 10%;">${employee.roles}</td>
+                    </tr>
+                </c:forEach>
                 <!-- 추가 행들 -->
                 </tbody>
             </table>
