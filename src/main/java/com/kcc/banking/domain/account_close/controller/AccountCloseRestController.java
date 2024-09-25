@@ -1,8 +1,9 @@
-package com.kcc.banking.domain.accountclose.controller;
+package com.kcc.banking.domain.account_close.controller;
 
-import com.kcc.banking.domain.accountclose.dto.request.AccountStatus;
-import com.kcc.banking.domain.accountclose.dto.request.CloseTrade;
-import com.kcc.banking.domain.accountclose.service.AccountCloseService;
+import com.kcc.banking.domain.account_close.dto.request.AccountStatus;
+import com.kcc.banking.domain.account_close.dto.request.CloseTrade;
+import com.kcc.banking.domain.account_close.dto.response.CloseAccountTotal;
+import com.kcc.banking.domain.account_close.service.AccountCloseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,10 @@ public class AccountCloseRestController {
     private final AccountCloseService accountCloseService;
 
     // 해지 페이지에 필요한 Customer DETAIL 데이터
-    @GetMapping("/api/employee/account-close-details/{accountNumber}")
-    public ResponseEntity<?> getEmployeeDetail(@PathVariable("accountNumber") String accountNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body("상태 업데이트 성공"+accountNumber);
+    @GetMapping("/api/employee/account-close-details/{accountId}")
+    public ResponseEntity<?> getEmployeeDetail(@PathVariable("accountId") String accountId) {
+        CloseAccountTotal cat = accountCloseService.findCloseAccountTotal(accountId);
+        return ResponseEntity.status(HttpStatus.OK).body(cat);
     }
 
     // DemandDeposit테이블의  status컬럼 상태 변경 기능
