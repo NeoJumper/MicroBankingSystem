@@ -14,9 +14,9 @@ $(document).ready(function() {
                         "<td><button class='button-main '>선택</button></td>" +
                         "<td>" + account.accountId + "</td>" +
                         "<td>" + account.openDate + "</td>" +
-                        "<td>" + account.customerName + "</td>" +
+                        "<td>" + account.customerName + " 님</td>" +
                         "<td>" + account.productName + "</td>" +
-                        "<td>" + account.balance + "</td>" +
+                        "<td>" + account.balance.toLocaleString('ko-KR') + " 원</td>" +
                         "</tr>";
                     accountTableBody.append(row);
                 });
