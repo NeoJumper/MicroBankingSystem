@@ -13,45 +13,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
 
-        <%--function getCurrentDate() {--%>
-        <%--    const today = new Date();--%>
-        <%--    const year = today.getFullYear();--%>
-        <%--    const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1--%>
-        <%--    const day = String(today.getDate()).padStart(2, '0');--%>
-
-        <%--    return `${year}-${month}-${day}`; // YYYY-MM-DD 형식의 문자열 반환--%>
-        <%--}--%>
-
-        <%--function getNextMonthFirstDay(openDate) {--%>
-        <%--    if (!openDate) {--%>
-        <%--        return null; // openDate가 비어있으면 null 반환--%>
-        <%--    }--%>
-
-        <%--    const dateParts = openDate.split('-'); // YYYY-MM-DD 형식의 날짜를 분리--%>
-        <%--    const year = parseInt(dateParts[0], 10);--%>
-        <%--    const month = parseInt(dateParts[1], 10);--%>
-
-        <%--    // 다음 달을 계산 (12월인 경우에는 1월로 넘어가고 연도를 증가)--%>
-        <%--    const nextMonth = month === 12 ? 1 : month + 1;--%>
-        <%--    const nextYear = month === 12 ? year + 1 : year;--%>
-
-        <%--    return `${nextYear}-${String(nextMonth).padStart(2, '0')}-01`; // YYYY-MM-01 형식의 문자열 반환--%>
-        <%--}--%>
-
-        <%--function insertStartDate() {--%>
-        <%--    const formattedDate = getCurrentDate();--%>
-        <%--    $('#openDate').val(formattedDate);--%>
-
-        <%--    const openDate = $('#openDate').val();--%>
-        <%--    if (openDate) { // openDate가 비어있지 않은 경우에만 처리--%>
-        <%--        const formattedNextMonthDate = getNextMonthFirstDay(openDate);--%>
-        <%--        $('#startDate').val(formattedNextMonthDate);--%>
-        <%--    } else {--%>
-        <%--        console.error("openDate is empty or invalid.");--%>
-        <%--    }--%>
-        <%--}--%>
-
-
 
         function customerSearchModalPopup() {
             $("#showSearchCustomerModal").modal("show");
@@ -154,6 +115,7 @@
                 method: 'GET',
                 success: function(data) {
                     $('#productInterest').val(data.interestRate);
+                    $('#productId').val(data.id)
                 },
                 error: function(error) {
                     console.error('Error fetching product interest:', error);
@@ -177,25 +139,40 @@
 
             $('#accountCreateBtn').on("click",function (){
 
-
+                alert("click #accountCreateBtn");
                 const customerId = $('#customerIdText').val();
                 const productId = $('#productId').val();
 
-                const startDate = $('startDate').val();
-                const preferredInterestRate =$('#preferredInterest').val();
+                //const startDate = $('startDate').val();
+                const preferentialInterestRate =$('#preferredInterest').val();
                 const password =$('#password').val();
                 const balance =$('#balance').val();
 
                 const empId =$('#empId').val();
-                const branchName =$('#branchName').val();
                 const branchId = $('#branchId').val();
 
-                // 저장 안하지만 완료 정보 전달모달에서 필요함.
-                const customerName =$('#customerName').val();
-                const totalInterest = $('#totalInterest').val();
-                const empName = $('#empName').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/employee/account/open',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        branchId: branchId,
+                        customerId: customerId,
+                        empId: empId,
+                        productId: productId,
+                        preferentialInterestRate: preferentialInterestRate,
+                        password: password,
+                        balance: balance
 
-
+                    }),
+                    success: function(response) {
+                        alert('계좌가 성공적으로 생성되었습니다.');
+                        $('#accountConfirmationModal').hide(); // 모달 닫기
+                    },
+                    error: function() {
+                        alert('계좌 생성에 실패했습니다.');
+                    }
+                });
 
             });
         }
@@ -219,12 +196,15 @@
                 customerSearchModalPopup();
                 customerSearchModalEvent();
                 insertCustomerId();
+
             });
 
             // 상품의 기존이율 뿌리기
             $('#preferredInterest').on('input', function() {
                 calculateTotalInterest();
             });
+
+            accountOpen();
         });
 
     </script>
@@ -288,7 +268,8 @@
         <input type="hidden" id="empId" name="empId" value="1">  <!-- employeeId는 실제 값으로 설정 -->
         <input type="hidden" id="branchName" name="branchName" value="서울지점">  <!-- branchName도 실제 값으로 설정 -->
         <input type="hidden" id="branchId" name="branchId" value="001">  <!-- branchId도 실제 값으로 설정 -->
-        <input type="hidden" id="openDate" name="openDate" >  <!-- branchId도 실제 값으로 설정 -->
+        <input type="hidden" id="productId" name="productId" >  <!-- branchId도 실제 값으로 설정 -->
+
 
     </table>
 

@@ -68,8 +68,8 @@
                                 status
         ) VALUES (
                         #{id}, #{branchId}, #{customerId}, #{productId}, #{empId},
-                        #{startDate}, #{preferentialInterestRate},
-                        #{password}, #{balance}, #{openDate}, #{status}
+                        SYSDATE, #{preferentialInterestRate},
+                        #{password}, #{balance}, SYSDATE, 'OPN'
                  )
     </insert>
 

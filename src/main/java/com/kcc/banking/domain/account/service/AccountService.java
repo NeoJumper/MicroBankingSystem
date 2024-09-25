@@ -47,13 +47,15 @@ public class AccountService {
         accountCreate.setBranchId(1);
         accountCreate.setEmpId(1);
 
+
         int branchNumber = accountCreate.getBranchId();
 
         String accountNumber = generateAccountNumber(branchNumber, customerSeq);
         // 계좌번호 생성 입력
         accountCreate.setId(accountNumber);
 
-        // DB에 계좌 정보 저장
+        System.out.println("accountCreate.getPreferentialInterestRate();"+accountCreate.getPreferentialInterestRate());
+       //DB에 계좌 정보 저장
         accountMapper.openAccount(accountCreate);
 
     }
