@@ -2,38 +2,39 @@ package com.kcc.banking.domain.account_close.service;
 
 import com.kcc.banking.domain.account_close.dto.request.AccountStatus;
 import com.kcc.banking.domain.account_close.dto.request.CloseTrade;
+import com.kcc.banking.domain.account_close.dto.request.StatusWithTrade;
 import com.kcc.banking.domain.account_close.dto.response.CloseAccount;
 import com.kcc.banking.domain.account_close.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account_close.dto.response.InterestSum;
 import com.kcc.banking.domain.account_close.mapper.AccountCloseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class AccountCloseService {
     private final AccountCloseMapper accountCloseMapper;
 
-    public AccountStatus updateStatus(AccountStatus accountStatus) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String modifier = authentication.getName();
-//        accountStatus.setModifier(modifier);
-        accountStatus.setModifier("김영진");
+    //계좌해지신청
+    @Transactional
+    public String addCloseTrade(StatusWithTrade statusWithTrade) {
 
-        int resultNum = accountCloseMapper.updateStatus(accountStatus);
-        if (resultNum>0){
-            return accountStatus;
-        }
-        return null;
-    }
+        //  CloseTrade, AccountStatus에 분배
+        CloseTrade closeTrade = CloseTrade.builder()
+                .accId(statusWithTrade.getAccId())
+                .empId(1L)
+                .branchId(1L)
+                .amount(statusWithTrade.getAmount()).build();
+        AccountStatus accountStatus = AccountStatus.builder()
+                .id(statusWithTrade.getAccId())
+                .status(statusWithTrade.getStatus())
+                .modifier("김영진").build();
 
-    public CloseTrade addCloseTrade(CloseTrade closeTrade) {
-        closeTrade.setEmpId(1L);
-        closeTrade.setBranchId(1L);
-        System.out.println("closeTrade.getClass() = " + closeTrade.getClass());
-        int resultNum = accountCloseMapper.addCancelTrade(closeTrade);
-        if(resultNum>0){
-            return closeTrade;
+        int tradeResult = accountCloseMapper.addCancelTrade(closeTrade);
+        int statusResult = accountCloseMapper.updateStatus(accountStatus);
+        if(tradeResult>0 && statusResult>0) {
+            return "SUCCESS";
         }
         return null;
     }
