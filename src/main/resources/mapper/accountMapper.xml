@@ -31,7 +31,6 @@
         <result property="interestRate" column="interest_rate" />
     </resultMap>
 
-    <select id="findAll" resultMap="AccountResultMap">
     <resultMap id="AccountModalResultMap" type="AccountOfModal">
         <result property="accountId" column="account_id" />
         <result property="openDate" column="open_date" />
@@ -70,19 +69,10 @@
         ) VALUES (
                         #{id}, #{branchId}, #{customerId}, #{productId}, #{empId},
                         #{startDate}, #{preferentialInterestRate},
-                        #{password}, #{balance}, sysdate, OPN
+                        #{password}, #{balance}, #{openDate}, #{status}
                  )
     </insert>
-    <!-- Insert new account -->
-    <!--    <insert id="insertAccount" parameterType="AccountCreate">-->
-    <!--        INSERT INTO Account (-->
-    <!--            id, branch_id, customer_id, product_id, emp_id, start_date, preferential_interest_rate,-->
-    <!--            password, balance, open_date, status-->
-    <!--        ) VALUES (-->
-    <!--                     #{id}, #{branchId}, #{customerId}, #{productId}, #{empId}, #{startDate}, #{preferentialInterestRate},-->
-    <!--                     #{password}, #{balance}, sysdate, #{status}-->
-    <!--                 )-->
-    <!--    </insert>-->
+
 
     <select id="findAccount" resultMap="AccountModalResultMap">
         SELECT

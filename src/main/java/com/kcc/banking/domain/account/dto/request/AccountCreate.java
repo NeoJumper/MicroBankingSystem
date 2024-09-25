@@ -17,8 +17,8 @@ public class AccountCreate {
     private String id;
     private int branchId;
     private int customerId;
-    private int productId;
     private int empId;
+    private int productId;
     private Date startDate;
     private Date expireDate;
     private float preferentialInterestRate;
@@ -26,7 +26,11 @@ public class AccountCreate {
     private int balance;
     private Date openDate;
     private String status;
-
+    
+    // 입력된 고객의 관리지점명 가져오기
+    private String branchName;
+    // 입력된 행원의 이름 가져오기
+    private String empName;
 
     private String tradeNumber;
 

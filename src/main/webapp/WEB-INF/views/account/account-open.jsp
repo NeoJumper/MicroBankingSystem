@@ -12,6 +12,47 @@
     <!-- jquery 소스-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
+
+        <%--function getCurrentDate() {--%>
+        <%--    const today = new Date();--%>
+        <%--    const year = today.getFullYear();--%>
+        <%--    const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1--%>
+        <%--    const day = String(today.getDate()).padStart(2, '0');--%>
+
+        <%--    return `${year}-${month}-${day}`; // YYYY-MM-DD 형식의 문자열 반환--%>
+        <%--}--%>
+
+        <%--function getNextMonthFirstDay(openDate) {--%>
+        <%--    if (!openDate) {--%>
+        <%--        return null; // openDate가 비어있으면 null 반환--%>
+        <%--    }--%>
+
+        <%--    const dateParts = openDate.split('-'); // YYYY-MM-DD 형식의 날짜를 분리--%>
+        <%--    const year = parseInt(dateParts[0], 10);--%>
+        <%--    const month = parseInt(dateParts[1], 10);--%>
+
+        <%--    // 다음 달을 계산 (12월인 경우에는 1월로 넘어가고 연도를 증가)--%>
+        <%--    const nextMonth = month === 12 ? 1 : month + 1;--%>
+        <%--    const nextYear = month === 12 ? year + 1 : year;--%>
+
+        <%--    return `${nextYear}-${String(nextMonth).padStart(2, '0')}-01`; // YYYY-MM-01 형식의 문자열 반환--%>
+        <%--}--%>
+
+        <%--function insertStartDate() {--%>
+        <%--    const formattedDate = getCurrentDate();--%>
+        <%--    $('#openDate').val(formattedDate);--%>
+
+        <%--    const openDate = $('#openDate').val();--%>
+        <%--    if (openDate) { // openDate가 비어있지 않은 경우에만 처리--%>
+        <%--        const formattedNextMonthDate = getNextMonthFirstDay(openDate);--%>
+        <%--        $('#startDate').val(formattedNextMonthDate);--%>
+        <%--    } else {--%>
+        <%--        console.error("openDate is empty or invalid.");--%>
+        <%--    }--%>
+        <%--}--%>
+
+
+
         function customerSearchModalPopup() {
             $("#showSearchCustomerModal").modal("show");
 
@@ -20,10 +61,10 @@
 
         function customerSearchModalEvent() {
             // 셀렉트 요소 가져오기
-            $('#searchBtn').on('click', function () {
+            $('#modal-search-btn').on('click', function () {
                 // 드롭다운에서 선택된 값과 입력 필드의 값 가져오기
-                const searchType = $('#customerSearch').val();
-                const searchQuery = $('#searchQuery').val();
+                const searchType = $('#modal-search-customerSearch').val();
+                const searchQuery = $('#modal-search-query').val();
 
                 alert(searchType + "searchType" + searchQuery + "searchQuery");
 
@@ -46,13 +87,13 @@
                     alert(searchType);
                 }
 
-                // AJAX 요청 (GET 방식)
+
                 $.ajax({
                     url: '/api/employee/customer?' + queryParam,
                     method: 'GET',
                     success: function (response) {
                         console.log("Response from server:", response);
-                        var newBody = $('<tbody id="customer-info">');
+                        var newBody = $('<tbody id="modal-search-customer-info">');
 
                         response.forEach(function (item) {
                             console.log("Item:", item); // 개별 항목 확인
@@ -68,8 +109,8 @@
                             newBody.append(row);
                         });
 
-                        $('#customer-info').empty();
-                        $('#customer-info').replaceWith(newBody);
+                        $('#modal-search-customer-info').empty();
+                        $('#modal-search-customer-info').replaceWith(newBody);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
 
@@ -82,7 +123,7 @@
 
         function insertCustomerId() {
 
-            $('#modal-customer-select').on('click', function () {
+            $('#modal-search-customer-select').on('click', function () {
 
                 const selectedCustomer = $('input[name="selectedCustomer"]:checked');
 
@@ -90,7 +131,10 @@
 
                     const selectedRow = selectedCustomer.closest('tr');
                     const customerId = selectedRow.find('td:nth-child(2)').text();
-                    $('#customerNumber').val(customerId);
+                    $('#customerIdText').val(customerId);
+
+                    const customerName = selectedRow.find('td:nth-child(3)').text();
+                    $('#customerName').val(customerName);
 
 
                     $('#showSearchCustomerModal').modal('hide');
@@ -128,10 +172,36 @@
             $('#totalInterest').val(totalInterest.toFixed(2)); // 소수점 2자리까지 출력
         }
 
+        // 계좌 생성 함수
+        function accountOpen(){
 
+            $('#accountCreateBtn').on("click",function (){
+
+
+                const customerId = $('#customerIdText').val();
+                const productId = $('#productId').val();
+
+                const startDate = $('startDate').val();
+                const preferredInterestRate =$('#preferredInterest').val();
+                const password =$('#password').val();
+                const balance =$('#balance').val();
+
+                const empId =$('#empId').val();
+                const branchName =$('#branchName').val();
+                const branchId = $('#branchId').val();
+
+                // 저장 안하지만 완료 정보 전달모달에서 필요함.
+                const customerName =$('#customerName').val();
+                const totalInterest = $('#totalInterest').val();
+                const empName = $('#empName').val();
+
+
+
+            });
+        }
 
         function clearCustomerSearchModal() {
-            $('#customerNumber').val('');
+            $('#customerIdText').val('');
             $('#customerName').val('');
             $('#customerBirth').val('');
             $('#customerPhone').val('');
@@ -143,14 +213,15 @@
         $(document).ready(function () {
             accoutOpenProductInfo();
 
-            $("#customerNumber").on("click", function () {
+
+            $("#customerIdSearchBtn").on("click", function () {
 
                 customerSearchModalPopup();
                 customerSearchModalEvent();
                 insertCustomerId();
             });
 
-
+            // 상품의 기존이율 뿌리기
             $('#preferredInterest').on('input', function() {
                 calculateTotalInterest();
             });
@@ -176,19 +247,25 @@
     <table class="commonTable">
         <tr>
             <th>고객번호</th>
-            <td><input type="text" id="customerNumber" readonly >
-                <span class="bi bi-search" style="position: absolute; left: 5px; top: 50%; transform: translateY(-50%);"></span></td>
+            <td style="display: flex; align-items: center;">
+                <input type="text" id="customerIdText" readonly >
+                <button type="button" id="customerIdSearchBtn" class="btn btn-primary" style="margin-left: 10px; padding: 5px; width:80px;height:40px">
+                    <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
+                </button>
+            </td>
             <th>비밀번호</th>
-            <td><input type="text"></td>
+            <td><input type="text" id="password"></td>
         </tr>
         <tr>
-            <th>시작일자</th>
-            <td><input type="date"></td>
-            <td colspan="2"></td>
+            <th>고객명</th>
+            <td><input type="text" id="customerName" disabled></td>
+            <th>이자시작일자</th>
+            <td><input type="text" id="startDate" value="20241025" disabled></td>
+
         </tr>
         <tr>
-            <th>잔액(KRW)</th>
-            <td><input type="text"></td>
+            <th>초기 예치금(KRW)</th>
+            <td><input type="text" id="balance"></td>
             <td colspan="2"></td>
         </tr>
         <tr>
@@ -205,15 +282,21 @@
         </tr>
         <tr>
             <th>담당자</th>
-            <td><input type="text" value="유은서" disabled></td>
+            <td><input type="text" id="empName" value="유은서" disabled></td>
             <td colspan="2"></td>
         </tr>
+        <input type="hidden" id="empId" name="empId" value="1">  <!-- employeeId는 실제 값으로 설정 -->
+        <input type="hidden" id="branchName" name="branchName" value="서울지점">  <!-- branchName도 실제 값으로 설정 -->
+        <input type="hidden" id="branchId" name="branchId" value="001">  <!-- branchId도 실제 값으로 설정 -->
+        <input type="hidden" id="openDate" name="openDate" >  <!-- branchId도 실제 값으로 설정 -->
+
     </table>
 
-    <div id="accountOpenInsertBtn"  style="text-align:center;">
-        <button  class="btn btn-primary">추가</button>
+    <div  style="text-align:center;">
+        <button class="btn btn-primary" id="accountCreateBtn">계좌 개설</button>
 
     </div>
+
     <div id="modalArea">
 
     </div>

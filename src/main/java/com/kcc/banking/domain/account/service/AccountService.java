@@ -43,10 +43,14 @@ public class AccountService {
     // 계좌 개설 
     public void openAccount(AccountCreate accountCreate) {
         int customerSeq = accountMapper.getAccountSeq();
+        // branchId 설정
+        accountCreate.setBranchId(1);
+        accountCreate.setEmpId(1);
+
         int branchNumber = accountCreate.getBranchId();
 
         String accountNumber = generateAccountNumber(branchNumber, customerSeq);
-
+        // 계좌번호 생성 입력
         accountCreate.setId(accountNumber);
 
         // DB에 계좌 정보 저장

@@ -42,11 +42,9 @@ public class AccountRestController {
 
     // 계좌 개설하기
     @PostMapping("/open")
-    public String openAccount(@RequestBody AccountCreate accountCreate) {
-
+    public void openAccount(@RequestBody AccountCreate accountCreate) {
+        System.out.println("accountCreate .getPassword()" +accountCreate.getPassword());
         accountService.openAccount(accountCreate);
-
-        return " " + accountCreate.getId();
     }
 
 
