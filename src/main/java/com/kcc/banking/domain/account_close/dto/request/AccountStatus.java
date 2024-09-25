@@ -1,4 +1,4 @@
-package com.kcc.banking.domain.accountclose.dto.request;
+package com.kcc.banking.domain.account_close.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
