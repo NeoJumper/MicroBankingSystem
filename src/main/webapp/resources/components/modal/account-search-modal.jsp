@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %><!doctype html>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!doctype html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -9,7 +10,8 @@
 </head>
 <body>
 <!-- Modal -->
-<div class="modal fade" id="accountSearchModal" tabindex="-1" aria-labelledby="accountSearchModalLabel" aria-hidden="true">
+<div class="modal fade" id="accountSearchModal" tabindex="-1" aria-labelledby="accountSearchModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -33,18 +35,20 @@
                 <hr>
                 <table id="modal-common-table" class="commonTable">
                     <thead>
-                    <th><label>선택</label></th>
-                    <th><label id="modal-account-id">계좌번호</label></th>
-                    <th><label id="modal-open-date">개설일</label></th>
-                    <th><label id="modal-customer-name">고객명</label></th>
-                    <th><label id="modal-product-name">상품 종류</label></th>
-                    <th><label id="modal-total-amount">현재 잔액</label></th>
+                        <th><label>선택</label></th>
+                        <th><label id="modal-account-id">계좌번호</label></th>
+                        <th><label id="modal-open-date">개설일</label></th>
+                        <th><label id="modal-customer-name">고객명</label></th>
+                        <th><label id="modal-product-name">상품 종류</label></th>
+                        <th><label id="modal-balance">현재 잔액</label></th>
                     </thead>
                     <tbody>
 
                     </tbody>
                 </table>
-                <button id="modal-select-account" class="update-btn">선택</button>
+                <div id="modal-select-button">
+                    <button id="modal-select-account" class="update-btn">계좌 선택</button>
+                </div>
             </div>
         </div>
     </div>
