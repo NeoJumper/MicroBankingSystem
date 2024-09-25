@@ -14,7 +14,7 @@ body, input, button {
 }
 
 /* 공통 버튼 스타일 */
-.button-group button, .button-main {
+.button-group button {
     padding: 6px 12px;
     cursor: pointer;
     text-align: center;
@@ -26,8 +26,16 @@ body, input, button {
     border: none;
 }
 
-.button-main {
-    background-color: #007bff; /* 파란색 버튼 */
-    color: white;
+.button-group button:hover {
+    background: #C8C8C8;
 }
 
+#account-balance-label {
+    /*border: 1px solid #C8C8C8;*/
+    padding: 8px;
+}
+
+#account-balance {
+    font-weight: bold;
+    color: #007bff;
+}

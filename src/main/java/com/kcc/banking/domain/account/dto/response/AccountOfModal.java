@@ -8,14 +8,14 @@ import java.math.BigDecimal;
 @Getter
 @NoArgsConstructor
 public class AccountOfModal {
-    private String accountId;
+    private String accId;
     private String openDate;
     private String customerName;
     private String productName;
     private BigDecimal balance;
 
-    public AccountOfModal(String accountId, String openDate, String customerName, String productName, BigDecimal balance) {
-        this.accountId = accountId;
+    public AccountOfModal(String accId, String openDate, String customerName, String productName, BigDecimal balance) {
+        this.accId = accId;
         this.openDate = openDate;
         this.customerName = customerName;
         this.productName = productName;

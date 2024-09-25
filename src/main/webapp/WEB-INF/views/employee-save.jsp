@@ -22,78 +22,51 @@
         <hr>
     </div>
     <table class="commonTable">
-
         <tr>
             <th>이름</th>
-            <td><input type="text"></td>
+            <td><input type="text" id="empName"></td>
             <th>생년월일</th>
-            <td><input type="text"></td>
+            <td><input type="date" id="empBirthDate"></td>
         </tr>
         <tr>
-            <th>직급</th>
-            <td><input type="date"></td>
-            <td colspan="2"></td>
-        </tr>
-        <tr>
-            <th>전화번호</th>
-            <td><input type="text"></td>
-
             <th>이메일</th>
-            <td><input type="text"></td>
+            <td><input type="text" id="empEmail"></td>
+            <th>비밀번호</th>
+            <td><input type="password" id="empPassword"></td>
         </tr>
         <tr>
             <th>지점명</th>
-            <td><input type="text"></td>
+            <td>
+                <select id="empBranchId">
+                    <option value="1">강남점</option>
+                    <option value="2">은평점</option>
+                    <option value="3">서초점</option>
+                    <option value="4">마포점</option>
+                    <option value="5">영등포점</option>
+                </select>
+            </td>
+            <th>전화번호</th>
+            <td><input type="text" id="empPhoneNumber"></td>
+        </tr>
+        <tr>
+            <th>직급</th>
+            <td>
+                <select id="empRoles">
+                    <option value="EMPLOYEE">행원</option>
+                    <option value="MANAGER">매니저</option>
+                </select>
+            </td>
             <td colspan="2"></td>
         </tr>
     </table>
-    <div class= "d-flex justify-content-end mt-4 mb-4">
-        <button class ="update-btn">
-            추가하기
-        </button>
+    <div class="d-flex justify-content-end mt-4 mb-4">
+        <button class="update-btn" id="empSaveBtn">추가하기</button>
     </div>
-    <div>
-        <h3>행원 추가 대기 목록</h3>
-        <hr>
-        <table class="table">
-            <thead>
-            <tr>
-                <th style="width: 10%;">사번</th>
-                <th style="width: 10%;">이름</th>
-                <th style="width: 20%;">생년월일</th>
-                <th style="width: 20%;">전화번호</th>
-                <th style="width: 20%;">이메일</th>
-                <th style="width: 10%;">지점</th>
-                <th style="width: 10%;">직책</th>
-            </tr>
-            </thead>
-        </table>
 
-        <div id="employee-add-list" style="overflow-y: auto; height: 250px;">
-            <table class="table table-hover">
-                <tbody>
-                <tr class="employee-element">
-                    <td style="width: 10%;">1001</td>
-                    <td style="width: 10%;">지승용</td>
-                    <td style="width: 20%;">1999-02-14</td>
-                    <td style="width: 20%;">010-5355-4406</td>
-                    <td style="width: 20%;">gkfktkrh153@naver.com</td>
-                    <td style="width: 10%;">은평 1지점</td>
-                    <td style="width: 10%;">행원</td>
-                </tr>
-                <!-- 추가 행들 -->
-                </tbody>
-            </table>
-        </div>
-        <div class= "d-flex justify-content-end mt-4 mb-4">
-            <button class ="update-btn">
-                등록하기
-            </button>
-        </div>
-    </div>
 </div>
 
-
+<%@ include file="/resources/components/modal/employee-detail-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
+<script src="/resources/js/employee-save.js"></script>
 </body>
 </html>

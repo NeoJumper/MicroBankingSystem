@@ -30,13 +30,13 @@
         <table class="commonTable">
             <tr>
                 <th><label for="withdrawal-account-number">출금계좌번호</label></th>
-                <td id="inputWithBtn"><input disabled type="text" id="withdrawal-account-number">
-                    <button id="check-account" class="button-main" type="button" data-bs-toggle="modal" data-bs-target="#accountSearchModal">계좌조회</button>
+                <td><input disabled type="text" id="withdrawal-account-number">
+                    <button id="check-withdrawal-account" class="update-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#accountSearchModal">계좌조회</button>
                 </td>
             </tr>
             <tr>
-                <th><label for="account-password">계좌비밀번호</label></th>
-                <td><input type="password" id="account-password"></td>
+                <th><label for="withdrawal-product-name">상품명</label></th>
+                <td><input disabled type="text" id="withdrawal-product-name"></td>
             </tr>
             <tr>
                 <th><label for="withdrawal-customer-name">고객명</label></th>
@@ -45,20 +45,23 @@
             <tr>
                 <th><label for="transfer-amount">이체금액</label></th>
                 <td>
-                    <input type="text" id="transfer-amount" placeholder="350,000 원">
+                    <input disabled type="text" id="transfer-amount">
+                    <label id="account-balance-label" style="display: none">
+                    계좌 잔액: <span id="account-balance"></span> 원
+                </label>
                     <div class="button-group">
-                        <button>100만</button>
-                        <button>50만</button>
-                        <button>10만</button>
-                        <button>5만</button>
-                        <button>1만</button>
-                        <button>전액</button>
+                        <button type="button" class="amount-btn" disabled>100만</button>
+                        <button type="button" class="amount-btn" disabled>50만</button>
+                        <button type="button" class="amount-btn" disabled>10만</button>
+                        <button type="button" class="amount-btn" disabled>5만</button>
+                        <button type="button" class="amount-btn" disabled>1만</button>
+                        <button type="button" class="amount-btn" disabled>전액</button>
                     </div>
                 </td>
             </tr>
             <tr>
                 <th><label for="execution-date">이체 실행일자</label></th>
-                <td><input type="date" id="execution-date"></td>
+                <td><input disabled type="date" id="execution-date"></td>
             </tr>
             <tr>
                 <th><label for="remark">비고</label></th>
@@ -73,7 +76,9 @@
             <tbody>
             <tr>
                 <th><label for="deposit-account-number">입금계좌번호</label></th>
-                <td class="inputWithBtn"><input type="text" id="deposit-account-number"><button class="check-account button-main" >계좌조회</button></td>
+                <td class="inputWithBtn"><input disabled type="text" id="deposit-account-number">
+                    <button id="check-deposit-account" class="update-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#accountSearchModal">계좌조회</button>
+                </td>
             </tr>
             <tr>
                 <th><label for="deposit-customer-name">고객명</label></th>
@@ -81,8 +86,20 @@
             </tr>
             </tbody>
         </table>
-    <div class="row justify-content-center">
-        <button class="col-1 button-main">이체하기</button>
+        <div>
+            <h3 class="mt-3">출금계좌 비밀번호</h3>
+            <hr>
+        </div>
+        <table class="commonTable">
+            <tbody>
+            <tr>
+                <th><label>출금계좌 비밀번호</label></th>
+                <td><input type="password"></td>
+            </tr>
+            </tbody>
+        </table>
+    <div class="row justify-content-center mb-5">
+        <button class="col-1 update-btn">이체하기</button>
     </div>
     </div>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
