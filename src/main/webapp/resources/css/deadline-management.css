@@ -1,0 +1,15 @@
+.amount-input {
+    width: 220px;
+    direction: rtl;
+    font-size: 1.1rem;
+}
+
+.amount-label1 {
+    width: 100px;
+    font-size: 1.1rem;
+}
+
+.amount-label2 {
+    width: 160px;
+    font-size: 1.1rem;
+}

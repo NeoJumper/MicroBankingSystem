@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
-    <link rel="stylesheet" type="text/css" href="/resources/css/commonTable.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
 </head>
 <body>
 <%@ include file="/resources/components/header.jsp" %>
@@ -47,6 +47,11 @@
             <td colspan="2"></td>
         </tr>
     </table>
+    <div class= "d-flex justify-content-end mt-4 mb-4">
+        <button class ="update-btn">
+            추가하기
+        </button>
+    </div>
     <div>
         <h3>행원 추가 대기 목록</h3>
         <hr>
@@ -80,7 +85,11 @@
                 </tbody>
             </table>
         </div>
-
+        <div class= "d-flex justify-content-end mt-4 mb-4">
+            <button class ="update-btn">
+                등록하기
+            </button>
+        </div>
     </div>
 </div>
 

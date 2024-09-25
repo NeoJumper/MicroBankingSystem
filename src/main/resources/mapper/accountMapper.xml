@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.account.mapper.AccountMapper">
+
+    <resultMap id="AccountAllResultMap" type="AccountDetail">
+        <id property="id" column="id" />
+        <result property="branchId" column="branch_id" />
+        <result property="customerId" column="customer_id" />
+        <result property="productId" column="product_id" />
+        <result property="empId" column="emp_id" />
+        <result property="startDate" column="start_date" />
+        <result property="preferentialInterestRate" column="preferential_interest_rate" />
+        <result property="expireDate" column="expire_date" />
+        <result property="password" column="password" />
+        <result property="balance" column="balance" />
+        <result property="openDate" column="open_date" />
+        <result property="status" column="status" />
+        <result property="tradeNumber" column="trade_number" />
+        <result property="registrationDate" column="registration_date" />
+        <result property="registrant" column="registrant" />
+        <result property="modificationDate" column="modification_date" />
+        <result property="modifier" column="modifier" />
+        <result property="version" column="version" />
+    </resultMap>
+
+    <resultMap id="AccountModalResultMap" type="AccountOfModal">
+        <result property="accountId" column="account_id" />
+        <result property="openDate" column="open_date" />
+        <result property="customerName" column="customer_name" />
+        <result property="productName" column="product_name" />
+        <result property="balance" column="balance" />
+    </resultMap>
+
+    <select id="findAll" resultMap="AccountAllResultMap">
+        SELECT * FROM account
+    </select>
+
+    <!-- Insert new account -->
+    <!--    <insert id="insertAccount" parameterType="AccountCreate">-->
+    <!--        INSERT INTO Account (-->
+    <!--            id, branch_id, customer_id, product_id, emp_id, start_date, preferential_interest_rate,-->
+    <!--            password, balance, open_date, status-->
+    <!--        ) VALUES (-->
+    <!--                     #{id}, #{branchId}, #{customerId}, #{productId}, #{empId}, #{startDate}, #{preferentialInterestRate},-->
+    <!--                     #{password}, #{balance}, sysdate, #{status}-->
+    <!--                 )-->
+    <!--    </insert>-->
+
+    <select id="findAccount" resultMap="AccountModalResultMap">
+        SELECT
+        a.id AS account_id,
+        a.open_date AS open_date,
+        c.name AS customer_name,
+        p.name AS product_name,
+        a.balance AS balance
+        FROM
+        Account a
+        JOIN
+        Customer c ON a.customer_id = c.id
+        JOIN
+        Product p ON a.product_id = p.id
+        WHERE
+        <if test="accountNumber != null and !accountNumber.equals('')">
+           a.id = #{accountNumber}
+        </if>
+        <if test="productName != null and !productName.equals('')">
+           p.name = #{productName}
+        </if>
+    </select>
+
+</mapper>

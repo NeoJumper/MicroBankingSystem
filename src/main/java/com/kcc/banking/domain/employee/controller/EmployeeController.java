@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,4 +40,16 @@ public class EmployeeController {
         model.addAttribute("id", id);
         return "employee-update";
     }
+    @GetMapping("/page/employee/deadline-management")
+    public String employeeDeadlineManagement(@RequestParam(value = "id") long id, Model model) {
+        model.addAttribute("id", id);
+        return "deadline-management";
+    }
+    @GetMapping("/page/manager/deadline-management")
+    public String managerDeadlineManagement(@RequestParam(value = "id") long id, Model model) {
+        model.addAttribute("id", id);
+        return "deadline-management2";
+    }
+
+
 }
