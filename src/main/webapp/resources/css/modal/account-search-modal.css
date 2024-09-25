@@ -1,9 +1,9 @@
 #accountSearchModal .modal-dialog {
-    min-width: 70%;
+    min-width: 60%;
 }
 
 #accountSearchModal .modal-body {
-    padding: 5% 10%;
+    padding: 5%;
 }
 
 #accountSearchModal .modal-body h5,

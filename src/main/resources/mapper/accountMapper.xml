@@ -61,13 +61,14 @@
         Customer c ON a.customer_id = c.id
         JOIN
         Product p ON a.product_id = p.id
-        WHERE
+        <where>
         <if test="accountNumber != null and !accountNumber.equals('')">
-           a.id = #{accountNumber}
+           a.id LIKE #{accountNumber} || '%'
         </if>
         <if test="productName != null and !productName.equals('')">
-           p.name = #{productName}
+           p.name LIKE #{productName} || '%'
         </if>
+        </where>
     </select>
 
 </mapper>
