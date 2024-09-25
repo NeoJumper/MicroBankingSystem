@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.employee.mapper.EmployeeMapper">
+
+    <insert id="save" parameterType="EmployeeCreate">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT employee_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO Employee (id, branch_id, name, phone_number, email,birth_date, password, roles)
+        VALUES (#{id}, #{branchId}, #{name},  #{phoneNumber}, #{email},#{birthDate}, #{password}, #{roles})
+    </insert>
+
+</mapper>
