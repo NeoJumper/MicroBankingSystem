@@ -1,0 +1,39 @@
+#businessdayUpdateModal .modal-dialog {
+    min-width: 45%;
+}
+
+#businessdayUpdateModal .modal-body {
+    padding: 5% 10%;
+}
+
+#businessdayUpdateModal .modal-body h5,
+#businessdayUpdateModal .modal-header h1 {
+    font-weight: bold;
+}
+
+#businessdayUpdateModal hr {
+    margin: 0;
+    border: 2px solid black;
+    margin-bottom: 30px;
+}
+
+
+
+#modalCenterBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#businessdayUpdateModal .modal-body label {
+    font-weight: bold;
+}
+
+
+#businessdayUpdateModal .modal-body table {
+    width: 100%;
+}
+
+#businessdayUpdateModal .modal-body th {
+    text-align: center;
+}
