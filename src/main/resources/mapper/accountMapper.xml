@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcc.banking.domain.account.mapper.AccountMapper">
 
-    <resultMap id="AccountResultMap" type="AccountDetail">
+    <resultMap id="AccountAllResultMap" type="AccountDetail">
         <id property="id" column="id" />
         <result property="branchId" column="branch_id" />
         <result property="customerId" column="customer_id" />
@@ -32,6 +32,15 @@
     </resultMap>
 
     <select id="findAll" resultMap="AccountResultMap">
+    <resultMap id="AccountModalResultMap" type="AccountOfModal">
+        <result property="accountId" column="account_id" />
+        <result property="openDate" column="open_date" />
+        <result property="customerName" column="customer_name" />
+        <result property="productName" column="product_name" />
+        <result property="balance" column="balance" />
+    </resultMap>
+
+    <select id="findAll" resultMap="AccountAllResultMap">
         SELECT * FROM account
     </select>
 
@@ -64,4 +73,38 @@
                         #{password}, #{balance}, sysdate, OPN
                  )
     </insert>
+    <!-- Insert new account -->
+    <!--    <insert id="insertAccount" parameterType="AccountCreate">-->
+    <!--        INSERT INTO Account (-->
+    <!--            id, branch_id, customer_id, product_id, emp_id, start_date, preferential_interest_rate,-->
+    <!--            password, balance, open_date, status-->
+    <!--        ) VALUES (-->
+    <!--                     #{id}, #{branchId}, #{customerId}, #{productId}, #{empId}, #{startDate}, #{preferentialInterestRate},-->
+    <!--                     #{password}, #{balance}, sysdate, #{status}-->
+    <!--                 )-->
+    <!--    </insert>-->
+
+    <select id="findAccount" resultMap="AccountModalResultMap">
+        SELECT
+        a.id AS account_id,
+        a.open_date AS open_date,
+        c.name AS customer_name,
+        p.name AS product_name,
+        a.balance AS balance
+        FROM
+        Account a
+        JOIN
+        Customer c ON a.customer_id = c.id
+        JOIN
+        Product p ON a.product_id = p.id
+        <where>
+        <if test="accountNumber != null and !accountNumber.equals('')">
+           a.id LIKE #{accountNumber} || '%'
+        </if>
+        <if test="productName != null and !productName.equals('')">
+           p.name LIKE #{productName} || '%'
+        </if>
+        </where>
+    </select>
+
 </mapper>

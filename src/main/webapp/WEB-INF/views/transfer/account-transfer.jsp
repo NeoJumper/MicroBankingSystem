@@ -30,7 +30,7 @@
         <table class="commonTable">
             <tr>
                 <th><label for="withdrawal-account-number">출금계좌번호</label></th>
-                <td id="inputWithBtn"><input type="text" id="withdrawal-account-number">
+                <td id="inputWithBtn"><input disabled type="text" id="withdrawal-account-number">
                     <button id="check-account" class="button-main" type="button" data-bs-toggle="modal" data-bs-target="#accountSearchModal">계좌조회</button>
                 </td>
             </tr>

@@ -1,8 +1,10 @@
 package com.kcc.banking.domain.account.service;
 
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
+import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
+import com.kcc.banking.domain.account.dto.response.AccountOfModal;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,4 +55,8 @@ public class AccountService {
     }
 
 
+
+    public List<AccountOfModal> getAccount(SearchAccountOfModal searchAccountOfModal) {
+        return accountMapper.findAccount(searchAccountOfModal);
+    }
 }
