@@ -26,7 +26,7 @@
     </resultMap>
 
     <resultMap id="AccountModalResultMap" type="AccountOfModal">
-        <result property="accountId" column="account_id" />
+        <result property="accId" column="acc_id" />
         <result property="openDate" column="open_date" />
         <result property="customerName" column="customer_name" />
         <result property="productName" column="product_name" />
@@ -50,7 +50,7 @@
 
     <select id="findAccount" resultMap="AccountModalResultMap">
         SELECT
-        a.id AS account_id,
+        a.id AS acc_id,
         a.open_date AS open_date,
         c.name AS customer_name,
         p.name AS product_name,
@@ -61,13 +61,14 @@
         Customer c ON a.customer_id = c.id
         JOIN
         Product p ON a.product_id = p.id
-        WHERE
-        <if test="accountNumber != null and !accountNumber.equals('')">
-           a.id = #{accountNumber}
+        <where>
+        <if test="accId != null and !accId.equals('')">
+           a.id LIKE #{accId} || '%'
         </if>
         <if test="productName != null and !productName.equals('')">
-           p.name = #{productName}
+           p.name LIKE #{productName} || '%'
         </if>
+        </where>
     </select>
 
 </mapper>

@@ -20,13 +20,13 @@
                 <h5>계좌정보 입력</h5>
                 <hr>
                 <div id="modal-input-box">
-                    <label>계좌번호</label>
+                    <label style="margin-right: 10px">계좌번호</label>
                     <input id="modal-input-account" type="text">
                 </div>
                 <hr>
                 <div id="modal-center-box">
-                    <button id="modal-check-account" class="button-main" type="button">계좌 검색</button>
-                    <button id="modal-check-account-reset" class="btn btn-secondary" type="button">초기화</button>
+                    <button id="modal-check-account" class="update-btn" type="button">계좌 검색</button>
+                    <button id="modal-check-account-reset" class="reset-btn" type="button">초기화</button>
                 </div>
 
                 <h5>계좌정보</h5>
@@ -41,18 +41,10 @@
                     <th><label id="modal-total-amount">현재 잔액</label></th>
                     </thead>
                     <tbody>
-                    <c:forEach var="account" items="${accounts}">
-                        <tr>
-                            <td><button class="button-main">선택</button></td>
-                            <td>${account.id}</td>
-                            <td>${account.startDate}</td>
-                            <td>${account.customerId}</td>
-                            <td>${account.productId}</td>
-                            <td>${account.balance}</td>
-                        </tr>
-                    </c:forEach>
+
                     </tbody>
                 </table>
+                <button id="modal-select-account" class="update-btn">선택</button>
             </div>
         </div>
     </div>
