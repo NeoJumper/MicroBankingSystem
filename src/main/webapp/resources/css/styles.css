@@ -58,6 +58,11 @@ body {
   margin: 0 6px;
   border: none;
 }
+
+.update-btn:hover {
+  background: #0069d9;
+}
+
 .cancel-btn {
   background: #FF0000;
   color: #F5F5F5;
@@ -67,6 +72,11 @@ body {
   margin: 0 6px;
   border: none;
 }
+
+.cancel-btn:hover {
+  background: #cc0000;
+}
+
 .search-btn{
   background: #F5F5F5;
   color: #000000;
@@ -78,11 +88,15 @@ body {
 }
 
 .reset-btn{
-  background: white;
-  color: #000000;
+  background: #6C757D;
+  color: white;
   font-weight: bold;
   font-size: 1.0rem;
   padding: 6px 6px;
   margin: 0 6px;
-  border: solid 1px;
+  border: none;
+}
+
+.reset-btn:hover {
+  background: #5a6268;
 }
