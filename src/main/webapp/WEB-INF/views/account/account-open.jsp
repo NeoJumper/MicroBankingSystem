@@ -20,6 +20,7 @@
         }
 
 
+        // 고객 검색 modal 띄우기
         function customerSearchModalEvent() {
             // 셀렉트 요소 가져오기
             $('#modal-search-btn').on('click', function () {
@@ -82,6 +83,7 @@
             });
         }
 
+        // 선택한 계좌번호 text 입력
         function insertCustomerId() {
 
             $('#modal-search-customer-select').on('click', function () {
@@ -107,7 +109,7 @@
 
         }
 
-
+        // 상품이율, 상품번호 api
         function accoutOpenProductInfo(){
             // 상품이율 구하기
             $.ajax({
@@ -158,7 +160,7 @@
                     data: JSON.stringify({
                         branchId: branchId,
                         customerId: customerId,
-                        empId: empId,
+                        registerId: empId,
                         productId: productId,
                         preferentialInterestRate: preferentialInterestRate,
                         password: password,
@@ -167,7 +169,8 @@
                     }),
                     success: function(response) {
                         alert('계좌가 성공적으로 생성되었습니다.');
-                        $('#accountConfirmationModal').hide(); // 모달 닫기
+                        accountOpenResult(); // 개설계좌 정보 성공 모달 호출
+
                     },
                     error: function() {
                         alert('계좌 생성에 실패했습니다.');
@@ -177,6 +180,7 @@
             });
         }
 
+        // modal 내용 지우기
         function clearCustomerSearchModal() {
             $('#customerIdText').val('');
             $('#customerName').val('');
@@ -186,6 +190,28 @@
             $('#customerSearch').prop('selectedIndex', 0);
             $('#customer-info').empty();
         }
+
+
+        // 계좌 개설 완료 모달 호출 함수
+        function accountOpenResult(){
+
+            $("#account-open-result-modal").modal("show");
+
+            // 상품이율 구하기
+            // $.ajax({
+            //     url: '/api/employee/account/productInterest',
+            //     method: 'GET',
+            //     success: function(data) {
+            //         $('#productInterest').val(data.interestRate);
+            //         $('#productId').val(data.id)
+            //     },
+            //     error: function(error) {
+            //         console.error('Error fetching product interest:', error);
+            //         $('#productInterest').val('Failed to load data.');
+            //     }
+            // });
+        }
+
 
         $(document).ready(function () {
             accoutOpenProductInfo();
@@ -199,12 +225,14 @@
 
             });
 
-            // 상품의 기존이율 뿌리기
+            // 상품의 총이율 text입력
             $('#preferredInterest').on('input', function() {
                 calculateTotalInterest();
             });
 
             accountOpen();
+
+
         });
 
     </script>
@@ -214,6 +242,8 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <%@ include file="/resources/components/modal/show-search-customer-modal.jsp" %>
+<%@ include file="/resources/components/modal/account-open-result-modal.jsp" %>
+
 <div id="mainArea">
     <div>
         <h5>예금 관리 > </h5>

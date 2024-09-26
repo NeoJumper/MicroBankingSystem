@@ -33,6 +33,12 @@
         <result property="balance" column="balance" />
     </resultMap>
 
+    <resultMap id="AccountProductInfoMap" type="AccountProductInfo">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="interestRate" column="interest_rate" />
+    </resultMap>
+
     <select id="findAll" resultMap="AccountAllResultMap">
         SELECT * FROM account
     </select>
@@ -91,4 +97,40 @@
         </where>
     </select>
 
+
+    <resultMap id="AccountOpenModalResultMap" type="AccountOpenResultOfModal">
+        <result property="accId" column="acc_id" />
+        <result property="customerName" column="customer_name" />
+        <result property="customerId" column="customer_id" />
+        <result property="phoneNumber" column="phone_number" />
+        <result property="productName" column="product_name" />
+        <result property="startDate" column="start_date" />
+        <result property="balance" column="balance" />
+        <result property="branchName" column="branch_name" />
+        <result property="registerId" column="register_id" />
+
+    </resultMap>
+
+    <select id="getAccountOpenResultOfModal" resultMap="AccountOpenModalResultMap">
+        SELECT
+            a.id AS acc_id,
+            c.name AS customer_name,
+            c.id AS customer_id,
+            c.phone_number AS phone_number,
+            p.name AS product_name,
+            a.start_date AS start_date,
+            a.balance AS balance,
+            b.name AS branch_name,
+            a.register_id AS register_id
+
+        FROM
+            Account a
+                JOIN
+            Customer c ON a.customer_id = c.id
+                JOIN
+            Product p ON a.product_id = p.id
+                JOIN
+            Branch b ON a.branch_id = b.id
+        WHERE a.id = #{accId}
+    </select>
 </mapper>
