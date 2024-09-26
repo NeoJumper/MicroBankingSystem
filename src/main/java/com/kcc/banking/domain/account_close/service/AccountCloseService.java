@@ -23,13 +23,13 @@ public class AccountCloseService {
         //  CloseTrade, AccountStatus에 분배
         CloseTrade closeTrade = CloseTrade.builder()
                 .accId(statusWithTrade.getAccId())
-                .empId(1L)
+                .registrantId(1L)
                 .branchId(1L)
                 .amount(statusWithTrade.getAmount()).build();
         AccountStatus accountStatus = AccountStatus.builder()
                 .id(statusWithTrade.getAccId())
                 .status(statusWithTrade.getStatus())
-                .modifier("김영진").build();
+                .modifierId("김영진").build();
 
         int tradeResult = accountCloseMapper.addCancelTrade(closeTrade);
         int statusResult = accountCloseMapper.updateStatus(accountStatus);
