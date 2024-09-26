@@ -84,7 +84,7 @@
 
                     <h5>고객정보</h5>
                     <hr>
-                    <table class="commonTable">
+                    <table class="common-table">
                         <thead>
                         <th><label>선택</label></th>
                         <th><label id="search-modal-customer-id">고객번호</label></th>

@@ -19,7 +19,7 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 
-<div id="mainArea">
+<div id="main-area">
     <div>
         <h5>예금 관리 > </h5>
         <h5>&nbsp 계좌 개설 </h5>
@@ -29,7 +29,7 @@
         <h3>계좌 개설 정보 입력</h3>
         <hr>
     </div>
-    <table class="commonTable">
+    <table class="common-table">
         <tr>
             <th>고객번호</th>
             <td style="display: flex; align-items: center;">
