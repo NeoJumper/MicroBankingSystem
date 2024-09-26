@@ -10,44 +10,44 @@
 </head>
 <body>
 <!-- Modal -->
-<div class="modal fade" id="accountSearchModal" tabindex="-1" aria-labelledby="accountSearchModalLabel"
+<div class="modal fade" id="search-modal-account" tabindex="-1" aria-labelledby="accountSearchModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="accountSearchModalLabel">계좌 검색</h1>
+                <h1 class="modal-title fs-5" id="search-modal-title">계좌 검색</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <h5>계좌정보 입력</h5>
                 <hr>
-                <div id="modal-input-box">
+                <div id="search-modal-input-box">
                     <label style="margin-right: 10px">계좌번호</label>
                     <input id="modal-input-account" type="text">
                 </div>
                 <hr>
-                <div id="modal-center-box">
-                    <button id="modal-check-account" class="update-btn" type="button">계좌 검색</button>
-                    <button id="modal-check-account-reset" class="reset-btn" type="button">초기화</button>
+                <div id="search-modal-center-box">
+                    <button id="modal-check-account-btn" class="update-btn" type="button">계좌 검색</button>
+                    <button id="modal-check-account-reset-btn" class="reset-btn" type="button">초기화</button>
                 </div>
 
                 <h5>계좌정보</h5>
                 <hr>
-                <table id="modal-common-table" class="commonTable">
+                <table id="search-modal-common-table" class="common-table">
                     <thead>
                         <th><label>선택</label></th>
-                        <th><label id="modal-account-id">계좌번호</label></th>
-                        <th><label id="modal-open-date">개설일</label></th>
-                        <th><label id="modal-customer-name">고객명</label></th>
-                        <th><label id="modal-product-name">상품 종류</label></th>
-                        <th><label id="modal-balance">현재 잔액</label></th>
+                        <th><label id="search-modal-account-id">계좌번호</label></th>
+                        <th><label id="search-modal-open-date">개설일</label></th>
+                        <th><label id="search-modal-customer-name">고객명</label></th>
+                        <th><label id="search-modal-product-name">상품 종류</label></th>
+                        <th><label id="search-modal-balance">현재 잔액</label></th>
                     </thead>
                     <tbody>
 
                     </tbody>
                 </table>
-                <div id="modal-select-button">
-                    <button id="modal-select-account" class="update-btn">계좌 선택</button>
+                <div id="search-modal-select-button">
+                    <button id="search-modal-select-account-btn" class="update-btn">계좌 선택</button>
                 </div>
             </div>
         </div>
