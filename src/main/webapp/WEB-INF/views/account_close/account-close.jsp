@@ -27,28 +27,28 @@
             <h3>계좌 해지 신청</h3>
             <div id="search-content">
                 <div><input placeholder="계좌번호 입력" id="search-bar"></div>
-                <button>검색</button>
+                <button id="check-withdrawal-account" class="update-btn" type="button" data-bs-toggle="modal" data-bs-target="#accountSearchModal">검색</button>
             </div>
             <h4 style="margin-top: 10px">계좌 정보</h4>
             <hr class="m-0 border border-dark border-2">
             <div class="d-flex">
                 <div class="col-3 text-center py-3" style="background-color: #F5F5F5">고객 이름</div>
                 <div class="col-6 d-flex align-items-center ms-5">
-                    <input id="input-customer-name" style="direction: rtl; display:block; width:100%" disabled="">
+                    <input id="withdrawal-customer-name" style="direction: rtl; display:block; width:100%" disabled="">
                 </div>
             </div>
             <hr class="m-0 border border-dark border-1">
             <div class="d-flex">
                 <div class="col-3 text-center py-3" style="background-color: #F5F5F5">계좌번호</div>
                 <div class="col-6 d-flex align-items-center ms-5">
-                    <input id="input-account-num" style="direction: rtl; display:block; width:100%" disabled="">
+                    <input id="withdrawal-account-number" style="direction: rtl; display:block; width:100%" disabled="">
                 </div>
             </div>
             <hr class="m-0 border border-dark border-1">
             <div class="d-flex">
                 <div class="col-3 text-center py-3" style="background-color: #F5F5F5">상품이름</div>
                 <div class="col-6 d-flex align-items-center ms-5">
-                    <input id="input-product-name" style="direction: rtl; display:block; width:100%" disabled="">
+                    <input id="withdrawal-product-name" style="direction: rtl; display:block; width:100%" disabled="">
                 </div>
             </div>
             <hr class="m-0 border border-dark border-2">

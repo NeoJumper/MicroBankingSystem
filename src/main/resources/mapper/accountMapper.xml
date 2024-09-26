@@ -37,16 +37,36 @@
         SELECT * FROM account
     </select>
 
-    <!-- Insert new account -->
-    <!--    <insert id="insertAccount" parameterType="AccountCreate">-->
-    <!--        INSERT INTO Account (-->
-    <!--            id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,-->
-    <!--            password, balance, open_date, status-->
-    <!--        ) VALUES (-->
-    <!--                     #{id}, #{branchId}, #{customerId}, #{productId}, #{registrantId}, #{startDate}, #{preferentialInterestRate},-->
-    <!--                     #{password}, #{balance}, sysdate, #{status}-->
-    <!--                 )-->
-    <!--    </insert>-->
+    <select id="findAccountProductInfo" resultMap="AccountProductInfoMap" >
+        select * from product
+        where id = 1
+    </select>
+
+    <select id="getAccountSeq" resultType="int">
+        SELECT account_seq.NEXTVAL
+        FROM dual
+    </select>
+
+    <insert id="openAccount" parameterType="AccountCreate">
+        INSERT INTO Account (
+                                id,
+                                branch_id,
+                                customer_id,
+                                product_id,
+                                registrant_id,
+                                start_date,
+                                preferential_interest_rate,
+                                password,
+                                balance,
+                                open_date,
+                                status
+        ) VALUES (
+                        #{id}, #{branchId}, #{customerId}, #{productId}, #{registrantId},
+                        SYSDATE, #{preferentialInterestRate},
+                        #{password}, #{balance}, SYSDATE, 'OPN'
+                 )
+    </insert>
+
 
     <select id="findAccount" resultMap="AccountModalResultMap">
         SELECT
