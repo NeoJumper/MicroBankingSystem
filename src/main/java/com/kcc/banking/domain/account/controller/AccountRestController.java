@@ -4,6 +4,7 @@ import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.AccountOfModal;
+import com.kcc.banking.domain.account.dto.response.AccountOpenResultOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
 import com.kcc.banking.domain.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -44,12 +45,16 @@ public class AccountRestController {
     @PostMapping("/account/open")
     public void openAccount(@RequestBody AccountCreate accountCreate) {
 
-
         System.out.println("accountCreate.getPreferentialInterestRate();"+accountCreate.getPreferentialInterestRate());
-
         accountService.openAccount(accountCreate);
     }
 
+    // 계좌 개설 완료 정보 함수
+//    @GetMapping("/account/open/result")
+//    public AccountOpenResultOfModal getAccountOpenResult(){
+//        System.out.println();
+//        return accountService;
+//    }
 
 
 }

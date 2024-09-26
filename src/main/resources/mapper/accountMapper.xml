@@ -97,4 +97,16 @@
         </where>
     </select>
 
+
+    <resultMap id="AccountOpenModalResultMap" type="AccountOpenResultOfModal">
+        <result property="accId" column="acc_id" />
+        <result property="openDate" column="open_date" />
+        <result property="customerName" column="customer_name" />
+        <result property="productName" column="product_name" />
+        <result property="balance" column="balance" />
+    </resultMap>
+
+    <select id="getAccountOpenResultOfModal" resultMap="AccountOpenModalResultMap">
+
+    </select>
 </mapper>
