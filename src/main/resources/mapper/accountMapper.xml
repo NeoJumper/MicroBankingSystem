@@ -9,7 +9,7 @@
         <result property="branchId" column="branch_id" />
         <result property="customerId" column="customer_id" />
         <result property="productId" column="product_id" />
-        <result property="empId" column="emp_id" />
+        <result property="registrantId" column="registrant_id" />
         <result property="startDate" column="start_date" />
         <result property="preferentialInterestRate" column="preferential_interest_rate" />
         <result property="expireDate" column="expire_date" />
@@ -21,14 +21,8 @@
         <result property="registrationDate" column="registration_date" />
         <result property="registrant" column="registrant" />
         <result property="modificationDate" column="modification_date" />
-        <result property="modifier" column="modifier" />
+        <result property="modifierId" column="modifier_id" />
         <result property="version" column="version" />
-    </resultMap>
-
-    <resultMap id="AccountProductInfoMap" type="AccountProductInfo">
-        <id property="id" column="id" />
-        <result property="name" column="name" />
-        <result property="interestRate" column="interest_rate" />
     </resultMap>
 
     <resultMap id="AccountModalResultMap" type="AccountOfModal">
@@ -59,7 +53,7 @@
                                 branch_id,
                                 customer_id,
                                 product_id,
-                                emp_id,
+                                registrant_id,
                                 start_date,
                                 preferential_interest_rate,
                                 password,
@@ -67,7 +61,7 @@
                                 open_date,
                                 status
         ) VALUES (
-                        #{id}, #{branchId}, #{customerId}, #{productId}, #{empId},
+                        #{id}, #{branchId}, #{customerId}, #{productId}, #{registrantId},
                         SYSDATE, #{preferentialInterestRate},
                         #{password}, #{balance}, SYSDATE, 'OPN'
                  )

@@ -11,12 +11,12 @@ import lombok.Setter;
 public class AccountStatus {
     private String id;
     private String status;
-    private String modifier;
+    private Long modifierId;
 
     @Builder
-    public AccountStatus(String id, String status, String modifier) {
+    public AccountStatus(String id, String status, Long modifierId) {
         this.id = id;
         this.status = status;
-        this.modifier = modifier;
+        this.modifierId = modifierId;
     }
 }

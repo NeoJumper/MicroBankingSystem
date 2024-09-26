@@ -48,8 +48,8 @@
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
             SELECT trade_seq.nextval FROM dual
         </selectKey>
-        INSERT INTO TRADE (id, acc_id, emp_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
-        VALUES (#{id}, #{accId}, #{empId}, #{branchId}, SYSTIMESTAMP, #{amount}, 0, 'CLOSE', 'NOR', 'TRUE', '계좌해지', 13)
+        INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+        VALUES (#{id}, #{accId}, #{registrantId}, #{branchId}, SYSTIMESTAMP, #{amount}, 0, 'CLOSE', 'NOR', 'TRUE', '계좌해지', 13)
     </insert>
 
     <update id="updateStatus" parameterType="AccountStatus">
@@ -59,7 +59,7 @@
             expire_date = SYSTIMESTAMP,
             balance = 0,
             modification_date = SYSTIMESTAMP,
-            modifier = #{modifier}
+            modifier_id = #{modifierId}
         WHERE
             id = #{id}
     </update>

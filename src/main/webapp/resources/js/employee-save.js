@@ -39,7 +39,7 @@ $(document).ready(function() {
                     button: "닫기",
                 });
 
-                $('#empIdOfDetailModal').val(response.id);
+                $('#registrantIdOfDetailModal').val(response.id);
                 $('#empPasswordOfDetailModal').val(response.password);
                 $('#empNameOfDetailModal').val(response.name);
                 $('#empBirthDateOfDetailModal').val(response.birthDate);

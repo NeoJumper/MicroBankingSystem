@@ -13,7 +13,7 @@ public class AccountDetail {
     private Long branchId;
     private Long customerId;
     private Long productId;
-    private Long empId;
+    private Long registrantId;
     private Timestamp startDate;
     private BigDecimal preferentialInterestRate;
     private Timestamp expireDate;
@@ -25,15 +25,15 @@ public class AccountDetail {
     private Timestamp registrationDate;
     private String registrant;
     private Timestamp modificationDate;
-    private String modifier;
+    private Long modifierId;
     private Long version;
 
-    public AccountDetail(String id, Long branchId, Long customerId, Long productId, Long empId, Timestamp startDate, BigDecimal preferentialInterestRate, Timestamp expireDate, String password, BigDecimal balance, Timestamp openDate, String status, String tradeNumber, Timestamp registrationDate, String registrant, Timestamp modificationDate, String modifier, Long version) {
+    public AccountDetail(String id, Long branchId, Long customerId, Long productId, Long registrantId, Timestamp startDate, BigDecimal preferentialInterestRate, Timestamp expireDate, String password, BigDecimal balance, Timestamp openDate, String status, String tradeNumber, Timestamp registrationDate, String registrant, Timestamp modificationDate, Long modifierId, Long version) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;
         this.productId = productId;
-        this.empId = empId;
+        this.registrantId = registrantId;
         this.startDate = startDate;
         this.preferentialInterestRate = preferentialInterestRate;
         this.expireDate = expireDate;
@@ -45,7 +45,7 @@ public class AccountDetail {
         this.registrationDate = registrationDate;
         this.registrant = registrant;
         this.modificationDate = modificationDate;
-        this.modifier = modifier;
+        this.modifierId = modifierId;
         this.version = version;
     }
 }
