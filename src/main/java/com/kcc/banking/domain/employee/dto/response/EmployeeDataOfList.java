@@ -15,18 +15,16 @@ public class EmployeeDataOfList {
     private Timestamp birthDate;
     private String phoneNumber;
     private String email;
-    private String branchName;
     private String roles;
 
 
     @Builder
-    public EmployeeDataOfList(int id, String name, Timestamp birthDate, String phoneNumber, String email, String branchName, String roles) {
+    public EmployeeDataOfList(int id, String name, Timestamp birthDate, String phoneNumber, String email, String roles) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.branchName = branchName;
         this.roles = roles;
     }
 }
