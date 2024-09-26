@@ -77,15 +77,6 @@ body {
   background: #cc0000;
 }
 
-.search-btn{
-  background: #F5F5F5;
-  color: #000000;
-  font-weight: bold;
-  font-size: 1.0rem;
-  padding: 6px 6px;
-  margin: 0 6px;
-  border: solid 1px;
-}
 
 .reset-btn{
   background: #6C757D;
@@ -101,7 +92,7 @@ body {
   background: #5a6268;
 }
 
-#customerIdSearchBtn {
+.search-btn {
   margin-left: 10px;
   padding: 10px 0;
   width:80px;
@@ -112,7 +103,7 @@ body {
 
 }
 
-#customerIdSearchBtn:hover {
+.search-btn:hover {
   background: #0069d9;
 
 }
