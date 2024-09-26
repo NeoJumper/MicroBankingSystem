@@ -1,5 +1,17 @@
 
 $(document).ready(function() {
+    accountType = "";
+
+    // 출금계좌 조회 버튼 클릭 시
+    $('#check-withdrawal-account-btn').click(function() {
+        accountType = $(this).data('account-type'); // "withdrawal" 저장
+    });
+
+    // 입금계좌 조회 버튼 클릭 시
+    $('#check-deposit-account-btn').click(function() {
+        accountType = $(this).data('account-type'); // "deposit" 저장
+    });
+
     // 임시 오늘 날짜 지정
     setNowDate();
 
@@ -7,7 +19,7 @@ $(document).ready(function() {
         setAmount(this);
     });
 
-    $('#modal-select-account').click(function() {
+    $('#search-modal-select-account-btn').click(function() {
         selectAccount();  // 선택된 계좌 처리 함수 호출
     });
 });
@@ -84,7 +96,7 @@ function selectAccount() {
             }
 
             // 모달 닫기
-            $('#accountSearchModal').modal('hide');
+            $('#search-modal-account').modal('hide');
         },
         error: function(error) {
             console.log("Error while fetching account details", error);
