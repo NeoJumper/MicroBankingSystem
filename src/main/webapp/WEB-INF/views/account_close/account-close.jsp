@@ -71,7 +71,7 @@
                     </tbody>
                 </table>
 
-                <div id="employee-add-list" style="overflow-y: auto; height: 53px;">
+                <div id="employee-add-list" style="height: 53px;">
                     <table id="table-content" class="table">
                         <tbody>
                         <tr>
@@ -99,7 +99,7 @@
             <hr class="m-0 border border-dark border-2">
 
             <div id="submit">
-                <input id="submitBtn" type="submit" value="해지 신청" disabled>
+                <input id="submit-btn" type="submit" value="해지 신청" disabled>
             </div>
         </div>
     </div>
