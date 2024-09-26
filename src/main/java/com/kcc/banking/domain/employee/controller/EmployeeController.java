@@ -25,7 +25,7 @@ public class EmployeeController {
 
     @GetMapping("/page/manager/employee-list")
     public String employeeListPage(Model model) {
-
+        model.addAttribute("employeeList",employeeService.getEmployeeList());
         return "employee-list";
     }
     @GetMapping("/page/manager/employee-list/{id}")
