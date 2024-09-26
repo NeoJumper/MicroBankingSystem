@@ -1,42 +1,34 @@
-#employeeSearchModal .modal-dialog {
-    min-width: 70%;
+#employee-search-modal .modal-dialog {
+    min-width: 65%;
 }
 
-#employeeSearchModal .modal-body {
-    padding: 5% 10%;
-}
-
-#employeeSearchModal .modal-body h5,
-#employeeSearchModal .modal-header h1 {
-    font-weight: bold;
-}
-
-#employeeSearchModal hr {
-    margin: 0;
-    border: 2px solid black;
-    margin-bottom: 30px;
-}
-
-#employeeSearchModal .modal-body #inputBox {
-    background-color: #F5F5F5;
-    padding: 10px;
-}
-
-#modalCenterBox {
+#search-modal-search-div {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 10px;
 }
 
-#employeeSearchModal .modal-body label {
-    font-weight: bold;
+#search-modal-select {
+    padding: 5px;
+    height : 46px !important;
 }
 
-
-#employeeSearchModal .modal-body table {
+#search-modal-input
+{
     width: 100%;
 }
 
-#employeeSearchModal .modal-body th {
-    text-align: center;
+#search-modal-select-btn {
+    flex: 0 1 auto;
+}
+
+#search-modal-select-btn button {
+    padding: 5px 10px;
+    height : 43px;
+    width : 50px;
+}
+.modal-body
+{
+    height: 500px;
 }

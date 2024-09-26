@@ -4,13 +4,20 @@ $(document).ready(function() {
 // 특정 파라미터 값 가져오기 (예: "id"라는 파라미터가 있을 때)
     const id = params.get('id');
 
+
+    $('#employee-search-btn').click(function()
+    {
+        var employeeSearchModal = new bootstrap.Modal(document.getElementById('employee-search-modal'));
+        employeeSearchModal.show();
+    });
+
     if(id)
     {
         $.ajax({
             type: 'GET',
             url: '/api/manager/employee/' + id,  // 서버의 URL로 변경
             success: function(response) {
-                $('#empName').val(response.id);
+                $('#empName').val(response.name);
                 $('#empBirthDate').val(response.birthDate.split(' ')[0]);
                 $('#empEmail').val(response.email);
                 $('#empPassword').val(response.password);
@@ -102,3 +109,5 @@ $(document).ready(function() {
         });
     });
 });
+
+

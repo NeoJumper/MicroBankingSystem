@@ -12,7 +12,7 @@
 <body>
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
-<div id="mainArea">
+<div id="main-area">
     <div>
         <h5>행원 관리 > </h5>
         <h5>&nbsp 행원 수정(${id}) </h5>
@@ -22,7 +22,7 @@
         <hr>
         <div class="d-flex align-items-center">
             <input style="width:30%;" type="text" id="customerIdText" placeholder="사원 번호를 입력하세요">
-            <button type="button" class="search-btn" style="display: flex; align-items: center; justify-content: center">
+            <button id="employee-search-btn" type="button" class="search-btn" style="display: flex; align-items: center; justify-content: center">
                 <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
             </button>
         </div>
@@ -33,7 +33,7 @@
         <h3>행원 정보</h3>
         <hr>
     </div>
-    <table class="commonTable">
+    <table class="common-table">
         <tr>
             <th>이름</th>
             <td><input type="text" id="empName"></td>

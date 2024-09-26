@@ -15,7 +15,7 @@
 <body>
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
-<div id="mainArea">
+<div id="main-area">
     <div>
         <h5>행원 관리 > </h5>
         <h5>&nbsp 행원 목록</h5>
