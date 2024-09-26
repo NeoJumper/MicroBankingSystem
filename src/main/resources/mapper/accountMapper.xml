@@ -33,6 +33,12 @@
         <result property="balance" column="balance" />
     </resultMap>
 
+    <resultMap id="AccountProductInfoMap" type="AccountProductInfo">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="interestRate" column="interest_rate" />
+    </resultMap>
+
     <select id="findAll" resultMap="AccountAllResultMap">
         SELECT * FROM account
     </select>
@@ -101,7 +107,7 @@
         <result property="startDate" column="start_date" />
         <result property="balance" column="balance" />
         <result property="branchName" column="branch_name" />
-        <result property="empId" column="emp_id" />
+        <result property="registerId" column="register_id" />
 
     </resultMap>
 
@@ -115,7 +121,7 @@
             a.start_date AS start_date,
             a.balance AS balance,
             b.name AS branch_name,
-            a.emp_id AS emp_id
+            a.register_id AS register_id
 
         FROM
             Account a

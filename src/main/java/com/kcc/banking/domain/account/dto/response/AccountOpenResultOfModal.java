@@ -19,9 +19,9 @@ public class AccountOpenResultOfModal {
     private Date startDate;
     private BigDecimal balance;
     private String branchName;
-    private String empId;
+    private String registerId;
 
-    public AccountOpenResultOfModal(String accId, String customerName, int customerId, String phoneNumber, String productName, Date startDate, BigDecimal balance, String branchName, String empId) {
+    public AccountOpenResultOfModal(String accId, String customerName, int customerId, String phoneNumber, String productName, Date startDate, BigDecimal balance, String branchName, String registerId) {
         this.accId = accId;
         this.customerName = customerName;
         this.customerId = customerId;
@@ -30,6 +30,6 @@ public class AccountOpenResultOfModal {
         this.startDate = startDate;
         this.balance = balance;
         this.branchName = branchName;
-        this.empId = empId;
+        this.registerId = registerId;
     }
 }

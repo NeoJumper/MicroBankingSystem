@@ -160,7 +160,7 @@
                     data: JSON.stringify({
                         branchId: branchId,
                         customerId: customerId,
-                        empId: empId,
+                        registerId: empId,
                         productId: productId,
                         preferentialInterestRate: preferentialInterestRate,
                         password: password,
