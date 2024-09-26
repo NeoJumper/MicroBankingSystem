@@ -6,6 +6,10 @@ $(document).ready(function() {
     $('.amount-btn').click(function() {
         setAmount(this);
     });
+
+    $('#modal-select-account').click(function() {
+        selectAccount();  // 선택된 계좌 처리 함수 호출
+    });
 });
 
 function setNowDate() {
@@ -37,4 +41,71 @@ function setAmount(button) {
 
     // 천 단위 콤마는 display input에 표시
     $('#transfer-amount-display').val(amount.toLocaleString('ko-KR') + ' 원');
+}
+
+// 선택한 계좌 처리 함수
+function selectAccount() {
+    var selectedRow = $('input[name="select-account"]:checked').closest('tr');  // 선택된 라디오 버튼이 속한 행을 가져옴
+    var selectedAccountId = selectedRow.find('td:eq(1)').text();  // 해당 행의 2번째 열(계좌번호 열)에서 값 추출
+
+    if (!selectedAccountId) {
+        alert("계좌를 선택해 주세요.");
+        return;
+    }
+
+    // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
+    $.ajax({
+        url: "/api/employee/account",
+        data: { accId: selectedAccountId, productName: null },
+        type: "GET",
+        success: function(data) {
+            if (accountType === "withdrawal") {
+                // 출금계좌 처리
+                $('#withdrawal-account-number').val(data[0].accId);
+                $('#withdrawal-product-name').val(data[0].productName);
+                $('#withdrawal-customer-name').val(data[0].customerName);
+                // 계좌 잔액 라벨을 표시하고 금액 업데이트
+                $('#account-balance-label').css('display', 'inline-block');
+                $('#account-balance').text(data[0].balance.toLocaleString('ko-KR'));
+                enableAmountButtons(data[0].balance); // 계좌 잔액을 넘겨줌
+            } else if (accountType === "deposit") {
+                // 입금계좌 처리
+                $('#deposit-account-number').val(data[0].accId);
+                $('#deposit-customer-name').val(data[0].customerName);
+                // *단일 계좌 검색
+            } else{
+                // 단일계좌 처리
+                $('#account-number').val(data[0].accId);
+                $('#product-name').val(data[0].productName);
+                $('#customer-name').val(data[0].customerName);
+                // 계좌 잔액 라벨을 표시하고 금액 업데이트
+                $('#balance-label').css('display', 'inline-block');
+                $('#account-balance').text(data[0].balance.toLocaleString('ko-KR'));
+            }
+
+            // 모달 닫기
+            $('#accountSearchModal').modal('hide');
+        },
+        error: function(error) {
+            console.log("Error while fetching account details", error);
+        }
+    });
+}
+
+// 출금 계좌가 불러와졌을 때 실행하는 함수
+function enableAmountButtons(balance) {
+    $('#transfer-amount').prop('disabled', false);
+    $('.amount-btn').each(function() {
+        var buttonText = $(this).text().replace(/[^0-9]/g, ''); // 숫자만 추출
+        var buttonAmount = parseInt(buttonText) * 10000;  // 버튼 금액 만 단위로 변환
+
+        if (buttonAmount > balance) {
+            $(this).prop('disabled', true);  // 잔액보다 큰 금액 버튼 비활성화
+        } else {
+            $(this).prop('disabled', false);  // 잔액 이하인 금액 버튼은 활성화
+        }
+    });
+
+    // 전액 버튼은 항상 활성화
+    $('.amount-btn:contains("전액")').prop('disabled', false);
 }

@@ -45,7 +45,7 @@ public class AccountService {
         int customerSeq = accountMapper.getAccountSeq();
         // branchId 설정
         accountCreate.setBranchId(1);
-        accountCreate.setEmpId(1);
+        accountCreate.setRegistrantId(1);
 
 
         int branchNumber = accountCreate.getBranchId();
@@ -59,8 +59,6 @@ public class AccountService {
         accountMapper.openAccount(accountCreate);
 
     }
-
-
 
     public List<AccountOfModal> getAccount(SearchAccountOfModal searchAccountOfModal) {
         return accountMapper.findAccount(searchAccountOfModal);

@@ -44,4 +44,37 @@ $(document).ready(function () {
     $('#submitBtn').click(function () {
         
     })
+
+    // *자신의 페이지에 맞게 구현
+    $('#modal-select-account').click(function() {
+        selectAccount();  // 선택된 계좌 처리 함수 호출
+    });
+
+
 });
+
+    function selectAccount() {
+    var selectedRow = $('input[name="select-account"]:checked').closest('tr');  // 선택된 라디오 버튼이 속한 행을 가져옴
+    var selectedAccountId = selectedRow.find('td:eq(1)').text();  // 해당 행의 2번째 열(계좌번호 열)에서 값 추출
+
+    if (!selectedAccountId) {
+        alert("계좌를 선택해 주세요.");
+        return;
+    }
+    // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
+    $.ajax({
+        url: "/api/employee/account",
+        data: { accId: selectedAccountId, productName: null },
+        type: "GET",
+        success: function(data) {
+            $('#account-number').val(data[0].accId);
+            $('#product-name').val(data[0].productName);
+            $('#customer-name').val(data[0].customerName);
+            // 모달 닫기
+            $('#accountSearchModal').modal('hide');
+        },
+        error: function(error) {
+            console.log("Error while fetching account details", error);
+        }
+    });
+}
