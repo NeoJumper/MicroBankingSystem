@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AccountCloseService {
@@ -33,15 +35,18 @@ public class AccountCloseService {
 
         int tradeResult = accountCloseMapper.addCancelTrade(closeTrade);
         int statusResult = accountCloseMapper.updateStatus(accountStatus);
-        if(tradeResult>0 && statusResult>0) {
+        if (tradeResult > 0 && statusResult > 0) {
             return "SUCCESS";
         }
         return null;
     }
 
     public CloseAccountTotal findCloseAccountTotal(String accountId) {
-        InterestSum interestSum = accountCloseMapper.findInterestSum(accountId);
-        CloseAccount closeAccount = accountCloseMapper.findCloseAccount(accountId);
+        Optional<InterestSum> optInterestSum = Optional.ofNullable(accountCloseMapper.findInterestSum(accountId));
+        InterestSum interestSum = optInterestSum.orElse(new InterestSum());
+
+        Optional<CloseAccount> optCloseAccount = Optional.ofNullable(accountCloseMapper.findCloseAccount(accountId));
+        CloseAccount closeAccount = optCloseAccount.orElse(new CloseAccount());
 
         CloseAccountTotal cat = CloseAccountTotal.builder()
                 .accountId(closeAccount.getAccountId())

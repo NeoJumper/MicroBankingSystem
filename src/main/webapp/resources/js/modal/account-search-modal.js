@@ -86,11 +86,15 @@ function selectAccount() {
         data: { accId: selectedAccountId, productName: null },
         type: "GET",
         success: function(data) {
+            $('#account-number').val(data[0].accId);
+            $('#product-name').val(data[0].productName);
+            $('#customer-name').val(data[0].customerName);
+
             if (accountType === "withdrawal") {
                 // 출금계좌 처리
-                $('#withdrawal-account-number').val(data[0].accId);
-                $('#withdrawal-product-name').val(data[0].productName);
-                $('#withdrawal-customer-name').val(data[0].customerName);
+                // $('#withdrawal-account-number').val(data[0].accId);
+                // $('#withdrawal-product-name').val(data[0].productName);
+                // $('#withdrawal-customer-name').val(data[0].customerName);
                 // 계좌 잔액 라벨을 표시하고 금액 업데이트
                 $('#account-balance-label').css('display', 'inline-block');
                 $('#account-balance').text(data[0].balance.toLocaleString('ko-KR'));
