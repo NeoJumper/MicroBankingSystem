@@ -22,7 +22,7 @@ body {
   font-size: 1.2rem;
 }
 
-#mainArea {
+#main-area {
   width: 100%;
   max-width: 95%;
   font-family: 'Pretendard-Regular', sans-serif;
@@ -32,20 +32,20 @@ body {
   transition: padding-left 0.3s ease-in-out; /* 패딩 애니메이션 추가 */
 }
 
-#mainArea > div:first-child{
+#main-area > div:first-child{
   display: flex;
   align-items: center;
   margin-bottom: 30px;
 }
-#mainArea > div:first-child h5 {
+#main-area > div:first-child h5 {
   color: rgb(100, 100, 100);
   margin-bottom: 0;
 }
 
-#mainArea > div:first-child h5:last-child {
+#main-area > div:first-child h5:last-child {
   font-weight: bold;
 }
-#mainArea > div > h3 {
+#main-area > div > h3 {
   color: initial; /* 마지막 h3는 기본 스타일로 설정 */
   font-weight: bold;
 }

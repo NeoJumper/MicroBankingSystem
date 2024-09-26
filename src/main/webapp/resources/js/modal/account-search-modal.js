@@ -1,32 +1,21 @@
 
 $(document).ready(function() {
-    accountType = "";
 
-    // 출금계좌 조회 버튼 클릭 시
-    $('#check-withdrawal-account').click(function() {
-        accountType = $(this).data('account-type'); // "withdrawal" 저장
-    });
-
-    // 입금계좌 조회 버튼 클릭 시
-    $('#check-deposit-account').click(function() {
-        accountType = $(this).data('account-type'); // "deposit" 저장
-    });
-
-    $('#modal-check-account').click(function() {
+    $('#modal-check-account-btn').click(function() {
         checkAccount();  // 계좌 조회 함수 호출
     });
 
-    $('#modal-check-account-reset').click(function() {
+    $('#modal-check-account-reset-btn').click(function() {
         resetAccountInput();  // 입력 및 테이블 초기화 함수 호출
     });
 
     // 모달이 닫힐 때 테이블 초기화
-    $('#accountSearchModal').on('hide.bs.modal', function() {
+    $('#search-modal-account').on('hide.bs.modal', function() {
         resetAccountInput();  // 입력 및 테이블 초기화 함수 호출
     });
 
     // *자신의 페이지에 맞게 구현
-    // $('#modal-select-account').click(function() {
+    // $('#search-modal-select-account').click(function() {
     //     selectAccount();  // 선택된 계좌 처리 함수 호출
     // });
 
@@ -41,7 +30,7 @@ function checkAccount() {
         data: { accId: accountId, productName: null },
         type: "GET",
         success: function(data) {
-            var accountTableBody = $("#modal-common-table tbody");
+            var accountTableBody = $("#search-modal-common-table tbody");
             accountTableBody.empty();
 
             $.each(data, function(index, account) {
@@ -67,7 +56,7 @@ function checkAccount() {
 // 입력 및 테이블 초기화 함수
 function resetAccountInput() {
     $('#modal-input-account').val('');
-    var accountTableBody = $("#modal-common-table tbody");
+    var accountTableBody = $("#search-modal-common-table tbody");
     accountTableBody.empty();
 }
 

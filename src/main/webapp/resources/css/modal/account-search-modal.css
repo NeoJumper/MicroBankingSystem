@@ -1,27 +1,27 @@
-#accountSearchModal .modal-dialog {
+#search-modal-account .modal-dialog {
     min-width: 60%;
 }
 
-#accountSearchModal .modal-body {
+#search-modal-account .modal-body {
     padding: 5%;
 }
 
-#accountSearchModal .modal-body h5,
-#accountSearchModal .modal-header h1 {
+#search-modal-account .modal-body h5,
+#search-modal-account .modal-header h1 {
     font-weight: bold;
 }
 
-#accountSearchModal hr {
+#search-modal-account hr {
     margin: 0;
     border: 2px solid black;
 }
 
-#accountSearchModal .modal-body #modal-input-box {
+#search-modal-account .modal-body #search-modal-input-box {
     background-color: #F5F5F5;
     padding: 10px;
 }
 
-#modal-center-box {
+#search-modal-center-box {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,29 +29,29 @@
     gap: 10px;
 }
 
-#modal-common-table td {
+#search-modal-common-table td {
     text-align: center;
 }
 
-#accountSearchModal .modal-body label {
+#search-modal-account .modal-body label {
     font-weight: bold;
 }
 
 
-#accountSearchModal .modal-body table {
+#search-modal-account .modal-body table {
     width: 100%;
 }
 
-#accountSearchModal .modal-body th {
+#search-modal-account .modal-body th {
     text-align: left;
     padding: 8px;
 }
 
-#accountSearchModal .modal-body th {
+#search-modal-account .modal-body th {
     text-align: center;
 }
 
-#modal-select-button {
+#search-modal-select-button {
     display: flex;
     justify-content: right;
     align-items: center;
