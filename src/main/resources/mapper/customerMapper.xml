@@ -19,8 +19,8 @@
             <if test="customerName != null and customerName != ''">
                 name LIKE '%' || #{customerName} || '%'
             </if>
-            <if test="customerNumber != null and customerNumber != ''">
-                AND id = #{customerNumber}
+            <if test="customerId != null and customerId != ''">
+                AND id = #{customerId}
             </if>
             <if test="customerPhone != null and customerPhone != ''">
                 AND phone_number LIKE '%' || #{customerPhone} || '%'

@@ -17,13 +17,13 @@ public class CustomerRestController {
     private final CustomerService customerService;
 
     @GetMapping("/api/employee/customer")
-    public List<CustomerSearchInfo> searchCustomers(@RequestParam(required = false) String customerName,
-                                                    @RequestParam(required = false) String customerNumber,
+    public List<CustomerSearchInfo> searchCustomers(@RequestParam(required = false) String customerId,
+                                                    @RequestParam(required = false) String customerName,
                                                     @RequestParam(required = false) String customerPhone) {
 
         CustomerSearchDTO searchDTO = new CustomerSearchDTO();
         searchDTO.setCustomerName(customerName);
-        searchDTO.setCustomerNumber(customerNumber);
+        searchDTO.setCustomerId( customerId);
         searchDTO.setCustomerPhone(customerPhone);
 
         // 고객 정보 검색
