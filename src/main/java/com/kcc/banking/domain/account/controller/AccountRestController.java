@@ -9,6 +9,7 @@ import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
 import com.kcc.banking.domain.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,7 @@ public class AccountRestController {
     }
 
     // 계좌 개설하기
+    @Transactional
     @PostMapping("/account/open")
     public String openAccount(@RequestBody AccountCreate accountCreate) {
 
@@ -49,7 +51,6 @@ public class AccountRestController {
         accountService.openAccount(accountCreate);
         System.out.println(accountCreate.getId()+"accountCreate>>>>>>>>>>>>> getId();");
         return accountCreate.getId();
-
     }
 
     // 계좌 개설 완료 정보 함수
