@@ -25,7 +25,7 @@
                 <table class="commonTable">
                     <tr>
                         <th>사원번호</th>
-                        <td><input type="text" id="empIdOfDetailModal" disabled></td>
+                        <td><input type="text" id="registrantIdOfDetailModal" disabled></td>
                         <th>비밀번호</th>
                         <td><input type="password" id="empPasswordOfDetailModal" disabled></td>
                     </tr>

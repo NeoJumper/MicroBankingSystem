@@ -18,7 +18,7 @@ public class AccountCreate {
     private int branchId;
     private int customerId;
     private int productId;
-    private int empId;
+    private int registrantId;
     private Date startDate;
     private Date expireDate;
     private float preferentialInterestRate;
@@ -32,12 +32,12 @@ public class AccountCreate {
 
 
     @Builder
-    public AccountCreate(int id, int branchId, int customerId, int productId, int empId, Date startDate, Date expireDate, float preferentialInterestRate, String password, int balance, Date openDate, String status, String tradeNumber) {
+    public AccountCreate(int id, int branchId, int customerId, int productId, int registrantId, Date startDate, Date expireDate, float preferentialInterestRate, String password, int balance, Date openDate, String status, String tradeNumber) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;
         this.productId = productId;
-        this.empId = empId;
+        this.registrantId = registrantId;
         this.startDate = startDate;
         this.expireDate = expireDate;
         this.preferentialInterestRate = preferentialInterestRate;

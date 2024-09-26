@@ -9,7 +9,7 @@
         <result property="branchId" column="branch_id" />
         <result property="customerId" column="customer_id" />
         <result property="productId" column="product_id" />
-        <result property="empId" column="emp_id" />
+        <result property="registrantId" column="registrant_id" />
         <result property="startDate" column="start_date" />
         <result property="preferentialInterestRate" column="preferential_interest_rate" />
         <result property="expireDate" column="expire_date" />
@@ -21,7 +21,7 @@
         <result property="registrationDate" column="registration_date" />
         <result property="registrant" column="registrant" />
         <result property="modificationDate" column="modification_date" />
-        <result property="modifier" column="modifier" />
+        <result property="modifierId" column="modifier_id" />
         <result property="version" column="version" />
     </resultMap>
 
@@ -40,10 +40,10 @@
     <!-- Insert new account -->
     <!--    <insert id="insertAccount" parameterType="AccountCreate">-->
     <!--        INSERT INTO Account (-->
-    <!--            id, branch_id, customer_id, product_id, emp_id, start_date, preferential_interest_rate,-->
+    <!--            id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,-->
     <!--            password, balance, open_date, status-->
     <!--        ) VALUES (-->
-    <!--                     #{id}, #{branchId}, #{customerId}, #{productId}, #{empId}, #{startDate}, #{preferentialInterestRate},-->
+    <!--                     #{id}, #{branchId}, #{customerId}, #{productId}, #{registrantId}, #{startDate}, #{preferentialInterestRate},-->
     <!--                     #{password}, #{balance}, sysdate, #{status}-->
     <!--                 )-->
     <!--    </insert>-->
