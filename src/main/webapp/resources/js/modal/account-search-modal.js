@@ -99,6 +99,15 @@ function selectAccount() {
                 // 입금계좌 처리
                 $('#deposit-account-number').val(data[0].accId);
                 $('#deposit-customer-name').val(data[0].customerName);
+                // *단일 계좌 검색
+            } else{
+                // 단일계좌 처리
+                $('#account-number').val(data[0].accId);
+                $('#product-name').val(data[0].productName);
+                $('#customer-name').val(data[0].customerName);
+                // 계좌 잔액 라벨을 표시하고 금액 업데이트
+                $('#balance-label').css('display', 'inline-block');
+                $('#account-balance').text(data[0].balance.toLocaleString('ko-KR'));
             }
 
             // 모달 닫기
