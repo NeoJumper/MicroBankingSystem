@@ -60,8 +60,6 @@ public class AccountService {
 
     }
 
-
-
     public List<AccountOfModal> getAccount(SearchAccountOfModal searchAccountOfModal) {
         return accountMapper.findAccount(searchAccountOfModal);
     }

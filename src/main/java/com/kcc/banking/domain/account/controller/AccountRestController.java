@@ -43,17 +43,19 @@ public class AccountRestController {
 
     // 계좌 개설하기
     @PostMapping("/account/open")
-    public void openAccount(@RequestBody AccountCreate accountCreate) {
+    public String openAccount(@RequestBody AccountCreate accountCreate) {
 
         System.out.println("accountCreate.getPreferentialInterestRate();"+accountCreate.getPreferentialInterestRate());
         accountService.openAccount(accountCreate);
+        System.out.println(accountCreate.getId()+"accountCreate>>>>>>>>>>>>> getId();");
+        return accountCreate.getId();
+
     }
 
     // 계좌 개설 완료 정보 함수
-//    @GetMapping("/account/open/result")
-//    public AccountOpenResultOfModal getAccountOpenResult(){
+//    @GetMapping("/account/open/result/{accountNumber}")
+//    public AccountOpenResultOfModal getAccountOpenResult(@PathVariable String accId){
 //        System.out.println();
-//        return accountService;
 //    }
 
 

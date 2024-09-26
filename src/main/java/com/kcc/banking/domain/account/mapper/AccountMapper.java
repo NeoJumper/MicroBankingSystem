@@ -24,5 +24,5 @@ public interface AccountMapper {
     int getAccountSeq();
 
     // 계좌 개설완료 정보 호출
-    AccountOpenResultOfModal getAccountOpenResultOfModal();
+    AccountOpenResultOfModal getAccountOpenResultOfModal(String accId);
 }
