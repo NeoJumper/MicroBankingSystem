@@ -1,16 +1,5 @@
 
 $(document).ready(function() {
-    accountType = "";
-
-    // 출금계좌 조회 버튼 클릭 시
-    $('#check-withdrawal-account').click(function() {
-        accountType = $(this).data('account-type'); // "withdrawal" 저장
-    });
-
-    // 입금계좌 조회 버튼 클릭 시
-    $('#check-deposit-account').click(function() {
-        accountType = $(this).data('account-type'); // "deposit" 저장
-    });
 
     $('#modal-check-account').click(function() {
         checkAccount();  // 계좌 조회 함수 호출
