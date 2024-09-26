@@ -8,8 +8,8 @@
 
     <title>계좌 해지 신청</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/page/account-close.css"/>
-
 </head>
 
 <body>
@@ -27,28 +27,30 @@
             <h3>계좌 해지 신청</h3>
             <div id="search-content">
                 <div><input placeholder="계좌번호 입력" id="search-bar"></div>
-                <button id="check-withdrawal-account" class="update-btn" type="button" data-bs-toggle="modal" data-bs-target="#accountSearchModal">검색</button>
+                <button id="check-withdrawal-account" class="button" type="button" data-bs-toggle="modal"
+                        data-bs-target="#accountSearchModal">검색
+                </button>
             </div>
             <h4 style="margin-top: 10px">계좌 정보</h4>
             <hr class="m-0 border border-dark border-2">
             <div class="d-flex">
                 <div class="col-3 text-center py-3" style="background-color: #F5F5F5">고객 이름</div>
                 <div class="col-6 d-flex align-items-center ms-5">
-                    <input id="withdrawal-customer-name" style="direction: rtl; display:block; width:100%" disabled="">
+                    <input id="customer-name" style="direction: rtl; display:block; width:100%" disabled="">
                 </div>
             </div>
             <hr class="m-0 border border-dark border-1">
             <div class="d-flex">
                 <div class="col-3 text-center py-3" style="background-color: #F5F5F5">계좌번호</div>
                 <div class="col-6 d-flex align-items-center ms-5">
-                    <input id="withdrawal-account-number" style="direction: rtl; display:block; width:100%" disabled="">
+                    <input id="account-number" style="direction: rtl; display:block; width:100%" disabled="">
                 </div>
             </div>
             <hr class="m-0 border border-dark border-1">
             <div class="d-flex">
                 <div class="col-3 text-center py-3" style="background-color: #F5F5F5">상품이름</div>
                 <div class="col-6 d-flex align-items-center ms-5">
-                    <input id="withdrawal-product-name" style="direction: rtl; display:block; width:100%" disabled="">
+                    <input id="product-name" style="direction: rtl; display:block; width:100%" disabled="">
                 </div>
             </div>
             <hr class="m-0 border border-dark border-2">
@@ -70,7 +72,7 @@
                 </table>
 
                 <div id="employee-add-list" style="overflow-y: auto; height: 53px;">
-                    <table class="table">
+                    <table id="table-content" class="table">
                         <tbody>
                         <tr>
                             <td style="width: 5%;">600일</td>
@@ -97,13 +99,14 @@
             <hr class="m-0 border border-dark border-2">
 
             <div id="submit">
-                <input type="submit" value="해지 신청">
+                <input id="submitBtn" type="submit" value="해지 신청" disabled>
             </div>
         </div>
     </div>
 
 </div>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
+<script src="/resources/js/page/account-close.js"></script>
 <script src="/resources/js/page/account-transfer.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>
