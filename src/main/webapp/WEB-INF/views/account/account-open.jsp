@@ -217,7 +217,7 @@
             accoutOpenProductInfo();
 
 
-            $("#customerIdSearchBtn").on("click", function () {
+            $(".search-btn").on("click", function () {
 
                 customerSearchModalPopup();
                 customerSearchModalEvent();
@@ -259,7 +259,7 @@
             <th>고객번호</th>
             <td style="display: flex; align-items: center;">
                 <input type="text" id="customerIdText" readonly >
-                <button type="button" id="customerIdSearchBtn" class="btn btn-primary" style="margin-left: 10px; padding: 5px; width:80px;height:40px">
+                <button type="button" class="search-btn" style="margin-left: 10px; padding: 5px; width:80px;height:40px">
                     <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
                 </button>
             </td>
