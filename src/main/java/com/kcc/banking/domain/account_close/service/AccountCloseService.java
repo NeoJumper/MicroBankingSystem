@@ -29,7 +29,8 @@ public class AccountCloseService {
         AccountStatus accountStatus = AccountStatus.builder()
                 .id(statusWithTrade.getAccId())
                 .status(statusWithTrade.getStatus())
-                .modifierId("김영진").build();
+                .modifierId(1L).build();
+        // 임시 modifierId
 
         int tradeResult = accountCloseMapper.addCancelTrade(closeTrade);
         int statusResult = accountCloseMapper.updateStatus(accountStatus);
