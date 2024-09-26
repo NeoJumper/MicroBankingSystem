@@ -12,4 +12,23 @@
         VALUES (#{id}, #{branchId}, #{name},  #{phoneNumber}, #{email},#{birthDate}, #{password}, #{roles})
     </insert>
 
+
+    <select id="findAll" >
+        select e.id as "id", e.name as "name", e.birth_date, e.phone_number ,e.email, roles
+        from employee e
+    </select>
+
+    <select id="findBySearchOption" parameterType="EmployeeSearch">
+        select e.id as "id", e.name as "name", e.birth_date, e.phone_number ,e.email, roles
+        from employee e
+        <where>
+            <if test="searchOption != null and !searchOption.equals('')">
+                ${searchOption} LIKE '%' || #{searchValue} || '%'
+            </if>
+        </where>
+    </select>
+
+
+
+
 </mapper>

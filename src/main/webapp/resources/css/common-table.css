@@ -1,9 +1,9 @@
-#pageTitle {
+#page-title {
     font-weight: bold;
     color: #5F5F5F;
 }
 
-.commonTable {
+.common-table {
     margin-bottom: 30px;
     width: 100%;
     max-width: 100%;
@@ -11,14 +11,14 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.commonTable th, .commonTable td {
+.common-table th, .common-table td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
     font-size: 1.0rem;
 }
 
-.commonTable th {
+.common-table th {
     background-color: #F5F5F5;
     color: #5F5F5F;
 }
@@ -27,7 +27,7 @@
     background-color: #F5F5F5;
 }
 
-.commonTable select, input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+.common-table select, input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
     width: 90%;
     padding: 8px;
     border: 1px solid #ccc;
@@ -35,7 +35,7 @@
 }
 
 /* 마지막 행 아래에 테두리 제거 */
-.commonTable tr:last-child td, .commonTable tr:last-child th {
+.common-table tr:last-child td, .common-table tr:last-child th {
     border-bottom: none;
 }
 

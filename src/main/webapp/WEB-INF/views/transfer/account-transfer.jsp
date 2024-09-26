@@ -16,7 +16,7 @@
 <body>
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
-<div id="mainArea">
+<div id="main-area">
         <div>
             <h5>계좌관리 > </h5>
             <h5>&nbsp;계좌이체 > </h5>
@@ -27,11 +27,11 @@
             <h3>출금계좌정보</h3>
             <hr>
         </div>
-        <table class="commonTable">
+        <table class="common-table">
             <tr>
                 <th><label for="withdrawal-account-number">출금계좌번호</label></th>
                 <td><input disabled type="text" id="withdrawal-account-number">
-                    <button id="check-withdrawal-account" class="update-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#accountSearchModal">계좌조회</button>
+                    <button id="check-withdrawal-account-btn" class="update-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
                 </td>
             </tr>
             <tr>
@@ -72,12 +72,12 @@
             <h3 class="mt-3">입금계좌정보</h3>
             <hr>
         </div>
-        <table class="commonTable">
+        <table class="common-table">
             <tbody>
             <tr>
                 <th><label for="deposit-account-number">입금계좌번호</label></th>
                 <td class="inputWithBtn"><input disabled type="text" id="deposit-account-number">
-                    <button id="check-deposit-account" class="update-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#accountSearchModal">계좌조회</button>
+                    <button id="check-deposit-account-btn" class="update-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
                 </td>
             </tr>
             <tr>
@@ -90,7 +90,7 @@
             <h3 class="mt-3">출금계좌 비밀번호</h3>
             <hr>
         </div>
-        <table class="commonTable">
+        <table class="common-table">
             <tbody>
             <tr>
                 <th><label>출금계좌 비밀번호</label></th>
