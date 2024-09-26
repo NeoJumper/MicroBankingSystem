@@ -34,7 +34,7 @@ public class EmployeeController {
         return "employee-detail";
     }
     @GetMapping("/page/manager/employee-update")
-    public String employeeUpdatePage(@RequestParam(value = "id") long id, Model model) {
+    public String employeeUpdatePage(@RequestParam(value = "id", required = false) Long id, Model model) {
         model.addAttribute("id", id);
         return "employee-update";
     }

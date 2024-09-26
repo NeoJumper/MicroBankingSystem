@@ -50,6 +50,7 @@
             <th>지점명</th>
             <td>
                 <select id="empBranchId">
+                    <option disabled selected>지점 선택</option>
                     <option value="1">강남점</option>
                     <option value="2">은평점</option>
                     <option value="3">서초점</option>
@@ -64,6 +65,7 @@
             <th>직급</th>
             <td>
                 <select id="empRoles">
+                    <option disabled selected>직급 선택</option>
                     <option value="EMPLOYEE">행원</option>
                     <option value="MANAGER">매니저</option>
                 </select>
@@ -72,12 +74,14 @@
         </tr>
     </table>
     <div class="d-flex justify-content-end mt-4 mb-4">
-        <button class="update-btn" id="empSaveBtn">수정사항 저장</button>
+        <button class="update-btn" id="empUpdateBtn">수정사항 저장</button>
     </div>
 
 </div>
 
+<%@ include file="/resources/components/modal/employee-detail-modal.jsp" %>
 <%@ include file="/resources/components/modal/employee-search-modal.jsp" %>
+<script src="/resources/js/employee-update.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>
 </html>
