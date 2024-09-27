@@ -1,23 +1,23 @@
-#employeeDetailModal .modal-dialog {
+#employee-detail-modal .modal-dialog {
     min-width: 65%;
 }
 
-#employeeDetailModal .modal-body {
+#employee-detail-modal .modal-body {
     padding: 5% 5%;
 }
 
-#employeeDetailModal .modal-body h5,
-#employeeDetailModal .modal-header h1 {
+#employee-detail-modal .modal-body h5,
+#employee-detail-modal .modal-header h1 {
     font-weight: bold;
 }
 
-#employeeDetailModal hr {
+#employee-detail-modal hr {
     margin: 0;
     border: 2px solid black;
     margin-bottom: 30px;
 }
 
-#employeeDetailModal .modal-body #inputBox {
+#employee-detail-modal .modal-body {
     background-color: #F5F5F5;
     padding: 10px;
 }
@@ -28,15 +28,15 @@
     justify-content: center;
 }
 
-#employeeDetailModal .modal-body label {
+#employee-detail-modal .modal-body label {
     font-weight: bold;
 }
 
 
-#employeeDetailModal .modal-body table {
+#employee-detail-modal .modal-body table {
     width: 100%;
 }
 
-#employeeDetailModal .modal-body th {
+#employee-detail-modal .modal-body th {
     text-align: center;
 }

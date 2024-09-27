@@ -14,7 +14,7 @@ function registerEnterEventOfEmpSearchInput() {
         if (event.which === 13) {  // Enter 키를 감지
             let searchOption = $('#emp-search-option').val();
             let searchValue = $('#emp-search-value').val();
-            searchEmployeeData(searchOption, searchValue);  // 선택된 검색 옵션과 입력된 검색어로 DB조회
+            searchEmployee(searchOption, searchValue);  // 선택된 검색 옵션과 입력된 검색어로 DB조회
         }
     });
 }
@@ -23,7 +23,7 @@ function registerEnterEventOfEmpSearchInput() {
  * 기능 함수 목록
  */
 
-function searchEmployeeData(searchOption, searchValue){
+function searchEmployee(searchOption, searchValue){
     // Ajax 요청
     $.ajax({
         url: '/api/manager/employee',
