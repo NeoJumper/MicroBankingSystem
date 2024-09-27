@@ -10,6 +10,9 @@ $(document).ready(function() {
     // 입금계좌 조회 버튼 클릭 시
     $('#check-deposit-account-btn').click(function() {
         accountType = $(this).data('account-type'); // "deposit" 저장
+
+
+
     });
 
     // 임시 오늘 날짜 지정
@@ -22,7 +25,33 @@ $(document).ready(function() {
     $('#search-modal-select-account-btn').click(function() {
         selectAccount();  // 선택된 계좌 처리 함수 호출
     });
+
+    // 모달 내 계좌 검색 버튼 클릭 시 검색 처리 후 중복 계좌 비활성화
+    $(document).on('ajaxSuccess', function(event, xhr, settings) {
+        if (settings.url.includes("/api/employee/account")) {
+            disableDuplicateAccounts();  // AJAX 성공 후 중복 계좌 처리 함수 호출
+        }
+    });
 });
+
+
+// 중복 계좌를 비활성화하는 함수
+function disableDuplicateAccounts() {
+    var withdrawalAccountId = $('#withdrawal-account-number').val();  // 출금 계좌 번호 가져오기
+
+    if (withdrawalAccountId) {
+        // 모달에 있는 모든 라디오 버튼을 순회하면서 출금 계좌와 동일한 계좌를 비활성화
+        $('#search-modal-common-table tbody tr').each(function() {
+            var accountId = $(this).find('td:eq(1)').text();  // 각 계좌의 계좌 번호 추출
+
+            if (accountId === withdrawalAccountId) {
+                // 동일한 계좌일 경우 라디오 버튼 비활성화
+                $(this).find('input[name="select-account"]').prop('disabled', true);
+            }
+        });
+    }
+}
+
 
 function setNowDate() {
     // 오늘 날짜를 구하는 함수
@@ -84,15 +113,6 @@ function selectAccount() {
                 // 입금계좌 처리
                 $('#deposit-account-number').val(data[0].accId);
                 $('#deposit-customer-name').val(data[0].customerName);
-                // *단일 계좌 검색
-            } else{
-                // 단일계좌 처리
-                $('#account-number').val(data[0].accId);
-                $('#product-name').val(data[0].productName);
-                $('#customer-name').val(data[0].customerName);
-                // 계좌 잔액 라벨을 표시하고 금액 업데이트
-                $('#balance-label').css('display', 'inline-block');
-                $('#account-balance').text(data[0].balance.toLocaleString('ko-KR'));
             }
 
             // 모달 닫기
