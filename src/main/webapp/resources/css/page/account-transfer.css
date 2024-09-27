@@ -39,3 +39,18 @@ body, input, button {
     font-weight: bold;
     color: #007bff;
 }
+
+#over-account-balance {
+    font-weight: bold;
+    color: #FF0000;
+}
+
+.amount-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+.amount-btn.active:hover {
+    background: #0069d9;
+
+}

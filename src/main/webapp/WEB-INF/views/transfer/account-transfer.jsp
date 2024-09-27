@@ -45,9 +45,10 @@
             <tr>
                 <th><label for="transfer-amount">이체금액</label></th>
                 <td>
-                    <input disabled type="text" id="transfer-amount">
+                    <div><span id="over-account-balance"></span></div>
+                    <input disabled type="text" id="transfer-amount"> 원
                     <label id="account-balance-label" style="display: none">
-                    계좌 잔액: <span id="account-balance"></span> 원
+                        | 계좌 잔액: <span id="account-balance"></span> 원
                 </label>
                     <div class="button-group">
                         <button type="button" class="amount-btn" disabled>100만</button>
