@@ -82,8 +82,10 @@ function closeAccount() {
             contentType: 'application/json', // JSON 형식으로 전송
             data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "CLS"}), // JSON으로 변환하여 전송
             success: function (response) {
-                console.log('성공:', response);
-                // 추가적인 성공 처리 로직
+                alert('성공:', response);
+                // TODO:: 상세 모달창 열어주기
+                // 성공하면 계좌의 해지조회 값을 비워 줌.
+                accountData = {};
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('오류 발생:', textStatus, errorThrown);
