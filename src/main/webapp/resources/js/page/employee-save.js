@@ -50,7 +50,7 @@ function createEmployee(employeeCreateData){
             });
 
             resetEmpDataOfCreateForm();
-            fillEmpDataOfDetailModal(createdEmployee)
+            fillEmpDataOfDetailModal(createdEmployee);
 
             var employeeDetailModal = new bootstrap.Modal(document.getElementById('employee-detail-modal'));
             employeeDetailModal.show();
