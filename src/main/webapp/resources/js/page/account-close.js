@@ -1,7 +1,8 @@
 let accountData = {};
 
 $(document).ready(function () {
-    $('#accountSearchModal').on('hidden.bs.modal', function () {
+    $('#search-modal-account').on('hidden.bs.modal', function () {
+
         var accountNumber = $('#account-number').val();
 
         if (accountNumber) {
@@ -46,10 +47,9 @@ $(document).ready(function () {
         }
     });
 
-    // *자신의 페이지에 맞게 구현
-    $('#modal-select-account').click(function () {
-        selectAccount();  // 선택된 계좌 처리 함수 호출
-    });
+    $('#search-modal-select-account-btn').click(function () {
+        selectAccount();
+    })
 
     $('#submit-btn').click(function () {
         closeAccount();
@@ -60,24 +60,27 @@ $(document).ready(function () {
     })
 });
 
-function checkAccountId (){
+function checkAccountId() {
     const inputId = $('#account-pw').val();
-    if(!inputId){alert("비밀번호를 입력하세요."); return;}
-    if(accountData.customerId == inputId){
-        $('#submit-btn').prop('disabled', false); // disabled 속성 제거
+    if (!inputId) {
+        alert("비밀번호를 입력하세요.");
+        return;
+    }
+    if (accountData.customerId == inputId) {
+        $('#submit-btn').prop('disabled', false);
     }
 }
 
 function closeAccount() {
     var accountNumber = $('#account-number').val();
-    var totalAmount  = Number(accountData.amountSum) + Number(accountData.accountBal);
+    var totalAmount = Number(accountData.amountSum) + Number(accountData.accountBal);
     // accountId가 비어있지 않은지 확인
     if (accountNumber) {
         $.ajax({
             url: '/api/employee/close-trade',
             type: 'POST',
             contentType: 'application/json', // JSON 형식으로 전송
-            data: JSON.stringify({accId: accountNumber, amount:totalAmount, status: "CLS"}), // JSON으로 변환하여 전송
+            data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "CLS"}), // JSON으로 변환하여 전송
             success: function (response) {
                 console.log('성공:', response);
                 // 추가적인 성공 처리 로직
@@ -93,6 +96,7 @@ function closeAccount() {
 }
 
 function selectAccount() {
+
     var selectedRow = $('input[name="select-account"]:checked').closest('tr');  // 선택된 라디오 버튼이 속한 행을 가져옴
     var selectedAccountId = selectedRow.find('td:eq(1)').text();  // 해당 행의 2번째 열(계좌번호 열)에서 값 추출
 
@@ -106,11 +110,12 @@ function selectAccount() {
         data: {accId: selectedAccountId, productName: null},
         type: "GET",
         success: function (data) {
+            console.log(data);
             $('#account-number').val(data[0].accId);
             $('#product-name').val(data[0].productName);
             $('#customer-name').val(data[0].customerName);
             // 모달 닫기
-            $('#accountSearchModal').modal('hide');
+            $('#search-modal-account').modal('hide');
         },
         error: function (error) {
             console.log("Error while fetching account details", error);

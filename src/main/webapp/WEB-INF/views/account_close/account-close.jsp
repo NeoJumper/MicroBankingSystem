@@ -27,8 +27,9 @@
             <h3>계좌 해지 신청</h3>
             <div id="search-content">
                 <div><input placeholder="계좌번호 입력" id="search-bar"></div>
-                <button id="check-withdrawal-account" class="button" type="button" data-bs-toggle="modal"
-                        data-bs-target="#accountSearchModal">검색
+                <button id="check-withdrawal-account-btn" class="update-btn" type="button"
+                        data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">
+                    계좌조회
                 </button>
             </div>
             <h4 style="margin-top: 10px">계좌 정보</h4>
@@ -107,7 +108,6 @@
 </div>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/page/account-close.js"></script>
-<script src="/resources/js/page/account-transfer.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>
 
