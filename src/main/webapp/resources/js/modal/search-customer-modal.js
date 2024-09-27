@@ -1,3 +1,16 @@
+
+
+$(document).ready(function () {
+    $("#customer-id-search-btn").on("click", function () {
+
+        customerSearchModalEvent();
+        insertCustomerId();
+
+    });
+});
+
+// ------------------------------- START customerSearchModalEvent()------------------------------------------
+
 // 모달 내 고객 검색 버튼 클릭시 함수
 function customerSearchModalEvent() {
     // 셀렉트 요소 가져오기
@@ -48,26 +61,6 @@ function customerSearchModalEvent() {
                     customerTableBody.append(row);
                 })
 
-                /*
-                                var newBody = $('<tbody id="search-modal-customer-information">');
-
-
-                                response.forEach(function (item) {
-                                    console.log("Item:", item); // 개별 항목 확인
-
-                                    var row = $('<tr>')
-                                        .append($('<td>').append($('<input class="form-check-input row-radio" type="radio" name="selected-customer">')))
-                                        .append($('<td>').text(item.customerId))
-                                        .append($('<td>').text(item.customerName))
-                                        .append($('<td>').text(item.formattedBirthDate)) //getformattedBirthDate()함수호출
-                                        .append($('<td>').text(item.phoneNumber))
-                                        .append($('<td>').text(item.branchId));
-
-                                    newBody.append(row);
-                                });
-
-                                $('#search-modal-customer-information').empty();
-                                $('#search-modal-customer-information').replaceWith(newBody);*/
             },
             error: function (jqXHR, textStatus, errorThrown) {
 
@@ -78,7 +71,21 @@ function customerSearchModalEvent() {
     });
 }
 
-// 모달내 선택 버튼 클릭시 함수
+// ------------------------------- END customerSearchModalEvent()------------------------------------------
+
+// ------------------------------- START insertCustomerId()------------------------------------------
+/*
+    insertCustomerId() 함수 설명
+    - 모달 값을 넣어줄 id명 맞춰주기
+    - (5가지 요소 다 가능 / 고객아이디, 이름, 생일 등등)
+
+    예) 경우 : 고객 검색 후 고객 id를 input값에 할당해야할 경우
+
+        input의 id -> customer-name-input로 설정한다.
+        ex ) <input type="text" id="customer-name-input" disabled>
+*/
+
+// 모달내 선택 버튼 클릭시 input 입력 함수
 function insertCustomerId() {
 
     $('#search-modal-select-btn').on('click', function () {
@@ -87,12 +94,26 @@ function insertCustomerId() {
 
         if (selectedCustomer.length > 0) {
 
-            const selectedRow = selectedCustomer.closest('tr');
-            const customerId = selectedRow.find('td:nth-child(2)').text();
-            $('#customer-id-input').val(customerId);
+            const insertValueMappings = [
+                { selector: '#customer-id-input', columnIndex: 2 },
+                { selector: '#customer-name-input', columnIndex: 3 },
+                { selector: '#customer-birth-input', columnIndex: 4 },
+                { selector: '#customer-phone-input', columnIndex: 5 },
+                { selector: '#branch-name-input', columnIndex: 6 }
+            ];
 
-            const customerName = selectedRow.find('td:nth-child(3)').text();
-            $('#customer-name').val(customerName);
+            const selectedRow = selectedCustomer.closest('tr');
+
+            insertValueMappings.forEach(item => {
+                const value = selectedRow.find(`td:nth-child(${item.columnIndex})`).text();
+                const inputElement = $(item.selector);
+                
+                // 존재하는 요소에 필요한 값 넣어주기
+                if (inputElement.length > 0 && value && value.trim() !== "") {
+                    inputElement.val(value);
+                }
+
+            });
 
             $('#search-customer-modal').modal('hide');
 
@@ -102,13 +123,5 @@ function insertCustomerId() {
     });
 
 }
-
-$(document).ready(function () {
-    $("#customer-id-search-btn").on("click", function () {
-
-        customerSearchModalEvent();
-        insertCustomerId();
-
-    });
-});
+// ------------------------------- END insertCustomerId()------------------------------------------
 

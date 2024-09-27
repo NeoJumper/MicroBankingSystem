@@ -1,0 +1,28 @@
+
+#search-modal-search-div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+
+
+#search-modal-select {
+    padding: 5px;
+    height: 46.5px;
+}
+
+#search-modal-input {
+    height: 46.5px;
+    width: 100%;
+
+}
+
+#search-modal-input input {
+    width: 100%;
+    padding: 5px;
+}
+
+
+

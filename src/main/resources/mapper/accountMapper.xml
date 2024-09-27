@@ -107,7 +107,9 @@
         <result property="startDate" column="start_date" />
         <result property="balance" column="balance" />
         <result property="branchName" column="branch_name" />
-        <result property="registerId" column="register_id" />
+        <result property="registrantName" column="registrant_name" />
+        <result property="totalInterestRate" column="total_interest_rate" />
+
 
     </resultMap>
 
@@ -121,8 +123,8 @@
             a.start_date AS start_date,
             a.balance AS balance,
             b.name AS branch_name,
-            a.register_id AS register_id
-
+            e.name AS registrant_name,
+            (a.preferential_interest_rate +p.interest_rate) AS total_interest_rate
         FROM
             Account a
                 JOIN
@@ -131,6 +133,8 @@
             Product p ON a.product_id = p.id
                 JOIN
             Branch b ON a.branch_id = b.id
+                JOIN
+            EMPLOYEE e ON a.registrant_id = e.id
         WHERE a.id = #{accId}
     </select>
 </mapper>

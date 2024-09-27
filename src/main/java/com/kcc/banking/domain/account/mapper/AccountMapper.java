@@ -14,9 +14,9 @@ import java.util.List;
 public interface AccountMapper {
     List<AccountDetail> findAll();
     List<AccountOfModal> findAccount(SearchAccountOfModal searchAccountOfModal);
+
     // 계좌 개설할때 상품 정보 가져오기
     AccountProductInfo findAccountProductInfo();
-
 
     void openAccount(AccountCreate accountCreate);
 
