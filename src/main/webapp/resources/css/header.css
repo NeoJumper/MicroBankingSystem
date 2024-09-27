@@ -6,7 +6,7 @@
   left: 0;
   display: flex;
   flex-direction: column;
-  height: 100px;
+  height: 120px;
   width: 100%;
   z-index: 10;
   background-color: white;
@@ -22,13 +22,11 @@
 /*------- 회사 로고 / 이미지 css -----------*/
 #imgContainer {
 
-  margin-top: 17px;
-  margin-left:10px;
-  margin-right:5px;
+  margin-left: 9px;
+  margin-right: 9px;
   flex:0.2;
   justify-content: center;
   align-items: center;
-  height: 100%;
   overflow: hidden;
 }
 
@@ -45,16 +43,18 @@
   flex:1;
   height: 100%;
   text-align:left;
+  padding: 7px 0;
 
 }
 
 #systemName {
-  flex:1;
+  flex: 1;
   height: 100%;
-  font-size:18px;
+  font-size:20px;
   overflow: hidden;
   font-weight: bold ;
-  padding-top:2.8px;
+
+  align-items: baseline;
 }
 
 #systemInfo {
@@ -63,16 +63,15 @@
   overflow: hidden;
 
   display:flex;
-  font-size:12px;
+  font-size: 14px;
   gap: 5px;
   justify-content: left;
   align-items: center;
-  padding-top : 1px;
   margin :0;
-  padding-bottom:5px;
+  padding-bottom:5.8px;
 }
 
-#userStatus{
+#user-roles{
   background-color: #0079D4;
   padding : 2px 5px;
   color: white;
@@ -87,12 +86,12 @@
 /* dateStatusHeader : 날짜 및 영업 상태 헤더 정보 css  */
 
 #dateStatusHeader {
-  flex:5;
+  flex:4;
   height: 100%;
   display:flex;
   justify-content: right;
   gap:10px;
-  text-align: center;
+  align-items: center;
   padding :10px;
 }
 #branchStatus {
@@ -108,7 +107,7 @@
 #navbar {
   background-color: #0079D4;
   flex-grow: 1;
-  height: 45%;
+  height: 25%;
   margin :0;
 }
 
