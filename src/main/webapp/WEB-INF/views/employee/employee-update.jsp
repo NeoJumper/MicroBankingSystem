@@ -12,32 +12,45 @@
 <body>
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
-<div id="mainArea">
+<div id="main-area">
     <div>
         <h5>행원 관리 > </h5>
-        <h5>&nbsp 행원 등록 </h5>
+        <h5>&nbsp 행원 수정(${id}) </h5>
     </div>
     <div>
-        <h3>행원 추가</h3>
+        <h3>행원 검색</h3>
+        <hr>
+        <div class="d-flex align-items-center">
+            <input style="width:30%;" type="text" id="customer-id-text" placeholder="사원 번호를 입력하세요">
+            <button id="employee-search-btn" type="button" class="search-btn" style="display: flex; align-items: center; justify-content: center">
+                <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
+            </button>
+        </div>
+
+
+    </div>
+    <div class="mt-4">
+        <h3>행원 정보</h3>
         <hr>
     </div>
-    <table class="commonTable">
+    <table class="common-table">
         <tr>
             <th>이름</th>
-            <td><input type="text" id="empName"></td>
+            <td><input type="text" id="emp-name"></td>
             <th>생년월일</th>
-            <td><input type="date" id="empBirthDate"></td>
+            <td><input type="date" id="emp-birth-date"></td>
         </tr>
         <tr>
             <th>이메일</th>
-            <td><input type="text" id="empEmail"></td>
+            <td><input type="text" id="emp-email"></td>
             <th>비밀번호</th>
-            <td><input type="password" id="empPassword"></td>
+            <td><input type="password" id="emp-password"></td>
         </tr>
         <tr>
             <th>지점명</th>
             <td>
-                <select id="empBranchId">
+                <select id="emp-branch-id">
+                    <option disabled selected>지점 선택</option>
                     <option value="1">강남점</option>
                     <option value="2">은평점</option>
                     <option value="3">서초점</option>
@@ -46,12 +59,13 @@
                 </select>
             </td>
             <th>전화번호</th>
-            <td><input type="text" id="empPhoneNumber"></td>
+            <td><input type="text" id="emp-phone-number"></td>
         </tr>
         <tr>
             <th>직급</th>
             <td>
-                <select id="empRoles">
+                <select id="emp-roles">
+                    <option disabled selected>직급 선택</option>
                     <option value="EMPLOYEE">행원</option>
                     <option value="MANAGER">매니저</option>
                 </select>
@@ -60,13 +74,14 @@
         </tr>
     </table>
     <div class="d-flex justify-content-end mt-4 mb-4">
-        <button class="update-btn" id="empSaveBtn">추가하기</button>
+        <button class="update-btn" id="emp-update-btn">수정사항 저장</button>
     </div>
 
 </div>
 
 <%@ include file="/resources/components/modal/employee-detail-modal.jsp" %>
+<%@ include file="/resources/components/modal/employee-search-modal.jsp" %>
+<script src="/resources/js/page/employee-update.js"></script>
 <script src="/resources/js/footer.js"></script>
-<script src="/resources/js/employee-save.js"></script>
 </body>
 </html>

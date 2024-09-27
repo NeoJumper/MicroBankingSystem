@@ -10,12 +10,12 @@
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/employee-list.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/employee-list.css"/>
 </head>
 <body>
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
-<div id="mainArea">
+<div id="main-area">
     <div>
         <h5>행원 관리 > </h5>
         <h5>&nbsp 행원 목록</h5>
@@ -26,7 +26,7 @@
     </div>
     <div class="d-flex justify-content-end mb-3">
         <div style="width: 10%; margin-left: 15px;">
-            <select id="empSearchOption">
+            <select id="emp-search-option">
                 <option selected value="" disabled>검색조건</option>
                 <option value="id">사번</option>
                 <option value="name">이름</option>
@@ -37,7 +37,7 @@
             </select>
         </div>
         <div style="width: 20%; margin-left: 15px;">
-            <input id="empSearchValue" style="width: 100%; font-size: 1.0rem;" type="text" placeholder="검색어 입력" >
+            <input id="emp-search-value" style="width: 100%; font-size: 1.0rem;" type="text" placeholder="검색어 입력" >
         </div>
     </div>
 
@@ -55,11 +55,11 @@
             </thead>
         </table>
 
-        <div id="employee-add-list" style="overflow-y: auto; height: 470px;">
+        <div style="overflow-y: auto; height: 470px;">
             <table class="table table-hover">
-                <tbody id="employeeTableBody">
+                <tbody id="emp-table-body">
                 <c:forEach var="employee" items="${employeeList}">
-                    <tr class="employee-element">
+                    <tr class="emp-element">
                         <td style="width: 10%;">${employee.id}</td>
                         <td style="width: 10%;">${employee.name}</td>
                         <td style="width: 20%;"><fmt:formatDate value="${employee.birthDate}" pattern="yyyy-MM-dd" /></td>
@@ -78,6 +78,6 @@
 
 
 <script src="/resources/js/footer.js"></script>
-<script src="/resources/js/employee-list.js"></script>
+<script src="/resources/js/page/employee-list.js"></script>
 </body>
 </html>

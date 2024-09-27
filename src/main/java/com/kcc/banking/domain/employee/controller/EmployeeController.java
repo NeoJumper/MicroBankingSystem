@@ -20,23 +20,18 @@ public class EmployeeController {
     @GetMapping("/page/manager/employee-save")
     public String employeeSavePage(Model model) {
 
-        return "employee-save";
+        return "employee/employee-save";
     }
 
     @GetMapping("/page/manager/employee-list")
     public String employeeListPage(Model model) {
         model.addAttribute("employeeList",employeeService.getEmployeeList());
-        return "employee-list";
-    }
-    @GetMapping("/page/manager/employee-list/{id}")
-    public String employeeDetailPage(@PathVariable(value = "id") long id, Model model) {
-        model.addAttribute("id", id);
-        return "employee-detail";
+        return "employee/employee-list";
     }
     @GetMapping("/page/manager/employee-update")
-    public String employeeUpdatePage(@RequestParam(value = "id") long id, Model model) {
+    public String employeeUpdatePage(@RequestParam(value = "id", required = false) Long id, Model model) {
         model.addAttribute("id", id);
-        return "employee-update";
+        return "employee/employee-update";
     }
     @GetMapping("/page/employee/deadline-management")
     public String employeeDeadlineManagement(@RequestParam(value = "id") long id, Model model) {
