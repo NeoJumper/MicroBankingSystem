@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
     private final EmployeeService employeeService;
 
-    @GetMapping("/page/employee/login-form")
-    public String loginPage(Model model) {
-
+    @GetMapping("/page/auth/login-form")
+    public String loginForm(@RequestParam(value = "error", required = false) String error,
+                            @RequestParam(value = "exception", required = false) String exception,  Model model) {
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
         return "auth/login-form";
     }
 

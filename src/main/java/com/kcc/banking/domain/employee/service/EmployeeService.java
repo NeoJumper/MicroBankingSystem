@@ -9,6 +9,7 @@ import com.kcc.banking.domain.employee.dto.response.EmployeeDetail;
 import com.kcc.banking.domain.employee.dto.response.UpdatedEmployee;
 import com.kcc.banking.domain.employee.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeService {
     private final EmployeeMapper employeeMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public List<EmployeeDataOfList> getEmployeeList() {
         return employeeMapper.findAll();
@@ -28,6 +30,9 @@ public class EmployeeService {
      * @Description 비밀번호 암호화 해야함
      */
     public CreatedEmployee createEmployee(EmployeeCreate employeeCreate) {
+
+        employeeCreate.setPassword(passwordEncoder.encode(employeeCreate.getPassword()));
+
         employeeMapper.save(employeeCreate);
         return new CreatedEmployee(employeeCreate, "은평 1지점", "매니저");
 
