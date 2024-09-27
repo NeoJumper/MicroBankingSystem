@@ -174,4 +174,7 @@ function enableAmountButtons(balance) {
 function transferSubmit(){
     var withdrawalAccountId = $('#withdrawal-account-number').val();
     var depositAccountId = $('#deposit-account-number').val();
+    var transferAmount = parseInt($('#transferAmount').text().replace(/[^0-9]/g, ''));
+
+
 }

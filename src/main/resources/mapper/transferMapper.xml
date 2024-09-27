@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.account.mapper.transferMapper">
+
+    <insert id="insertTransfer" parameterType="TransferCreate">
+        INSERT INTO Trade (id, registrant_id, acc_id, target_acc_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, registration_date)
+        VALUES (#{id}, #{registrantId}, #{accId}, #{targetAccId}, #{branchId}, #{tradeDate}, #{amount}, #{balance}, #{tradeType}, #{status}, #{cashIndicator}, #{description}, #{tradeNumber}, #{registrationDate});
+    </insert>
+
+
+</mapper>
