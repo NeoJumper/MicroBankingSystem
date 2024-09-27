@@ -49,6 +49,11 @@ $(document).ready(function () {
         }
     });
 
+
+    // 이체하기 버튼 클릭 시
+    $('#account-transfer-submit').click( function (){
+        transferSubmit();
+    })
 });
 
 function comma(str) {
@@ -163,4 +168,10 @@ function enableAmountButtons(balance) {
 
     // 전액 버튼은 항상 활성화
     $('.amount-btn:contains("전액")').prop('disabled', false);
+}
+
+
+function transferSubmit(){
+    var withdrawalAccountId = $('#withdrawal-account-number').val();
+    var depositAccountId = $('#deposit-account-number').val();
 }

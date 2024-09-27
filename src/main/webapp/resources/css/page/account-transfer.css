@@ -30,6 +30,12 @@ body, input, button {
     background: #C8C8C8;
 }
 
+/* 버튼이 disabled 상태일 때는 hover 효과를 없앰 */
+.button-group button:disabled:hover {
+    background: initial;
+}
+
+
 #account-balance-label {
     /*border: 1px solid #C8C8C8;*/
     padding: 8px;
@@ -52,5 +58,4 @@ body, input, button {
 
 .amount-btn.active:hover {
     background: #0069d9;
-
 }
