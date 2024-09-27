@@ -10,6 +10,17 @@
         WHERE id = #{id}
     </select>
 
+    <select id="findAuthDataById" parameterType="java.lang.Long">
+
+        select e.id as "id", e.name as "name", e.roles as "roles", b.name as "branch_name"
+        from employee e
+        join branch b on e.branch_id = b.id
+        WHERE e.id = #{id}
+
+
+    </select>
+
+
     <insert id="save" parameterType="EmployeeCreate">
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
             SELECT employee_seq.nextval FROM dual

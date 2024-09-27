@@ -19,8 +19,9 @@
     <div id="userInfoHeader">
       <div id="systemName">Micro Banking System</div>
       <div id="systemInfo">
-        <div id="userStatus">행원</div>
-        <div id="userinfo">은평 1지점 유은서님</div>
+        <div id="user-roles"></div>
+        <div id="user-branch-name"></div>
+        <div id="user-name"></div>
         <div id="logoutButton">로그아웃</div>
       </div>
     </div>
@@ -41,6 +42,9 @@
 
 </div>
 
+<!-- jQuery 라이브러리 추가 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/resources/js/header.js"></script>
 
 </body>
 </html>
