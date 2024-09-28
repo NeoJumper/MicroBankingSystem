@@ -25,9 +25,11 @@
         <div id="logoutButton">로그아웃</div>
       </div>
     </div>
-    <div id="dateStatusHeader">
-      <div id="nowDateTime">2024년 09월 10일 오후 17시 41분</div>
-      <div id="branchStatus">영업중</div>
+    <div id="business-day-header">
+      <div id="business-day-date"></div>
+      <div id="business-day-status">
+        <span></span>
+      </div>
     </div>
   </div>
   <nav id="navbar">
