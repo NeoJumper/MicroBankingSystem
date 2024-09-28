@@ -22,7 +22,7 @@
     function toggleSidebar() {
       var sidebar = document.getElementById("leftSidebar-wrapper");
       var menubar = document.getElementById("menubar");
-      var mainArea = document.getElementById("mainArea");
+      var mainArea = document.getElementById("main-area");
       var isOpen = sidebar.classList.contains("open");
 
       if (isOpen) {
