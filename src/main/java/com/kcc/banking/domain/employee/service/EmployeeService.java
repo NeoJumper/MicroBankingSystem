@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.employee.service;
 
+import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
 import com.kcc.banking.domain.employee.dto.request.EmployeeUpdate;
@@ -54,8 +55,7 @@ public class EmployeeService {
     }
 
     public AuthData getAuthData() {
-        long loginMemberId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-
+        Long loginMemberId = AuthenticationUtils.getLoginMemberId();
         return employeeMapper.findAuthDataById(loginMemberId);
     }
 }
