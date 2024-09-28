@@ -22,7 +22,7 @@
     function toggleSidebar() {
       var sidebar = document.getElementById("leftSidebar-wrapper");
       var menubar = document.getElementById("menubar");
-      var mainArea = document.getElementById("mainArea");
+      var mainArea = document.getElementById("main-area");
       var isOpen = sidebar.classList.contains("open");
 
       if (isOpen) {
@@ -38,7 +38,7 @@
         menubar.classList.remove("hidden-content"); // 표시하기
         menubar.classList.add("show-content");
 
-        mainArea.style.paddingLeft = "350px";
+        mainArea.style.paddingLeft = "320px";
       }
     }
   </script>
