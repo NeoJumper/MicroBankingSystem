@@ -55,7 +55,7 @@
             </thead>
         </table>
 
-        <div style="overflow-y: auto; height: 470px;">
+        <div style="overflow-y: auto; height: 350px;">
             <table class="table table-hover">
                 <tbody id="emp-table-body">
                 <c:forEach var="employee" items="${employeeList}">

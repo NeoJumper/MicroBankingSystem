@@ -38,7 +38,7 @@
         menubar.classList.remove("hidden-content"); // 표시하기
         menubar.classList.add("show-content");
 
-        mainArea.style.paddingLeft = "350px";
+        mainArea.style.paddingLeft = "320px";
       }
     }
   </script>
