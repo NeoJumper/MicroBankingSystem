@@ -1,6 +1,6 @@
 package com.kcc.banking.domain.businessday.controller;
 
-import com.kcc.banking.domain.businessday.dto.BusinessDay;
+import com.kcc.banking.domain.businessday.dto.response.BusinessDay;
 import com.kcc.banking.domain.businessday.service.BusinessDayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

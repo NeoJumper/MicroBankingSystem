@@ -8,6 +8,7 @@ import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -20,6 +21,15 @@ public class EmployeeRestController {
     public EmployeeDetail getEmployeeDetail(@PathVariable(value = "id", required = false) Long id) {
         return employeeService.getEmployeeDetail(id);
     }
+    @GetMapping("/api/manager/employees/cash-balance")
+    public List<CashBalanceOfEmployee> getCashBalanceOfEmployees() {
+        return employeeService.getCashBalanceOfEmployees();
+    }
+    @GetMapping("/api/manager/branch/cash-balance")
+    public BigDecimal getCashBalanceOfBranch() {
+        return employeeService.getCashBalanceOfBranch();
+    }
+
 
     @PostMapping("/api/manager/employee")
     public CreatedEmployee createEmployee(@RequestBody EmployeeCreate employeeCreate) {

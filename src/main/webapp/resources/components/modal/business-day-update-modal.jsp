@@ -19,7 +19,7 @@
             <div class="modal-body">
                 <div id="inputBox" class="d-flex justify-content-end">
                     <div class="d-flex justify-content-end align-items-center"><label class="me-3 mb-0">전일자 현금 총액</label></div>
-                    <input style="width:70%; direction: rtl;" type="text" value ="50,000,000" disabled>
+                    <input id="business-day-modal-branch-balance" style="width:70%; direction: rtl;" type="text" disabled>
                 </div>
 
 
@@ -38,48 +38,8 @@
 
                 <div id="business-day-modal-emp-add-list" style="overflow-y: auto; height: 300px;">
                     <table class="table table-hover">
-                        <tbody>
-                        <tr class="business-day-element">
-                            <td><i class="bi bi-square"></i></td>
-                            <td style="width: 20%;">1001</td>
-                            <td style="width: 20%;">지승용</td>
-                            <td style="width: 40%;">
-                                <input style="direction: rtl;" type="text" value ="10,000,000" disabled>
-                            </td>
-                        </tr>
-                        <tr class="business-day-element">
-                            <td><i class="bi bi-square"></i></td>
-                            <td style="width: 20%;">1001</td>
-                            <td style="width: 20%;">지승용</td>
-                            <td style="width: 40%;">
-                                <input style="direction: rtl;" type="text" value ="10,000,000" disabled>
-                            </td>
-                        </tr>
-                        <tr class="business-day-element">
-                            <td><i class="bi bi-square"></i></td>
-                            <td style="width: 20%;">1001</td>
-                            <td style="width: 20%;">지승용</td>
-                            <td style="width: 40%;">
-                                <input style="direction: rtl;" type="text" value ="10,000,000" disabled>
-                            </td>
-                        </tr>
-                        <tr class="business-day-element">
-                            <td><i class="bi bi-square"></i></td>
-                            <td style="width: 20%;">1001</td>
-                            <td style="width: 20%;">지승용</td>
-                            <td style="width: 40%;">
-                                <input style="direction: rtl;" type="text" value ="10,000,000" disabled>
-                            </td>
+                        <tbody id = "business-day-modal-emp-list">
 
-                        </tr>
-                        <tr class="business-day-element">
-                            <td><i class="bi bi-square"></i></td>
-                            <td style="width: 20%;">1001</td>
-                            <td style="width: 20%;">지승용</td>
-                            <td style="width: 40%;">
-                                <input style="direction: rtl;" type="text" value ="10,000,000" disabled>
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -106,6 +66,8 @@
          });
    });
 </script>
+
+<script src="/resources/js/modal/business-day-update-modal.js"></script>
 
 </body>
 </html>

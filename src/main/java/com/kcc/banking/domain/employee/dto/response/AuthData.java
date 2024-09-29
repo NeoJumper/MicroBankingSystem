@@ -12,13 +12,15 @@ public class AuthData {
     private String id;
     private String name;
     private String roles;
+    private String branchId;
     private String branchName;
 
     @Builder
-    public AuthData(String id, String name, String roles, String branchName) {
+    public AuthData(String id, String name, String roles,String branchId, String branchName) {
         this.id = id;
         this.name = name;
         this.roles = roles;
+        this.branchId = branchId;
         this.branchName = branchName;
     }
 

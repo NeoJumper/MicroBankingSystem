@@ -1,13 +1,13 @@
 package com.kcc.banking.domain.employee.mapper;
 
+import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
 import com.kcc.banking.domain.employee.dto.request.EmployeeUpdate;
-import com.kcc.banking.domain.employee.dto.response.AuthData;
-import com.kcc.banking.domain.employee.dto.response.EmployeeDataOfList;
-import com.kcc.banking.domain.employee.dto.response.EmployeeDetail;
+import com.kcc.banking.domain.employee.dto.response.*;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -24,4 +24,8 @@ public interface EmployeeMapper {
     EmployeeDetail findById(Long id);
 
     AuthData findAuthDataById(Long id);
+
+    List<CashBalanceOfEmployee> findCashBalanceOfEmployees(BusinessDateAndBranchId businessDateAndBranchId);
+
+    BigDecimal findCashBalanceOfBranch(BusinessDateAndBranchId businessDateAndBranchId);
 }
