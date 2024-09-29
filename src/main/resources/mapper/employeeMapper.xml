@@ -12,7 +12,7 @@
 
     <select id="findAuthDataById" parameterType="java.lang.Long">
 
-        select e.id as "id", e.name as "name", e.roles as "roles", b.name as "branch_name"
+        select e.id as "id", e.name as "name", e.roles as "roles",b.id as "branch_id", b.name as "branch_name"
         from employee e
         join branch b on e.branch_id = b.id
         WHERE e.id = #{id}
@@ -43,22 +43,34 @@
 
 
 
-    <select id="findAll" >
+    <select id="findAllOfBranch"  parameterType="java.lang.Long">
         select e.id as "id", e.name as "name", e.birth_date, e.phone_number ,e.email, roles
         from employee e
+        where e.branch_id = #{branchId}
     </select>
 
-    <select id="findBySearchOption" parameterType="EmployeeSearch">
-        select e.id as "id", e.name as "name", e.birth_date, e.phone_number ,e.email, roles
-        from employee e
-        <where>
-            <if test="searchOption != null and !searchOption.equals('')">
-                ${searchOption} LIKE '%' || #{searchValue} || '%'
-            </if>
-        </where>
+    <select id="findAllOfBranchBySearchOption" parameterType="EmployeeSearch">
+        SELECT e.id AS "id",
+        e.name AS "name",
+        e.birth_date,
+        e.phone_number,
+        e.email,
+        roles
+        FROM employee e
+        WHERE e.branch_id = #{branchId}  -- branchId 조건을 항상 포함
+        <if test="searchOption != null and !searchOption.equals('')">
+            AND ${searchOption} LIKE '%' || #{searchValue} || '%'
+        </if>
     </select>
 
+    <select id="findCashBalanceOfEmployees"  parameterType="BusinessDateAndBranchId">
+        select e.id , e.name, ec.prev_cash_balance as "cash_balance" from employee e
+        join employee_closing ec on ec.registrant_id = e.id
+        where e.branch_id = #{branchId} AND roles = '행원' and ec.closing_date = #{businessDate}
+    </select>
 
-
+    <select id="findCashBalanceOfBranch"  parameterType="BusinessDateAndBranchId">
+        select vault_cash from branch_closing where closing_date = #{businessDate} and branch_id = #{branchId}
+    </select>
 
 </mapper>

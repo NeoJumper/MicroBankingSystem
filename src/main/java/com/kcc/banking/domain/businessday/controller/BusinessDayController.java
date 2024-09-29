@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class BusinessDayController {
 
-    @GetMapping("/page/businessday-management")
+    @GetMapping("/page/manager/business-day-management")
     public String businessDayPage(){
-        return "businessday-management";
+        return "business-day/business-day-management";
     }
 
 }
