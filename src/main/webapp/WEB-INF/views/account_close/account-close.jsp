@@ -5,7 +5,6 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-
     <title>계좌 해지 신청</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
@@ -15,7 +14,7 @@
 <body>
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
-<div id="mainArea">
+<div id="main-area">
     <div style="margin-bottom: 17px;">
         <h5>예금 관리 >&nbsp</h5>
         <h5>계좌 해지</h5>
@@ -93,7 +92,7 @@
             <div class="d-flex">
                 <div class="col-3 text-center py-3" style="background-color: #F5F5F5; margin-right: 10px;">계좌 비밀번호</div>
                 <div id="account-pw-container">
-                    <input id="account-pw" style=" display:block; width:100%">
+                    <input type="password" id="account-pw" style=" display:block; width:100%; padding: 2px;">
                     <input id="input-confirm" type="submit" value="확인">
                 </div>
             </div>
