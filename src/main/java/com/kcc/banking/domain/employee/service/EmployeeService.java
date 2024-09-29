@@ -20,8 +20,8 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public List<EmployeeDataOfList> getEmployeeList() {
-        return employeeMapper.findAll();
+    public List<EmployeeDataOfList> getEmployeeListOfBranch() {
+        return employeeMapper.findAllOfBranch(AuthenticationUtils.getLoginMemberId());
     }
 
 
@@ -46,7 +46,8 @@ public class EmployeeService {
     }
 
     public List<EmployeeDataOfList> getEmployeeListByOption(EmployeeSearch employeeSearch) {
-        List<EmployeeDataOfList> employees = employeeMapper.findBySearchOption(employeeSearch);
+        employeeSearch.setBranchId(AuthenticationUtils.getLoginMemberId());
+        List<EmployeeDataOfList> employees = employeeMapper.findAllOfBranchBySearchOption(employeeSearch);
         return employees;
     }
 

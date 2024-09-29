@@ -13,11 +13,11 @@ import java.util.List;
 @Mapper
 public interface EmployeeMapper {
 
-    List<EmployeeDataOfList> findAll();
+    List<EmployeeDataOfList> findAllOfBranch(long branchId);
 
     void save(EmployeeCreate employeeCreate);
 
-    List<EmployeeDataOfList> findBySearchOption(EmployeeSearch employeeSearch);
+    List<EmployeeDataOfList> findAllOfBranchBySearchOption(EmployeeSearch employeeSearch);
 
     void update(EmployeeUpdate employeeUpdate);
 
