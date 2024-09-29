@@ -27,7 +27,7 @@ body {
   max-width: 95%;
   font-family: 'Pretendard-Regular', sans-serif;
   padding-top: 130px;
-  padding-left: 350px;
+  padding-left: 320px;
   font-size: 1.2rem;
   transition: padding-left 0.3s ease-in-out; /* 패딩 애니메이션 추가 */
 }

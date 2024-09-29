@@ -3,10 +3,7 @@ package com.kcc.banking.domain.employee.controller;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
 import com.kcc.banking.domain.employee.dto.request.EmployeeUpdate;
-import com.kcc.banking.domain.employee.dto.response.CreatedEmployee;
-import com.kcc.banking.domain.employee.dto.response.EmployeeDataOfList;
-import com.kcc.banking.domain.employee.dto.response.EmployeeDetail;
-import com.kcc.banking.domain.employee.dto.response.UpdatedEmployee;
+import com.kcc.banking.domain.employee.dto.response.*;
 import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -40,4 +37,10 @@ public class EmployeeRestController {
         return employeeService.getEmployeeListByOption(employeeSearch);
 
     }
+
+    @GetMapping("/api/auth-data")
+    public AuthData getAuthData() {
+        return employeeService.getAuthData();
+    }
+
 }
