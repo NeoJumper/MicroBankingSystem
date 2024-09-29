@@ -27,7 +27,7 @@ public class EmployeeController {
 
     @GetMapping("/page/manager/employee-list")
     public String employeeListPage(Model model) {
-        model.addAttribute("employeeList",employeeService.getEmployeeList());
+        model.addAttribute("employeeList",employeeService.getEmployeeListOfBranch());
         return "employee/employee-list";
     }
     @GetMapping("/page/manager/employee-update")
@@ -38,12 +38,12 @@ public class EmployeeController {
     @GetMapping("/page/employee/deadline-management")
     public String employeeDeadlineManagement(@RequestParam(value = "id") long id, Model model) {
         model.addAttribute("id", id);
-        return "deadline-management";
+        return "business-day/deadline-management";
     }
     @GetMapping("/page/manager/deadline-management")
     public String managerDeadlineManagement(@RequestParam(value = "id") long id, Model model) {
         model.addAttribute("id", id);
-        return "deadline-management2";
+        return "business-day/deadline-management2";
     }
 
 
