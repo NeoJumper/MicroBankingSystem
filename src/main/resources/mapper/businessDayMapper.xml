@@ -7,4 +7,18 @@
     <select id="findCurrentBusinessDay" >
         select * from business_day where is_current_business_day = 'TRUE'
     </select>
+
+    <select id="findNextBusinessDay" >
+        SELECT *
+        FROM (
+        SELECT *
+        FROM business_day b
+        WHERE b.business_date > (SELECT BUSINESS_DATE
+        FROM business_day
+        WHERE is_current_business_day = 'TRUE')
+        AND b.status = 'SCHEDULED'
+        ORDER BY b.business_date ASC
+        )
+        WHERE ROWNUM = 1
+    </select>
 </mapper>

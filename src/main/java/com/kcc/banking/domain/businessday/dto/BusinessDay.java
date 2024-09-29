@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class CurrentBusinessDay {
+public class BusinessDay {
 
     private String businessDate;
     private String status;

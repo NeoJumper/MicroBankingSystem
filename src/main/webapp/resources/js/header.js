@@ -26,11 +26,13 @@ function handleBusinessDay(){
     $.ajax({
         url: '/api/current-business-day',
         type: 'GET',
-        success: function(currentBusinessDay) {
+        success: function(response) {
             // 성공 시 처리할 로직 작성
-            console.log(currentBusinessDay);
-            $('#business-day-date').text(currentBusinessDay.businessDate);
-            $('#business-day-status > span').text(currentBusinessDay.status);
+
+            var formattedDate = response.businessDate.substring(0, 10);
+
+            $('#business-day-date').text(formattedDate);
+            $('#business-day-status > span').text(response.status);
         },
         error: function(xhr, status, error) {
             // 에러 발생 시 처리할 로직 작성
