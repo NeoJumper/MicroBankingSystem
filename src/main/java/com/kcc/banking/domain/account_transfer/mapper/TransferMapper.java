@@ -7,5 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface TransferMapper {
-    int insertTransfer(TransferDetail transferCreate);
+    int insertTransfer(TransferDetail transferDetail);
+    int updateAccountBalance(TransferDetail transferDetail);
 }

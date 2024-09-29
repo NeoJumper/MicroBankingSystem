@@ -65,8 +65,8 @@
                 <td><input disabled type="date" id="execution-date"></td>
             </tr>
             <tr>
-                <th><label for="remark">비고</label></th>
-                <td><input type="text" id="remark"></td>
+                <th><label for="description">비고</label></th>
+                <td><input type="text" id="description"></td>
             </tr>
         </table>
         <div>
@@ -104,6 +104,7 @@
     </div>
     </div>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
+<%@ include file="/resources/components/modal/transfer-result-modal.jsp" %>
 <script src="/resources/js/page/account-transfer.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>

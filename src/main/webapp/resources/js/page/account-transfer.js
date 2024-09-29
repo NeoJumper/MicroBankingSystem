@@ -170,11 +170,46 @@ function enableAmountButtons(balance) {
     $('.amount-btn:contains("전액")').prop('disabled', false);
 }
 
-
-function transferSubmit(){
+function transferSubmit() {
     var withdrawalAccountId = $('#withdrawal-account-number').val();
     var depositAccountId = $('#deposit-account-number').val();
-    var transferAmount = parseInt($('#transferAmount').text().replace(/[^0-9]/g, ''));
+    var transferAmount = parseInt(uncomma($('#transfer-amount').val()));
+    var description = $('#description').val();
 
+    $.ajax({
+        url: "/api/transfer",
+        contentType: "application/json",
+        data: JSON.stringify({
+            withdrawalAccount: withdrawalAccountId,
+            depositAccount: depositAccountId,
+            transferAmount: transferAmount,
+            description: description
+        }),
+        type: "POST",
+        success: function (data) {
+            // 이체 성공 후 모달에 데이터를 채움
+            showTransferResultModal(data);
+        },
+        error: function (error) {
+            console.log("Transfer failed", error);
+        }
+    });
 
+}
+
+function showTransferResultModal(data) {
+    // 출금 내역
+    var withdrawal = data[0];
+    $('#modal-result-withdrawal-account').text(withdrawal.accId);
+    $('#modal-result-withdrawal-amount').text(comma(withdrawal.amount));
+    $('#modal-result-withdrawal-balance').text(comma(withdrawal.balance));
+
+    // 입금 내역
+    var deposit = data[1];
+    $('#modal-result-deposit-account').text(deposit.accId);
+    $('#modal-result-deposit-amount').text(comma(deposit.amount));
+    $('#modal-result-deposit-balance').text(comma(deposit.balance));
+
+    // 모달 띄우기
+    $('#transfer-result-modal').modal('show');
 }

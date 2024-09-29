@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,18 +20,18 @@ public class TransferRestController {
 
     private final TransferService transferService;
 
-    @PostMapping("/transfer")
-    public ResponseEntity<String> transfer(@RequestBody TransferCreate transferCreate) {
+    @PostMapping("/api/transfer")
+    public ResponseEntity<List<TransferDetail>> transfer(@RequestBody TransferCreate transferCreate) {
         try {
             // 트랜잭션 처리
-            transferService.processTransfer(transferCreate);
-            return ResponseEntity.ok("Transfer successful");
-
+            List<TransferDetail> tradeDetails = transferService.processTransfer(transferCreate);
+            return ResponseEntity.ok(tradeDetails);
         } catch (Exception e) {
-            // 예외가 발생했을 때 예외 처리 (예: 로그 남기기, 사용자에게 메시지 반환)
+            // 예외가 발생했을 때 예외 처리
             System.err.println("Transfer failed: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Transfer failed: " + e.getMessage());
+                    .body(null);
         }
     }
+
 }
