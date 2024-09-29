@@ -5,6 +5,7 @@ $(document).ready(function () {
     searchPeriodTypeDisplay();
     tradeStatusSelectDisplay();
     tradePeriodSelectDisplay();
+    accIdOfSearchAccountModal();
 });
 
 //직접입력 display 설정 함수
@@ -24,12 +25,13 @@ function customPeriodBtnDisplay() {
 
 // 조회 기간 조건 display 설정 함수
 function searchPeriodTypeDisplay(){
+
     const radios = document.querySelectorAll('input[name="search-period-type"]');
 
+    // 해당하는 row 보여주기
     function toggleSearchRows() {
         const monthlyRow = document.getElementById('search-monthly-tr');
         const periodRow = document.getElementById('search-period-tr');
-
 
         monthlyRow.style.display = 'none';
         periodRow.style.display = 'none';
@@ -44,9 +46,10 @@ function searchPeriodTypeDisplay(){
             }
         });
     }
+    // 기본값 tr 보여주기
     toggleSearchRows();
 
-    // 라디오 버튼 클릭 이벤트 리스너 추가
+    // 라디오 버튼 클릭시 이벤트 라스너 변경
     radios.forEach(radio => {
         radio.addEventListener('change', toggleSearchRows);
     });
@@ -78,5 +81,22 @@ function tradePeriodSelectDisplay(){
             buttons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
         });
+    });
+}
+
+function accIdOfSearchAccountModal(){
+    $('#search-modal-select-account-btn').on("click",function (){
+        alert("accIdOfSearchAccountModal  시작")
+        const selectedAccount = $("input[name='select-account']:checked");
+
+        if (selectedAccount.length > 0) {
+            const selectedRow = selectedAccount.closest("tr");
+            const accountId = selectedRow.find("td:nth-child(2)").text();
+
+            $('#acc-id-input').val(accountId);
+            $('#search-modal-account').modal('hide');
+        } else {
+            alert("계좌를 선택하세요.");
+        }
     });
 }

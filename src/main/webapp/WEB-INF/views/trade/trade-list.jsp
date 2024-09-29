@@ -31,7 +31,7 @@
             <th><label for="acc-id-input">계좌번호</label></th>
             <td class="acc-id-input">
                 <input disabled type="text" id="acc-id-input">
-                <button type="button" class="search-btn" id="search-account-btn">계좌검색</button>
+                <button type="button"  data-bs-toggle="modal" data-bs-target="#search-modal-account" class="search-btn" id="search-account-btn">계좌검색</button>
             </td>
         </tr>
         </tbody>
@@ -146,7 +146,14 @@
     <div>
         <h3 class="mt-3">총 입출금 금액</h3>
         <hr>
-        <div id="trade"></div>
+        <div id="trade-total-balance">
+            <label for="total-deposit-input" >입금액</label>
+            <input type="text" id="total-deposit-input" disabled>
+
+            <label for="total-withdraw-input">출금액</label>
+            <input type="text" id="total-withdraw-input" disabled>
+
+        </div>
     </div>
     <div>
         <h3 class="mt-3">총 거래 내역</h3>
@@ -156,6 +163,7 @@
 
 
 </div>
+<%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/page/trade-list.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>

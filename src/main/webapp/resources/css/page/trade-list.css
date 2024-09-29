@@ -91,3 +91,24 @@ th{
     color: white;
     font-weight: bold;
 }
+
+#trade-total-balance {
+    display: flex;
+    align-items: center;
+    justify-content :center;
+    white-space: nowrap;
+    margin-bottom: 50px;
+}
+
+#trade-total-balance label{
+    margin-right: 30px;
+    margin-left: 50px;
+
+}
+
+
+#trade-total-balance input{
+    width: 30%;
+
+}
+
