@@ -65,7 +65,6 @@
 
             </div>
             <div class="modal-footer">
-                <input type="text" >통장이 개설됐습니다.
             </div>
         </div>
     </div>

@@ -83,9 +83,10 @@ function accountOpen(){
                     text: "계좌가 성공적으로 개설되었습니다.",
                     icon: "success",
                     button: "닫기",
+                }).then(() => {
+                    // swal의 닫기 버튼이 클릭된 후 실행
+                    accountOpenResult(accountId); // 개설된 계좌 정보 성공 모달 호출
                 });
-
-                accountOpenResult(accountId); // 개설계좌 정보 성공 모달 호출
 
             },
             error: function() {
@@ -117,8 +118,10 @@ function accountOpenResult(accountId){
         url: '/api/employee/account/open/'+accountId,
         method: 'GET',
         success: function(data) {
-            $('#result-modal-account-id').val(data.accId);
-            $('#result-modal-customer-name-input').val(data.customerName)
+            const customerName = data.customerName;
+
+            $('#result-modal-account-id-input').val(data.accId);
+            $('#result-modal-customer-name-input').val(customerName)
             $('#result-modal-customer-number-input').val(data.customerId);
             $('#result-modal-phone-number-input').val(data.phoneNumber);
             $('#result-modal-product-name-input').val(data.productName);
@@ -131,18 +134,10 @@ function accountOpenResult(accountId){
             $('#result-modal-total-interest-input').val(data.totalInterestRate);
 
             $("#result-modal-open-account").modal("show");
-            alert(
-                '계좌번호: ' + data.accId + '\n' +
-                '고객명: ' + data.customerName + '\n' +
-                '고객번호: ' + data.customerId + '\n' +
-                '전화번호: ' + data.phoneNumber + '\n' +
-                '상품명: ' + data.productName + '\n' +
-                '계좌개설일: ' + data.startDate + '\n' +
-                '잔액: ' + data.balance + '\n' +
-                '지점명: ' + data.branchName + '\n' +
-                '등록자명: ' + data.registrantName + '\n' +
-                '총 이율: ' + data.totalInterestRate
-            );
+
+
+
+
 
         },
         error: function(error) {
