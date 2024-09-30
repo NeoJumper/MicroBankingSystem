@@ -1,6 +1,6 @@
-package com.kcc.banking.domain.businessday.mapper;
+package com.kcc.banking.domain.business_day.mapper;
 
-import com.kcc.banking.domain.businessday.dto.response.BusinessDay;
+import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -10,4 +10,6 @@ public interface BusinessDayMapper {
     BusinessDay findNextBusinessDay();
 
     BusinessDay findPrevBusinessDay();
+
+
 }

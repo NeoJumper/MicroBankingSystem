@@ -2,7 +2,7 @@ package com.kcc.banking.domain.employee.service;
 
 import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
-import com.kcc.banking.domain.businessday.service.BusinessDayService;
+import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
 import com.kcc.banking.domain.employee.dto.request.EmployeeUpdate;

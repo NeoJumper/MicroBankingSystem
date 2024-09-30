@@ -125,3 +125,12 @@ body {
   box-shadow: none;
 
 }
+.closed-btn{
+  background-color: #d3d3d3; /* 흐린 회색으로 버튼 배경 */
+  color: #a9a9a9; /* 흐린 텍스트 색상 */
+  font-weight: bold;
+  font-size: 1.0rem;
+  padding: 10px 10px;
+  margin: 0 6px;
+  border: none;
+}
