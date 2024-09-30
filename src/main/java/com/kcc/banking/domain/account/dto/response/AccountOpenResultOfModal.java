@@ -19,9 +19,12 @@ public class AccountOpenResultOfModal {
     private Date startDate;
     private BigDecimal balance;
     private String branchName;
-    private String registerId;
+    private String registrantName;
 
-    public AccountOpenResultOfModal(String accId, String customerName, int customerId, String phoneNumber, String productName, Date startDate, BigDecimal balance, String branchName, String registerId) {
+    //총이율
+    private BigDecimal totalInterestRate;
+
+    public AccountOpenResultOfModal(String accId, String customerName, int customerId, String phoneNumber, String productName, Date startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal totalInterestRate) {
         this.accId = accId;
         this.customerName = customerName;
         this.customerId = customerId;
@@ -30,6 +33,7 @@ public class AccountOpenResultOfModal {
         this.startDate = startDate;
         this.balance = balance;
         this.branchName = branchName;
-        this.registerId = registerId;
+        this.registrantName = registrantName;
+        this.totalInterestRate = totalInterestRate;
     }
 }

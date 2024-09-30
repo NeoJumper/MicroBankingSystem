@@ -103,6 +103,7 @@
         <button id="account-transfer-submit" class="col-1 update-btn">이체하기</button>
     </div>
     </div>
+
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <%@ include file="/resources/components/modal/transfer-result-modal.jsp" %>
 <script src="/resources/js/page/account-transfer.js"></script>
