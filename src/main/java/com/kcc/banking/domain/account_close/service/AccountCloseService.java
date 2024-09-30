@@ -27,11 +27,16 @@ public class AccountCloseService {
                 .accId(statusWithTrade.getAccId())
                 .registrantId(1L)
                 .branchId(1L)
-                .amount(statusWithTrade.getAmount()).build();
+                .amount(statusWithTrade.getAmount())
+                .description(statusWithTrade.getDescription())
+                .balance(statusWithTrade.getBalance())
+                .tradeType(statusWithTrade.getTradeType()).build();
+
         AccountStatus accountStatus = AccountStatus.builder()
                 .id(statusWithTrade.getAccId())
                 .status(statusWithTrade.getStatus())
-                .modifierId(1L).build();
+                .modifierId(1L)
+                .balance(statusWithTrade.getBalance()).build();
 
         int tradeResult = accountCloseMapper.addCancelTrade(closeTrade);
         int statusResult = accountCloseMapper.updateStatus(accountStatus);

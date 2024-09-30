@@ -16,13 +16,19 @@ public class CloseTrade {
     private long registrantId;
     private long branchId;
     private BigDecimal amount;
+    private String description;
+    private BigDecimal balance;
+    private String tradeType;
 
     @Builder
-    public CloseTrade(long id, String accId, long registrantId, long branchId, BigDecimal amount) {
+    public CloseTrade(long id, String accId, long registrantId, long branchId, BigDecimal amount, String description, BigDecimal balance, String tradeType) {
         this.id = id;
         this.accId = accId;
         this.registrantId = registrantId;
         this.branchId = branchId;
         this.amount = amount;
+        this.description = description;
+        this.balance = balance;
+        this.tradeType = tradeType;
     }
 }
