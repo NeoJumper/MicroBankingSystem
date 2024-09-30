@@ -9,4 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface TransferMapper {
     int insertTransfer(TransferDetail transferDetail);
     int updateAccountBalance(TransferDetail transferDetail);
+
+    long getNextTradeNumberVal();
 }

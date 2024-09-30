@@ -53,7 +53,7 @@ CREATE TABLE Trade (
                        status VARCHAR(10) NULL,
                        cash_indicator VARCHAR(10) NULL,
                        description VARCHAR(1000) NULL,
-                       trade_number VARCHAR(100) NOT NULL,
+                       trade_number NUMBER NOT NULL,
                        registration_date TIMESTAMP NULL,
                        modification_date TIMESTAMP NULL,
                        modifier_id NUMBER NULL,
@@ -330,7 +330,9 @@ create sequence employee_seq;
 create sequence business_day_seq;
 create sequence branch_seq;
 create sequence trade_seq;
-create sequence trade_num_seq;
+CREATE SEQUENCE trade_num_seq
+    START WITH 16
+    INCREMENT BY 1;
 create sequence interest_seq;
 create sequence product_seq;
 create sequence customer_seq;

@@ -179,13 +179,14 @@ function transferSubmit() {
     $.ajax({
         url: "/api/transfer",
         contentType: "application/json",
+        type: "POST",
         data: JSON.stringify({
             withdrawalAccount: withdrawalAccountId,
             depositAccount: depositAccountId,
             transferAmount: transferAmount,
             description: description
         }),
-        type: "POST",
+
         success: function (data) {
             // 이체 성공 후 모달에 데이터를 채움
             showTransferResultModal(data);

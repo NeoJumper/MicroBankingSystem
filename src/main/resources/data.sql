@@ -237,12 +237,12 @@ VALUES (trade_seq.nextval, '2345678901234', 2, 1, TO_TIMESTAMP('2024-08-02 00:00
 INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
 VALUES (trade_seq.nextval, '3456789012345', 2, 1, TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 200000, 0, 'CLOSE', 'NOR', 'TRUE', '계좌해지', 15);
 
-
-
--- 계좌 상태(해지) 업데이트
+-- 계좌 상태(해지) 및 잔액 업데이트
 UPDATE Account
-SET status = 'CLS'
+SET status = 'CLS',
+    balance = 0
 WHERE id IN ('1234567890123', '2345678901234', '3456789012345');
+
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number)
 VALUES('2024-08-01 00:00:00', 2, 1, 'CLOSED',  10000000, 1210000, 100000, 11110000,1);

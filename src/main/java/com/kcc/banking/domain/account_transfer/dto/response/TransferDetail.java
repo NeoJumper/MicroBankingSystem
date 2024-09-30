@@ -25,14 +25,14 @@ public class TransferDetail {
     private String status;
     private String cashIndicator;
     private String description;
-    private String tradeNumber;
+    private Long tradeNumber;
     private Timestamp registrationDate;
     private Timestamp modificationDate;
     private Long modifierId;
     private Long version;
 
     @Builder
-    public TransferDetail(Long id, Long registrantId, String accId, String targetAccId, Long branchId, Timestamp tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, String tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version) {
+    public TransferDetail(Long id, Long registrantId, String accId, String targetAccId, Long branchId, Timestamp tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;

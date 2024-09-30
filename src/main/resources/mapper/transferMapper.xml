@@ -13,9 +13,13 @@
         UPDATE Account
         SET balance = #{balance},
             modification_date = #{tradeDate},
-            modifier_id = #{registrantId}
+            modifier_id = #{registrantId},
+            version = version + 1
         WHERE id = #{accId}
     </update>
 
+    <select id="getNextTradeNumberVal">
+        SELECT  trade_num_seq.NEXTVAL FROM dual
+    </select>
 
 </mapper>
