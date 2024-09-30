@@ -30,13 +30,16 @@ public class TransferService {
             String tradeNumber = UUID.randomUUID().toString();
 
             // 출금 내역 생성
-            TransferDetail withdrawalTrade = new TransferDetail();
-            // 출금 계좌
-            withdrawalTrade.setAccId(transferCreate.getWithdrawalAccount());
-            // 입금 계좌
-            withdrawalTrade.setTargetAccId(transferCreate.getDepositAccount());
-            // 이체 금액
-            withdrawalTrade.setAmount(transferCreate.getTransferAmount());
+            TransferDetail withdrawalTrade = TransferDetail.builder()
+                    // 출금 계좌
+                    .accId(transferCreate.getWithdrawalAccount())
+                    // 상대 계좌 : 입금 계좌
+                    .targetAccId(transferCreate.getDepositAccount())
+                    // 이체 금액
+                    .amount(transferCreate.getTransferAmount())
+                    .build();
+
+
             // 유형: 출금
             withdrawalTrade.setTradeType("WITHDRAWAL");
 

@@ -95,7 +95,7 @@
             <tbody>
             <tr>
                 <th><label>출금계좌 비밀번호</label></th>
-                <td><input type="password"></td>
+                <td><input type="password">   <button>비밀번호 인증</button></td>
             </tr>
             </tbody>
         </table>
