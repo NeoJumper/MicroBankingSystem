@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class EmployeeSearch {
 
+    private long branchId;
     private String searchOption;
     private String searchValue;
 
