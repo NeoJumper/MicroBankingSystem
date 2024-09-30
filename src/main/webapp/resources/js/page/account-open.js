@@ -1,21 +1,15 @@
 
 $(document).ready(function () {
+    // 상품 정보 api 함수
     accoutOpenProductInfo();
 
+    // 총이율 입력 함수
+    InputChangeOfTotalInterest();
 
-
-
-    // 상품의 총이율 text입력
-    $('#preferred-interest').on('input', function() {
-        calculateTotalInterest();
-    });
-
+    // 계좌 개설 함수
     accountOpen();
 
-
 });
-
-
 
 // 상품이율, 상품번호 api
 function accoutOpenProductInfo(){
@@ -24,12 +18,12 @@ function accoutOpenProductInfo(){
         url: '/api/employee/account/productInterest',
         method: 'GET',
         success: function(data) {
-            $('#preferred-interest').val(data.interestRate);
-            $('#product-id').val(data.id)
+            $('#product-interest-input').val(data.interestRate);
+            $('#product-id-hidden-input').val(data.id)
         },
         error: function(error) {
             console.error('Error fetching product interest:', error);
-            $('#preferred-interest').val('error');
+            $('#preferred-interest-input').val('error');
         }
     });
 
@@ -37,11 +31,17 @@ function accoutOpenProductInfo(){
 
 // 기준이율 + 우대이율 = 총 이자율 계산
 function calculateTotalInterest() {
-    const productInterest = parseFloat($('#product-interest').val()) || 0; // 기준이율
-    const preferredInterest = parseFloat($('#preferred-interest').val()) || 0; // 우대이율
+    const productInterest = parseFloat($('#product-interest-input').val()) || 0; // 기준이율
+    const preferredInterest = parseFloat($('#preferred-interest-input').val()) || 0; // 우대이율
 
     const totalInterest = productInterest + preferredInterest;
-    $('#total-interest').val(totalInterest.toFixed(2)); // 소수점 2자리까지 출력
+    $('#total-interest-input').val(totalInterest.toFixed(2)); // 소수점 2자리까지 출력
+}
+
+function InputChangeOfTotalInterest() {
+    $('#preferred-interest-input').on('input', function() {
+        calculateTotalInterest();
+    });
 }
 
 // 계좌 생성 함수
@@ -51,15 +51,15 @@ function accountOpen(){
 
         alert("click #accountCreateBtn");
         const customerId = $('#customer-id-input').val();
-        const productId = $('#product-id').val();
+        const productId = $('#product-id-hidden-input').val();
 
         //const startDate = $('startDate').val();
-        const preferentialInterestRate =$('#preferred-interest').val();
-        const password =$('#password').val();
-        const balance =$('#balance').val();
+        const preferentialInterestRate =$('#preferred-interest-input').val();
+        const password =$('#password-input').val();
+        const balance =$('#balance-input').val();
 
-        const empId =$('#emp-id').val();
-        const branchId = $('#branch-id').val();
+        const empId =$('#emp-id-hidden-input').val();
+        const branchId = $('#branch-id-hidden-input').val();
 
         $.ajax({
             type: 'POST',
@@ -75,9 +75,16 @@ function accountOpen(){
                 balance: balance
 
             }),
-            success: function(response) {
-                alert('계좌가 성공적으로 생성되었습니다.');
-                accountOpenResult(); // 개설계좌 정보 성공 모달 호출
+            success: function(accountId) {
+                swal({
+                    title: " 계좌 생성 성공",
+                    text: "계좌가 성공적으로 개설되었습니다.",
+                    icon: "success",
+                    button: "닫기",
+                }).then(() => {
+                    // swal의 닫기 버튼이 클릭된 후 실행
+                    accountOpenResult(accountId); // 개설된 계좌 정보 성공 모달 호출
+                });
 
             },
             error: function() {
@@ -101,19 +108,38 @@ function clearCustomerSearchModal() {
 
 
 // 계좌 개설 완료 모달 호출 함수
-function accountOpenResult(){
+function accountOpenResult(accountId){
 
-    $("#account-open-result-modal").modal("show");
 
-    $.ajax({
-        url: '/api/employee/account/productInterest',
+
+   $.ajax({
+        url: '/api/employee/account/open/'+accountId,
         method: 'GET',
         success: function(data) {
-            $('#product-interest').val(data.interestRate);
-            $('#product-id').val(data.id)
+            const customerName = data.customerName;
+
+            $('#result-modal-account-id-input').val(data.accId);
+            $('#result-modal-customer-name-input').val(customerName)
+            $('#result-modal-customer-number-input').val(data.customerId);
+            $('#result-modal-phone-number-input').val(data.phoneNumber);
+            $('#result-modal-product-name-input').val(data.productName);
+            $('#result-modal-start-date-input').val(data.startDate);
+
+            $('#result-modal-balance-input').val(data.balance);
+            $('#result-modal-branch-name-input').val(data.branchName);
+            $('#result-modal-registrant-name-input').val(data.registrantName);
+
+            $('#result-modal-total-interest-input').val(data.totalInterestRate);
+
+            $("#result-modal-open-account").modal("show");
+
+
+
+
+
         },
         error: function(error) {
-            $('#product-interest').val('error');
+            $('#product-interest-input').val('error');
         }
     });
 }

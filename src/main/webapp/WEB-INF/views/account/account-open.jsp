@@ -39,41 +39,42 @@
                 </button>
             </td>
             <th>비밀번호</th>
-            <td><input type="text" id="password"></td>
+            <td><input type="text" id="password-input"></td>
+
         </tr>
         <tr>
             <th>고객명</th>
-            <td><input type="text" id="customer-name" disabled></td>
+            <td><input type="text" id="customer-name-input" disabled></td>
             <th>이자시작일자</th>
-            <td><input type="text" id="start-date" value="20241025" disabled></td>
+            <td><input type="text" id="start-date-input" value="20241025" disabled></td>
 
         </tr>
         <tr>
             <th>초기 예치금(KRW)</th>
-            <td><input type="text" id="balance"></td>
+            <td><input type="text" id="balance-input"></td>
             <td colspan="2"></td>
         </tr>
         <tr>
             <th>기준이율</th>
-            <td><input type="text" id="product-interest" disabled> %</td>
+            <td><input type="text" id="product-interest-input" disabled> %</td>
 
             <th>우대이율</th>
-            <td><input type="text" id="preferred-interest"> %</td>
+            <td><input type="text" id="preferred-interest-input"> %</td>
         </tr>
         <tr>
             <th>총 이자율</th>
-            <td><input type="text" id="total-interest" disabled> %</td>
+            <td><input type="text" id="total-interest-input" disabled> %</td>
             <td colspan="2"></td>
         </tr>
         <tr>
             <th>담당자</th>
-            <td><input type="text" id="emp-name" value="유은서" disabled></td>
+            <td><input type="text" id="emp-name-inpput" value="유은서" disabled></td>
             <td colspan="2"></td>
         </tr>
-        <input type="hidden" id="emp-id" name="empId" value="1">
-        <input type="hidden" id="branch-name" name="branch-name" value="서울지점">
-        <input type="hidden" id="branch-id" name="branch-id" value="001">
-        <input type="hidden" id="product-id" name="product-id" >
+        <input type="hidden" id="emp-id-hidden-input" name="empId" value="1">
+        <input type="hidden" id="branch-name-hidden-input" name="branch-name" value="서울지점">
+        <input type="hidden" id="branch-id-hidden-input" name="branch-id" value="001">
+        <input type="hidden" id="product-id-hidden-input" name="product-id" >
 
 
     </table>
@@ -83,14 +84,12 @@
 
     </div>
 
-    <div id="modalArea">
 
-    </div>
 
 </div>
 
-<%@ include file="/resources/components/modal/search-customer-modal.jsp" %>
-<%@ include file="/resources/components/modal/account-open-result-modal.jsp" %>
+<%@ include file="/resources/components/modal/search-modal-customer.jsp" %>
+<%@ include file="/resources/components/modal/result-modal-open-account.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/account-open.js"></script>
 
