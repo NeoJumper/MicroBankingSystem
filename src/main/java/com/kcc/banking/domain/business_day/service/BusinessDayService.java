@@ -1,7 +1,7 @@
-package com.kcc.banking.domain.businessday.service;
+package com.kcc.banking.domain.business_day.service;
 
-import com.kcc.banking.domain.businessday.dto.response.BusinessDay;
-import com.kcc.banking.domain.businessday.mapper.BusinessDayMapper;
+import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
+import com.kcc.banking.domain.business_day.mapper.BusinessDayMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +22,6 @@ public class BusinessDayService {
     public BusinessDay getPrevBusinessDay() {
         return businessDayMapper.findPrevBusinessDay();
     }
+
+
 }

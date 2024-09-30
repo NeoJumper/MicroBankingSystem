@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper">
+
+    <select id="findClosingData" parameterType="BusinessDateAndEmployeeId" >
+        select e.id, e.name, ec.prev_cash_balance, ec.total_deposit, ec.total_withdrawal, ec.vault_cash, ec.status from employee_closing ec
+        join employee e on ec.registrant_id = e.id
+        where ec.registrant_id = #{employeeId} and ec.closing_date = #{businessDate}
+    </select>
+
+    <select id="findClosingDataList" parameterType="BusinessDateAndBranchId" >
+        select e.id, e.name, ec.prev_cash_balance, ec.total_deposit, ec.total_withdrawal, ec.vault_cash, ec.status from employee_closing ec
+        join employee e on ec.registrant_id = e.id
+        where ec.branch_id = #{branchId} and ec.closing_date = #{businessDate}
+    </select>
+
+
+</mapper>

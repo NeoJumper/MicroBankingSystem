@@ -1,7 +1,7 @@
-package com.kcc.banking.domain.businessday.controller;
+package com.kcc.banking.domain.business_day.controller;
 
-import com.kcc.banking.domain.businessday.dto.response.BusinessDay;
-import com.kcc.banking.domain.businessday.service.BusinessDayService;
+import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
+import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

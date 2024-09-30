@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +15,7 @@
 <body>
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
-<div id="mainArea">
+<div id="main-area">
     <div>
         <h5>마감일 관리</h5>
     </div>
@@ -32,7 +34,7 @@
                 <tr>
                     <th style="width: 5%;">사번</th>
                     <th style="width: 5%;">이름</th>
-                    <th style="width: 10%;">초기금액</th>
+                    <th style="width: 10%;">전일자 현금 잔액</th>
                     <th style="width: 10%;">입금액</th>
                     <th style="width: 10%;">출금액</th>
                     <th style="width: 10%;">금일 마감 금액</th>
@@ -44,87 +46,25 @@
         <div id="employee-add-list" style="overflow-y: auto; height: 200px;">
             <table class="table">
             <tbody>
+                <c:forEach var="closingData" items="${managerClosingData.closingDataList}">
                 <tr>
-                    <td style="width: 5%;">1001</td>
-                    <td style="width: 5%;">지승용</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 6%;">마감 처리중</td>
+                    <td style="width: 5%;">${closingData.id}</td>
+                    <td style="width: 5%;">${closingData.name}</td>
+                    <td style="width: 10%;">
+                        <input class="employee-prev-cash-balance" type="text" value="<c:out value='${closingData.prevCashBalance}' />" disabled>
+                    </td>
+                    <td style="width: 10%;">
+                        <input class="employee-total-deposit" type="text" value="<c:out value='${closingData.totalDeposit}' />" disabled>
+                    </td>
+                    <td style="width: 10%;">
+                        <input class="employee-total-withdrawal" type="text" value="<c:out value='${closingData.totalWithdrawal}' />" disabled>
+                    </td>
+                    <td style="width: 10%;">
+                        <input class="employee-vaultCash" type="text" value="<c:out value='${closingData.vaultCash}' />" disabled>
+                    </td>
+                    <td style="width: 6%;">${closingData.status}</td>
                 </tr>
-                <tr>
-                    <td style="width: 5%;">1001</td>
-                    <td style="width: 5%;">지승용</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 6%;">마감 처리중</td>
-                </tr>
-                <tr>
-                    <td style="width: 5%;">1001</td>
-                    <td style="width: 5%;">지승용</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 6%;">마감 처리중</td>
-                </tr>
-                <tr>
-                    <td style="width: 5%;">1001</td>
-                    <td style="width: 5%;">지승용</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 6%;">마감 처리중</td>
-                </tr>
-                <tr>
-                    <td style="width: 5%;">1001</td>
-                    <td style="width: 5%;">지승용</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 6%;">마감 처리중</td>
-                </tr>
-                <tr>
-                    <td style="width: 5%;">1001</td>
-                    <td style="width: 5%;">지승용</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 6%;">마감 처리중</td>
-                </tr>
-                <tr>
-                    <td style="width: 5%;">1001</td>
-                    <td style="width: 5%;">지승용</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 6%;">마감 처리중</td>
-                </tr>
-                <tr>
-                    <td style="width: 5%;">1001</td>
-                    <td style="width: 5%;">지승용</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 6%;">마감 처리중</td>
-                </tr>
-                <tr>
-                    <td style="width: 5%;">1001</td>
-                    <td style="width: 5%;">지승용</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">0</td>
-                    <td style="width: 10%;">10,000,000</td>
-                    <td style="width: 6%;">마감 처리중</td>
-                </tr>
+                </c:forEach>
             </tbody>
         </table>
 
@@ -135,33 +75,24 @@
     <div class="d-flex justify-content-center mt-4">
         <div >
             <div class="d-flex w-100">
-                <div class="me-5 mb-2">
+                <div class="ms-5 mb-2 ">
                     <label class="amount-label1">현금 입금액</label>
-                    <input class="amount-input" type="text" value="400,000" disabled>
+                    <input id ="manager-total-deposit" class="amount-input" type="text" value="<c:out value='${managerClosingData.totalDepositOfBranch}' />" disabled>
                 </div>
-                <div>
-                    <label class="amount-label2">거래내역 현금 입금액</label>
-                    <input class="amount-input" type="text" value="400,000" disabled>
-                </div>
-            </div>
-            <div class="d-flex w-100">
-                <div class="me-5 mb-2">
+                <div class="ms-5 mb-2">
                     <label class="amount-label1">현금 출금액</label>
-                    <input class="amount-input" type="text" value="1,800,000" disabled>
-                </div>
-                <div>
-                    <label class="amount-label2">거래내역 현금 출금액</label>
-                    <input class="amount-input" type="text" value="1,800,000" disabled>
+                    <input id ="manager-total-withdrawal" class="amount-input" type="text"  value="<c:out value='${managerClosingData.totalWithdrawalOfBranch}' />" disabled>
                 </div>
             </div>
+
             <div class="d-flex w-100">
-                <div class="me-5 mb-2">
-                    <label class="amount-label1">초기 금액</label>
-                    <input class="amount-input" type="text" value="1,800,000" disabled>
+                <div class="ms-5 mb-2">
+                    <label class="amount-label1">전일자 현금</label>
+                    <input id ="manager-prev-cash-balance" class="amount-input" type="text"  value="<c:out value='${managerClosingData.prevCashBalanceOfBranch}' />" disabled>
                 </div>
-                <div>
-                    <label class="amount-label2">금일 마감 금액</label>
-                    <input class="amount-input" type="text" value="1,800,000" disabled>
+                <div class="ms-5 mb-2">
+                    <label class="amount-label1">금일 마감 금액</label>
+                    <input id ="manager-vaultCash" class="amount-input" type="text"  value="<c:out value='${managerClosingData.vaultCashOfBranch}' />" disabled>
                 </div>
             </div>
 
