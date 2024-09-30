@@ -36,7 +36,7 @@
                 </div>
                 <div>
                     <label class="amount-label2">거래내역 현금 입금액</label>
-                    <input class="amount-input" type="text" value="400,000" disabled>
+                    <input class="amount-input" type="text" value="<c:out value='${employeeClosingData.totalDepositOfTrade}' />" disabled>
                 </div>
             </div>
             <div class="d-flex w-100">
@@ -46,7 +46,7 @@
                 </div>
                 <div>
                     <label class="amount-label2">거래내역 현금 출금액</label>
-                    <input class="amount-input" type="text" value="1,800,000" disabled>
+                    <input class="amount-input" type="text" value="<c:out value='${employeeClosingData.totalWithdrawalOfTrade}' />" disabled>
                 </div>
             </div>
             <div class="d-flex w-100">
@@ -64,26 +64,37 @@
         </div>
         <div class="col-3 d-flex justify-content-end">
             <div >
-                <button class ="update-btn">
+                <button id="trade-list-detail-btn" class ="update-btn">
                     내역 상세보기
                 </button>
             </div>
             <div >
-                <button class ="update-btn">
-                    마감완료
+                <button id="employee-business-day-close-btn"
+                        class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'update-btn'}"
+                        <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>>
+                    <c:choose>
+                        <c:when test="${employeeClosingData.closingData.status == 'CLOSED'}">
+                            마감 완료
+                        </c:when>
+                        <c:otherwise>
+                            개인 마감
+                        </c:otherwise>
+                    </c:choose>
+
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="mt-4">
+
+    <div class="mt-4" id="tradeDetails" style="display: none;">
         <div class="d-flex align-items-center">
             <h3 class="mb-0">거래 금액</h3>
         </div>
         <hr>
     </div>
 
-    <div>
+    <div id="tradeDetailsContent" style="display: none;">
         <table class="table">
             <thead>
             <tr>
@@ -97,28 +108,27 @@
             </thead>
         </table>
 
-        <div id="employee-add-list" style="overflow-y: auto; height: 200px;">
+        <div id="employee-add-list" style="overflow-y: auto; height: 260px;">
             <table class="table table-hover">
                 <tbody>
-                <tr class="employee-element">
-                    <td style="width: 20%;">2024.09.09 10:47:20</td>
-                    <td style="width: 20%;">1004-600-300100</td>
-                    <td style="width: 10%;">해지</td>
-                    <td style="width: 20%;">500,000</td>
-                    <td style="width: 10%;">김영진</td>
-                    <td style="width: 20%;"> KCC 정보통신 은행</td>
-                </tr>
-
-
-                <!-- 추가 행들 -->
+                <c:forEach var="trade" items="${employeeClosingData.tradeByCashList}">
+                    <tr>
+                        <td style="width: 20%;">${trade.tradeDate}</td>
+                        <td style="width: 20%;">${trade.accId}</td>
+                        <td style="width: 10%;">${trade.tradeType}</td>
+                        <td style="width: 20%;">${trade.amount}</td>
+                        <td style="width: 10%;">${trade.registrantName}</td>
+                        <td style="width: 20%;">${trade.branchName}</td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>
-
     </div>
+
 </div>
 
-
+<script src="/resources/js/page/employee-close.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>
 </html>

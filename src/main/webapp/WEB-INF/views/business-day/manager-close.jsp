@@ -102,8 +102,8 @@
     </div>
     <div class="d-flex justify-content-center mt-4">
         <div >
-            <button class ="update-btn">
-                수정하기
+            <button id="manager-business-day-close-btn" class ="update-btn">
+                지점마감
             </button>
         </div>
     </div>
@@ -111,6 +111,7 @@
 </div>
 
 
+<script src="/resources/js/page/manager-close.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>
 </html>

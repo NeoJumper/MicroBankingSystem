@@ -16,5 +16,15 @@
         where ec.branch_id = #{branchId} and ec.closing_date = #{businessDate}
     </select>
 
+    <update id="employeeDeadlineStatusToClosed" parameterType="BusinessDateAndEmployeeId" >
+        update employee_closing ec set status = 'CLOSED'
+        where ec.registrant_id = #{employeeId} and ec.closing_date = #{businessDate}
+    </update>
+
+    <update id="branchDeadlineStatusToClosed" parameterType="BusinessDateAndBranchId" >
+        update branch_closing bc set status = 'CLOSED'
+        where bc.branch_id = #{branchId} and bc.closing_date = #{businessDate}
+    </update>
+
 
 </mapper>

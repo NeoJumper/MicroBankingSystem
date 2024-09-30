@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.business_day_close.dto.response;
 
+import com.kcc.banking.domain.trade.dto.response.TradeByCash;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,22 @@ public class EmployeeClosingData {
         this.tradeByCashList = tradeByCashList;
         this.totalDepositOfTrade = totalDepositOfTrade;
         this.totalWithdrawalOfTrade = totalWithdrawalOfTrade;
+    }
+
+    public static EmployeeClosingData of(ClosingData closingData, List<TradeByCash> tradeByCashList)
+    {
+        return EmployeeClosingData.builder()
+                .closingData(closingData)
+                .tradeByCashList(tradeByCashList)
+                .totalDepositOfTrade(tradeByCashList.stream()
+                        .filter(trade -> "OPEN".equals(trade.getTradeType()) || "DEPOSIT".equals(trade.getTradeType()))
+                        .map(TradeByCash::getAmount)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add)
+                )
+                .totalWithdrawalOfTrade(tradeByCashList.stream()
+                        .filter(trade -> "WITHDRAWAL".equals(trade.getTradeType()) || "CLOSE".equals(trade.getTradeType()))
+                        .map(TradeByCash::getAmount)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add)
+                ).build();
     }
 }

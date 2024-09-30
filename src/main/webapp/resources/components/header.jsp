@@ -22,7 +22,7 @@
         <div id="user-roles"></div>
         <div id="user-branch-name"></div>
         <div id="user-name"></div>
-        <div id="logoutButton">로그아웃</div>
+        <div id="logoutButton"><a href="/auth/logout">로그아웃</a></div>
       </div>
     </div>
     <div id="business-day-header">
@@ -37,7 +37,7 @@
       <li><a href="" style="background-color:white;color :#0079D4;">계좌 관리</a></li>
       <li><a href="">고객 관리</a></li>
       <li><a href="">행원 관리</a></li>
-      <li><a href="">영업일 관리</a></li>
+      <li><a href="/page/manager/business-day-management">영업일 관리</a></li>
       <li><a href="">지점 관리</a></li>
     </ul>
   </nav>

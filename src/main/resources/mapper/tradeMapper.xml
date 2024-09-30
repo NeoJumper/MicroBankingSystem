@@ -59,4 +59,13 @@
 
     </select>
 
+    <select id="findTradeByCashList" parameterType="BusinessDateAndEmployeeId">
+
+        select trade_date, acc_id, trade_type, amount, e.name as "registrant_name", b.name as "branch_name" from trade t
+        join employee e on t.registrant_id = e.id
+        join branch b on t.branch_id = b.id
+        where cash_indicator = 'TRUE' and t.registrant_id = #{employeeId} and trade_date = #{businessDate}
+
+    </select>
+
 </mapper>

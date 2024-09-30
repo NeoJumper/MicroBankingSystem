@@ -13,4 +13,8 @@ public interface BusinessDayCloseMapper {
     ClosingData findClosingData(BusinessDateAndEmployeeId businessDateAndEmployeeId);
 
     List<ClosingData> findClosingDataList(BusinessDateAndBranchId businessDateAndBranchId);
+
+    void employeeDeadlineStatusToClosed(BusinessDateAndEmployeeId businessDateAndEmployeeId);
+
+    void branchDeadlineStatusToClosed(BusinessDateAndBranchId businessDateAndBranchId);
 }
