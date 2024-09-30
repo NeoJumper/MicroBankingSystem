@@ -21,15 +21,39 @@
             <div class="modal-body">
                 <h5>출금 내역</h5>
                 <hr>
-                <p>출금 계좌 번호: <span id="modal-result-withdrawal-account"></span></p>
-                <p>출금 금액: <span id="modal-result-withdrawal-amount"></span> 원</p>
-                <p>출금 후 잔액: <span id="modal-result-withdrawal-balance"></span> 원</p>
-                <hr>
+
+                <table class="common-table">
+                    <tr>
+                        <th>출금 계좌 번호</th>
+                        <td><span id="modal-result-withdrawal-account"></span></td>
+                    </tr>
+                    <tr>
+                        <th>출금 금액</th>
+                        <td><span id="modal-result-withdrawal-amount"></span></td>
+                    </tr>
+                    <tr>
+                        <th>출금 후 잔액</th>
+                        <td><span id="modal-result-withdrawal-balance"></span> 원</td>
+                    </tr>
+                </table>
                 <h5>입금 내역</h5>
                 <hr>
-                <p>입금 계좌 번호: <span id="modal-result-deposit-account"></span></p>
-                <p>입금 금액: <span id="modal-result-deposit-amount"></span> 원</p>
-                <p>입금 후 잔액: <span id="modal-result-deposit-balance"></span> 원</p>
+                <table class="common-table">
+                    <tr>
+                        <th>입금 계좌 번호</th>
+                        <td><span id="modal-result-deposit-account"></span></td>
+                    </tr>
+                    <tr>
+                        <th>입금 금액</th>
+                        <td><span id="modal-result-deposit-amount"></span> 원</td>
+                    </tr>
+                    <tr>
+                        <th>입금 후 잔액</th>
+                        <td><span id="modal-result-deposit-balance"></span> 원</td>
+                    </tr>
+
+                </table>
+
             </div>
         </div>
     </div>
