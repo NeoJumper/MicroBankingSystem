@@ -1,10 +1,14 @@
 package com.kcc.banking.domain.account_transfer.service;
 
+import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 import com.kcc.banking.domain.account_transfer.dto.request.TransferCreate;
 import com.kcc.banking.domain.account_transfer.dto.response.TransferDetail;
 import com.kcc.banking.domain.account_transfer.mapper.TransferMapper;
+import com.kcc.banking.domain.employee.dto.response.AuthData;
+import com.kcc.banking.domain.employee.mapper.EmployeeMapper;
+import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +26,17 @@ public class TransferService {
     private final TransferMapper transferMapper;
     private final AccountMapper accountMapper;
 
+    private final EmployeeService employeeService;
+
     // 예외 발생 시 롤백을 강제
     @Transactional(rollbackFor = {Exception.class})  // 모든 예외 발생 시 롤백
     public List<TransferDetail> processTransfer(TransferCreate transferCreate ) throws Exception {
         try {
             // 거래번호 생성
             String tradeNumber = UUID.randomUUID().toString();
+
+            long branchId = Long.parseLong(employeeService.getAuthData().getBranchId());
+            String employeeName = employeeService.getAuthData().getName();
 
             // 출금 내역 생성
             TransferDetail withdrawalTrade = TransferDetail.builder()
@@ -37,11 +46,12 @@ public class TransferService {
                     .targetAccId(transferCreate.getDepositAccount())
                     // 이체 금액
                     .amount(transferCreate.getTransferAmount())
+                    // 유형: 출금
+                    .tradeType("WITHDRAWAL")
+                    //
+                    .branchId()
+                    // 거래 일시
                     .build();
-
-
-            // 유형: 출금
-            withdrawalTrade.setTradeType("WITHDRAWAL");
 
             BigDecimal withdrawalAccountAmount = accountMapper.findAccount(new SearchAccountOfModal(transferCreate.getWithdrawalAccount(), null)).get(0).getBalance();
 
