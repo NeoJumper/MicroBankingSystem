@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MicroBankingSystemApplication {
 
 	public static void main(String[] args) {
+
+
+
 		SpringApplication.run(MicroBankingSystemApplication.class, args);
 	}
 
