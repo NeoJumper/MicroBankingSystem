@@ -63,7 +63,6 @@ $(document).ready(function () {
         cancelCloseAccount();
     })
 
-
 });
 
 function cancelCloseAccount(){
@@ -75,7 +74,7 @@ function cancelCloseAccount(){
             url: '/api/employee/close-trade',
             type: 'POST',
             contentType: 'application/json', // JSON 형식으로 전송
-            data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "OPN"}), // JSON으로 변환하여 전송
+            data: JSON.stringify({accId: accountNumber, amount: 0, status: "OPN", description:"계좌해지 취소", balance:totalAmount, tradeType:"OPEN"}), // JSON으로 변환하여 전송
             success: function (response) {
                 alert('성공:', response);
                 // TODO:: 상세 모달창 열어주기
@@ -101,9 +100,10 @@ function checkAccountId() {
         return;
     }
     if (accountData.customerId == inputId) {
-        $('#submit-btn').prop('disabled', false);
+        $('#cancel-submit-btn').prop('disabled', false);
     }else{
-        window.alert("비밀번호 불일치")
+        $('#account-pw').val('');
+        window.alert("비밀번호 불일치");
     }
 }
 

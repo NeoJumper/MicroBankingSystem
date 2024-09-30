@@ -68,6 +68,9 @@ function checkAccountId() {
     }
     if (accountData.customerId == inputId) {
         $('#submit-btn').prop('disabled', false);
+    }else {
+        $('#account-pw').val('');
+        window.alert("비밀번호 불일치");
     }
 }
 
@@ -80,17 +83,18 @@ function closeAccount() {
             url: '/api/employee/close-trade',
             type: 'POST',
             contentType: 'application/json', // JSON 형식으로 전송
-            data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "CLS", description:"계좌해지", balance:0, tradeType:""}), // JSON으로 변환하여 전송
+            data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "CLS", description:"계좌해지", balance:0, tradeType:"CLOSE"}), // JSON으로 변환하여 전송
             success: function (response) {
                 alert('성공:', response);
                 // TODO:: 상세 모달창 열어주기
-                // 성공하면 계좌의 해지조회 값을 비워 줌.
-                accountData = {};
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('오류 발생:', textStatus, errorThrown);
                 // 오류 처리 로직
             }
+        }).always(function () {
+            accountData = {};
         });
     } else {
         alert('계좌 ID를 입력해주세요.'); // accountId가 없을 경우 경고

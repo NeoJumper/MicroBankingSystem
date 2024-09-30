@@ -49,7 +49,7 @@
             SELECT trade_seq.nextval FROM dual
         </selectKey>
         INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
-        VALUES (#{id}, #{accId}, #{registrantId}, #{branchId}, SYSTIMESTAMP, #{amount}, #{balance}, #{tradeType}, 'NOR', 'TRUE', #{description}, 13)
+        VALUES (#{id}, #{accId}, #{registrantId}, #{branchId}, SYSTIMESTAMP, #{amount}, #{balance}, #{tradeType}, 'NOR', 'TRUE', #{description}, trade_num_seq.nextval)
     </insert>
 
     <update id="updateStatus" parameterType="AccountStatus">
