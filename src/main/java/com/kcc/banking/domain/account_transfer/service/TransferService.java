@@ -106,7 +106,7 @@ public class TransferService {
                     // 이체 금액
                     .amount(transferCreate.getTransferAmount())
                     // 이체 후 잔액
-                    .balance(withdrawalAccountAmount.add(transferCreate.getTransferAmount()))
+                    .balance(depositAccountAmount.add(transferCreate.getTransferAmount()))
                     // 유형: 입금
                     .tradeType("DEPOSIT")
                     // 지점 번호
