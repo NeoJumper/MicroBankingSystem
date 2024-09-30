@@ -1,12 +1,15 @@
 package com.kcc.banking.domain.account.service;
 
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
+import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
+import com.kcc.banking.domain.account.dto.response.AccountOpenResultOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
 import com.kcc.banking.domain.account.dto.response.AccountOfModal;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -18,7 +21,15 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AccountService {
     private final AccountMapper accountMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
+    public void validatePassword(PasswordValidation passwordValidation) {
+        String accountPassword = accountMapper.findPasswordByAccNumber(passwordValidation.getAccountNumber());
+
+        if(!passwordEncoder.matches(passwordValidation.getPassword(), accountPassword)){
+            throw new RuntimeException("Invalid password");
+        }
+    }
 
     public List<AccountDetail> getAccountList(){
         return accountMapper.findAll();
@@ -63,5 +74,8 @@ public class AccountService {
     public List<AccountOfModal> getAccount(SearchAccountOfModal searchAccountOfModal) {
 
         return accountMapper.findAccount(searchAccountOfModal);
+    }
+    public AccountOpenResultOfModal getAccountOpenResultOfModal(String accId){
+        return accountMapper.getAccountOpenResultOfModal(accId);
     }
 }

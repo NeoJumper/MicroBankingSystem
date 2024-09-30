@@ -8,6 +8,6 @@ public class TransferController {
 
     @GetMapping("/page/employee/account-transfer")
     public String employeeAccountTransfer() {
-        return "/transfer/account-transfer";
+        return "transfer/account-transfer";
     }
 }

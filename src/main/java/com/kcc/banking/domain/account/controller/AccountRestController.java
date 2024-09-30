@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.account.controller;
 
+import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
@@ -8,6 +9,7 @@ import com.kcc.banking.domain.account.dto.response.AccountOpenResultOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
 import com.kcc.banking.domain.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -22,6 +24,13 @@ import java.util.Scanner;
 public class AccountRestController {
 
     private final AccountService accountService;
+
+    @PostMapping("/account-validate")
+    public ResponseEntity<Void> validatePassword(@ModelAttribute PasswordValidation passwordValidation) {
+        accountService.validatePassword(passwordValidation);
+
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/accounts")
     public ResponseEntity<List<AccountDetail>> getAllAccounts(Model model) {
@@ -45,19 +54,25 @@ public class AccountRestController {
     // 계좌 개설하기
     @Transactional
     @PostMapping("/account/open")
-    public String openAccount(@RequestBody AccountCreate accountCreate) {
+    public ResponseEntity<String> openAccount(@RequestBody AccountCreate accountCreate) {
 
         System.out.println("accountCreate.getPreferentialInterestRate();"+accountCreate.getPreferentialInterestRate());
         accountService.openAccount(accountCreate);
         System.out.println(accountCreate.getId()+"accountCreate>>>>>>>>>>>>> getId();");
-        return accountCreate.getId();
+        return ResponseEntity.ok(accountCreate.getId());
+
     }
+    //AccountOpenResultOfModal
 
-    // 계좌 개설 완료 정보 함수
-//    @GetMapping("/account/open/result/{accountNumber}")
-//    public AccountOpenResultOfModal getAccountOpenResult(@PathVariable String accId){
-//        System.out.println();
-//    }
-
-
+    // 계좌 정보 조회 API
+    @GetMapping("/account/open/{accountId}")
+    public ResponseEntity<AccountOpenResultOfModal> getAccountInfo(@PathVariable String accountId) {
+        AccountOpenResultOfModal accountInfo = accountService.getAccountOpenResultOfModal(accountId);
+        if (accountInfo != null) {
+            return ResponseEntity.ok(accountInfo);  // 조회된 계좌 정보를 반환
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 계좌 정보가 없는 경우 404 처리
+        }
+    }
 }
+
