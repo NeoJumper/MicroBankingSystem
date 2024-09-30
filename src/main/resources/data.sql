@@ -144,7 +144,7 @@ INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period,
 VALUES (product_seq.NEXTVAL, 5, '더편한보통예금', 2.5, SYSDATE, '12개월', 0.15, 1);
 
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
-VALUES ('1234567890123', 1, 1, 1, 2, SYSDATE, 0.5, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 100000, SYSDATE, 'OPN', 1);
+VALUES ('1234567890123', 1, 1, 1, 2, SYSDATE, 0.5, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 250000, SYSDATE, 'OPN', 1);
 
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
 VALUES ('2345678901234', 1, 2, 2, 2, SYSDATE, 0.7, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 200000, SYSDATE, 'OPN', 1);
@@ -153,10 +153,11 @@ INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, star
 VALUES ('3456789012345', 1, 3, 3, 2, SYSDATE, 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 150000, SYSDATE, 'OPN', 1);
 
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
-VALUES ('4567890123456', 1, 4, 4, 2, SYSDATE, 0.3, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 50000, SYSDATE, 'OPN', 1);
+VALUES ('4567890123456', 1, 4, 4, 2, SYSDATE, 0.3, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
 
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
 VALUES ('5678901234567', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
 
 -- 1번 고객 계좌
 INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
@@ -242,6 +243,14 @@ UPDATE Account
 SET status = 'CLS',
     balance = 0
 WHERE id IN ('1234567890123', '2345678901234', '3456789012345');
+
+UPDATE Account
+SET balance = 250000
+WHERE id = 4567890123456;
+
+UPDATE Account
+SET balance = 220000
+WHERE id = 5678901234567;
 
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number)
