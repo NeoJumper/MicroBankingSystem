@@ -24,7 +24,7 @@ public class AccountRestController {
 
     private final AccountService accountService;
 
-    @PostMapping
+    @PostMapping("/account-validate")
     public ResponseEntity<Void> validatePassword(@ModelAttribute PasswordValidation passwordValidation) {
         accountService.validatePassword(passwordValidation);
 
