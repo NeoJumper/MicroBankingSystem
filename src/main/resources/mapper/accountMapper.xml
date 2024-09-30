@@ -4,6 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcc.banking.domain.account.mapper.AccountMapper">
 
+    <select id="findPasswordByAccNumber" parameterType="String">
+        SELECT
+            a.password AS accountNumber
+        FROM
+            Account a
+        WHERE a.id = #{accountNumber}
+    </select>
+
     <resultMap id="AccountAllResultMap" type="AccountDetail">
         <id property="id" column="id" />
         <result property="branchId" column="branch_id" />

@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.account.controller;
 
+import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
@@ -22,6 +23,13 @@ import java.util.Scanner;
 public class AccountRestController {
 
     private final AccountService accountService;
+
+    @PostMapping("/account-validate")
+    public ResponseEntity<Void> validatePassword(@ModelAttribute PasswordValidation passwordValidation) {
+        accountService.validatePassword(passwordValidation);
+
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/accounts")
     public ResponseEntity<List<AccountDetail>> getAllAccounts(Model model) {
