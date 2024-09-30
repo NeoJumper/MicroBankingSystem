@@ -14,4 +14,15 @@ public class BusinessDayController {
         return "business-day/business-day-management";
     }
 
+    @GetMapping("/page/employee/business-day-close")
+    public String businessDayCloseOfEmployeePage(){
+        return "business-day/employee-close";
+    }
+
+    @GetMapping("/page/manager/business-day-close")
+    public String businessDayCloseOfManagerPage(){
+        return "business-day/manager-close";
+    }
+
+
 }
