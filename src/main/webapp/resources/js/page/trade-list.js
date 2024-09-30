@@ -6,6 +6,7 @@ $(document).ready(function () {
     tradeStatusSelectDisplay();
     tradePeriodSelectDisplay();
     accIdOfSearchAccountModal();
+    SearchResultOfTradeList();
 });
 
 //직접입력 display 설정 함수
@@ -99,4 +100,70 @@ function accIdOfSearchAccountModal(){
             alert("계좌를 선택하세요.");
         }
     });
+}
+
+// 날짜 조건 계산 함수
+function searchPeriodCalculation() {
+
+
+}
+
+// $('.trade-period-search-btn.active').val();
+// 거래내역 조회 api
+function SearchResultOfTradeList() {
+    $("#trade-list-search-btn").on("click",function(){
+
+        alert("거래내역 조회 api");
+        const constAccId = $('#acc-id-input').val();
+        const activeButtonValue = $('.trade-status-search-btn.active').val();
+
+        const selectedValue = $('input[name="search-sort"]:checked').val();
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+        console.log("constAccId"+constAccId);
+        console.log(activeButtonValue);
+        console.log("selectedValue"+selectedValue);
+        console.log("startDate"+startDate);
+        console.log("endDate"+endDate);
+
+        $.ajax({
+           url: '/api/employee/trade/search/result',
+           method: 'GET',
+           data: {
+               accId: constAccId,
+               tradeType: activeButtonValue,
+               startDate: startDate,
+               endDate: endDate,
+               sortOrder: selectedValue
+           },
+           success: function(data){
+               renderSearchResults(data);
+
+           },error: function(error) {
+               alert('검색 요청에 실패했습니다: ' + error);
+           }
+       })
+
+    })
+}
+
+// 거래내역 동적 테이블 생성 : 검색결과 뿌리기
+function renderSearchResults(data) {
+    const tradeResultsTableBody = $('#trade-result-tbody');
+    tradeResultsTableBody.empty();
+
+   $.each(data, function(index,trade){
+       var row = $('<tr>')
+           .append($('<td>').text(index+1))
+           .append($('<td>').text(trade.tradeDate))
+           .append($('<td>').text(trade.accId))
+           .append($('<td>').text(trade.targetAccId))
+           .append($('<td>').text(trade.cashIndicator))
+           .append($('<td>').text(trade.amount))
+           .append($('<td>').text(trade.balance))
+           .append($('<td>').text(trade.tradeType))
+           .append($('<td>').text(trade.status))
+
+       tradeResultsTableBody.append(row);
+   })
 }

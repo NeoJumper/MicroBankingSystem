@@ -20,7 +20,6 @@ import java.util.Random;
 public class AccountService {
     private final AccountMapper accountMapper;
 
-
     public List<AccountDetail> getAccountList(){
         return accountMapper.findAll();
     }

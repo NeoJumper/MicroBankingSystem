@@ -37,7 +37,7 @@
         </tbody>
     </table>
     <div class="row justify-content-center mb-5">
-        <button class="col-1 update-btn">조회하기</button>
+        <button class="col-1 update-btn" id="trade-list-search-btn">조회하기</button>
         <button class="col-1 detail-search-btn">상세 검색</button>
     </div>
 
@@ -49,12 +49,12 @@
         <tr>
             <th>조건별조회</th>
             <td>
-                <div class="button-group">
-                    <button type="button" class="trade-status-search-btn active">전체</button>
-                    <button type="button" class="trade-status-search-btn">입금</button>
-                    <button type="button" class="trade-status-search-btn">출금</button>
-                    <button type="button" class="trade-status-search-btn">해지</button>
-                    <button type="button" class="trade-status-search-btn">가입</button>
+                <div class="button-group" id ="trade-type-div">
+                    <button type="button" class="trade-status-search-btn active" >전체</button>
+                    <button type="button" class="trade-status-search-btn" value="DEPOSIT">입금</button>
+                    <button type="button" class="trade-status-search-btn" value="WITHDRAWAL">출금</button>
+                    <button type="button" class="trade-status-search-btn" value="CLOSE">해지</button>
+                    <button type="button" class="trade-status-search-btn" value="OPEN">가입</button>
                 </div>
 
             </td>
@@ -107,11 +107,11 @@
             <th><label for="period-start-input">기간조회</label></th>
             <td>
                 <div class="button-group">
-                    <button type="button" class="trade-period-search-btn">당일</button>
-                    <button type="button" class="trade-period-search-btn">1주일</button>
-                    <button type="button" class="trade-period-search-btn">1개월</button>
-                    <button type="button" class="trade-period-search-btn active">3개월</button>
-                    <button type="button" class="trade-period-search-btn">6개월</button>
+                    <button type="button" class="trade-period-search-btn" value="1d">당일</button>
+                    <button type="button" class="trade-period-search-btn" value="1w">1주일</button>
+                    <button type="button" class="trade-period-search-btn" value="1m">1개월</button>
+                    <button type="button" class="trade-period-search-btn active" value="3m">3개월</button>
+                    <button type="button" class="trade-period-search-btn" value="6dm">6개월</button>
                     <button type="button" class="trade-period-search-btn" id="custom-period-btn">직접입력</button>
                 </div>
                 <div id="period-search-area">
@@ -158,7 +158,23 @@
     <div>
         <h3 class="mt-3">총 거래 내역</h3>
         <hr>
-        <div id="trade-result-div"></div>
+        <table class="common-table">
+            <thead>
+
+            <th>순번</th>
+            <th><label id="trade-date">거래일시</label></th>
+            <th><label id="acc-id">대상계좌</label></th>
+            <th><label id="target-acc-id">상대계좌</label></th>
+            <th><label id="cash-indicator">현금여부</label></th>
+            <th><label id="amount">거래액</label></th>
+            <th><label id="balance">잔액</label></th>
+            <th><label id="trade-type">거래유형</label></th>
+            <th><label id="status">상태</label></th>
+            </thead>
+            <tbody id="trade-result-tbody">
+
+            </tbody>
+        </table>
     </div>
 
 

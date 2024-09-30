@@ -67,9 +67,4 @@ public class AccountRestController {
         }
     }
 }
-    // 계좌 개설 완료 정보 함수
-//    @GetMapping("/account/open/result/{accountNumber}")
-//    public AccountOpenResultOfModal getAccountOpenResult(@PathVariable String accId){
-//        System.out.println();
-//    }
 

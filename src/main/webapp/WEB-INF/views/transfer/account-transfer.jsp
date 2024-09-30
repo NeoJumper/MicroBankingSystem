@@ -102,6 +102,7 @@
         <button class="col-1 update-btn">이체하기</button>
     </div>
     </div>
+
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/page/account-transfer.js"></script>
 <script src="/resources/js/footer.js"></script>

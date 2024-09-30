@@ -11,8 +11,6 @@ $(document).ready(function () {
 
 });
 
-
-
 // 상품이율, 상품번호 api
 function accoutOpenProductInfo(){
     // 상품이율 구하기
