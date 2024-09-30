@@ -3,14 +3,12 @@ package com.kcc.banking.domain.employee.controller;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
 import com.kcc.banking.domain.employee.dto.request.EmployeeUpdate;
-import com.kcc.banking.domain.employee.dto.response.CreatedEmployee;
-import com.kcc.banking.domain.employee.dto.response.EmployeeDataOfList;
-import com.kcc.banking.domain.employee.dto.response.EmployeeDetail;
-import com.kcc.banking.domain.employee.dto.response.UpdatedEmployee;
+import com.kcc.banking.domain.employee.dto.response.*;
 import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -23,6 +21,15 @@ public class EmployeeRestController {
     public EmployeeDetail getEmployeeDetail(@PathVariable(value = "id", required = false) Long id) {
         return employeeService.getEmployeeDetail(id);
     }
+    @GetMapping("/api/manager/employees/cash-balance")
+    public List<CashBalanceOfEmployee> getCashBalanceOfEmployees() {
+        return employeeService.getCashBalanceOfEmployees();
+    }
+    @GetMapping("/api/manager/branch/cash-balance")
+    public BigDecimal getCashBalanceOfBranch() {
+        return employeeService.getCashBalanceOfBranch();
+    }
+
 
     @PostMapping("/api/manager/employee")
     public CreatedEmployee createEmployee(@RequestBody EmployeeCreate employeeCreate) {
@@ -40,4 +47,10 @@ public class EmployeeRestController {
         return employeeService.getEmployeeListByOption(employeeSearch);
 
     }
+
+    @GetMapping("/api/auth-data")
+    public AuthData getAuthData() {
+        return employeeService.getAuthData();
+    }
+
 }

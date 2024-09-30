@@ -45,9 +45,10 @@
             <tr>
                 <th><label for="transfer-amount">이체금액</label></th>
                 <td>
-                    <input disabled type="text" id="transfer-amount">
+                    <div><span id="over-account-balance"></span></div>
+                    <input disabled type="text" id="transfer-amount"> 원
                     <label id="account-balance-label" style="display: none">
-                    계좌 잔액: <span id="account-balance"></span> 원
+                        | 계좌 잔액: <span id="account-balance"></span> 원
                 </label>
                     <div class="button-group">
                         <button type="button" class="amount-btn" disabled>100만</button>
@@ -64,8 +65,8 @@
                 <td><input disabled type="date" id="execution-date"></td>
             </tr>
             <tr>
-                <th><label for="remark">비고</label></th>
-                <td><input type="text" id="remark"></td>
+                <th><label for="description">비고</label></th>
+                <td><input type="text" id="description"></td>
             </tr>
         </table>
         <div>
@@ -76,7 +77,7 @@
             <tbody>
             <tr>
                 <th><label for="deposit-account-number">입금계좌번호</label></th>
-                <td class="inputWithBtn"><input disabled type="text" id="deposit-account-number">
+                <td><input disabled type="text" id="deposit-account-number">
                     <button id="check-deposit-account-btn" class="update-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
                 </td>
             </tr>
@@ -94,16 +95,17 @@
             <tbody>
             <tr>
                 <th><label>출금계좌 비밀번호</label></th>
-                <td><input type="password"></td>
+                <td><input type="password">   <button>비밀번호 인증</button></td>
             </tr>
             </tbody>
         </table>
     <div class="row justify-content-center mb-5">
-        <button class="col-1 update-btn">이체하기</button>
+        <button id="account-transfer-submit" class="col-1 update-btn">이체하기</button>
     </div>
     </div>
 
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
+<%@ include file="/resources/components/modal/transfer-result-modal.jsp" %>
 <script src="/resources/js/page/account-transfer.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>

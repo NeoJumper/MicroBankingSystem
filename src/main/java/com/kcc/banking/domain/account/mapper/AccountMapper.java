@@ -12,6 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface AccountMapper {
+    String findPasswordByAccNumber(String accountNumber);
     List<AccountDetail> findAll();
     List<AccountOfModal> findAccount(SearchAccountOfModal searchAccountOfModal);
 
