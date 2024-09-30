@@ -49,7 +49,7 @@ public class TransferService {
                     // 유형: 출금
                     .tradeType("WITHDRAWAL")
                     //
-                    .branchId()
+                    .branchId(branchId)
                     // 거래 일시
                     .build();
 
