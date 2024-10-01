@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -19,9 +20,10 @@ public class CloseTrade {
     private String description;
     private BigDecimal balance;
     private String tradeType;
+    private Timestamp businessDay;
 
     @Builder
-    public CloseTrade(long id, String accId, long registrantId, long branchId, BigDecimal amount, String description, BigDecimal balance, String tradeType) {
+    public CloseTrade(long id, String accId, long registrantId, long branchId, BigDecimal amount, String description, BigDecimal balance, String tradeType, Timestamp businessDay) {
         this.id = id;
         this.accId = accId;
         this.registrantId = registrantId;
@@ -30,5 +32,6 @@ public class CloseTrade {
         this.description = description;
         this.balance = balance;
         this.tradeType = tradeType;
+        this.businessDay = businessDay;
     }
 }
