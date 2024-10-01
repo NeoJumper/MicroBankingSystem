@@ -1,5 +1,7 @@
 package com.kcc.banking.domain.employee.service;
 
+import com.kcc.banking.common.exception.ErrorCode;
+import com.kcc.banking.common.exception.custom_exception.NotFoundException;
 import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.business_day.service.BusinessDayService;
@@ -59,6 +61,11 @@ public class EmployeeService {
 
     public AuthData getAuthData() {
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
+
+        if (loginMemberId == null) {
+            throw new NotFoundException(ErrorCode.NOT_FOUND_MEMBER);
+        }
+
         return employeeMapper.findAuthDataById(loginMemberId);
     }
 
