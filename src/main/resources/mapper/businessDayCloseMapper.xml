@@ -26,5 +26,44 @@
         where bc.branch_id = #{branchId} and bc.closing_date = #{businessDate}
     </update>
 
+    <select id="getNextTradeNumberVal">
+        SELECT  trade_num_seq.NEXTVAL FROM dual
+    </select>
+
+    <insert id="batchInsertEmployeeClosing" parameterType="list">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO EMPLOYEE_CLOSING
+            (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number)
+            VALUES
+            (
+            #{item.closingDate}, #{item.registrantId}, #{item.branchId},
+            #{item.status},
+            #{item.prevCashBalance},
+            0,
+            0,
+            #{item.prevCashBalance},
+            #{item.tradeNumber}
+            )
+        </foreach>
+        SELECT * FROM DUAL
+    </insert>
+
+    <insert id="insertBranchClosing" parameterType="BranchClosingCreate">
+
+            INSERT INTO BRANCH_CLOSING
+            (closing_date, registrant_id, branch_id, status, prev_cash_balance, vault_cash, trade_number)
+            VALUES
+            (
+            #{closingDate},
+            #{registrantId},
+            #{branchId},
+            #{status},
+            #{prevCashBalance},
+            #{prevCashBalance},
+            #{tradeNumber}
+            )
+
+    </insert>
 
 </mapper>

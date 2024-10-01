@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.business_day.mapper;
 
+import com.kcc.banking.domain.business_day.dto.request.BusinessDayUpdate;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,4 +13,5 @@ public interface BusinessDayMapper {
     BusinessDay findPrevBusinessDay();
 
 
+    void updateStatus(BusinessDayUpdate businessDayUpdate);
 }
