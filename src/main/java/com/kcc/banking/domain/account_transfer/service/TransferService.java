@@ -65,7 +65,7 @@ public class TransferService {
         BigDecimal depositAccountAmount = accountService.getAccountDetail(transferCreate.getDepositAccount()).getBalance();
 
 
-        // 거래번호 조회 (trade_num_seq)
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = transferMapper.getNextTradeNumberVal();
 
         // 지점 번호
