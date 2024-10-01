@@ -17,15 +17,18 @@ public class BusinessDayCloseRestController {
     private final BusinessDayCloseService businessDayCloseService;
 
     @PatchMapping("/api/employee/business-day-close")
-    public String businessDayCloseOfEmployeePage(Model model){
+    public void businessDayCloseOfEmployee(Model model){
         businessDayCloseService.closeByEmployee();
-        return "business-day/employee-close";
     }
 
     @PatchMapping("/api/manager/business-day-close")
-    public String businessDayCloseOfManagerPage(Model model)
+    public void businessDayCloseOfManager(Model model)
     {
         businessDayCloseService.closeByManager();
-        return "business-day/manager-close";
+    }
+    @GetMapping("/api/manager/business-day-close")
+    public ManagerClosingData getBusinessDayChangeDataOfManager(Model model)
+    {
+        return businessDayCloseService.getManagerClosingData();
     }
 }

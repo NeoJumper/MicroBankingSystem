@@ -35,4 +35,12 @@
         )
         WHERE ROWNUM = 1
     </select>
+
+    <update id="updateStatus" parameterType="BusinessDayUpdate">
+        update business_day set
+        is_current_business_day = #{isCurrentBusinessDay},
+        status = #{status}
+        where business_date = #{targetDate}
+    </update>
+
 </mapper>

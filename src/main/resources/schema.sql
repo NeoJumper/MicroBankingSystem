@@ -111,7 +111,7 @@ CREATE TABLE Interest (
                           trade_number VARCHAR(20) NULL,
                           registration_date TIMESTAMP NULL,
                           modifier_date TIMESTAMP NULL,
-                          modifier_id NUMBER NOT NULL,
+                          modifier_id NUMBER NULL,
                           version NUMBER NULL
 );
 

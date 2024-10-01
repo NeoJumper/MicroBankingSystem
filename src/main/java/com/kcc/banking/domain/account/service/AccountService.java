@@ -3,10 +3,7 @@ package com.kcc.banking.domain.account.service;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
-import com.kcc.banking.domain.account.dto.response.AccountDetail;
-import com.kcc.banking.domain.account.dto.response.AccountOpenResultOfModal;
-import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
-import com.kcc.banking.domain.account.dto.response.AccountOfModal;
+import com.kcc.banking.domain.account.dto.response.*;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -81,5 +78,9 @@ public class AccountService {
 
     public AccountOpenResultOfModal getAccountOpenResultOfModal(String accId){
         return accountMapper.getAccountOpenResultOfModal(accId);
+    }
+    public List<AccountDetailForInterest> getAccountListByBranchId(Long branchId)
+    {
+        return accountMapper.findAccountByBranchId(branchId);
     }
 }

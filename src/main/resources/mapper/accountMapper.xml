@@ -147,4 +147,17 @@
     <select id="getAccountDetail" resultType="AccountDetail">
         SELECT * FROM Account WHERE id = #{accountId}
     </select>
+
+    <select id="findAccountByBranchId" parameterType="Long">
+        SELECT
+        ac.id as acc_id,
+        ac.branch_id,
+        ac.product_id,
+        ac.registrant_id,
+        ac.preferential_interest_rate + p.interest_rate as interest_rate,
+        ac.balance
+        FROM account ac
+        JOIN product p ON ac.product_id = p.id
+        WHERE ac.branch_id = #{branchId}
+    </select>
 </mapper>
