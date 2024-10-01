@@ -10,7 +10,7 @@ public class AccountController {
 
     @GetMapping("/page/employee/account-open")
     public String accountCreate(){
-        return "/account/account-open";
+        return "account/account-open";
 
     }
 }
