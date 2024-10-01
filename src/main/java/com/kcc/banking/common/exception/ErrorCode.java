@@ -11,6 +11,9 @@ public enum ErrorCode {
     EMPTY_REFRESH_TOKEN("RefreshToken이 필요합니다.", HttpStatus.BAD_REQUEST),
     EMPTY_EMAIL("이메일이 필요합니다.", HttpStatus.BAD_REQUEST),
     INVALID_CODE("not invalid Code",HttpStatus.BAD_REQUEST ),
+    CLS_ACCOUNT("해지된 계좌에 대한 거래가 불가능합니다.", HttpStatus.BAD_REQUEST),
+    OVER_AMOUNT("계좌 잔액보다 이체 금액이 더 많습니다.", HttpStatus.BAD_REQUEST),
+
 
     // 403
     NOT_LOGIN("로그인 후 이용할 수 있습니다.", HttpStatus.FORBIDDEN),
@@ -20,6 +23,8 @@ public enum ErrorCode {
 
     // 404
     NOT_FOUND_MEMBER("회원이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    NOT_FOUND_ACCOUNT("존재하지 않는 계좌번호입니다.", HttpStatus.NOT_FOUND),
+    NOT_FOUND_DEPOSIT_ACCOUNT("이체하려는 계좌가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
 
     // 409
     ALREADY_JOINED("이미 존재하는 회원입니다.", HttpStatus.CONFLICT),

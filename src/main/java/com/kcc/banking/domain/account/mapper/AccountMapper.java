@@ -13,8 +13,12 @@ import java.util.List;
 @Mapper
 public interface AccountMapper {
     String findPasswordByAccNumber(String accountNumber);
+    // 전체 계좌 목록 조회
     List<AccountDetail> findAll();
+    // 모달 조회 후 목록 요청
     List<AccountOfModal> findAccount(SearchAccountOfModal searchAccountOfModal);
+    // 계좌 상세정보 조회
+    AccountDetail getAccountDetail(String accountId);
 
     // 계좌 개설할때 상품 정보 가져오기
     AccountProductInfo findAccountProductInfo();
