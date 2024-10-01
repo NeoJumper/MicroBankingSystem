@@ -56,7 +56,8 @@ public class SecurityConfig {
                         .loginProcessingUrl("/auth/login")
                         .defaultSuccessUrl("/index")
                         .failureHandler(authenticationFailureHandler())
-                );
+                ).logout(logout ->
+                        logout.logoutUrl("/auth/logout"));
         return http.build();
     }
 

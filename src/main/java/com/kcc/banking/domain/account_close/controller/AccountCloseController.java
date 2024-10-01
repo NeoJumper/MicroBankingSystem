@@ -13,11 +13,11 @@ public class AccountCloseController {
 
     @GetMapping("/page/employee/account-close")
     public String accountClose() {
-        return "/account_close/account-close";
+        return "account_close/account-close";
     }
 
     @GetMapping("/page/employee/account-close/cancel")
     public String accountCloseCancel() {
-        return "/account_close/account-close-cancel";
+        return "account_close/account-close-cancel";
     }
 }

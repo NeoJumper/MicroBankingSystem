@@ -26,7 +26,7 @@
         <div style="margin : 0 100px;">
             <h3>계좌 해지 취소 신청</h3>
             <div id="search-content">
-                <div><input placeholder="계좌번호 입력" id="search-bar"></div>
+                <div><input style="height: 100%;" placeholder="계좌번호 입력" id="search-bar"></div>
                 <button id="check-withdrawal-account-btn" class="update-btn" type="button"
                         data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">
                     계좌조회
@@ -56,38 +56,6 @@
             </div>
             <hr class="m-0 border border-dark border-2">
 
-<%--            <div>--%>
-<%--                <h4>예금 예상 이자 및 총 금액</h4>--%>
-<%--                <hr class="m-0 border border-dark border-2">--%>
-<%--                <table class="table">--%>
-<%--                    <tbody>--%>
-<%--                    <tr>--%>
-<%--                        <th style="width: 5%;background-color: #F5F5F5;">총 기간</th>--%>
-<%--                        <th style="width: 5%;background-color: #F5F5F5;">총 이율</th>--%>
-<%--                        <th style="width: 10%;background-color: #F5F5F5;">예상이자</th>--%>
-<%--                        <th style="width: 10%;background-color: #F5F5F5;">총 금액</th>--%>
-<%--                        <th style="width: 10%;background-color: #F5F5F5;">세율</th>--%>
-<%--                        <th style="width: 10%;background-color: #F5F5F5;">지급 총 금액</th>--%>
-<%--                    </tr>--%>
-<%--                    </tbody>--%>
-<%--                </table>--%>
-
-<%--                <div id="employee-add-list" style="height: 53px;">--%>
-<%--                    <table id="table-content" class="table">--%>
-<%--                        <tbody>--%>
-<%--                        <tr>--%>
-<%--                            <td style="width: 5%;">600일</td>--%>
-<%--                            <td style="width: 5%;">4.01 %</td>--%>
-<%--                            <td style="width: 10%;">10,000</td>--%>
-<%--                            <td style="width: 10%;">100,000,000</td>--%>
-<%--                            <td style="width: 10%;">14.5 %</td>--%>
-<%--                            <td style="width: 10%;">10,010,000</td>--%>
-<%--                        </tr>--%>
-<%--                        </tbody>--%>
-<%--                    </table>--%>
-<%--                    <hr class="m-0 border border-dark border-2">--%>
-<%--                </div>--%>
-<%--            </div>--%>
             <h4>계좌 비밀번호</h4>
             <hr class="m-0 border border-dark border-2">
             <div class="d-flex">
@@ -100,14 +68,14 @@
             <hr class="m-0 border border-dark border-2">
 
             <div id="submit">
-                <input id="submit-btn" type="submit" value="취소 신청" disabled>
+                <input id="cancel-submit-btn" type="submit" value="취소 신청" disabled>
             </div>
         </div>
     </div>
 
 </div>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
-<script src="/resources/js/page/account-close.js"></script>
+<script src="/resources/js/page/account-close-cancel.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>
 
