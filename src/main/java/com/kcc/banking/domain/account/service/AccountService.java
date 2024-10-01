@@ -75,7 +75,7 @@ public class AccountService {
         return accountMapper.findAccount(searchAccountOfModal);
     }
 
-    public AccountDetail getAccountDetailById(String accountId) {
+    public AccountDetail getAccountDetail(String accountId) {
         return accountMapper.getAccountDetail(accountId);
     }
 

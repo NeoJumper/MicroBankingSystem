@@ -8,6 +8,7 @@ import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.AccountOfModal;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
+import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.account_transfer.dto.request.TransferCreate;
 import com.kcc.banking.domain.account_transfer.dto.response.TransferDetail;
 import com.kcc.banking.domain.account_transfer.mapper.TransferMapper;
@@ -28,8 +29,8 @@ import java.util.List;
 public class TransferService {
 
     private final TransferMapper transferMapper;
-    private final AccountMapper accountMapper;
 
+    private final AccountService accountService;
     private final EmployeeService employeeService;
     private final BusinessDayService businessDayService;
 
@@ -38,9 +39,9 @@ public class TransferService {
     public List<TransferDetail> processTransfer(TransferCreate transferCreate) {
 
         // 출금 계좌 조회
-        AccountDetail withdrawalAccount = accountMapper.getAccountDetail(transferCreate.getWithdrawalAccount());
+        AccountDetail withdrawalAccount = accountService.getAccountDetail(transferCreate.getWithdrawalAccount());
         // 입금 계좌 조회
-        AccountDetail depositAccount = accountMapper.getAccountDetail(transferCreate.getDepositAccount());
+        AccountDetail depositAccount = accountService.getAccountDetail(transferCreate.getDepositAccount());
 
         // 출금 계좌 조회 시
         if(withdrawalAccount == null) {
@@ -50,14 +51,7 @@ public class TransferService {
         else if(withdrawalAccount.getStatus().equals("CLS")){
             throw new BadRequestException(ErrorCode.CLS_ACCOUNT);
         }
-        // 입금 계좌 조회 시
-        else if(depositAccount == null){
-            throw new BadRequestException(ErrorCode.NOT_FOUND_DEPOSIT_ACCOUNT);
-        }
-        //입금 계좌 상태 확인
-        else if(depositAccount.getStatus().equals("CLS")){
-            throw new BadRequestException(ErrorCode.CLS_ACCOUNT);
-        }
+
 
         // 출금 계좌 잔액 조회
         BigDecimal withdrawalAccountAmount = withdrawalAccount.getBalance();
@@ -68,7 +62,7 @@ public class TransferService {
         }
 
         // 입금 계좌
-        BigDecimal depositAccountAmount = accountMapper.findAccount(new SearchAccountOfModal(transferCreate.getDepositAccount(), null)).get(0).getBalance();
+        BigDecimal depositAccountAmount = accountService.getAccountDetail(transferCreate.getDepositAccount()).getBalance();
 
 
         // 거래번호 조회 (trade_num_seq)
@@ -126,6 +120,15 @@ public class TransferService {
 
 
         // ---------------------------------------------------------------------------------------
+
+        // 입금 계좌 조회 시
+        if(depositAccount == null){
+            throw new BadRequestException(ErrorCode.NOT_FOUND_TARGET_ACCOUNT);
+        }
+        //입금 계좌 상태 확인
+        else if(depositAccount.getStatus().equals("CLS")){
+            throw new BadRequestException(ErrorCode.CLS_ACCOUNT);
+        }
 
         // 입금 내역 생성
         TransferDetail depositTrade = TransferDetail.builder()
