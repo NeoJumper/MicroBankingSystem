@@ -25,7 +25,7 @@ public class BusinessDayCloseService {
     private final EmployeeService employeeService;
     private final TradeService tradeService;
 
-    public EmployeeClosingData getClosingData() {
+    public EmployeeClosingData getEmployeeClosingData() {
 
         String currentBusinessDate = businessDayService.getCurrentBusinessDay().getBusinessDate();
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
@@ -43,7 +43,7 @@ public class BusinessDayCloseService {
         return EmployeeClosingData.of(closingData, tradeByCashList);
     }
 
-    public ManagerClosingData getClosingDataList() {
+    public ManagerClosingData getManagerClosingData() {
 
         String currentBusinessDate = businessDayService.getCurrentBusinessDay().getBusinessDate();
         String branchId = employeeService.getAuthData().getBranchId();

@@ -27,12 +27,12 @@
                 <hr>
                 <table class="common-table">
                     <thead>
-                    <th><i class="bi bi-square"></i></th>
-                    <th style="width: 20%"><label id="business-day-modal-emp-id">사원번호</label></th>
-                    <th style="width: 20%"><label id="business-day-modal-emp-name">사원명</label></th>
-                    <th style="width: 40%"><label id="business-day-modal-emp-roles">전일자 현금 잔액</label></th>
-
-
+                        <tr id="business-day-modal-all-checkbox">
+                            <th><i class="bi bi-square"></i></th>
+                            <th style="width: 20%"><label id="business-day-modal-emp-id">사원번호</label></th>
+                            <th style="width: 20%"><label id="business-day-modal-emp-name">사원명</label></th>
+                            <th style="width: 40%"><label id="business-day-modal-emp-roles">전일자 현금 잔액</label></th>
+                        </tr>
                     </thead>
                 </table>
 
@@ -46,7 +46,7 @@
                 <div class="d-flex justify-content-center mt-3">
                     <div >
                         <button class ="update-btn">
-                            수정사항 저장
+                            영업 시작
                         </button>
                     </div>
 
@@ -55,17 +55,7 @@
         </div>
     </div>
 </div>
-<script>
-   $(document).ready(function() {
-         // businessday-element 클래스가 적용된 모든 행을 대상으로 클릭 이벤트
-         $('#business-day-modal-emp-add-list').on('click', '.business-day-element', function() {
-             console.log("click");
-             alert("test");
-             // 클릭한 행 내의 i 태그만 변경
-             $(this).find('i').removeClass('bi-square').addClass('bi-check-square');
-         });
-   });
-</script>
+
 
 <script src="/resources/js/modal/business-day-update-modal.js"></script>
 

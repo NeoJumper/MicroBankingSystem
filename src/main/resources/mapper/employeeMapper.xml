@@ -63,14 +63,4 @@
         </if>
     </select>
 
-    <select id="findCashBalanceOfEmployees"  parameterType="BusinessDateAndBranchId">
-        select e.id , e.name, ec.prev_cash_balance as "cash_balance" from employee e
-        join employee_closing ec on ec.registrant_id = e.id
-        where e.branch_id = #{branchId} AND roles = '행원' and ec.closing_date = #{businessDate}
-    </select>
-
-    <select id="findCashBalanceOfBranch"  parameterType="BusinessDateAndBranchId">
-        select vault_cash from branch_closing where closing_date = #{businessDate} and branch_id = #{branchId}
-    </select>
-
 </mapper>

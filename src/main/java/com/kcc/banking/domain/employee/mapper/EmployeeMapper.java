@@ -24,8 +24,4 @@ public interface EmployeeMapper {
     EmployeeDetail findById(Long id);
 
     AuthData findAuthDataById(Long id);
-
-    List<CashBalanceOfEmployee> findCashBalanceOfEmployees(BusinessDateAndBranchId businessDateAndBranchId);
-
-    BigDecimal findCashBalanceOfBranch(BusinessDateAndBranchId businessDateAndBranchId);
 }
