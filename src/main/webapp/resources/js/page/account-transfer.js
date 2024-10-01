@@ -192,6 +192,18 @@ function transferSubmit() {
             showTransferResultModal(data);
         },
         error: function (error) {
+            // 예외 처리 알림
+
+            swal({
+                title: "계좌 이체 실패",
+                text: error.responseText,
+                icon: "error",
+                buttons: {
+                    cancel: true,
+                    confirm: false,
+                },
+            });
+            
             console.log("Transfer failed", error);
         }
     });

@@ -143,4 +143,8 @@
             EMPLOYEE e ON a.registrant_id = e.id
         WHERE a.id = #{accId}
     </select>
+
+    <select id="getAccountDetail" resultType="AccountDetail">
+        SELECT * FROM Account WHERE id = #{accountId}
+    </select>
 </mapper>
