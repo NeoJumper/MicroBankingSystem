@@ -38,8 +38,13 @@ public class TransferService {
             // 출금 계좌 잔액 조회
             BigDecimal withdrawalAccountAmount = accountMapper.findAccount(new SearchAccountOfModal(transferCreate.getWithdrawalAccount(), null)).get(0).getBalance();
 
+            if(transferCreate.getTransferAmount().subtract(withdrawalAccountAmount).compareTo(BigDecimal.ZERO) < 0) {
+
+            }
+
             // 입금 계좌
             BigDecimal depositAccountAmount = accountMapper.findAccount(new SearchAccountOfModal(transferCreate.getDepositAccount(), null)).get(0).getBalance();
+
 
 
             // 거래번호 조회 (trade_num_seq)
