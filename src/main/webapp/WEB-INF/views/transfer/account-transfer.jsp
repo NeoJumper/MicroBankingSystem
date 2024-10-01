@@ -94,13 +94,13 @@
         <table class="common-table">
             <tbody>
             <tr>
-                <th><label>출금계좌 비밀번호</label></th>
-                <td><input type="password">   <button>비밀번호 인증</button></td>
+                <th><label for="transfer-account-password">출금계좌 비밀번호</label></th>
+                <td><input id="transfer-account-password" type="password"><button class="search-btn" id="account-transfer-validate">비밀번호 인증</button></td>
             </tr>
             </tbody>
         </table>
     <div class="row justify-content-center mb-5">
-        <button id="account-transfer-submit" class="col-1 update-btn">이체하기</button>
+        <button disabled id="account-transfer-submit" class="col-1 update-btn">이체하기</button>
     </div>
     </div>
 
