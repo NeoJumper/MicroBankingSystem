@@ -205,7 +205,12 @@ function renderOfSearchResults(data) {
     const tradeResultsTableBody = $('#trade-result-tbody');
     tradeResultsTableBody.empty();
 
-    $.each(data, function (index, trade) {
+    $('#total-deposit-input').val(data.totalDeposit);
+    $('#total-withdraw-input').val(data.totalWithDraw);
+
+    const tradeList = data.tradeList;
+
+    $.each(tradeList, function (index, trade) {
         var row = $('<tr>')
             .append($('<td>').text(index + 1))
             .append($('<td>').text(trade.tradeDate))

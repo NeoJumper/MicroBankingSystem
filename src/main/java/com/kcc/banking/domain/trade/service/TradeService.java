@@ -5,6 +5,7 @@ import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmpl
 
 import com.kcc.banking.domain.trade.dto.response.TradeByCash;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
+import com.kcc.banking.domain.trade.dto.response.TradeCashOfPerAccount;
 import com.kcc.banking.domain.trade.dto.response.TradeOfList;
 import com.kcc.banking.domain.trade.mapper.TradeMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,10 @@ public class TradeService {
     public List<TradeByCash> findTradeByCash(BusinessDateAndEmployeeId businessDateAndEmployeeId) {
         return tradeMapper.findTradeByCashList(businessDateAndEmployeeId);
     }
-    public List<TradeOfList> findTradeListOfAccId(TradeSearch tradeSearch) {
+    public TradeCashOfPerAccount findTradeListOfAccId(TradeSearch tradeSearch) {
+        List<TradeOfList> tradeList = tradeMapper.findTradeListOfAccId(tradeSearch);
 
-        return tradeMapper.findTradeListOfAccId(tradeSearch);
+        return TradeCashOfPerAccount.of(tradeList);
     }
 
     public String getBusinessDay() {
