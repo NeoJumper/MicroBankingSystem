@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -15,12 +16,14 @@ public class AccountStatus {
     private String status;
     private Long modifierId;
     private BigDecimal balance;
+    private Timestamp businessDay;
 
     @Builder
-    public AccountStatus(String id, String status, Long modifierId, BigDecimal balance) {
+    public AccountStatus(String id, String status, Long modifierId, BigDecimal balance, Timestamp businessDay) {
         this.id = id;
         this.status = status;
         this.modifierId = modifierId;
         this.balance = balance;
+        this.businessDay = businessDay;
     }
 }

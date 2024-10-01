@@ -16,26 +16,28 @@ $(document).ready(function () {
                     if (data.accountStatus === "CLS") {
                         window.alert("해지 신청이 완료된 계좌입니다.");
                         return;
+                    }else{
+                        accountData = data;
+                        console.log(data)
+                        const registrationDate = new Date(data.amountDate);
+                        const now = new Date();
+                        const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
+                        const totalIntRate = data.interestRateSum + data.accountPreInterRate;
+                        const totalPayment = data.accountBal + data.amountSum;
+                        console.log("=========================");
+                        console.log(data.accountId);
+                        $('#table-content tbody').append(
+                            '<tr>' +
+                            '<td style="width: 5%;">' + totalDays + '일' + '</td>' +
+                            '<td style="width: 5%;">' + totalIntRate + '%' + '</td>' +
+                            '<td style="width: 10%;">' + data.amountSum + '</td>' +
+                            '<td style="width: 10%;">' + data.accountBal + '</td>' +
+                            '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
+                            '<td style="width: 10%;">' + totalPayment + '</td>' +
+                            '</tr>'
+                        );
                     }
-                    accountData = data;
-                    console.log(data)
-                    const registrationDate = new Date(data.amountDate);
-                    const now = new Date();
-                    const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                    const totalIntRate = data.interestRateSum + data.accountPreInterRate;
-                    const totalPayment = data.accountBal + data.amountSum;
-                    console.log("=========================");
-                    console.log(data.accountId);
-                    $('#table-content tbody').append(
-                        '<tr>' +
-                        '<td style="width: 5%;">' + totalDays + '일' + '</td>' +
-                        '<td style="width: 5%;">' + totalIntRate + '%' + '</td>' +
-                        '<td style="width: 10%;">' + data.amountSum + '</td>' +
-                        '<td style="width: 10%;">' + data.accountBal + '</td>' +
-                        '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
-                        '<td style="width: 10%;">' + totalPayment + '</td>' +
-                        '</tr>'
-                    );
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error('Error fetching data:', textStatus, errorThrown);
@@ -61,15 +63,17 @@ $(document).ready(function () {
 });
 
 function checkAccountId() {
-    const inputId = $('#account-pw').val();
+    const inputId = $('#account-pw-input').val();
     if (!inputId) {
         alert("비밀번호를 입력하세요.");
         return;
     }
     if (accountData.customerId == inputId) {
+        //비밀번호 성공시 opacity 스타일 제거
+        $('#submit-btn').removeAttr('style');
         $('#submit-btn').prop('disabled', false);
     }else {
-        $('#account-pw').val('');
+        $('#account-pw-input').val('');
         window.alert("비밀번호 불일치");
     }
 }
@@ -95,6 +99,10 @@ function closeAccount() {
             }
         }).always(function () {
             accountData = {};
+            $('#account-number').val("");
+            $('#product-name').val("");
+            $('#customer-name').val("");
+            $('#account-pw-input').val("");
         });
     } else {
         alert('계좌 ID를 입력해주세요.'); // accountId가 없을 경우 경고
