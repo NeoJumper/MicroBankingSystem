@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.account_transfer.controller;
 
+import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.domain.account_transfer.dto.request.TransferCreate;
 import com.kcc.banking.domain.account_transfer.dto.response.TransferDetail;
 import com.kcc.banking.domain.account_transfer.service.TransferService;
@@ -22,16 +23,8 @@ public class TransferRestController {
 
     @PostMapping("/api/transfer")
     public ResponseEntity<List<TransferDetail>> transfer(@RequestBody TransferCreate transferCreate) {
-        try {
-            // 트랜잭션 처리
             List<TransferDetail> tradeDetails = transferService.processTransfer(transferCreate);
             return ResponseEntity.ok(tradeDetails);
-        } catch (Exception e) {
-            // 예외가 발생했을 때 예외 처리
-            System.err.println("Transfer failed: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
-        }
     }
 
 }

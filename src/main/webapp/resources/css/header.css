@@ -81,6 +81,16 @@
   background-color: #dadada;
   padding : 2px 5px;
 }
+#logoutButton > a{
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 텍스트 색상 상속 (부모 요소의 색상을 따름) */
+  cursor: pointer; /* 커서를 포인터로 변경 */
+  font-size: inherit; /* 폰트 크기를 상속받음 */
+}
+#logoutButton:hover {
+  color: #000; /* 마우스 오버 시 텍스트 색상 변경 */
+  background-color: #ccc; /* 배경색 변경 */
+}
 
 #business-day-header{
   display: flex;

@@ -25,7 +25,7 @@
         <div style="margin : 0 100px;">
             <h3>계좌 해지 신청</h3>
             <div id="search-content">
-                <div><input placeholder="계좌번호 입력" id="search-bar"></div>
+                <div><input style="height: 100%;" placeholder="계좌번호 조회" id="search-input" value="" disabled="TRUE"></div>
                 <button id="check-withdrawal-account-btn" class="update-btn" type="button"
                         data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">
                     계좌조회
@@ -92,14 +92,14 @@
             <div class="d-flex">
                 <div class="col-3 text-center py-3" style="background-color: #F5F5F5; margin-right: 10px;">계좌 비밀번호</div>
                 <div id="account-pw-container">
-                    <input type="password" id="account-pw" style=" display:block; width:100%; padding: 2px;">
+                    <input type="password" id="account-pw-input" style=" display:block; width:100%; padding: 2px;">
                     <input id="input-confirm" type="submit" value="확인">
                 </div>
             </div>
             <hr class="m-0 border border-dark border-2">
 
             <div id="submit">
-                <input id="submit-btn" type="submit" value="해지 신청" disabled>
+                <input style="background-color: gray; opacity: 0.5;" id="submit-btn" type="submit" value="해지 신청" disabled>
             </div>
         </div>
     </div>

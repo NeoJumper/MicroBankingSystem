@@ -14,28 +14,30 @@ $(document).ready(function () {
                     $('#table-content tbody').empty();
                     // 취소신청이 완료된 계좌는 alert로 알림
                     if (data.accountStatus === "CLS") {
-                        window.alert("취소 신청이 완료된 계좌입니다.");
+                        window.alert("해지 신청이 완료된 계좌입니다.");
                         return;
+                    }else{
+                        accountData = data;
+                        console.log(data)
+                        const registrationDate = new Date(data.amountDate);
+                        const now = new Date();
+                        const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
+                        const totalIntRate = data.interestRateSum + data.accountPreInterRate;
+                        const totalPayment = data.accountBal + data.amountSum;
+                        console.log("=========================");
+                        console.log(data.accountId);
+                        $('#table-content tbody').append(
+                            '<tr>' +
+                            '<td style="width: 5%;">' + totalDays + '일' + '</td>' +
+                            '<td style="width: 5%;">' + totalIntRate + '%' + '</td>' +
+                            '<td style="width: 10%;">' + data.amountSum + '</td>' +
+                            '<td style="width: 10%;">' + data.accountBal + '</td>' +
+                            '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
+                            '<td style="width: 10%;">' + totalPayment + '</td>' +
+                            '</tr>'
+                        );
                     }
-                    accountData = data;
-                    console.log(data)
-                    const registrationDate = new Date(data.amountDate);
-                    const now = new Date();
-                    const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                    const totalIntRate = data.interestRateSum + data.accountPreInterRate;
-                    const totalPayment = data.accountBal + data.amountSum;
-                    console.log("=========================");
-                    console.log(data.accountId);
-                    $('#table-content tbody').append(
-                        '<tr>' +
-                        '<td style="width: 5%;">' + totalDays + '일' + '</td>' +
-                        '<td style="width: 5%;">' + totalIntRate + '%' + '</td>' +
-                        '<td style="width: 10%;">' + data.amountSum + '</td>' +
-                        '<td style="width: 10%;">' + data.accountBal + '</td>' +
-                        '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
-                        '<td style="width: 10%;">' + totalPayment + '</td>' +
-                        '</tr>'
-                    );
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error('Error fetching data:', textStatus, errorThrown);
@@ -61,13 +63,18 @@ $(document).ready(function () {
 });
 
 function checkAccountId() {
-    const inputId = $('#account-pw').val();
+    const inputId = $('#account-pw-input').val();
     if (!inputId) {
         alert("비밀번호를 입력하세요.");
         return;
     }
     if (accountData.customerId == inputId) {
+        //비밀번호 성공시 opacity 스타일 제거
+        $('#submit-btn').removeAttr('style');
         $('#submit-btn').prop('disabled', false);
+    }else {
+        $('#account-pw-input').val('');
+        window.alert("비밀번호 불일치");
     }
 }
 
@@ -80,17 +87,22 @@ function closeAccount() {
             url: '/api/employee/close-trade',
             type: 'POST',
             contentType: 'application/json', // JSON 형식으로 전송
-            data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "CLS"}), // JSON으로 변환하여 전송
+            data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "CLS", description:"계좌해지", balance:0, tradeType:"CLOSE"}), // JSON으로 변환하여 전송
             success: function (response) {
                 alert('성공:', response);
                 // TODO:: 상세 모달창 열어주기
-                // 성공하면 계좌의 해지조회 값을 비워 줌.
-                accountData = {};
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('오류 발생:', textStatus, errorThrown);
                 // 오류 처리 로직
             }
+        }).always(function () {
+            accountData = {};
+            $('#account-number').val("");
+            $('#product-name').val("");
+            $('#customer-name').val("");
+            $('#account-pw-input').val("");
         });
     } else {
         alert('계좌 ID를 입력해주세요.'); // accountId가 없을 경우 경고

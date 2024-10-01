@@ -1,4 +1,4 @@
-package com.kcc.banking.domain.businessday.dto.response;
+package com.kcc.banking.domain.business_day.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

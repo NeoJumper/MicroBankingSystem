@@ -9,25 +9,26 @@ $(document).ready(function () {
     calculateOfPeriodDate();
     calculateOfMonthDate();
     
-    // 라디오 버튼에 EventListeners 등록
-    registerRadioButtonEventListeners();
 
     // 검색 버튼 클릭 시 거래내역 조회
     $("#trade-list-search-btn").on("click", function () {
         searchResultOfTradeList();
     });
 
+    // 라디오 버튼에 EventListeners 등록
+    //registerRadioButtonEventListeners();
+
 });
 
 // 라디오 버튼에 따른 value 변경
-function registerRadioButtonEventListeners() {
-    document.querySelectorAll('input[name="search-period-type"]').forEach(function (radio) {
-        radio.addEventListener('change', function () {
-            const selectedType = this.value;
-            console.log("선택된 조회 방식: " + selectedType);
-        });
-    });
-}
+// function registerRadioButtonEventListeners() {
+//     document.querySelectorAll('input[name="search-period-type"]').forEach(function (radio) {
+//         radio.addEventListener('change', function () {
+//             const selectedType = this.value;
+//             console.log("선택된 조회 방식: " + selectedType);
+//         });
+//     });
+// }
 
 
 //직접입력 display 설정 함수

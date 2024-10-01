@@ -289,6 +289,8 @@ VALUES('2024-08-01 00:00:00', 2, 1, 'CLOSED',  50000000,  51110000,1);
 INSERT INTO BRANCH_CLOSING (closing_date,registrant_id, branch_id,  status, prev_cash_balance, vault_cash, trade_number)
 VALUES('2024-08-02 00:00:00', 2, 1, 'OPEN',   51110000,  50520000,2);
 
+
+-----------------------------------------거래내역을 위한 sql---------------------------------------------------------
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
 VALUES ('6634567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
 

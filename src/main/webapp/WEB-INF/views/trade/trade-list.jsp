@@ -96,7 +96,6 @@
                     <option value="12">12월</option>
                 </select>
                 <label for="month-search-btn">월</label>&nbsp &nbsp
-                <button class="search-btn" id="month">월별 조회</button>
             </td>
         </tr>
         <tr id="search-period-tr">

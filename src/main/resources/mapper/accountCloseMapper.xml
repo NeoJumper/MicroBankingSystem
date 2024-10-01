@@ -49,16 +49,16 @@
             SELECT trade_seq.nextval FROM dual
         </selectKey>
         INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
-        VALUES (#{id}, #{accId}, #{registrantId}, #{branchId}, SYSTIMESTAMP, #{amount}, 0, 'CLOSE', 'NOR', 'TRUE', '계좌해지', 13)
+        VALUES (#{id}, #{accId}, #{registrantId}, #{branchId}, #{businessDay}, #{amount}, #{balance}, #{tradeType}, 'NOR', 'TRUE', #{description}, trade_num_seq.nextval)
     </insert>
 
     <update id="updateStatus" parameterType="AccountStatus">
         UPDATE ACCOUNT
         SET
             status = #{status},
-            expire_date = SYSTIMESTAMP,
-            balance = 0,
-            modification_date = SYSTIMESTAMP,
+            expire_date = #{businessDay},
+            balance = #{balance},
+            modification_date = #{businessDay},
             modifier_id = #{modifierId}
         WHERE
             id = #{id}

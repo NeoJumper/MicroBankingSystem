@@ -63,6 +63,17 @@ body {
   background: #0069d9;
 }
 
+.update-btn:disabled {
+  background-color: #ccc;
+  color: black;
+}
+
+.update-btn:disabled:hover {
+  background-color: #ccc;
+  color: black;
+}
+
+
 .cancel-btn {
   background: #FF0000;
   color: #F5F5F5;
@@ -109,7 +120,6 @@ body {
 
 }
 
-
 .detail-search-btn:hover {
   background: #ececec;
 }
@@ -124,4 +134,13 @@ body {
   border-color: #dadada;
   box-shadow: none;
 
+}
+.closed-btn{
+  background-color: #d3d3d3; /* 흐린 회색으로 버튼 배경 */
+  color: #a9a9a9; /* 흐린 텍스트 색상 */
+  font-weight: bold;
+  font-size: 1.0rem;
+  padding: 10px 10px;
+  margin: 0 6px;
+  border: none;
 }
