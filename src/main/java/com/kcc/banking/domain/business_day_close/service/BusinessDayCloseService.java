@@ -1,8 +1,12 @@
 package com.kcc.banking.domain.business_day_close.service;
 
 import com.kcc.banking.common.util.AuthenticationUtils;
+import com.kcc.banking.domain.business_day.dto.request.BusinessDayChange;
+import com.kcc.banking.domain.business_day.dto.request.WorkerData;
+import com.kcc.banking.domain.business_day_close.dto.request.BranchClosingCreate;
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 import com.kcc.banking.domain.business_day.service.BusinessDayService;
+import com.kcc.banking.domain.business_day_close.dto.request.EmployeeClosingCreate;
 import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
@@ -14,6 +18,7 @@ import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -81,5 +86,39 @@ public class BusinessDayCloseService {
                 .build();
 
         businessDayCloseMapper.branchDeadlineStatusToClosed(businessDateAndBranchId);
+    }
+
+    public void createClosingData(BusinessDayChange businessDayChange) {
+        Long loginMemberId = AuthenticationUtils.getLoginMemberId();
+        String branchId = employeeService.getAuthData().getBranchId();
+        Long tradeNumber = businessDayCloseMapper.getNextTradeNumberVal();
+
+
+        createEmployeeClosing(businessDayChange.getWorkerDataList(), businessDayChange.getBusinessDateToChange(), tradeNumber, branchId);
+        createBranchClosing(businessDayChange.getBusinessDateToChange(), businessDayChange.getPrevCashBalanceOfBranch(), tradeNumber, branchId, loginMemberId);
+
+    }
+
+    private void createBranchClosing(String businessDateToChange, BigDecimal prevCashBalanceOfBranch, Long tradeNumber, String branchId, Long loginMemberId) {
+        BranchClosingCreate branchClosingCreate = BranchClosingCreate.builder()
+                .branchId(branchId)
+                .registrantId(String.valueOf(loginMemberId))
+                .prevCashBalance(prevCashBalanceOfBranch)
+                .closingDate(businessDateToChange)
+                .status("OPEN")
+                .tradeNumber(tradeNumber)
+                .build();
+
+        businessDayCloseMapper.insertBranchClosing(branchClosingCreate);
+    }
+
+    public void createEmployeeClosing(List<WorkerData> workerDataList, String businessDateToChange,Long tradeNumber, String branchId) {
+
+
+        List<EmployeeClosingCreate> employeeClosingCreateList = workerDataList.stream().map(workerData -> EmployeeClosingCreate.of(workerData, branchId, businessDateToChange, tradeNumber))
+                .toList();
+
+        businessDayCloseMapper.batchInsertEmployeeClosing(employeeClosingCreateList);
+
     }
 }

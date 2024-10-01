@@ -45,7 +45,7 @@
                 </div>
                 <div class="d-flex justify-content-center mt-3">
                     <div >
-                        <button class ="update-btn">
+                        <button id="business-day-update-modal-update-btn" class ="update-btn">
                             영업 시작
                         </button>
                     </div>

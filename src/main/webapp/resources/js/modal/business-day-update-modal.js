@@ -2,6 +2,7 @@ $(document).ready(function() {
 
     registerClickEventOfEmpCheckBox();
     registerClickEventOfEmpAllCheckBox();
+    registerClickEventOfBusinessDayUpdateBtn();
 
 
     handleWorkers();
@@ -36,6 +37,12 @@ function registerClickEventOfEmpAllCheckBox(){
                 icon.removeClass('bi-check-square').addClass('bi-square');
             }
         });
+    });
+}
+
+function registerClickEventOfBusinessDayUpdateBtn(){
+    $('#business-day-update-modal-update-btn').on('click', function () {
+        changeBusinessDay();
     });
 }
 
@@ -79,5 +86,60 @@ function handleWorkers() {
     });
 }
 
+function changeBusinessDay(){
+    const data = [];
 
+    // 각 business-day-element 행을 순회
+    $('.business-day-element').each(function() {
+        const row = $(this); // 현재 행
+        const icon = row.find('i'); // 아이콘 요소
+
+        // 아이콘 클래스에 따라 status 결정
+        const status = icon.hasClass('bi-check-square') ? 'OPEN' : 'CLOSED';
+
+        // ID, 이름, 이전 캐시 밸런스 값 추출
+        const id = row.find('td:nth-child(2)').text().trim(); // 두 번째 열에서 id
+        const name = row.find('td:nth-child(3)').text().trim(); // 세 번째 열에서 name
+        const prevCashBalance = row.find('td:nth-child(4) input').val().trim().replace(/,/g, ''); // 네 번째 열의 input에서 value
+
+        // 추출한 데이터를 객체로 만들고 배열에 추가
+        data.push({
+            id: id,
+            name: name,
+            prevCashBalance: prevCashBalance,
+            status: status
+        });
+    });
+
+    const businessDayUpdate = {
+        workerDataList : data,
+        prevCashBalanceOfBranch : $('#business-day-modal-branch-balance').val().trim().replace(/,/g, ''),
+        businessDateToChange : $('#next-business-day').val()
+    }
+
+    $.ajax({
+        url: '/api/business-day',
+        type: 'PATCH',
+        contentType: 'application/json',
+        data: JSON.stringify(businessDayUpdate), // JSON.stringify를 사용하여 객체를 JSON 문자열로 변환
+        success: function(response) {
+            swal({
+                title: "영업 시작",
+                text: "영업일 변경 작업이 성공적으로 완료되었습니다.",
+                icon: "success",
+                button: "닫기",
+            }).then(() => {
+                // swal 경고창이 닫힌 후에 리다이렉트
+                window.location.href = '/page/manager/business-day-management';
+            });
+        },
+        error: function(xhr, status, error) {
+            // 오류 처리
+            console.error('Error updating business day:', error);
+        }
+    });
+
+    // 결과 JSON 데이터 출력 (또는 전송)
+    console.log(businessDayUpdate);
+}
 
