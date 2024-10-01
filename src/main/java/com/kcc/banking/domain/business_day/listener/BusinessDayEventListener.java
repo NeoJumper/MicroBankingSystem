@@ -5,6 +5,7 @@ import com.kcc.banking.domain.business_day.dto.request.WorkerData;
 import com.kcc.banking.domain.business_day.event.BusinessDayChangeEvent;
 import com.kcc.banking.domain.business_day_close.dto.request.EmployeeClosingCreate;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
+import com.kcc.banking.domain.interest.service.InterestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -18,11 +19,13 @@ import java.util.List;
 public class BusinessDayEventListener {
 
     private final BusinessDayCloseService businessDayCloseService;
+    private final InterestService interestService;
 
     @EventListener
     public void businessDayClose(BusinessDayChangeEvent event)
     {
-        businessDayCloseService.createClosingData(event.getBusinessDayChange());
+        Long tradeNumber = businessDayCloseService.createClosingData(event.getBusinessDayChange());
+        interestService.createInterest(tradeNumber, event.getBusinessDayChange().getBusinessDateToChange());
     }
 
 

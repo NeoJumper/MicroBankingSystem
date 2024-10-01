@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.interest.mapper.InterestMapper">
+
+
+
+
+    <insert id="save" parameterType="EmployeeCreate">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT employee_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO Employee (id, branch_id, name, phone_number, email,birth_date, password, roles)
+        VALUES (#{id}, #{branchId}, #{name},  #{phoneNumber}, #{email},#{birthDate}, #{password}, #{roles})
+    </insert>
+
+    <insert id="createInterest" parameterType="InterestCreate">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT interest_seq.nextval FROM dual
+        </selectKey>
+
+
+        INSERT INTO interest (
+        id, acc_id, registrant_id, branch_id, payment_date, amount, interest_rate, payment_status, trade_number
+        ) VALUES (
+        #{id},
+        #{accId, jdbcType=VARCHAR},
+        #{registrantId, jdbcType=BIGINT},
+        #{branchId, jdbcType=BIGINT},
+        #{paymentDate, jdbcType=TIMESTAMP},
+        #{amount, jdbcType=DECIMAL},
+        #{interestRate, jdbcType=FLOAT},
+        #{paymentStatus, jdbcType=VARCHAR},
+        #{tradeNumber, jdbcType=BIGINT}
+        )
+    </insert>
+
+</mapper>

@@ -88,7 +88,7 @@ public class BusinessDayCloseService {
         businessDayCloseMapper.branchDeadlineStatusToClosed(businessDateAndBranchId);
     }
 
-    public void createClosingData(BusinessDayChange businessDayChange) {
+    public Long createClosingData(BusinessDayChange businessDayChange) {
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
         String branchId = employeeService.getAuthData().getBranchId();
         Long tradeNumber = businessDayCloseMapper.getNextTradeNumberVal();
@@ -97,6 +97,7 @@ public class BusinessDayCloseService {
         createEmployeeClosing(businessDayChange.getWorkerDataList(), businessDayChange.getBusinessDateToChange(), tradeNumber, branchId);
         createBranchClosing(businessDayChange.getBusinessDateToChange(), businessDayChange.getPrevCashBalanceOfBranch(), tradeNumber, branchId, loginMemberId);
 
+        return tradeNumber;
     }
 
     private void createBranchClosing(String businessDateToChange, BigDecimal prevCashBalanceOfBranch, Long tradeNumber, String branchId, Long loginMemberId) {
