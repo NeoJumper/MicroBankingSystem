@@ -63,6 +63,17 @@ body {
   background: #0069d9;
 }
 
+.update-btn:disabled {
+  background-color: #ccc;
+  color: black;
+}
+
+.update-btn:disabled:hover {
+  background-color: #ccc;
+  color: black;
+}
+
+
 .cancel-btn {
   background: #FF0000;
   color: #F5F5F5;
@@ -108,7 +119,6 @@ body {
   background: #0069d9;
 
 }
-
 
 .detail-search-btn:hover {
   background: #ececec;

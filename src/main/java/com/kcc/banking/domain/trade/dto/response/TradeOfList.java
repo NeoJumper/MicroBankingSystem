@@ -27,15 +27,12 @@ public class TradeOfList {
     private String targetAccId;
     private String tradeType;
     private String cashIndicator;
-    private String amount;
+    private BigDecimal amount;
     private BigDecimal balance;
     private String status;  
 
-    //총 입출금 금액
-    private BigDecimal totalDeposit;
-    private BigDecimal totalWithDraw;
 
-    public TradeOfList(Timestamp tradeDate, String accId, String targetAccId, String tradeType, String cashIndicator, String amount, BigDecimal balance, String status, BigDecimal totalDeposit, BigDecimal totalWithDraw) {
+    public TradeOfList(Timestamp tradeDate, String accId, String targetAccId, String tradeType, String cashIndicator, BigDecimal amount, BigDecimal balance, String status) {
         this.tradeDate = tradeDate;
         this.accId = accId;
         this.targetAccId = targetAccId;
@@ -44,7 +41,5 @@ public class TradeOfList {
         this.amount = amount;
         this.balance = balance;
         this.status = status;
-        this.totalDeposit = totalDeposit;
-        this.totalWithDraw = totalWithDraw;
     }
 }

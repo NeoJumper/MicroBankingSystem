@@ -289,3 +289,24 @@ VALUES('2024-08-01 00:00:00', 2, 1, 'CLOSED',  50000000,  51110000,1);
 INSERT INTO BRANCH_CLOSING (closing_date,registrant_id, branch_id,  status, prev_cash_balance, vault_cash, trade_number)
 VALUES('2024-08-02 00:00:00', 2, 1, 'OPEN',   51110000,  50520000,2);
 
+
+-----------------------------------------거래내역을 위한 sql---------------------------------------------------------
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('6634567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+
+-- 6634567890123번 고객 계좌 2024-01-01
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '6634567890123', 2, 1, TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 250000, 250000, 'OPEN', 'NOR', 'TRUE', '계좌개설', 1);
+
+-- 6634567890123번 고객 계좌 출금 -20000 2024-01-02
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '6634567890123', 1, 1, TO_TIMESTAMP('2024-01-02 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 20000, 180000, 'WITHDRAWAL', 'NOR', 'FALSE', '9월 용돈', 6, '2345678901234');
+
+-- 6634567890123번 고객 계좌 출금 2024-04-01
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '6634567890123', 1, 1, TO_TIMESTAMP('2024-04-01 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 80000, 100000, 'WITHDRAWAL', 'NOR', 'FALSE', '9월 용돈', 6, '2345678901234');
+
+-- 6634567890123번 고객 계좌 입금 2024-07-01
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '6634567890123', 1, 1, TO_TIMESTAMP('2024-07-01 00:00:02', 'YYYY-MM-DD HH24:MI:SS'), 150000, 200000, 'DEPOSIT', 'NOR', 'FALSE', '명절 선물', 7, '1234567890123');

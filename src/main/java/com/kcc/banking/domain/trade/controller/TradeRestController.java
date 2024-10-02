@@ -1,9 +1,11 @@
 package com.kcc.banking.domain.trade.controller;
 
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
+import com.kcc.banking.domain.trade.dto.response.TradeCashOfPerAccount;
 import com.kcc.banking.domain.trade.dto.response.TradeOfList;
 import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,7 @@ public class TradeRestController {
     private final TradeService tradeService;
 
     @GetMapping("/trade/search/result")
-    public List<TradeOfList> getSearchResultOfTradeList(@ModelAttribute TradeSearch tradeSearch){
+    public ResponseEntity<TradeCashOfPerAccount> getSearchResultOfTradeList(@ModelAttribute TradeSearch tradeSearch){
 
         String accId = tradeSearch.getAccId();
         String tradeType = tradeSearch.getTradeType();
@@ -34,7 +36,9 @@ public class TradeRestController {
         System.out.println("End Date: " + endDate);
         System.out.println("Sort Order: " + sortOrder);
 
-        return tradeService.findTradeListOfAccId(tradeSearch);
+        TradeCashOfPerAccount tradeCashOfPerAccount = tradeService.findTradeListOfAccId(tradeSearch);
+
+        return  ResponseEntity.ok(tradeCashOfPerAccount);
     }
 
 

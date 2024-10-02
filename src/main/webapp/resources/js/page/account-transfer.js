@@ -54,6 +54,10 @@ $(document).ready(function () {
     $('#account-transfer-submit').click( function (){
         transferSubmit();
     })
+
+    $('#account-transfer-validate').click(function(){
+        validateAccountPassword();
+    })
 });
 
 function comma(str) {
@@ -170,11 +174,54 @@ function enableAmountButtons(balance) {
     $('.amount-btn:contains("전액")').prop('disabled', false);
 }
 
+
+// 비밀번호 검증 클릭 시
+function validateAccountPassword() {
+    var accountNumber = $('#withdrawal-account-number').val();
+    var accountPassword = $('#transfer-account-password').val();
+
+    $.ajax( {
+        url: '/api/employee/account-validate',
+        contentType: "application/x-www-form-urlencoded",
+        type: "POST",
+        data: {
+            accountNumber: accountNumber,
+            password: accountPassword
+        },
+        success: function (response) {
+            swal({
+                title: "검증 완료",
+                text: "비밀번호 인증 성공",
+                icon: "success",
+            })
+
+            $('#account-transfer-submit').prop('disabled', false);
+
+        }, error: function (error){
+            swal({
+                title: "검증 실패",
+                text: error.responseText,
+                icon: "error",
+                buttons: {
+                    cancel: true,
+                    confirm: false,
+                },
+            });
+
+            console.log("Transfer failed", error);
+        }
+    })
+
+}
+
+
+// 이체하기 버튼 클릭 시
 function transferSubmit() {
     var withdrawalAccountId = $('#withdrawal-account-number').val();
     var depositAccountId = $('#deposit-account-number').val();
     var transferAmount = parseInt(uncomma($('#transfer-amount').val()));
     var description = $('#description').val();
+    var accountPassword = $('#transfer-account-password').val();
 
     $.ajax({
         url: "/api/transfer",
@@ -184,12 +231,20 @@ function transferSubmit() {
             withdrawalAccount: withdrawalAccountId,
             depositAccount: depositAccountId,
             transferAmount: transferAmount,
-            description: description
+            description: description,
+            withdrawalAccountPassword: accountPassword
         }),
 
         success: function (data) {
+
+            swal({
+                title: "이체 완료",
+                text: "계좌 이체 성공",
+                icon: "success",
+            })
             // 이체 성공 후 모달에 데이터를 채움
             showTransferResultModal(data);
+
         },
         error: function (error) {
             // 예외 처리 알림
@@ -203,7 +258,7 @@ function transferSubmit() {
                     confirm: false,
                 },
             });
-            
+
             console.log("Transfer failed", error);
         }
     });

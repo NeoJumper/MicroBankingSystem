@@ -2,10 +2,7 @@ package com.kcc.banking.domain.account.mapper;
 
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
-import com.kcc.banking.domain.account.dto.response.AccountDetail;
-import com.kcc.banking.domain.account.dto.response.AccountOfModal;
-import com.kcc.banking.domain.account.dto.response.AccountOpenResultOfModal;
-import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
+import com.kcc.banking.domain.account.dto.response.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -30,4 +27,6 @@ public interface AccountMapper {
 
     // 계좌 개설완료 정보 호출
     AccountOpenResultOfModal getAccountOpenResultOfModal(String accId);
+
+    List<AccountDetailForInterest> findAccountByBranchId(Long branchId);
 }

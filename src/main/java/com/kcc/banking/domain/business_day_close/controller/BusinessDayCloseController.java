@@ -20,7 +20,7 @@ public class BusinessDayCloseController {
     @GetMapping("/page/employee/business-day-close")
     public String businessDayCloseOfEmployeePage(Model model){
 
-        EmployeeClosingData employeeClosingData = businessDayCloseService.getClosingData();
+        EmployeeClosingData employeeClosingData = businessDayCloseService.getEmployeeClosingData();
         model.addAttribute("employeeClosingData", employeeClosingData);
 
         return "business-day/employee-close";
@@ -29,7 +29,7 @@ public class BusinessDayCloseController {
     @GetMapping("/page/manager/business-day-close")
     public String businessDayCloseOfManagerPage(Model model)
     {
-        ManagerClosingData managerClosingData = businessDayCloseService.getClosingDataList();
+        ManagerClosingData managerClosingData = businessDayCloseService.getManagerClosingData();
         model.addAttribute("managerClosingData", managerClosingData);
 
         return "business-day/manager-close";
