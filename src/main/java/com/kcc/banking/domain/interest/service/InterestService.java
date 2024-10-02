@@ -19,7 +19,7 @@ public class InterestService {
     private final AccountService accountService;
     private final EmployeeService employeeService;
 
-    public void createInterest(Long tradeNumber, String businessDateToChange){
+    public void createInterest(String tradeNumber, String businessDateToChange){
         String branchId = employeeService.getAuthData().getBranchId();
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
 

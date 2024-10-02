@@ -27,7 +27,7 @@ public class BusinessDayRestController {
     }
     @PatchMapping("/api/business-day")
     public void changeBusinessDay(@RequestBody BusinessDayChange businessDayChange){
-        businessDayService.closeBusinessDay(businessDayChange);
+        businessDayService.changeBusinessDay(businessDayChange);
     }
 
 }
