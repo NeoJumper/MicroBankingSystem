@@ -200,7 +200,7 @@ function validateAccountPassword() {
         }, error: function (error){
             swal({
                 title: "검증 실패",
-                text: "비밀번호 검증 실패",
+                text: error.responseText,
                 icon: "error",
                 buttons: {
                     cancel: true,
@@ -221,6 +221,7 @@ function transferSubmit() {
     var depositAccountId = $('#deposit-account-number').val();
     var transferAmount = parseInt(uncomma($('#transfer-amount').val()));
     var description = $('#description').val();
+    var accountPassword = $('#transfer-account-password').val();
 
     $.ajax({
         url: "/api/transfer",
@@ -230,10 +231,17 @@ function transferSubmit() {
             withdrawalAccount: withdrawalAccountId,
             depositAccount: depositAccountId,
             transferAmount: transferAmount,
-            description: description
+            description: description,
+            withdrawalAccountPassword: accountPassword
         }),
 
         success: function (data) {
+
+            swal({
+                title: "이체 완료",
+                text: "계좌 이체 성공",
+                icon: "success",
+            })
             // 이체 성공 후 모달에 데이터를 채움
             showTransferResultModal(data);
 
@@ -250,7 +258,7 @@ function transferSubmit() {
                     confirm: false,
                 },
             });
-            
+
             console.log("Transfer failed", error);
         }
     });

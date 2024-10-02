@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Transfer Result Modal</title>
     <link rel="stylesheet" href="/resources/css/modal/account-search-modal.css">
-<%--    <script src="/resources/js/modal/transfer-result-modal.js"></script>--%>
+    <script src="/resources/js/modal/transfer-result-modal.js"></script>
 </head>
 <body>
 <!-- Transfer Result Modal -->
@@ -16,7 +16,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="transfer-modal-title">이체 결과</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button id="result-modal-close-btn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <h5>출금 내역</h5>
