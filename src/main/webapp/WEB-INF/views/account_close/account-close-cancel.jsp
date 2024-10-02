@@ -66,16 +66,15 @@
                 </div>
             </div>
             <hr class="m-0 border border-dark border-2">
-
             <div id="submit">
                 <input style="background-color: gray; opacity: 0.5;" id="cancel-submit-btn" type="submit" value="취소 신청" disabled>
             </div>
         </div>
     </div>
-
 </div>
-<%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/page/account-close-cancel.js"></script>
+<%@ include file="/resources/components/modal/account-close-result-modal.jsp" %>
+<%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
 </body>
 

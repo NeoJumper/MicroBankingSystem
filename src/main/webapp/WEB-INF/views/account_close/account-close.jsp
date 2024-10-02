@@ -75,12 +75,12 @@
                     <table id="table-content" class="table">
                         <tbody>
                         <tr>
-                            <td style="width: 5%;">600일</td>
-                            <td style="width: 5%;">4.01 %</td>
-                            <td style="width: 10%;">10,000</td>
-                            <td style="width: 10%;">100,000,000</td>
-                            <td style="width: 10%;">14.5 %</td>
-                            <td style="width: 10%;">10,010,000</td>
+<%--                            <td style="width: 5%; height: 100%;"> </td>--%>
+<%--                            <td style="width: 5%;"> </td>--%>
+<%--                            <td style="width: 10%;"> </td>--%>
+<%--                            <td style="width: 10%;"> </td>--%>
+<%--                            <td style="width: 10%;"> </td>--%>
+<%--                            <td style="width: 10%;"> </td>--%>
                         </tr>
                         </tbody>
                     </table>
@@ -105,6 +105,7 @@
     </div>
 
 </div>
+<%@ include file="/resources/components/modal/account-close-result-modal.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/page/account-close.js"></script>
 <script src="/resources/js/footer.js"></script>
