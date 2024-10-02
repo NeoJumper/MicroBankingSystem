@@ -68,35 +68,4 @@ public class EmployeeService {
 
         return employeeMapper.findAuthDataById(loginMemberId);
     }
-
-    /**
-     * @Description
-     * 영업일 변경 모달 내에서 근무 인원 지정 시 이용
-     * 영업일이 마감된 상태에서만 접근 가능
-     * 현재 영업일의 현금 잔액이 전일자 현금 잔액으로 표기됨
-     */
-    public List<CashBalanceOfEmployee> getCashBalanceOfEmployees() {
-
-        String businessDate = businessDayService.getCurrentBusinessDay().getBusinessDate();
-        String branchId = getAuthData().getBranchId();
-
-        BusinessDateAndBranchId businessDateAndBranchId = BusinessDateAndBranchId.builder()
-                .businessDate(businessDate)
-                .branchId(branchId)
-                .build();
-
-        return employeeMapper.findCashBalanceOfEmployees(businessDateAndBranchId);
-    }
-
-    public BigDecimal getCashBalanceOfBranch() {
-        String businessDate = businessDayService.getCurrentBusinessDay().getBusinessDate();
-        String branchId = getAuthData().getBranchId();
-
-        BusinessDateAndBranchId businessDateAndBranchId = BusinessDateAndBranchId.builder()
-                .businessDate(businessDate)
-                .branchId(branchId)
-                .build();
-
-        return employeeMapper.findCashBalanceOfBranch(businessDateAndBranchId);
-    }
 }

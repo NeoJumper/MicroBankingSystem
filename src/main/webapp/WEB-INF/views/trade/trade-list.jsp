@@ -36,10 +36,6 @@
         </tr>
         </tbody>
     </table>
-    <div class="row justify-content-center mb-5">
-        <button class="col-1 update-btn" id="trade-list-search-btn">조회하기</button>
-        <button class="col-1 detail-search-btn">상세 검색</button>
-    </div>
 
     <div>
         <h3 class="mt-3">상세조건입력</h3>
@@ -100,7 +96,6 @@
                     <option value="12">12월</option>
                 </select>
                 <label for="month-search-btn">월</label>&nbsp &nbsp
-                <button class="search-btn" id="month">월별 조회</button>
             </td>
         </tr>
         <tr id="search-period-tr">
@@ -111,7 +106,7 @@
                     <button type="button" class="trade-period-search-btn" value="1w">1주일</button>
                     <button type="button" class="trade-period-search-btn" value="1m">1개월</button>
                     <button type="button" class="trade-period-search-btn active" value="3m">3개월</button>
-                    <button type="button" class="trade-period-search-btn" value="6dm">6개월</button>
+                    <button type="button" class="trade-period-search-btn" value="6m">6개월</button>
                     <button type="button" class="trade-period-search-btn" id="custom-period-btn">직접입력</button>
                 </div>
                 <div id="period-search-area">
@@ -120,7 +115,7 @@
                         <input type="date" id="period-start-input">
                         <label for="period-end-input">종료일 :</label>
                         <input type="date" id="period-end-input">
-                        <button type="button" class="search-btn">날짜검색</button>
+
                     </div>
                 </div>
 
@@ -143,6 +138,9 @@
     </table>
 
 
+    <div class="row justify-content-center mb-5">
+        <button class="col-1 update-btn" id="trade-list-search-btn">조회하기</button>
+    </div>
     <div>
         <h3 class="mt-3">총 입출금 금액</h3>
         <hr>
@@ -177,7 +175,7 @@
         </table>
     </div>
 
-
+    <input type="hidden" id="businessDay" value="${businessDay}">
 </div>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/page/trade-list.js"></script>
