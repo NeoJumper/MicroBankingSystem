@@ -1,3 +1,5 @@
+let currentBusinessDayStatus = "";
+
 $(document).ready(function() {
 
     handleAuthDataOfHeader();
@@ -32,7 +34,8 @@ function handleBusinessDay(){
             var formattedDate = response.businessDate.substring(0, 10);
 
             $('#business-day-date').text(formattedDate);
-            $('#business-day-status > span').text(response.status);
+            currentBusinessDayStatus = response.status;
+            $('#business-day-status > span').text(currentBusinessDayStatus);
         },
         error: function(xhr, status, error) {
             // 에러 발생 시 처리할 로직 작성
