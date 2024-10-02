@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcc.banking.domain.business_day.mapper.BusinessDayMapper">
 
+    <select id="findByDate" parameterType="String">
+        select * from business_day where business_date = #{businessDate}
+    </select>
+
     <select id="findCurrentBusinessDay" >
         select * from business_day where is_current_business_day = 'TRUE'
     </select>

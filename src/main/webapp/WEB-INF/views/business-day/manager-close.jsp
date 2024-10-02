@@ -47,7 +47,7 @@
             <table class="table">
             <tbody>
                 <c:forEach var="closingData" items="${managerClosingData.closingDataList}">
-                <tr>
+                <tr class = "branch-close-employee-data">
                     <td style="width: 5%;">${closingData.id}</td>
                     <td style="width: 5%;">${closingData.name}</td>
                     <td style="width: 10%;">
@@ -62,7 +62,7 @@
                     <td style="width: 10%;">
                         <input class="employee-vaultCash" type="text" value="<c:out value='${closingData.vaultCash}' />" disabled>
                     </td>
-                    <td style="width: 6%;">${closingData.status}</td>
+                    <td class="branch-close-employee-status" style="width: 6%;">${closingData.status}</td>
                 </tr>
                 </c:forEach>
             </tbody>
@@ -102,7 +102,7 @@
     </div>
     <div class="d-flex justify-content-center mt-4">
         <div >
-            <button id="manager-business-day-close-btn" class ="update-btn">
+            <button id="manager-business-day-close-btn">
                 지점마감
             </button>
         </div>

@@ -21,10 +21,10 @@ public class InterestCreate {
     private BigDecimal amount;
     private float interestRate;
     private String paymentStatus;
-    private Long tradeNumber;
+    private String tradeNumber;
 
     @Builder
-    public InterestCreate(Long id, String accId, Long registrantId,Long branchId, String paymentDate, BigDecimal amount, float interestRate, String paymentStatus, Long tradeNumber) {
+    public InterestCreate(Long id, String accId, Long registrantId,Long branchId, String paymentDate, BigDecimal amount, float interestRate, String paymentStatus, String tradeNumber) {
         this.id = id;
         this.accId = accId;
         this.registrantId = registrantId;
@@ -37,7 +37,7 @@ public class InterestCreate {
 
     }
 
-    public static InterestCreate of (AccountDetailForInterest accountDetail, Long loginMemberId, String paymentDate, Long tradeNumber){
+    public static InterestCreate of (AccountDetailForInterest accountDetail, Long loginMemberId, String paymentDate, String tradeNumber){
         BigDecimal balance = accountDetail.getBalance();  // 잔액 (BigDecimal)
         BigDecimal interestRate = BigDecimal.valueOf(accountDetail.getInterestRate());  // 연 이자율 (float을 BigDecimal로 변환)
 

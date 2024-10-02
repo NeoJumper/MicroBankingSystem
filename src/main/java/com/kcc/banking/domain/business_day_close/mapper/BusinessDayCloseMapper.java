@@ -25,4 +25,6 @@ public interface BusinessDayCloseMapper {
     void batchInsertEmployeeClosing(List<EmployeeClosingCreate> workerDataList);
 
     void insertBranchClosing(BranchClosingCreate branchClosingCreate);
+
+    String  findClosingTradeNumber(BusinessDateAndBranchId businessDateAndBranchId);
 }

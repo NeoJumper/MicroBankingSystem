@@ -10,6 +10,7 @@ import com.kcc.banking.domain.business_day_close.dto.request.EmployeeClosingCrea
 import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
+import com.kcc.banking.domain.interest.service.InterestService;
 import com.kcc.banking.domain.trade.dto.response.TradeByCash;
 import com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
@@ -29,6 +30,7 @@ public class BusinessDayCloseService {
     private final BusinessDayService businessDayService;
     private final EmployeeService employeeService;
     private final TradeService tradeService;
+    private final InterestService interestService;
 
     public EmployeeClosingData getEmployeeClosingData() {
 
@@ -58,6 +60,7 @@ public class BusinessDayCloseService {
                 .branchId(branchId)
                 .build();
 
+
         List<ClosingData> closingDataList = businessDayCloseMapper.findClosingDataList(businessDateAndBranchId);
         return ManagerClosingData.of(closingDataList);
 
@@ -80,12 +83,15 @@ public class BusinessDayCloseService {
         String currentBusinessDate = businessDayService.getCurrentBusinessDay().getBusinessDate();
         String branchId = employeeService.getAuthData().getBranchId();
 
+
         BusinessDateAndBranchId businessDateAndBranchId = BusinessDateAndBranchId.builder()
                 .businessDate(currentBusinessDate)
                 .branchId(branchId)
                 .build();
 
         businessDayCloseMapper.branchDeadlineStatusToClosed(businessDateAndBranchId);
+        String tradeNumber = businessDayCloseMapper.findClosingTradeNumber(businessDateAndBranchId);
+        interestService.createInterest(tradeNumber, currentBusinessDate);
     }
 
     public Long createClosingData(BusinessDayChange businessDayChange) {

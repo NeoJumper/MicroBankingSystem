@@ -39,7 +39,7 @@
 
             <div class="d-flex justify-content-end mt-4 mx-0">
                 <div >
-                    <button id="business-day-update-modal-btn" class="search-btn" type="button" data-bs-toggle="modal" data-bs-target="#business-day-update-modal">영업일 변경</button>
+                    <button id="business-day-update-modal-btn" class="update-btn" type="button" data-bs-toggle="modal" data-bs-target="#business-day-update-modal">영업일 변경</button>
                 </div>
             </div>
         </div>

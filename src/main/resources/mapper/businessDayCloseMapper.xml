@@ -66,4 +66,11 @@
 
     </insert>
 
+    <select id="findClosingTradeNumber" parameterType="BusinessDateAndBranchId" >
+        select trade_number from employee_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
+    </select>
+
+
+
 </mapper>
