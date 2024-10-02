@@ -2,32 +2,7 @@ let accountData = {};
 
 $(document).ready(function () {
     $('#search-modal-account').on('hidden.bs.modal', function () {
-
-        var accountNumber = $('#account-number').val();
-
-        if (accountNumber) {
-            $.ajax({
-                url: '/api/employee/account-close-details/' + accountNumber,
-                type: 'GET',
-                success: function (data) {
-                    // 테이블 초기화
-                    $('#table-content tbody').empty();
-                    // 취소신청이 완료된 계좌는 alert로 알림
-                    if (data.accountStatus !== "CLS") {
-                        window.alert("해지 신청하지 않은 계좌입니다.");
-                        return;
-                    }else{
-                        accountData = data;
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error('Error fetching data:', textStatus, errorThrown);
-                }
-            });
-        } else {
-            // 입력이 비어있으면 테이블 초기화
-            $('#data-table tbody').empty();
-        }
+        getAccountDetail();
     });
 
     $('#search-modal-select-account-btn').click(function () {
@@ -45,8 +20,35 @@ $(document).ready(function () {
     $('#cancel-submit-btn').click(function () {
         cancelCloseAccount();
     })
-
 });
+
+function getAccountDetail() {
+    var accountNumber = $('#account-number').val();
+
+    if (accountNumber) {
+        $.ajax({
+            url: '/api/employee/account-close-details/' + accountNumber,
+            type: 'GET',
+            success: function (data) {
+                // 테이블 초기화
+                $('#table-content tbody').empty();
+                // 취소신청이 완료된 계좌는 alert로 알림
+                if (data.accountStatus !== "CLS") {
+                    window.alert("해지 신청하지 않은 계좌입니다.");
+                    return;
+                }else{
+                    accountData = data;
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error fetching data:', textStatus, errorThrown);
+            }
+        });
+    } else {
+        // 입력이 비어있으면 테이블 초기화
+        $('#data-table tbody').empty();
+    }
+}
 
 function cancelCloseAccount(){
     var accountNumber = $('#account-number').val();
@@ -59,9 +61,24 @@ function cancelCloseAccount(){
             contentType: 'application/json', // JSON 형식으로 전송
             data: JSON.stringify({accId: accountNumber, amount: 0, status: "OPN", description:"계좌해지 취소", balance:totalAmount, tradeType:"OPEN"}), // JSON으로 변환하여 전송
             success: function (response) {
-                alert('성공:', response);
-                // TODO:: 상세 모달창 열어주기
+                alert('해지 취소 완료');
+                const registrationDate = new Date(accountData.amountDate);
+                const now = new Date();
+                const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
+                const totalIntRate = accountData.interestRateSum + accountData.accountPreInterRate;
+                const totalPayment = accountData.accountBal + accountData.amountSum;
+                //상세 모달창 열어주기
+                $('#transfer-result-modal').modal('show');
 
+                $('#modal-account-close-customerName').text(accountData.customerName);
+                $('#modal-account-close-accountId').text(accountData.accountId);
+                $('#modal-account-close-productName').text(accountData.productName);
+                $('#modal-account-close-totalDays').text(totalDays);
+                $('#modal-account-close-totalIntRate').text(totalIntRate);
+                $('#modal-account-close-amountSum').text(accountData.amountSum);
+                $('#modal-account-close-accountBal').text(accountData.accountBal);
+                $('#modal-account-close-productTaxRate').text(accountData.productTaxRate);
+                $('#modal-account-close-totalPayment').text(totalPayment);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('오류 발생:', textStatus, errorThrown);

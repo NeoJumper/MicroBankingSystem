@@ -2,51 +2,7 @@ let accountData = {};
 
 $(document).ready(function () {
     $('#search-modal-account').on('hidden.bs.modal', function () {
-
-        var accountNumber = $('#account-number').val();
-
-        if (accountNumber) {
-            $.ajax({
-                url: '/api/employee/account-close-details/' + accountNumber,
-                type: 'GET',
-                success: function (data) {
-                    // 테이블 초기화
-                    $('#table-content tbody').empty();
-                    // 취소신청이 완료된 계좌는 alert로 알림
-                    if (data.accountStatus === "CLS") {
-                        window.alert("해지 신청이 완료된 계좌입니다.");
-                        return;
-                    }else{
-                        accountData = data;
-                        console.log(data)
-                        const registrationDate = new Date(data.amountDate);
-                        const now = new Date();
-                        const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                        const totalIntRate = data.interestRateSum + data.accountPreInterRate;
-                        const totalPayment = data.accountBal + data.amountSum;
-                        console.log("=========================");
-                        console.log(data.accountId);
-                        $('#table-content tbody').append(
-                            '<tr>' +
-                            '<td style="width: 5%;">' + totalDays + '일' + '</td>' +
-                            '<td style="width: 5%;">' + totalIntRate + '%' + '</td>' +
-                            '<td style="width: 10%;">' + data.amountSum + '</td>' +
-                            '<td style="width: 10%;">' + data.accountBal + '</td>' +
-                            '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
-                            '<td style="width: 10%;">' + totalPayment + '</td>' +
-                            '</tr>'
-                        );
-                    }
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error('Error fetching data:', textStatus, errorThrown);
-                }
-            });
-        } else {
-            // 입력이 비어있으면 테이블 초기화
-            $('#data-table tbody').empty();
-        }
+        getAccountDetail();
     });
 
     $('#search-modal-select-account-btn').click(function () {
@@ -61,6 +17,53 @@ $(document).ready(function () {
         checkAccountId();
     })
 });
+
+function getAccountDetail() {
+    var accountNumber = $('#account-number').val();
+
+    if (accountNumber) {
+        $.ajax({
+            url: '/api/employee/account-close-details/' + accountNumber,
+            type: 'GET',
+            success: function (data) {
+                // 테이블 초기화
+                $('#table-content tbody').empty();
+                // 취소신청이 완료된 계좌는 alert로 알림
+                if (data.accountStatus === "CLS") {
+                    window.alert("해지 신청이 완료된 계좌입니다.");
+                    return;
+                }else{
+                    accountData = data;
+                    console.log(data)
+                    const registrationDate = new Date(data.amountDate);
+                    const now = new Date();
+                    const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
+                    const totalIntRate = data.interestRateSum + data.accountPreInterRate;
+                    const totalPayment = data.accountBal + data.amountSum;
+                    console.log("=========================");
+                    console.log(data.accountId);
+                    $('#table-content tbody').append(
+                        '<tr>' +
+                        '<td style="width: 5%;">' + totalDays + '일' + '</td>' +
+                        '<td style="width: 5%;">' + totalIntRate + '%' + '</td>' +
+                        '<td style="width: 10%;">' + data.amountSum + '</td>' +
+                        '<td style="width: 10%;">' + data.accountBal + '</td>' +
+                        '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
+                        '<td style="width: 10%;">' + totalPayment + '</td>' +
+                        '</tr>'
+                    );
+                }
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error fetching data:', textStatus, errorThrown);
+            }
+        });
+    } else {
+        // 입력이 비어있으면 테이블 초기화
+        $('#data-table tbody').empty();
+    }
+}
 
 function checkAccountId() {
     const inputId = $('#account-pw-input').val();
@@ -89,9 +92,24 @@ function closeAccount() {
             contentType: 'application/json', // JSON 형식으로 전송
             data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "CLS", description:"계좌해지", balance:0, tradeType:"CLOSE"}), // JSON으로 변환하여 전송
             success: function (response) {
-                alert('성공:', response);
-                // TODO:: 상세 모달창 열어주기
+                alert('해지완료');
+                const registrationDate = new Date(accountData.amountDate);
+                const now = new Date();
+                const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
+                const totalIntRate = accountData.interestRateSum + accountData.accountPreInterRate;
+                const totalPayment = accountData.accountBal + accountData.amountSum;
+                //상세 모달창 열어주기
+                $('#transfer-result-modal').modal('show');
 
+                $('#modal-account-close-customerName').text(accountData.customerName);
+                $('#modal-account-close-accountId').text(accountData.accountId);
+                $('#modal-account-close-productName').text(accountData.productName);
+                $('#modal-account-close-totalDays').text(totalDays);
+                $('#modal-account-close-totalIntRate').text(totalIntRate);
+                $('#modal-account-close-amountSum').text(accountData.amountSum);
+                $('#modal-account-close-accountBal').text(accountData.accountBal);
+                $('#modal-account-close-productTaxRate').text(accountData.productTaxRate);
+                $('#modal-account-close-totalPayment').text(totalPayment);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('오류 발생:', textStatus, errorThrown);

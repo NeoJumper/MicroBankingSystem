@@ -23,7 +23,7 @@ public class AccountCloseService {
     private final BusinessDayMapper businessDayMapper;
 
     //계좌해지신청
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public String addCloseTrade(StatusWithTrade statusWithTrade) {
 
         BusinessDay businessDay = businessDayMapper.findCurrentBusinessDay();
