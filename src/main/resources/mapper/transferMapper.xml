@@ -22,4 +22,8 @@
         SELECT  trade_num_seq.NEXTVAL FROM dual
     </select>
 
+    <select id="getTradeDetailsByTradeNumber" parameterType="java.lang.Long">
+        SELECT * from Trade WHERE trade_number = #{tradeNumber}
+    </select>
+
 </mapper>

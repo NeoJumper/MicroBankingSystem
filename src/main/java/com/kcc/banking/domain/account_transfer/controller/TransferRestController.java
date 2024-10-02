@@ -8,9 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -23,10 +21,17 @@ public class TransferRestController {
 
     private final TransferService transferService;
 
-    @PostMapping("/api/transfer")
+    @PostMapping("/api/employee/account-transfer")
     public ResponseEntity<List<TransferDetail>> transfer(@RequestBody TransferCreate transferCreate) {
             List<TransferDetail> tradeDetails = transferService.processTransfer(transferCreate);
             return ResponseEntity.ok(tradeDetails);
+    }
+
+    @GetMapping("/api/employee/account-transfer/cancel/{tradeNumber}")
+    public ResponseEntity<List<TransferDetail>> transferCancel(@PathVariable(value = "tradeNumber", required = false) Long tradeNumber) {
+        List<TransferDetail> tradeDetails = transferService.getTradeByTradeNumber(tradeNumber);
+        System.out.println("TradeDetail::"+tradeDetails);
+        return ResponseEntity.ok(tradeDetails);
     }
 
 }
