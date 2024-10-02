@@ -103,7 +103,6 @@
     <div class="d-flex justify-content-center mt-4">
         <div >
             <button id="manager-business-day-close-btn">
-                지점마감
             </button>
         </div>
     </div>

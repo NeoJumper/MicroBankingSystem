@@ -78,14 +78,11 @@ public class BusinessDayCloseService {
                 .employeeId(loginMemberId)
                 .build();
 
-        String closingStatus = businessDayCloseMapper.findClosingStatusByDate(businessDateAndEmployeeId);
-        if(closingStatus.equals("CLOSED"))
+
+        ClosingData closingData = businessDayCloseMapper.findClosingData(businessDateAndEmployeeId);
+
+        if(closingData.getStatus().equals("CLOSED"))
             throw new BadRequestException(ErrorCode.ALREADY_CLOSED_BUSINESS_DAY);
-
-
-
-
-
 
 
         businessDayCloseMapper.employeeDeadlineStatusToClosed(businessDateAndEmployeeId);
@@ -102,7 +99,18 @@ public class BusinessDayCloseService {
                 .branchId(branchId)
                 .build();
 
+        ManagerClosingData managerClosingData = getManagerClosingData();
+
+        if (managerClosingData.getClosingDataList().stream().map(ClosingData::getStatus).anyMatch("OPEN"::equals))
+            throw new BadRequestException(ErrorCode.REQUIRED_EMPLOYEE_CLOSING);
+        if(businessDayCloseMapper.findBranchClosingStatusByDate(businessDateAndBranchId).equals("CLOSED"))
+            throw new BadRequestException(ErrorCode.ALREADY_CLOSED_BUSINESS_DAY);
+
+
+
         businessDayCloseMapper.branchDeadlineStatusToClosed(businessDateAndBranchId);
+        businessDayService.businessDayStatusToClosed(currentBusinessDate);
+
         String tradeNumber = businessDayCloseMapper.findClosingTradeNumber(businessDateAndBranchId);
         interestService.createInterest(tradeNumber, currentBusinessDate);
     }

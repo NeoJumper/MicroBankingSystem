@@ -28,5 +28,5 @@ public interface BusinessDayCloseMapper {
 
     String  findClosingTradeNumber(BusinessDateAndBranchId businessDateAndBranchId);
 
-    String findClosingStatusByDate(BusinessDateAndEmployeeId  businessDateAndEmployeeId);
+    String findBranchClosingStatusByDate(BusinessDateAndBranchId  businessDateAndBranchId);
 }

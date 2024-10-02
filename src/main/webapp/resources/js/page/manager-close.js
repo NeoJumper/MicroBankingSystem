@@ -30,12 +30,19 @@ function closeBusinessDayOfManager(){
             $('#business-day-status > span').text("CLOSED");
         },
         error: function(xhr, status, error) {
-            // 에러 발생 시 처리할 로직 작성
-            console.error('에러 발생:', error);
+            swal({
+                title: "마감 실패",
+                text: xhr.responseText,
+                icon: "error",
+                button: "닫기",
+            })
         }
     });
 }
 
+/**
+ *
+ */
 function handleEmpCloseBtnStatus(){
 
     const statuses = [];
@@ -53,7 +60,8 @@ function handleEmpCloseBtnStatus(){
 
     if (totalStatuses === totalClosedStatuses) {
         $('#manager-business-day-close-btn')
-            .addClass('update-btn');
+            .addClass('update-btn')
+            .text("지점 마감");
     } else {
         $('#manager-business-day-close-btn')
             .addClass('closed-btn')
@@ -82,8 +90,7 @@ function handleCurrentBusinessDay(){
 
         },
         error: function(xhr, status, error) {
-            // 에러 발생 시 처리할 로직 작성
-            console.error('에러 발생:', error);
+
         }
     });
 }

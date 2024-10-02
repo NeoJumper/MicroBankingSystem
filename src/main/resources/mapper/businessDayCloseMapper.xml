@@ -10,9 +10,9 @@
         where ec.registrant_id = #{employeeId} and ec.closing_date = #{businessDate}
     </select>
 
-    <select id="findClosingStatusByDate" parameterType="BusinessDateAndEmployeeId" >
-        select status from employee_closing
-        where registrant_id = #{employeeId} and closing_date = #{businessDate}
+    <select id="findBranchClosingStatusByDate" parameterType="BusinessDateAndBranchId" >
+        select status from branch_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
     </select>
 
 
@@ -74,7 +74,7 @@
     </insert>
 
     <select id="findClosingTradeNumber" parameterType="BusinessDateAndBranchId" >
-        select trade_number from employee_closing
+        select trade_number from branch_closing
         where branch_id = #{branchId} and closing_date = #{businessDate}
     </select>
 

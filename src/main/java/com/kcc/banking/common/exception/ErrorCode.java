@@ -19,7 +19,7 @@ public enum ErrorCode {
     ALREADY_CHANGED_BUSINESS_DAY("이미 변경된 영업일입니다.", HttpStatus.BAD_REQUEST),
     ALREADY_CLOSED_BUSINESS_DAY("이미 마감된 영업일입니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_BRANCH_CLOSING("지점 마감이 처리되지 않았습니다.", HttpStatus.BAD_REQUEST),
-
+    REQUIRED_EMPLOYEE_CLOSING("개인마감을 진행중인 사원이 존재합니다.", HttpStatus.BAD_REQUEST),
     // 403
     NOT_LOGIN("로그인 후 이용할 수 있습니다.", HttpStatus.FORBIDDEN),
     FORBIDDEN_CREATE("생성 권한이 없습니다.", HttpStatus.FORBIDDEN),

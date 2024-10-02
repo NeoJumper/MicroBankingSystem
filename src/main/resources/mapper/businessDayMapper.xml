@@ -40,10 +40,23 @@
         WHERE ROWNUM = 1
     </select>
 
-    <update id="updateStatus" parameterType="BusinessDayUpdate">
+<!--    <update id="updateStatus" parameterType="BusinessDayUpdate">
         update business_day set
         is_current_business_day = #{isCurrentBusinessDay},
         status = #{status}
+        where business_date = #{targetDate}
+    </update>-->
+
+    <update id="update" parameterType="BusinessDayUpdate">
+        update business_day
+        <set>
+            <if test="isCurrentBusinessDay != null">
+                is_current_business_day = #{isCurrentBusinessDay},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
         where business_date = #{targetDate}
     </update>
 

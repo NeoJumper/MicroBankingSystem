@@ -72,7 +72,7 @@ public class BusinessDayService {
 
     // DB업데이트 및 변경사항 객체에 반영
     private void businessDayChange(BusinessDay currentBusinessDay, BusinessDay nextBusinessDay) {
-        int updateResult1 = businessDayStatusToClosed(currentBusinessDay.getBusinessDate());
+        int updateResult1 = currentBusinessDayToFalse(currentBusinessDay.getBusinessDate());
         int updateResult2 = businessDayStatusToOPEN(nextBusinessDay.getBusinessDate());
 
         if(updateResult1 == 1 && updateResult2 == 1) {
@@ -80,20 +80,27 @@ public class BusinessDayService {
         }
     }
 
-    public int businessDayStatusToClosed(String targetDate) {
-        return businessDayMapper.updateStatus(BusinessDayUpdate.builder()
+    public int currentBusinessDayToFalse(String targetDate) {
+        return businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)
-                .status("CLOSED")
                 .isCurrentBusinessDay("FALSE")
                 .build()
         );
 
     }
     public int businessDayStatusToOPEN(String targetDate) {
-        return businessDayMapper.updateStatus(BusinessDayUpdate.builder()
+        return businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)
                 .status("OPEN")
                 .isCurrentBusinessDay("TRUE")
+                .build()
+        );
+
+    }
+    public int businessDayStatusToClosed(String targetDate) {
+        return businessDayMapper.update(BusinessDayUpdate.builder()
+                .targetDate(targetDate)
+                .status("CLOSED")
                 .build()
         );
 

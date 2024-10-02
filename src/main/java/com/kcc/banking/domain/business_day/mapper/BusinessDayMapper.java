@@ -16,5 +16,5 @@ public interface BusinessDayMapper {
 
     BusinessDay findByDate(String date);
 
-    int updateStatus(BusinessDayUpdate businessDayUpdate);
+    int update(BusinessDayUpdate businessDayUpdate);
 }
