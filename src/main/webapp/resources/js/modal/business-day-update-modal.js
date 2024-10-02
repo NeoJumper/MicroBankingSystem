@@ -145,7 +145,7 @@ function changeBusinessDay(){
             swal({
                 title: "변경 실패",
                 text: xhr.responseText,
-                icon: "success",
+                icon: "error",
                 button: "닫기",
             })
             console.error('Error updating business day:', error);

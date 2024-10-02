@@ -27,4 +27,6 @@ public interface BusinessDayCloseMapper {
     void insertBranchClosing(BranchClosingCreate branchClosingCreate);
 
     String  findClosingTradeNumber(BusinessDateAndBranchId businessDateAndBranchId);
+
+    String findClosingStatusByDate(BusinessDateAndEmployeeId  businessDateAndEmployeeId);
 }

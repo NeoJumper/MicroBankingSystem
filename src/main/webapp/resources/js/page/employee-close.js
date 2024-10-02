@@ -4,7 +4,7 @@ $(document).ready(function() {
         // tradeDetails와 tradeDetailsContent의 표시 여부를 토글
         $("#tradeDetails, #tradeDetailsContent").toggle();
     });
-
+    handleAuthDataOfEmployeeClosePage();
     registerClickEventOfEmpCloseBtn();
 });
 
@@ -31,6 +31,27 @@ function closeBusinessDayOfEmployee(){
             $("#employee-business-day-close-btn").prop("disabled", true);
             $("#employee-business-day-close-btn").text("마감 완료");
 
+        },
+        error: function(xhr, status, error) {
+            swal({
+                title: "마감 실패",
+                text: xhr.responseText,
+                icon: "error",
+                button: "닫기",
+            })
+        }
+    });
+}
+
+function handleAuthDataOfEmployeeClosePage(){
+    $.ajax({
+        url: '/api/auth-data',
+        type: 'GET',
+        success: function(authData) {
+            // 성공 시 처리할 로직 작성
+            console.log(authData);
+            $('#employee-close-page-user-branch-name').text(authData.branchName);
+            $('#employee-close-page-user-name').text(authData.name + '님');
         },
         error: function(xhr, status, error) {
             // 에러 발생 시 처리할 로직 작성
