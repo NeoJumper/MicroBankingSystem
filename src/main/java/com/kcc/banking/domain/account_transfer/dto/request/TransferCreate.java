@@ -15,12 +15,14 @@ public class TransferCreate {
     private String depositAccount;
     private BigDecimal transferAmount;
     private String description;
+    private String withdrawalAccountPassword;
 
     @Builder
-    public TransferCreate(String withdrawalAccount, String depositAccount, BigDecimal transferAmount ,String description) {
+    public TransferCreate(String withdrawalAccount, String depositAccount, BigDecimal transferAmount ,String description, String withdrawalAccountPassword) {
         this.withdrawalAccount = withdrawalAccount;
         this.depositAccount = depositAccount;
         this.transferAmount = transferAmount;
         this.description = description;
+        this.withdrawalAccountPassword = withdrawalAccountPassword;
     }
 }

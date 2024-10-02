@@ -11,9 +11,9 @@ public enum ErrorCode {
     EMPTY_REFRESH_TOKEN("RefreshToken이 필요합니다.", HttpStatus.BAD_REQUEST),
     EMPTY_EMAIL("이메일이 필요합니다.", HttpStatus.BAD_REQUEST),
     INVALID_CODE("not invalid Code",HttpStatus.BAD_REQUEST ),
-    CLS_ACCOUNT("해지된 계좌에 대한 거래가 불가능합니다.", HttpStatus.BAD_REQUEST),
-    OVER_AMOUNT("계좌 잔액보다 이체 금액이 더 많습니다.", HttpStatus.BAD_REQUEST),
-
+    ACCOUNT_CLOSED_FOR_TRANSFER("해지된 계좌에 대한 거래가 불가능합니다.", HttpStatus.BAD_REQUEST),
+    OVER_TRANSFER_AMOUNT("계좌 잔액보다 이체 금액이 더 많습니다.", HttpStatus.BAD_REQUEST),
+    INVALID_ACCOUNT_PASSWORD("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
 
     // 403
     NOT_LOGIN("로그인 후 이용할 수 있습니다.", HttpStatus.FORBIDDEN),
