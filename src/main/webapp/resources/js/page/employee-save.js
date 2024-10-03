@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     registerClickEventOfEmpSaveBtn();
-    handleAuthDataOfHeader();
+    handleAuthDataOfEmpSaveForm();
 });
 
 /**
@@ -90,14 +90,15 @@ function fillEmpDataOfDetailModal(createdEmployee){
 
 }
 
-function handleAuthDataOfHeader(){
+function handleAuthDataOfEmpSaveForm(){
     $.ajax({
         url: '/api/auth-data',
         type: 'GET',
         success: function(authData) {
             // 성공 시 처리할 로직 작성
-            $('#emp-branch-id').val(authData.branchName);  // 보여지는 값 설정
-            $('#emp-branch-id').data('branchId', authData.branchId);  // branchId를 저장
+            $('#emp-branch-id')
+                .val(authData.branchName)
+                .data('branchId', authData.branchId);  // branchId를 저장
         },
         error: function(xhr, status, error) {
             // 에러 발생 시 처리할 로직 작성

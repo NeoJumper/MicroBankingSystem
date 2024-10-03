@@ -33,12 +33,12 @@
     </div>
   </div>
   <nav id="navbar">
-    <ul id="navbar__globalMenu">
-      <li><a href="" style="background-color:white;color :#0079D4;">계좌 관리</a></li>
-      <li><a href="">고객 관리</a></li>
-      <li><a href="">행원 관리</a></li>
-      <li><a href="/page/manager/business-day-management">영업일 관리</a></li>
-      <li><a href="">지점 관리</a></li>
+    <ul id="navbar-globalMenu">
+      <li id="header-account-management" ><a href="/page/employee/account-open">계좌 관리</a></li>
+      <li id="header-customer-management"><a href="/page/employee/account-open">고객 관리</a></li>
+      <li id="header-employee-management"><a href="/page/manager/employee-save">행원 관리</a></li>
+      <li id="header-businessday-management"><a href="/page/manager/business-day-management">영업일 관리</a></li>
+      <li id="header-branch-management"><a href="/page/employee/account-open">지점 관리</a></li>
     </ul>
   </nav>
 
