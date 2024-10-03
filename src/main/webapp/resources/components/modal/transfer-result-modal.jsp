@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Transfer Result Modal</title>
-    <link rel="stylesheet" href="/resources/css/modal/account-search-modal.css">
     <script src="/resources/js/modal/transfer-result-modal.js"></script>
 </head>
 <body>

@@ -21,4 +21,9 @@ public class TradeController {
         businessDay.addAttribute("businessDay", getBusinessDay);
         return("trade/trade-list");
     }
+
+    @GetMapping("/trade-cash")
+    public String employeeAccountTransfer() {
+        return "trade/trade-cash";
+    }
 }

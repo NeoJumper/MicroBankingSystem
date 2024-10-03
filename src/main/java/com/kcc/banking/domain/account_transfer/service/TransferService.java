@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
 public class TransferService {
@@ -59,8 +60,8 @@ public class TransferService {
             throw new BadRequestException(ErrorCode.OVER_TRANSFER_AMOUNT);
         }
 
-        // 입금 계좌
-        BigDecimal depositAccountAmount = accountService.getAccountDetail(transferCreate.getDepositAccount()).getBalance();
+        // 입금 계좌 잔액
+        BigDecimal depositAccountBalance = accountService.getAccountDetail(transferCreate.getDepositAccount()).getBalance();
 
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
@@ -137,7 +138,7 @@ public class TransferService {
                 // 이체 금액
                 .amount(transferCreate.getTransferAmount())
                 // 이체 후 잔액
-                .balance(depositAccountAmount.add(transferCreate.getTransferAmount()))
+                .balance(depositAccountBalance.add(transferCreate.getTransferAmount()))
                 // 유형: 입금
                 .tradeType("DEPOSIT")
                 // 지점 번호
@@ -174,5 +175,13 @@ public class TransferService {
         // 출금 내역과 입금 내역 반환
         return Arrays.asList(withdrawalTrade, depositTrade);
 
+    }
+
+    public List<TransferDetail> getTradeByTradeNumber(Long tradeNumber) {
+        List<TransferDetail> tradeDetails = transferMapper.getTradeDetailsByTradeNumber(tradeNumber);
+        if(tradeDetails == null || tradeDetails.isEmpty()){
+            throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
+        }
+        return tradeDetails;
     }
 }
