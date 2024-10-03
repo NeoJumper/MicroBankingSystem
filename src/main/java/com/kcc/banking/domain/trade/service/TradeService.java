@@ -10,7 +10,6 @@ import com.kcc.banking.domain.employee.service.EmployeeService;
 import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 import com.kcc.banking.domain.trade.dto.response.TradeByCash;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
-import com.kcc.banking.domain.trade.dto.response.TradeCashOfPerAccount;
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeOfList;
 import com.kcc.banking.domain.trade.mapper.TradeMapper;
