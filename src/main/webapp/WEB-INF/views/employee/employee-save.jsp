@@ -37,7 +37,7 @@
         <tr>
             <th>지점명</th>
             <td>
-                <input type="text" id="emp-branch-id" readonly>
+                <input type="text" id="emp-branch-id" disabled>
             </td>
             <th>전화번호</th>
             <td><input type="text" id="emp-phone-number"></td>
