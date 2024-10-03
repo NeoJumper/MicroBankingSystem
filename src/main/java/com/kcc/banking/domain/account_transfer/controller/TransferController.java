@@ -18,4 +18,5 @@ public class TransferController {
         model.addAttribute("tradeNumber", tradeNumber);
         return "transfer/account-transfer-cancel";
     }
+
 }

@@ -1,8 +1,10 @@
 package com.kcc.banking.domain.trade.mapper;
 
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
+import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 import com.kcc.banking.domain.trade.dto.response.TradeByCash;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
+import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeOfList;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,4 +16,10 @@ public interface TradeMapper {
     public List<TradeOfList> findTradeListOfAccId(TradeSearch tradeSearch);
 
     List<TradeByCash> findTradeByCashList(BusinessDateAndEmployeeId businessDateAndEmployeeId);
+
+    int createCashTrade(TradeDetail tradeDetail);
+
+    Long getNextTradeNumberVal();
+
+    int updateCashTradeBalance(TradeDetail tradeDetail);
 }

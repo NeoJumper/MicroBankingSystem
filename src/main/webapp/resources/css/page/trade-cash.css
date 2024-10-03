@@ -1,0 +1,3 @@
+.common-table input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+    max-width: 60%;
+}
