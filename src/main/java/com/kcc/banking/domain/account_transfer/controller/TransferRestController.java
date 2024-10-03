@@ -1,6 +1,7 @@
 package com.kcc.banking.domain.account_transfer.controller;
 
 import com.kcc.banking.common.exception.ErrorCode;
+import com.kcc.banking.domain.account_transfer.dto.request.TradeCancelRequest;
 import com.kcc.banking.domain.account_transfer.dto.request.TransferCreate;
 import com.kcc.banking.domain.account_transfer.dto.response.TransferDetail;
 import com.kcc.banking.domain.account_transfer.service.TransferService;
@@ -27,6 +28,7 @@ public class TransferRestController {
             return ResponseEntity.ok(tradeDetails);
     }
 
+    // 취소 페이지에서, 거래번호를 통해 취소하려는 거래 내역 GET
     @GetMapping("/api/employee/account-transfer/cancel/{tradeNumber}")
     public ResponseEntity<List<TransferDetail>> transferCancel(@PathVariable(value = "tradeNumber", required = false) Long tradeNumber) {
         List<TransferDetail> tradeDetails = transferService.getTradeByTradeNumber(tradeNumber);
@@ -34,4 +36,10 @@ public class TransferRestController {
         return ResponseEntity.ok(tradeDetails);
     }
 
+    // 취소 신청 -
+    @PostMapping("/api/employee/account-transfer/cancel")
+    public ResponseEntity<List<TransferDetail>> updateCancelTransferCAN(@RequestBody TradeCancelRequest tradeCancelRequest) {
+        List<TransferDetail> tradeDetails = transferService.updateCancelTransferCAN(tradeCancelRequest);
+        return ResponseEntity.ok(tradeDetails);
+    }
 }

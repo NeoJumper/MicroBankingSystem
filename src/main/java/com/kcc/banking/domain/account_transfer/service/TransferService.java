@@ -5,6 +5,7 @@ import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.service.AccountService;
+import com.kcc.banking.domain.account_transfer.dto.request.TradeCancelRequest;
 import com.kcc.banking.domain.account_transfer.dto.request.TransferCreate;
 import com.kcc.banking.domain.account_transfer.dto.response.TransferDetail;
 import com.kcc.banking.domain.account_transfer.mapper.TransferMapper;
@@ -183,5 +184,15 @@ public class TransferService {
             throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
         }
         return tradeDetails;
+    }
+
+    public List<TransferDetail> updateCancelTransferCAN(TradeCancelRequest tradeCancelRequest) {
+        Long tradeNumber = Long.valueOf(tradeCancelRequest.getTradeNumber());
+        // 업데이트 구문
+        int transferUpdateCAN = transferMapper.updateCancelTransferCAN(tradeNumber);
+        if(transferUpdateCAN == 0){
+            throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
+        }
+        return getTradeByTradeNumber(tradeNumber);
     }
 }
