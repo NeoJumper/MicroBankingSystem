@@ -41,7 +41,7 @@ public class TradeRestController {
     }
 
     // 현금 거래 생성
-    @PostMapping("/account-cash-trade")
+    @PostMapping("/trade-cash")
     public ResponseEntity<TradeDetail> createCashTrade(@RequestBody TradeCreate tradeCreate){
         TradeDetail tradeDetail = tradeService.createCashTrade(tradeCreate);
         return ResponseEntity.ok(tradeDetail);

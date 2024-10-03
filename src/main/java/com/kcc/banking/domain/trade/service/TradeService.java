@@ -99,7 +99,7 @@ public class TradeService {
 
         // 출금일 경우
         if(tradeCreate.getTradeType().equals("WITHDRAWAL")){
-            tradeDetail.setAmount(cashTradeAccountBalance.subtract(tradeCreate.getAmount()));
+            tradeDetail.setBalance(cashTradeAccountBalance.subtract(tradeCreate.getAmount()));
         }
         // 입금일 경우
         else if(tradeCreate.getTradeType().equals("DEPOSIT")){
