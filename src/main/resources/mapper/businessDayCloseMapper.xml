@@ -51,7 +51,7 @@
             vault_cash,
             trade_number,
             registrant_id,
-            registrant_date,
+            registration_date,
             version
             )
             VALUES
@@ -65,8 +65,8 @@
             #{item.prevCashBalance},
             #{item.tradeNumber},
             #{item.registrantId},
-            #{registrationDate},
-            #{version}
+            #{item.registrationDate},
+            #{item.version}
             )
         </foreach>
         SELECT * FROM DUAL
@@ -75,7 +75,7 @@
     <insert id="insertBranchClosing" parameterType="BranchClosingCreate">
 
             INSERT INTO BRANCH_CLOSING
-            (closing_date, registrant_id, branch_id, status, prev_cash_balance, vault_cash, trade_number)
+            (closing_date, registrant_id, branch_id, status, prev_cash_balance, vault_cash, trade_number, registration_date, version)
             VALUES
             (
             #{closingDate},
@@ -83,8 +83,10 @@
             #{branchId},
             #{status},
             #{prevCashBalance},
-            #{prevCashBalance},
-            #{tradeNumber}
+            #{prevCashBalance}, -- 총 마감액은 전일자 잔액과 동일
+            #{tradeNumber},
+            #{registrationDate},
+            #{version}
             )
 
     </insert>

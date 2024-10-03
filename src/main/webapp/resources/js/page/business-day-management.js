@@ -21,7 +21,7 @@ function handleCurrentBusinessDay(){
             currentBusinessDay = response.businessDate.substring(0, 10);
             $('#current-business-day').val(currentBusinessDay);
 
-            if(response.status === "CLOSED")
+            if(response.status === "OPEN")
             {
 
                 $("#business-day-update-modal-btn").removeClass("update-btn").addClass("closed-btn");

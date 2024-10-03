@@ -121,25 +121,27 @@ public class BusinessDayCloseService {
 
     public Long createClosingData(BusinessDayChange businessDayChange) {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        Long loginMemberId = AuthenticationUtils.getLoginMemberId();
-
         Long tradeNumber = businessDayCloseMapper.getNextTradeNumberVal();
 
 
         createEmployeeClosing(businessDayChange.getWorkerDataList(),businessDayChange.getBusinessDateToChange(), currentBusinessDateAndBranchId, tradeNumber);
-        createBranchClosing(businessDayChange.getBusinessDateToChange(), businessDayChange.getPrevCashBalanceOfBranch(), tradeNumber, branchId, loginMemberId);
+        createBranchClosing(businessDayChange.getBusinessDateToChange(), businessDayChange.getPrevCashBalanceOfBranch(), tradeNumber, currentBusinessDateAndBranchId);
 
         return tradeNumber;
     }
 
-    private void createBranchClosing(String businessDateToChange, BigDecimal prevCashBalanceOfBranch, Long tradeNumber, String branchId, Long loginMemberId) {
+    private void createBranchClosing(String businessDateToChange, BigDecimal prevCashBalanceOfBranch, Long tradeNumber, BusinessDateAndBranchId businessDateAndBranchId) {
+        Long loginMemberId = AuthenticationUtils.getLoginMemberId();
+
         BranchClosingCreate branchClosingCreate = BranchClosingCreate.builder()
-                .branchId(branchId)
-                .registrantId(String.valueOf(loginMemberId))
-                .prevCashBalance(prevCashBalanceOfBranch)
                 .closingDate(businessDateToChange)
+                .branchId(businessDateAndBranchId.getBranchId())
                 .status("OPEN")
+                .prevCashBalance(prevCashBalanceOfBranch)
                 .tradeNumber(tradeNumber)
+                .registrantId(String.valueOf(loginMemberId))
+                .registrationDate(businessDateAndBranchId.getBusinessDate())
+                .version(1L)
                 .build();
 
         businessDayCloseMapper.insertBranchClosing(branchClosingCreate);
