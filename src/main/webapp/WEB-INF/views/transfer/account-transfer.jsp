@@ -19,8 +19,8 @@
 <div id="main-area">
         <div>
             <h5>계좌관리 > </h5>
-            <h5>&nbsp;계좌이체 > </h5>
-            <h5>&nbsp;즉시이체</h5>
+            <h5>&nbsp 계좌이체 > </h5>
+            <h5>&nbsp&nbsp;즉시이체</h5>
 
         </div>
         <div>

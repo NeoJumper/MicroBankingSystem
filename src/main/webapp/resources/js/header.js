@@ -1,5 +1,6 @@
-$(document).ready(function() {
+let currentBusinessDayStatus = "";
 
+$(document).ready(function() {
     handleAuthDataOfHeader();
     handleBusinessDay();
 });
@@ -10,7 +11,6 @@ function handleAuthDataOfHeader(){
         type: 'GET',
         success: function(authData) {
             // 성공 시 처리할 로직 작성
-            console.log(authData);
             $('#user-roles').text(authData.roles);
             $('#user-branch-name').text(authData.branchName);
             $('#user-name').text(authData.name + '님');
@@ -32,7 +32,8 @@ function handleBusinessDay(){
             var formattedDate = response.businessDate.substring(0, 10);
 
             $('#business-day-date').text(formattedDate);
-            $('#business-day-status > span').text(response.status);
+            currentBusinessDayStatus = response.status;
+            $('#business-day-status > span').text(currentBusinessDayStatus);
         },
         error: function(xhr, status, error) {
             // 에러 발생 시 처리할 로직 작성

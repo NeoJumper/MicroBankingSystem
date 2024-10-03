@@ -16,7 +16,7 @@ public class AccountCloseController {
         return "account_close/account-close";
     }
 
-    @GetMapping("/page/employee/account-close/cancel")
+    @GetMapping("/page/employee/account-close-cancel")
     public String accountCloseCancel() {
         return "account_close/account-close-cancel";
     }

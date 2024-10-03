@@ -9,6 +9,7 @@ import com.kcc.banking.domain.account_close.dto.response.InterestSum;
 import com.kcc.banking.domain.account_close.mapper.AccountCloseMapper;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day.mapper.BusinessDayMapper;
+import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +22,10 @@ import java.util.Optional;
 public class AccountCloseService {
     private final AccountCloseMapper accountCloseMapper;
     private final BusinessDayMapper businessDayMapper;
+    private final EmployeeService employeeService;
 
     //계좌해지신청
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public String addCloseTrade(StatusWithTrade statusWithTrade) {
 
         BusinessDay businessDay = businessDayMapper.findCurrentBusinessDay();
@@ -31,13 +33,17 @@ public class AccountCloseService {
         if (businessDay.getIsCurrentBusinessDay().equals("FALSE")) {
             return "FAIL";
         }
-
+        // 지점번호
+        Long branchId = Long.parseLong(employeeService.getAuthData().getBranchId());
+        // 행원번호
+        Long employeeId = Long.parseLong(employeeService.getAuthData().getId());
+        // 영업일자
         Timestamp tradeDate = Timestamp.valueOf(businessDay.getBusinessDate());
         //  CloseTrade, AccountStatus에 분배
         CloseTrade closeTrade = CloseTrade.builder()
                 .accId(statusWithTrade.getAccId())
-                .registrantId(1L)
-                .branchId(1L)
+                .registrantId(employeeId)
+                .branchId(branchId)
                 .amount(statusWithTrade.getAmount())
                 .description(statusWithTrade.getDescription())
                 .balance(statusWithTrade.getBalance())
@@ -47,7 +53,7 @@ public class AccountCloseService {
         AccountStatus accountStatus = AccountStatus.builder()
                 .id(statusWithTrade.getAccId())
                 .status(statusWithTrade.getStatus())
-                .modifierId(1L)
+                .modifierId(employeeId)
                 .balance(statusWithTrade.getBalance())
                 .businessDay(tradeDate).build();
 

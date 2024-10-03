@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     registerClickEventOfUpdateBtn(); // 수정 버튼 클릭 이벤트 리스너
-    registerClickEventOfDeleteBtn(); // 삭제 버튼 클릭 이벤트 리스너
+    //registerClickEventOfDeleteBtn(); // 삭제 버튼 클릭 이벤트 리스너
 
 });
 

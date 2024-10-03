@@ -15,7 +15,7 @@ public class CloseTrade {
     private long id;
     private String accId;
     private long registrantId;
-    private long branchId;
+    private long branchId; // 계좌 지점이랑 다름
     private BigDecimal amount;
     private String description;
     private BigDecimal balance;

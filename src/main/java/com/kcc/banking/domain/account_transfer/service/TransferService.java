@@ -1,21 +1,17 @@
 package com.kcc.banking.domain.account_transfer.service;
 
-import ch.qos.logback.core.spi.ErrorCodes;
-import com.kcc.banking.common.exception.CustomException;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
-import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
+import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
-import com.kcc.banking.domain.account.dto.response.AccountOfModal;
-import com.kcc.banking.domain.account.mapper.AccountMapper;
 import com.kcc.banking.domain.account.service.AccountService;
+import com.kcc.banking.domain.account_transfer.dto.request.TradeCancelRequest;
 import com.kcc.banking.domain.account_transfer.dto.request.TransferCreate;
 import com.kcc.banking.domain.account_transfer.dto.response.TransferDetail;
 import com.kcc.banking.domain.account_transfer.mapper.TransferMapper;
 import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +19,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -49,20 +46,23 @@ public class TransferService {
         }
         // 출금 계좌 상태 확인
         else if(withdrawalAccount.getStatus().equals("CLS")){
-            throw new BadRequestException(ErrorCode.CLS_ACCOUNT);
+            throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
         }
-
+        // 비밀번호 검증
+        else{
+            accountService.validatePassword(new PasswordValidation(transferCreate.getWithdrawalAccount(), transferCreate.getWithdrawalAccountPassword()));
+        }
 
         // 출금 계좌 잔액 조회
         BigDecimal withdrawalAccountAmount = withdrawalAccount.getBalance();
         
         // 이체 금액이 잔액보다 큰 경우
         if (withdrawalAccountAmount.subtract(transferCreate.getTransferAmount()).compareTo(BigDecimal.ZERO) < 0) {
-            throw new BadRequestException(ErrorCode.OVER_AMOUNT);
+            throw new BadRequestException(ErrorCode.OVER_TRANSFER_AMOUNT);
         }
 
-        // 입금 계좌
-        BigDecimal depositAccountAmount = accountService.getAccountDetail(transferCreate.getDepositAccount()).getBalance();
+        // 입금 계좌 잔액
+        BigDecimal depositAccountBalance = accountService.getAccountDetail(transferCreate.getDepositAccount()).getBalance();
 
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
@@ -127,7 +127,7 @@ public class TransferService {
         }
         //입금 계좌 상태 확인
         else if(depositAccount.getStatus().equals("CLS")){
-            throw new BadRequestException(ErrorCode.CLS_ACCOUNT);
+            throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
         }
 
         // 입금 내역 생성
@@ -139,7 +139,7 @@ public class TransferService {
                 // 이체 금액
                 .amount(transferCreate.getTransferAmount())
                 // 이체 후 잔액
-                .balance(depositAccountAmount.add(transferCreate.getTransferAmount()))
+                .balance(depositAccountBalance.add(transferCreate.getTransferAmount()))
                 // 유형: 입금
                 .tradeType("DEPOSIT")
                 // 지점 번호
@@ -176,5 +176,23 @@ public class TransferService {
         // 출금 내역과 입금 내역 반환
         return Arrays.asList(withdrawalTrade, depositTrade);
 
+    }
+
+    public List<TransferDetail> getTradeByTradeNumber(Long tradeNumber) {
+        List<TransferDetail> tradeDetails = transferMapper.getTradeDetailsByTradeNumber(tradeNumber);
+        if(tradeDetails == null || tradeDetails.isEmpty()){
+            throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
+        }
+        return tradeDetails;
+    }
+
+    public List<TransferDetail> updateCancelTransferCAN(TradeCancelRequest tradeCancelRequest) {
+        Long tradeNumber = Long.valueOf(tradeCancelRequest.getTradeNumber());
+        // 업데이트 구문
+        int transferUpdateCAN = transferMapper.updateCancelTransferCAN(tradeNumber);
+        if(transferUpdateCAN == 0){
+            throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
+        }
+        return getTradeByTradeNumber(tradeNumber);
     }
 }

@@ -1,5 +1,7 @@
 package com.kcc.banking.domain.account.service;
 
+import com.kcc.banking.common.exception.ErrorCode;
+import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
@@ -24,7 +26,7 @@ public class AccountService {
         String accountPassword = accountMapper.findPasswordByAccNumber(passwordValidation.getAccountNumber());
 
         if(!passwordEncoder.matches(passwordValidation.getPassword(), accountPassword)){
-            throw new RuntimeException("Invalid password");
+            throw new BadRequestException(ErrorCode.INVALID_ACCOUNT_PASSWORD);
         }
     }
 

@@ -15,7 +15,7 @@ $(document).ready(function() {
     });
 
     // *자신의 페이지에 맞게 구현
-    // $('#search-modal-select-account').click(function() {
+    // $('#search-modal-select-account-btn').click(function() {
     //     selectAccount();  // 선택된 계좌 처리 함수 호출
     // });
 

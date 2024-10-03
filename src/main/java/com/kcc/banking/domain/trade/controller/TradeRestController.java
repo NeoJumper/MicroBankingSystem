@@ -1,10 +1,13 @@
 package com.kcc.banking.domain.trade.controller;
 
+import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
 import com.kcc.banking.domain.trade.dto.response.Criteria;
 import com.kcc.banking.domain.trade.dto.response.PageDTO;
 import com.kcc.banking.domain.trade.dto.response.PagingInfoOfTradeList;
 
+import com.kcc.banking.domain.trade.dto.response.TradeCashOfPerAccount;
+import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeOfList;
 import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -61,6 +65,13 @@ public class TradeRestController {
 
 
         return  ResponseEntity.ok(tradeCashOfPerAccount);
+    }
+
+    // 현금 거래 생성
+    @PostMapping("/trade-cash")
+    public ResponseEntity<TradeDetail> createCashTrade(@RequestBody TradeCreate tradeCreate){
+        TradeDetail tradeDetail = tradeService.createCashTrade(tradeCreate);
+        return ResponseEntity.ok(tradeDetail);
     }
 
 
