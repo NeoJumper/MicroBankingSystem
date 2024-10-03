@@ -2,6 +2,7 @@ package com.kcc.banking.domain.interest.dto.request;
 
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.AccountDetailForInterest;
+import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,31 +14,42 @@ import java.sql.Timestamp;
 @Getter
 public class InterestCreate {
 
-    private Long id;
-    private String accId;
-    private Long registrantId;
-    private Long branchId;
-    private String paymentDate;
-    private BigDecimal amount;
-    private float interestRate;
-    private String paymentStatus;
-    private String tradeNumber;
+    private Long id; // sequence
+    private String accId; // 대상계좌
+    private BigDecimal amount; // 금액
+    private float interestRate; // 이율(우대 + 기본)
+    private String paymentStatus; // 지금상태
+    private String tradeNumber; // 생성 거래 번호
+    private String branchId; // 생성 지점
+    private Long registrantId; // 생성한 사람
+    private String registrationDate; // 생성일
+    private Long version;
 
     @Builder
-    public InterestCreate(Long id, String accId, Long registrantId,Long branchId, String paymentDate, BigDecimal amount, float interestRate, String paymentStatus, String tradeNumber) {
+    public InterestCreate(Long id, String accId, BigDecimal amount, float interestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, String registrationDate, Long version) {
         this.id = id;
         this.accId = accId;
-        this.registrantId = registrantId;
-        this.branchId = branchId;
-        this.paymentDate = paymentDate;
         this.amount = amount;
         this.interestRate = interestRate;
         this.paymentStatus = paymentStatus;
         this.tradeNumber = tradeNumber;
-
+        this.branchId = branchId;
+        this.registrantId = registrantId;
+        this.registrationDate = registrationDate;
+        this.version = version;
     }
 
-    public static InterestCreate of (AccountDetailForInterest accountDetail, Long loginMemberId, String paymentDate, String tradeNumber){
+    /**
+     * @Description
+     * 잔액에 대한 이자 계산
+     * balance * interest / 100 / 365
+     * 근데 이제 형변환을 곁들인
+     *
+     * 지급 상태는 N
+     * branchId와 registrantId는 일단 마감 진행자의 것으로
+     * 추후에 지급한 지점이나 담당자로 바꿔야한다면 변경
+     */
+    public static InterestCreate of (AccountDetailForInterest accountDetail, Long loginMemberId, BusinessDateAndBranchId businessDateAndBranchId, String tradeNumber){
         BigDecimal balance = accountDetail.getBalance();  // 잔액 (BigDecimal)
         BigDecimal interestRate = BigDecimal.valueOf(accountDetail.getInterestRate());  // 연 이자율 (float을 BigDecimal로 변환)
 
@@ -49,13 +61,15 @@ public class InterestCreate {
 
         return InterestCreate.builder()
                 .accId(accountDetail.getAccId())
-                .registrantId(loginMemberId)
-                .branchId(accountDetail.getBranchId())
-                .paymentDate(paymentDate)
-                .amount(dailyInterest )
+                .amount(dailyInterest)
                 .interestRate(accountDetail.getInterestRate())
-                .paymentStatus("Y")
+                .paymentStatus("N")
                 .tradeNumber(tradeNumber)
+                .branchId(businessDateAndBranchId.getBranchId())
+                .registrantId(loginMemberId)
+                .registrationDate(businessDateAndBranchId.getBusinessDate())
+                .version(1L)
                 .build();
     }
+
 }
