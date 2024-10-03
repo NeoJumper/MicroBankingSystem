@@ -13,7 +13,7 @@ public class TransferController {
         return "transfer/account-transfer";
     }
 
-    @GetMapping("/page/employee/account-transfer/cancel")
+    @GetMapping("/page/employee/account-transfer-cancel")
     public String employeeAccountTransferCancel(@RequestParam(value="tradeNumber", required = false) long tradeNumber, Model model) {
         model.addAttribute("tradeNumber", tradeNumber);
         return "transfer/account-transfer-cancel";

@@ -1,11 +1,35 @@
 const headerMap = new Map();
 
 // 각 헤더에 하위 항목 추가
-headerMap.set("header-account-management", ["account-open", "account-close", "account-close-cancel", "account-transfer","trade-cash", "trade-list"]);
-headerMap.set("header-customer-management", []);
-headerMap.set("header-employee-management", ["employee-save", "employee-list", "employee-update"]);
-headerMap.set("header-businessday-management", ["business-day-management", "business-day-close"]);
-headerMap.set("header-branch-management", ["branch-management", "branch"]);
+headerMap.set("header-account-management", {
+    sidebar: [
+        "account-open",
+        "account-close",
+        "account-close-cancel",
+        "account-transfer",
+        "trade-cash",
+        "trade-list"
+    ],
+    sub: {
+        "trade-list": ["account-transfer-cancel"] // trade-list 내의 하위 URL을 관리
+    }
+});
+headerMap.set("header-businessday-management", {
+    sidebar: ["business-day-management", "business-day-close"],
+    sub: {}
+});
+headerMap.set("header-branch-management", {
+    sidebar: ["branch-management", "branch"],
+    sub: {}
+});
+headerMap.set("header-customer-management", {
+    sidebar: [],
+    sub: {}
+});
+headerMap.set("header-employee-management", {
+    sidebar: ["employee-save", "employee-list", "employee-update"],
+    sub: {}
+});
 
 
 $(document).ready(function () {
@@ -24,10 +48,11 @@ $(document).ready(function () {
 });
 
 function handleHeaderAndSidebar() {
-    const currentUrl = window.location.href;
-    const selectedHeaderMenu = findHeader(extractUrl(currentUrl));
-    const selectedSidebarMenu = extractUrl(currentUrl);
-
+    const currentUrl = extractUrl(window.location.href);
+    const selectedHeaderMenu = findHeader(currentUrl);
+    const selectedSidebarMenu = findSidebar(currentUrl);
+    console.log(selectedHeaderMenu);
+    console.log(selectedSidebarMenu);
 
     // 사이드바 내용을 처리하고 완료 후 추가 작업 수행
     handleSidebarContent(selectedHeaderMenu , selectedSidebarMenu)
@@ -217,13 +242,38 @@ function createSidebar(menuItems) {
 }
 
 function findHeader(value) {
-    for (const [header, items] of headerMap.entries()) {
-        if (items.includes(value)) {
+    for (const [header, { sidebar, sub }] of headerMap.entries()) {
+        // sidebar에서 먼저 값 찾기
+        if (sidebar.includes(value)) {
             return header;
         }
+
+        // sub에서 값 찾기
+        for (const [mainItem, subItems] of Object.entries(sub)) {
+            if (subItems.includes(value)) {
+                return header; // 헤더 반환
+            }
+        }
     }
-    return null; // 해당 값에 해당하는 헤더가 없을 경우
+    return null; // 해당 값에 속하는 헤더가 없을 경우
 }
+function findSidebar(value) {
+    for (const { sidebar, sub } of headerMap.values()) {
+        // sidebar에서 직접 값 찾기
+        if (sidebar.includes(value)) {
+            return value;
+        }
+
+        // sub에서 값 찾기
+        for (const [mainItem, subItems] of Object.entries(sub)) {
+            if (subItems.includes(value)) {
+                return mainItem; // 하위 항목이면 상위 sidebar 항목 반환
+            }
+        }
+    }
+    return null; // 해당 값에 속하는 sidebar 항목이 없을 경우
+}
+
 
 function extractUrl(url){
     //console.log(url);
