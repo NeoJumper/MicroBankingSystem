@@ -6,9 +6,9 @@
 
     <resultMap id="interestSumMap" type="InterestSum">
         <id column="account_id" property="accountId" />
-        <result column="interest_rate_sum" property="interestRateSum" />
         <result column="amount_sum" property="amountSum" />
     </resultMap>
+
     <resultMap id="closeAccountMap" type="CloseAccount">
         <id column="account_id" property="accountId" />
         <result column="account_status" property="accountStatus" />
@@ -21,13 +21,17 @@
         <result column="product_tax_rate" property="productTaxRate" />
     </resultMap>
 
+<!--    계좌번호로 미지급 이자,미지급 이자율 총합-->
     <select id="findInterestSum" parameterType="java.lang.String" resultMap="interestSumMap">
-        SELECT a.id as account_id, sum(i.interest_rate) as interest_rate_sum, sum(i.amount) as amount_sum
-        FROM Account a JOIN Interest i ON  i.acc_id = a.id
+        SELECT a.id AS account_id,
+               sum(CASE WHEN i.payment_status = 'N' THEN i.amount ELSE 0 END) AS amount_sum
+        FROM Account a
+            JOIN Interest i ON  i.acc_id = a.id
         WHERE a.id = #{accountId}
         GROUP BY a.id
     </select>
 
+<!--    해지 대상 계좌 상태 조회-->
     <select id="findCloseAccount" parameterType="java.lang.String" resultMap="closeAccountMap">
         SELECT
                a.id as account_id,
@@ -36,7 +40,7 @@
                c.id as customer_id,
                p.name as product_name,
                a.start_date as amount_date,
-               a.preferential_interest_rate as account_pre_inter_rate,
+               a.preferential_interest_rate + p.interest_rate as account_pre_inter_rate,
                a.balance as account_bal,
                p.tax_rate as product_tax_rate
         FROM Account a JOIN Customer c ON a.customer_id = c.id
@@ -44,6 +48,7 @@
         WHERE a.id = #{accountId}
     </select>
 
+<!--    해지 거래 등록-->
     <insert id="addCancelTrade" parameterType="CloseTrade">
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
             SELECT trade_seq.nextval FROM dual
@@ -52,6 +57,23 @@
         VALUES (#{id}, #{accId}, #{registrantId}, #{branchId}, #{businessDay}, #{amount}, #{balance}, #{tradeType}, 'NOR', 'TRUE', #{description}, trade_num_seq.nextval)
     </insert>
 
+<!--    이자 테이블 상태 변경-->
+    <update id="updatePaymentStatus" parameterType="PaymentStatus">
+        UPDATE INTEREST
+            SET
+                branch_id = #{branchId},
+                payment_date = #{payDate},
+                payment_status = 'Y',
+                modifier_date = #{modifierDate},
+                modifier_id = #{modifierId},
+                version = version + 1
+            WHERE
+                acc_id = #{accId}
+                AND
+                payment_status = 'N'
+    </update>
+
+<!--    계좌 상태 변경-->
     <update id="updateStatus" parameterType="AccountStatus">
         UPDATE ACCOUNT
         SET

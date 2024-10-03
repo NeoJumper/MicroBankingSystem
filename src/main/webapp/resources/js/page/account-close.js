@@ -38,7 +38,7 @@ function getAccountDetail() {
                     const registrationDate = new Date(data.amountDate);
                     const now = new Date();
                     const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                    const totalIntRate = data.interestRateSum + data.accountPreInterRate;
+                    const totalIntRate = data.accountPreInterRate;
                     const totalPayment = data.accountBal + data.amountSum;
                     console.log("=========================");
                     console.log(data.accountId);
