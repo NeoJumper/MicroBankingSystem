@@ -228,7 +228,7 @@ function findHeader(value) {
 function extractUrl(url){
     //console.log(url);
     const splitUrl1 = url.split("/").pop();
-    return  splitUrl1.split("&").shift();
+    return  splitUrl1.split("?").shift();
 }
 
 function toggleSidebar() {
