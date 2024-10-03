@@ -10,6 +10,13 @@
         where ec.registrant_id = #{employeeId} and ec.closing_date = #{businessDate}
     </select>
 
+    <select id="findBranchClosingStatusByDate" parameterType="BusinessDateAndBranchId" >
+        select status from branch_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
+    </select>
+
+
+
     <select id="findClosingDataList" parameterType="BusinessDateAndBranchId" >
         select e.id, e.name, ec.prev_cash_balance, ec.total_deposit, ec.total_withdrawal, ec.vault_cash, ec.status from employee_closing ec
         join employee e on ec.registrant_id = e.id
@@ -65,5 +72,12 @@
             )
 
     </insert>
+
+    <select id="findClosingTradeNumber" parameterType="BusinessDateAndBranchId" >
+        select trade_number from branch_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
+    </select>
+
+
 
 </mapper>

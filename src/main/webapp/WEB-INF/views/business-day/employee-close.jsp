@@ -22,8 +22,8 @@
     <div>
         <div class="d-flex align-items-center">
             <h3 class="mb-0">마감일 관리(행원)</h3>
-            <h4 style="background-color :blue; color: white; font-size: 1.2rem; padding: 7px 10px; margin: 0 10px;">은평 제 1지점</h4>
-            <h5 class="mb-0">2024-09-24</h5>
+            <h4 id="employee-close-page-user-branch-name"  style="background-color :blue; color: white; font-size: 1.2rem; padding: 7px 10px; margin: 0 10px;"></h4>
+            <h5 id="employee-close-page-user-name" class="mb-0">2024-09-24</h5>
         </div>
         <hr>
     </div>

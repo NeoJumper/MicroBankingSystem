@@ -26,17 +26,25 @@ function registerClickEventOfEmpCheckBox(){
 
 function registerClickEventOfEmpAllCheckBox(){
     $('#business-day-modal-all-checkbox').on('click', function () {
-        // modal-body 내부의 모든 i 태그 선택
-        $('.modal-body i').each(function() {
-            const icon = $(this);
 
-            // 클래스 전환
-            if (icon.hasClass('bi-square')) {
+        const allCheckBox = $(this).find('i');
+        if (allCheckBox.hasClass('bi-square')) {
+
+            $('.modal-body i').each(function() {
+                const icon = $(this);
                 icon.removeClass('bi-square').addClass('bi-check-square');
-            } else {
+            });
+
+            allCheckBox.removeClass('bi-square').addClass('bi-check-square');
+        }
+        else{
+            $('.modal-body i').each(function() {
+                const icon = $(this);
                 icon.removeClass('bi-check-square').addClass('bi-square');
-            }
-        });
+            });
+
+            allCheckBox.removeClass('bi-check-square').addClass('bi-square');
+        }
     });
 }
 
@@ -134,7 +142,12 @@ function changeBusinessDay(){
             });
         },
         error: function(xhr, status, error) {
-            // 오류 처리
+            swal({
+                title: "변경 실패",
+                text: xhr.responseText,
+                icon: "error",
+                button: "닫기",
+            })
             console.error('Error updating business day:', error);
         }
     });

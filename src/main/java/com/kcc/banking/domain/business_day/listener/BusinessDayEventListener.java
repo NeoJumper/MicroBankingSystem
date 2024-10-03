@@ -19,13 +19,13 @@ import java.util.List;
 public class BusinessDayEventListener {
 
     private final BusinessDayCloseService businessDayCloseService;
-    private final InterestService interestService;
+
 
     @EventListener
-    public void businessDayClose(BusinessDayChangeEvent event)
+    public void businessDayChangeEventListener(BusinessDayChangeEvent event)
     {
         Long tradeNumber = businessDayCloseService.createClosingData(event.getBusinessDayChange());
-        interestService.createInterest(tradeNumber, event.getBusinessDayChange().getBusinessDateToChange());
+
     }
 
 
