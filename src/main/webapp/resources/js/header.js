@@ -1,12 +1,13 @@
 let currentBusinessDayStatus = "";
 
 $(document).ready(function() {
-
+    console.log("aaa");
     handleAuthDataOfHeader();
     handleBusinessDay();
 });
 
 function handleAuthDataOfHeader(){
+    console.log("aaa");
     $.ajax({
         url: '/api/auth-data',
         type: 'GET',
