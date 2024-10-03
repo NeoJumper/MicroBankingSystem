@@ -1,7 +1,7 @@
 const headerMap = new Map();
 
 // 각 헤더에 하위 항목 추가
-headerMap.set("header-account-management", ["account-open", "account-close", "account-close-cancel", "account-transfer", "trade-list"]);
+headerMap.set("header-account-management", ["account-open", "account-close", "account-close-cancel", "account-transfer","trade-cash", "trade-list"]);
 headerMap.set("header-customer-management", []);
 headerMap.set("header-employee-management", ["employee-save", "employee-list", "employee-update"]);
 headerMap.set("header-businessday-management", ["business-day-management", "business-day-close"]);
@@ -106,7 +106,8 @@ function createAccountManagementSidebar(selectedSidebarMenu) {
             icon: 'bi bi-arrow-right-circle',
             submenu: [
                 { name: '즉시 이체', url: '/page/employee/account-transfer' },
-                { name: '거래 내역', url: '/page/employee/trade-list' }
+                { name: '거래 내역', url: '/page/employee/trade-list' },
+                { name: '현금 입출금', url: '/page/employee/trade-cash' },
             ]
         }
     ];
