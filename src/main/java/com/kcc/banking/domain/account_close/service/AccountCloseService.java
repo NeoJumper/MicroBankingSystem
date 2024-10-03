@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class AccountCloseService {
     //계좌해지신청
     @Transactional(rollbackFor = Exception.class)
     public String addCloseTrade(StatusWithTrade statusWithTrade) {
-        
+        StringBuilder resultText = new StringBuilder("SUCCESS");
 
         BusinessDay businessDay = businessDayMapper.findCurrentBusinessDay();
         // 현재 영업일이 아닐 경우 FAIL 리턴하며 메서드 종료
@@ -41,6 +42,7 @@ public class AccountCloseService {
         Long employeeId = Long.parseLong(employeeService.getAuthData().getId());
         // 영업일자
         Timestamp tradeDate = Timestamp.valueOf(businessDay.getBusinessDate());
+
         //  CloseTrade, AccountStatus에 분배
         CloseTrade closeTrade = CloseTrade.builder()
                 .accId(statusWithTrade.getAccId())
@@ -69,15 +71,23 @@ public class AccountCloseService {
         int tradeResult = accountCloseMapper.addCancelTrade(closeTrade);
         int statusResult = accountCloseMapper.updateStatus(accountStatus);
         int paymentStatusResult = accountCloseMapper.updatePaymentStatus(paymentStatus);
-        if (tradeResult > 0 && statusResult > 0 && paymentStatusResult > 0) {
-            return "SUCCESS";
+        if (tradeResult > 0) {
+            resultText.append(" 'tradeResult' ");
         }
-        return "FAIL";
+        if (statusResult > 0) {
+            resultText.append(" 'statusResult' ");
+        }
+        if (paymentStatusResult > 0) {
+            resultText.append(" 'paymentStatusResult' ");
+        }
+        return (tradeResult + statusResult + paymentStatusResult) > 0 ? resultText.toString() : "FAIL";
     }
 
     public CloseAccountTotal findCloseAccountTotal(String accountId) {
         Optional<InterestSum> optInterestSum = Optional.ofNullable(accountCloseMapper.findInterestSum(accountId));
-        InterestSum interestSum = optInterestSum.orElse(new InterestSum());
+        InterestSum interestSum = optInterestSum.orElse(InterestSum.builder()
+                .accountId(accountId)
+                .amountSum(new BigDecimal("0")).build());
 
         Optional<CloseAccount> optCloseAccount = Optional.ofNullable(accountCloseMapper.findCloseAccount(accountId));
         CloseAccount closeAccount = optCloseAccount.orElse(new CloseAccount());

@@ -24,10 +24,11 @@
 <!--    계좌번호로 미지급 이자,미지급 이자율 총합-->
     <select id="findInterestSum" parameterType="java.lang.String" resultMap="interestSumMap">
         SELECT a.id AS account_id,
-               sum(CASE WHEN i.payment_status = 'N' THEN i.amount ELSE 0 END) AS amount_sum
+               sum(i.amount) AS amount_sum
         FROM Account a
             JOIN Interest i ON  i.acc_id = a.id
         WHERE a.id = #{accountId}
+            AND i.payment_status = 'N'
         GROUP BY a.id
     </select>
 

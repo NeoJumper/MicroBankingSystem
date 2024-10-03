@@ -38,7 +38,7 @@ public class AccountCloseRestController {
     public ResponseEntity<?> addCloseTrade(@RequestBody StatusWithTrade statusWithTrade) {
         String result = accountCloseService.addCloseTrade(statusWithTrade);
 
-        if(!result.equals("SUCCESS")) {
+        if(result.equals("FAIL")) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("계좌해지 거래 실패");
         }
         return ResponseEntity.status(HttpStatus.OK).body(result);

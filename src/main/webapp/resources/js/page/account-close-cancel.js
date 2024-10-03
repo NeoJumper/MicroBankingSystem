@@ -65,7 +65,6 @@ function cancelCloseAccount(){
                 const registrationDate = new Date(accountData.amountDate);
                 const now = new Date();
                 const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                const totalIntRate = accountData.interestRateSum + accountData.accountPreInterRate;
                 const totalPayment = accountData.accountBal + accountData.amountSum;
                 //상세 모달창 열어주기
                 $('#transfer-result-modal').modal('show');
@@ -74,7 +73,7 @@ function cancelCloseAccount(){
                 $('#modal-account-close-accountId').text(accountData.accountId);
                 $('#modal-account-close-productName').text(accountData.productName);
                 $('#modal-account-close-totalDays').text(totalDays);
-                $('#modal-account-close-totalIntRate').text(totalIntRate);
+                $('#modal-account-close-totalIntRate').text(accountData.accountPreInterRate);
                 $('#modal-account-close-amountSum').text(accountData.amountSum);
                 $('#modal-account-close-accountBal').text(accountData.accountBal);
                 $('#modal-account-close-productTaxRate').text(accountData.productTaxRate);
