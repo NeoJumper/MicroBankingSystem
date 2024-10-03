@@ -18,7 +18,7 @@
 <div id="main-area">
     <div style="margin-bottom: 17px;">
         <h5>예금 관리 >&nbsp</h5>
-        <h5>계좌 해지 취소</h5>
+        <h5>계좌 해지 취소 완료</h5>
     </div>
     <hr class="m-0 border border-dark border-2">
     <div>
@@ -73,7 +73,7 @@
     </div>
 </div>
 <script src="/resources/js/page/account-close-cancel.js"></script>
-<%@ include file="/resources/components/modal/account-close-result-modal.jsp" %>
+<%@ include file="/resources/components/modal/account-close-cancel-result-modal.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
 </body>

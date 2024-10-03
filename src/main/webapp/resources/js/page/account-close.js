@@ -38,14 +38,13 @@ function getAccountDetail() {
                     const registrationDate = new Date(data.amountDate);
                     const now = new Date();
                     const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                    const totalIntRate = data.interestRateSum + data.accountPreInterRate;
                     const totalPayment = data.accountBal + data.amountSum;
                     console.log("=========================");
                     console.log(data.accountId);
                     $('#table-content tbody').append(
                         '<tr>' +
                         '<td style="width: 5%;">' + totalDays + '일' + '</td>' +
-                        '<td style="width: 5%;">' + totalIntRate + '%' + '</td>' +
+                        '<td style="width: 5%;">' + data.accountPreInterRate + '%' + '</td>' +
                         '<td style="width: 10%;">' + data.amountSum + '</td>' +
                         '<td style="width: 10%;">' + data.accountBal + '</td>' +
                         '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
@@ -86,6 +85,7 @@ function closeAccount() {
     var totalAmount = Number(accountData.amountSum) + Number(accountData.accountBal);
     // accountId가 비어있지 않은지 확인
     if (accountNumber) {
+        console.log("accountClose Start")
         $.ajax({
             url: '/api/employee/close-trade',
             type: 'POST',
@@ -96,7 +96,6 @@ function closeAccount() {
                 const registrationDate = new Date(accountData.amountDate);
                 const now = new Date();
                 const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                const totalIntRate = accountData.interestRateSum + accountData.accountPreInterRate;
                 const totalPayment = accountData.accountBal + accountData.amountSum;
                 //상세 모달창 열어주기
                 $('#transfer-result-modal').modal('show');
@@ -105,7 +104,7 @@ function closeAccount() {
                 $('#modal-account-close-accountId').text(accountData.accountId);
                 $('#modal-account-close-productName').text(accountData.productName);
                 $('#modal-account-close-totalDays').text(totalDays);
-                $('#modal-account-close-totalIntRate').text(totalIntRate);
+                $('#modal-account-close-totalIntRate').text(accountData.accountPreInterRate);
                 $('#modal-account-close-amountSum').text(accountData.amountSum);
                 $('#modal-account-close-accountBal').text(accountData.accountBal);
                 $('#modal-account-close-productTaxRate').text(accountData.productTaxRate);

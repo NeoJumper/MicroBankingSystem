@@ -22,11 +22,10 @@ public class CloseAccountTotal {
     private BigDecimal accountBal;
     private BigDecimal productTaxRate;
     // 총 이율, 총 이자
-    private BigDecimal interestRateSum;
     private BigDecimal amountSum;
 
     @Builder
-    public CloseAccountTotal(String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp amountDate, BigDecimal accountPreInterRate, BigDecimal accountBal, BigDecimal productTaxRate, BigDecimal interestRateSum, BigDecimal amountSum) {
+    public CloseAccountTotal(String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp amountDate, BigDecimal accountPreInterRate, BigDecimal accountBal, BigDecimal productTaxRate, BigDecimal amountSum) {
         this.accountId = accountId;
         this.accountStatus = accountStatus;
         this.customerName = customerName;
@@ -36,7 +35,6 @@ public class CloseAccountTotal {
         this.accountPreInterRate = accountPreInterRate;
         this.accountBal = accountBal;
         this.productTaxRate = productTaxRate;
-        this.interestRateSum = interestRateSum;
         this.amountSum = amountSum;
     }
 }
