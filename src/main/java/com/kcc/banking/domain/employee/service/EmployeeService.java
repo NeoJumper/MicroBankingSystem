@@ -3,6 +3,8 @@ package com.kcc.banking.domain.employee.service;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.NotFoundException;
 import com.kcc.banking.common.util.AuthenticationUtils;
+import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
+import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
@@ -23,6 +25,7 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BusinessDayService businessDayService;
+    private final CommonService commonService;
 
     public List<EmployeeDataOfList> getEmployeeListOfBranch() {
         return employeeMapper.findAllOfBranch(AuthenticationUtils.getLoginMemberId());
@@ -36,6 +39,9 @@ public class EmployeeService {
     public CreatedEmployee createEmployee(EmployeeCreate employeeCreate) {
 
         employeeCreate.setPassword(passwordEncoder.encode(employeeCreate.getPassword()));
+
+        employeeCreate.setCommonColumn(commonService.getCurrentBusinessDateAndEmployeeId());
+
 
         employeeMapper.save(employeeCreate);
         return new CreatedEmployee(employeeCreate, "은평 1지점", "매니저");

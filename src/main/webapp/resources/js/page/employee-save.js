@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     registerClickEventOfEmpSaveBtn();
-
+    handleAuthDataOfHeader();
 });
 
 /**
@@ -16,7 +16,7 @@ function registerClickEventOfEmpSaveBtn(){
             birthDate: $('#emp-birth-date').val(),
             email: $('#emp-email').val(),
             password: $('#emp-password').val(),
-            branchId: $('#emp-branch-id').val(),
+            branchId: $('#emp-branch-id').data('branchId'),
             phoneNumber: $('#emp-phone-number').val(),
             roles: $('#emp-roles').val()
         };
@@ -64,6 +64,8 @@ function createEmployee(employeeCreateData){
     });
 }
 
+
+
 function resetEmpDataOfCreateForm(){
     $('#emp-name').val('');
     $('#emp-birth-date').val('');
@@ -86,4 +88,20 @@ function fillEmpDataOfDetailModal(createdEmployee){
     $('#detail-modal-emp-branch-name').val(createdEmployee.branchName); // 지점명은 id로 받음, 필요 시 변환
     $('#detail-modal-emp-roles').val(createdEmployee.roles);
 
+}
+
+function handleAuthDataOfHeader(){
+    $.ajax({
+        url: '/api/auth-data',
+        type: 'GET',
+        success: function(authData) {
+            // 성공 시 처리할 로직 작성
+            $('#emp-branch-id').val(authData.branchName);  // 보여지는 값 설정
+            $('#emp-branch-id').data('branchId', authData.branchId);  // branchId를 저장
+        },
+        error: function(xhr, status, error) {
+            // 에러 발생 시 처리할 로직 작성
+            console.error('에러 발생:', error);
+        }
+    });
 }

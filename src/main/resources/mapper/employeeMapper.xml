@@ -25,8 +25,20 @@
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
             SELECT employee_seq.nextval FROM dual
         </selectKey>
-        INSERT INTO Employee (id, branch_id, name, phone_number, email,birth_date, password, roles)
-        VALUES (#{id}, #{branchId}, #{name},  #{phoneNumber}, #{email},#{birthDate}, #{password}, #{roles})
+        INSERT INTO Employee (id, branch_id, name, phone_number, email,birth_date, password, roles, registrant_id, registration_date, version)
+        VALUES (
+        #{id},
+        #{branchId},
+        #{name},
+        #{phoneNumber},
+        #{email},
+        #{birthDate},
+        #{password},
+        #{roles},
+        #{registrantId},
+        #{registrationDate},
+        #{version}
+        )
     </insert>
 
     <update id="update" parameterType="EmployeeUpdate">
