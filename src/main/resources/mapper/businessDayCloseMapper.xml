@@ -41,16 +41,32 @@
         INSERT ALL
         <foreach collection="list" item="item">
             INTO EMPLOYEE_CLOSING
-            (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number)
+            (
+            closing_date,
+            branch_id,
+            status,
+            prev_cash_balance,
+            total_deposit,
+            total_withdrawal,
+            vault_cash,
+            trade_number,
+            registrant_id,
+            registration_date,
+            version
+            )
             VALUES
             (
-            #{item.closingDate}, #{item.registrantId}, #{item.branchId},
+            #{item.closingDate},
+            #{item.branchId},
             #{item.status},
             #{item.prevCashBalance},
             0,
             0,
             #{item.prevCashBalance},
-            #{item.tradeNumber}
+            #{item.tradeNumber},
+            #{item.registrantId},
+            #{item.registrationDate},
+            #{item.version}
             )
         </foreach>
         SELECT * FROM DUAL
@@ -59,7 +75,7 @@
     <insert id="insertBranchClosing" parameterType="BranchClosingCreate">
 
             INSERT INTO BRANCH_CLOSING
-            (closing_date, registrant_id, branch_id, status, prev_cash_balance, vault_cash, trade_number)
+            (closing_date, registrant_id, branch_id, status, prev_cash_balance, vault_cash, trade_number, registration_date, version)
             VALUES
             (
             #{closingDate},
@@ -67,8 +83,10 @@
             #{branchId},
             #{status},
             #{prevCashBalance},
-            #{prevCashBalance},
-            #{tradeNumber}
+            #{prevCashBalance}, -- 총 마감액은 전일자 잔액과 동일
+            #{tradeNumber},
+            #{registrationDate},
+            #{version}
             )
 
     </insert>

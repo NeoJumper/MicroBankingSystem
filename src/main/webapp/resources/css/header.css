@@ -126,7 +126,7 @@
   margin :0;
 }
 
-#navbar__globalMenu {
+#navbar-globalMenu {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -136,7 +136,7 @@
 
 }
 
-#navbar__globalMenu li {
+#navbar-globalMenu li {
   margin: 0;
   height: 100%;
   display: flex;
@@ -144,7 +144,7 @@
 
 }
 
-#navbar__globalMenu a {
+#navbar-globalMenu a {
   text-decoration: none;
   height: 100%;
   display: flex;
@@ -155,7 +155,7 @@
 }
 
 /* 안먹음 */
-#navbar__globalMenu a:hover{
+#navbar-globalMenu a:hover{
   background-color:white;
   color :#0079D4;
   font-weight: bold;

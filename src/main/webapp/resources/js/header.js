@@ -1,7 +1,6 @@
 let currentBusinessDayStatus = "";
 
 $(document).ready(function() {
-
     handleAuthDataOfHeader();
     handleBusinessDay();
 });
@@ -12,7 +11,6 @@ function handleAuthDataOfHeader(){
         type: 'GET',
         success: function(authData) {
             // 성공 시 처리할 로직 작성
-            console.log(authData);
             $('#user-roles').text(authData.roles);
             $('#user-branch-name').text(authData.branchName);
             $('#user-name').text(authData.name + '님');

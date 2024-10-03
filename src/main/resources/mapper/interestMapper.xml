@@ -22,17 +22,19 @@
 
 
         INSERT INTO interest (
-        id, acc_id, registrant_id, branch_id, payment_date, amount, interest_rate, payment_status, trade_number
+        id, acc_id, branch_id, payment_date, amount, interest_rate, payment_status, trade_number, registrant_id, registrant_date, version
         ) VALUES (
         #{id},
         #{accId, jdbcType=VARCHAR},
-        #{registrantId, jdbcType=BIGINT},
         #{branchId, jdbcType=BIGINT},
         #{paymentDate, jdbcType=TIMESTAMP},
         #{amount, jdbcType=DECIMAL},
         #{interestRate, jdbcType=FLOAT},
         #{paymentStatus, jdbcType=VARCHAR},
-        #{tradeNumber, jdbcType=BIGINT}
+        #{tradeNumber, jdbcType=BIGINT},
+        #{registrantId, jdbcType=BIGINT},
+        #{registrationDate},
+        #{version}
         )
     </insert>
 

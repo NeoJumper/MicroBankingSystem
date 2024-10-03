@@ -57,7 +57,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/page/employee/account-transfer")
                         .failureHandler(authenticationFailureHandler())
                 ).logout(logout ->
-                        logout.logoutUrl("/index"));
+                        logout.logoutUrl("/auth/logout"));
         return http.build();
     }
 
