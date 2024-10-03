@@ -28,7 +28,7 @@ public class AccountCloseService {
     //계좌해지신청
     @Transactional(rollbackFor = Exception.class)
     public String addCloseTrade(StatusWithTrade statusWithTrade) {
-        StringBuil
+        
 
         BusinessDay businessDay = businessDayMapper.findCurrentBusinessDay();
         // 현재 영업일이 아닐 경우 FAIL 리턴하며 메서드 종료
