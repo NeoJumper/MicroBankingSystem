@@ -17,6 +17,7 @@ public class CommonService {
     private final BusinessDayMapper businessDayMapper;
     private final EmployeeMapper employeeMapper;
 
+
     public String getBranchClosingStatus(){
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
 
@@ -38,6 +39,16 @@ public class CommonService {
         return BusinessDateAndEmployeeId.builder()
                 .businessDate(currentBusinessDate)
                 .employeeId(loginMemberId).build();
+    }
+    public BusinessDateAndBranchId getCurrentBusinessDateAndBranchId(){
+        Long loginMemberId = AuthenticationUtils.getLoginMemberId();
+        String currentBusinessDate = businessDayMapper.findCurrentBusinessDay().getBusinessDate();
+        String branchId = employeeMapper.findAuthDataById(loginMemberId).getBranchId();
+
+
+        return BusinessDateAndBranchId.builder()
+                .businessDate(currentBusinessDate)
+                .branchId(branchId).build();
     }
 
 }

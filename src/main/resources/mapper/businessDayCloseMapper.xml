@@ -41,16 +41,32 @@
         INSERT ALL
         <foreach collection="list" item="item">
             INTO EMPLOYEE_CLOSING
-            (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number)
+            (
+            closing_date,
+            branch_id,
+            status,
+            prev_cash_balance,
+            total_deposit,
+            total_withdrawal,
+            vault_cash,
+            trade_number,
+            registrant_id,
+            registrant_date,
+            version
+            )
             VALUES
             (
-            #{item.closingDate}, #{item.registrantId}, #{item.branchId},
+            #{item.closingDate},
+            #{item.branchId},
             #{item.status},
             #{item.prevCashBalance},
             0,
             0,
             #{item.prevCashBalance},
-            #{item.tradeNumber}
+            #{item.tradeNumber},
+            #{item.registrantId},
+            #{registrationDate},
+            #{version}
             )
         </foreach>
         SELECT * FROM DUAL

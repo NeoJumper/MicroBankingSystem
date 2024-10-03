@@ -13,6 +13,7 @@ import com.kcc.banking.domain.business_day_close.dto.request.EmployeeClosingCrea
 import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
+import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.service.InterestService;
 import com.kcc.banking.domain.trade.dto.response.TradeByCash;
 import com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper;
@@ -34,6 +35,7 @@ public class BusinessDayCloseService {
     private final EmployeeService employeeService;
     private final TradeService tradeService;
     private final InterestService interestService;
+    private final CommonService commonService;
 
     public EmployeeClosingData getEmployeeClosingData() {
 
@@ -89,16 +91,18 @@ public class BusinessDayCloseService {
 
     }
 
+    /**
+     * @Description
+     * - 한명이라도 개인 마감 상태가 OPEN이라면 REQUIRED_EMPLOYEE_CLOSING
+     * - 마감하려고 하는 지점의 마감상태가 CLOSED라면 ALREADY_CLOSED_BUSINESS_DAY
+     * - 지점 마감 상태를 CLOSED로 변경
+     * - 영업일의 마감 상태도 CLOSED로 변경
+     * - 지점마감의 거래번호를 가져와 이자 생성
+     */
     public void closeByManager() {
-        String currentBusinessDate = businessDayService.getCurrentBusinessDay().getBusinessDate();
-        String branchId = employeeService.getAuthData().getBranchId();
 
-
-        BusinessDateAndBranchId businessDateAndBranchId = BusinessDateAndBranchId.builder()
-                .businessDate(currentBusinessDate)
-                .branchId(branchId)
-                .build();
-
+        BusinessDateAndBranchId businessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
+        String currentBusinessDate = businessDateAndBranchId.getBusinessDate();
         ManagerClosingData managerClosingData = getManagerClosingData();
 
         if (managerClosingData.getClosingDataList().stream().map(ClosingData::getStatus).anyMatch("OPEN"::equals))
@@ -112,16 +116,17 @@ public class BusinessDayCloseService {
         businessDayService.businessDayStatusToClosed(currentBusinessDate);
 
         String tradeNumber = businessDayCloseMapper.findClosingTradeNumber(businessDateAndBranchId);
-        interestService.createInterest(tradeNumber, currentBusinessDate);
+        interestService.createInterest(tradeNumber, businessDateAndBranchId);
     }
 
     public Long createClosingData(BusinessDayChange businessDayChange) {
+        BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
-        String branchId = employeeService.getAuthData().getBranchId();
+
         Long tradeNumber = businessDayCloseMapper.getNextTradeNumberVal();
 
 
-        createEmployeeClosing(businessDayChange.getWorkerDataList(), businessDayChange.getBusinessDateToChange(), tradeNumber, branchId);
+        createEmployeeClosing(businessDayChange.getWorkerDataList(),businessDayChange.getBusinessDateToChange(), currentBusinessDateAndBranchId, tradeNumber);
         createBranchClosing(businessDayChange.getBusinessDateToChange(), businessDayChange.getPrevCashBalanceOfBranch(), tradeNumber, branchId, loginMemberId);
 
         return tradeNumber;
@@ -140,10 +145,10 @@ public class BusinessDayCloseService {
         businessDayCloseMapper.insertBranchClosing(branchClosingCreate);
     }
 
-    public void createEmployeeClosing(List<WorkerData> workerDataList, String businessDateToChange,Long tradeNumber, String branchId) {
+    public void createEmployeeClosing(List<WorkerData> workerDataList, String businessDateToChange, BusinessDateAndBranchId businessDateAndBranchId, Long tradeNumber) {
 
 
-        List<EmployeeClosingCreate> employeeClosingCreateList = workerDataList.stream().map(workerData -> EmployeeClosingCreate.of(workerData, branchId, businessDateToChange, tradeNumber))
+        List<EmployeeClosingCreate> employeeClosingCreateList = workerDataList.stream().map(workerData -> EmployeeClosingCreate.of(workerData,businessDateToChange, businessDateAndBranchId, tradeNumber))
                 .toList();
 
         businessDayCloseMapper.batchInsertEmployeeClosing(employeeClosingCreateList);

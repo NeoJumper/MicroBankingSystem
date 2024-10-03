@@ -15,10 +15,12 @@ public class BranchClosingCreate {
 
     private String closingDate;
     private String branchId;
-    private String registrantId;
     private String status;
     private BigDecimal prevCashBalance;
     private Long tradeNumber;
+    private String registrantId;
+    private String registrationDate;
+    private Long version;
 
     @Builder
     public BranchClosingCreate(String closingDate, String registrantId, String branchId, String status, BigDecimal prevCashBalance, Long tradeNumber) {
