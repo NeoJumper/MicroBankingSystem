@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
 public class TransferService {
@@ -174,5 +175,13 @@ public class TransferService {
         // 출금 내역과 입금 내역 반환
         return Arrays.asList(withdrawalTrade, depositTrade);
 
+    }
+
+    public List<TransferDetail> getTradeByTradeNumber(Long tradeNumber) {
+        List<TransferDetail> tradeDetails = transferMapper.getTradeDetailsByTradeNumber(tradeNumber);
+        if(tradeDetails == null || tradeDetails.isEmpty()){
+            throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
+        }
+        return tradeDetails;
     }
 }

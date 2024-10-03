@@ -224,7 +224,7 @@ function transferSubmit() {
     var accountPassword = $('#transfer-account-password').val();
 
     $.ajax({
-        url: "/api/transfer",
+        url: "/api/employee/account-transfer",
         contentType: "application/json",
         type: "POST",
         data: JSON.stringify({
