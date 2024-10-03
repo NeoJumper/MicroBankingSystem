@@ -49,7 +49,10 @@
         email = #{email},
         birth_date = #{birthDate},
         password = #{password},
-        roles = #{roles}
+        roles = #{roles},
+        modifier_id = #{modifierId},
+        modification_date = #{modificationDate},
+        version = version + #{version}
         WHERE id = #{id}
     </update>
 

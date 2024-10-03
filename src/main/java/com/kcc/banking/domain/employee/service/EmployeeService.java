@@ -39,7 +39,6 @@ public class EmployeeService {
     public CreatedEmployee createEmployee(EmployeeCreate employeeCreate) {
 
         employeeCreate.setPassword(passwordEncoder.encode(employeeCreate.getPassword()));
-
         employeeCreate.setCommonColumn(commonService.getCurrentBusinessDateAndEmployeeId());
 
 
@@ -50,6 +49,7 @@ public class EmployeeService {
 
 
     public UpdatedEmployee updateEmployee(EmployeeUpdate employeeUpdate) {
+        employeeUpdate.setCommonColumn(commonService.getCurrentBusinessDateAndEmployeeId());
         employeeMapper.update(employeeUpdate);
         return new UpdatedEmployee(employeeUpdate, "은평 1지점", "매니저");
 
