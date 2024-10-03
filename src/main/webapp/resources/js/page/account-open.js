@@ -49,7 +49,7 @@ function accountOpen(){
 
     $('#account-create-btn').on("click",function (){
 
-        alert("click #accountCreateBtn");
+
         const customerId = $('#customer-id-input').val();
         const productId = $('#product-id-hidden-input').val();
 

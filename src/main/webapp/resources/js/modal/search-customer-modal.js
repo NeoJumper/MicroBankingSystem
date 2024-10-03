@@ -21,7 +21,6 @@ function customerSearchModalEvent() {
         // 입력 필드의 값 가져오기
         const searchInput = $('#search-modal-input').val();
 
-        alert(searchType + "searchType" + searchInput + "searchInput");
 
         // 유효성 검사: 검색어가 비어 있는지 확인
         if (!searchInput) {
@@ -32,13 +31,13 @@ function customerSearchModalEvent() {
         let queryParam = '';
         if (searchType === 'customer-id') {
             queryParam = 'customerId=' + searchInput;
-            alert(searchType);
+
         } else if (searchType === 'customer-name') {
             queryParam = 'customerName=' + searchInput;
-            alert(searchType);
+
         } else if (searchType === 'customer-phone') {
             queryParam = 'customerPhone=' + searchInput;
-            alert(searchType);
+
         }
 
 

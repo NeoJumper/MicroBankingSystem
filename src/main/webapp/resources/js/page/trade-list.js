@@ -8,7 +8,7 @@ $(document).ready(function () {
     searchResultOfTradeList();
     calculateOfPeriodDate();
     calculateOfMonthDate();
-    
+
 
     // 검색 버튼 클릭 시 거래내역 조회
     $("#trade-list-search-btn").on("click", function () {
@@ -110,7 +110,7 @@ function tradePeriodSelectDisplay() {
 
 function accIdOfSearchAccountModal() {
     $('#search-modal-select-account-btn').on("click", function () {
-        alert("accIdOfSearchAccountModal  시작")
+
         const selectedAccount = $("input[name='select-account']:checked");
 
         if (selectedAccount.length > 0) {
@@ -120,7 +120,11 @@ function accIdOfSearchAccountModal() {
             $('#acc-id-input').val(accountId);
             $('#search-modal-account').modal('hide');
         } else {
-            alert("계좌를 선택하세요.");
+            swal({
+                title: "계좌를 선택하세요",
+                icon: "warning",
+                button: "닫기",
+            })
         }
     });
 }
@@ -159,45 +163,92 @@ function calculationResultOfDateType() {
 }
 
 
-
 // 거래내역 조회 api
-function searchResultOfTradeList() {
+function searchResultOfTradeList(pageNum = 1) {
+
+    const constAccId = $('#acc-id-input').val();
+    const tradeTypeButtonValue = $('.trade-status-search-btn.active').val();
+    const selectSort = $('input[name="search-sort"]:checked').val();
+
+    const searchDates = calculationResultOfDateType();
+
+    const searchStartDate = searchDates.resultStartDate;
+    const searchEndDate = searchDates.resultEndDate;
+
+    console.log("constAccId" + constAccId);
+    console.log("tradeTypeButtonValue" + tradeTypeButtonValue);
+    console.log("selectSort" + selectSort);
+
+    console.log("searchStartDate" + searchStartDate);
+    console.log("searchEndDate" + searchEndDate);
+    // 페이지 번호와 항목 수 설정
+
+    const amount = 10; // 페이지당 항목 수
 
 
-        alert("거래내역 조회 api");
-        const constAccId = $('#acc-id-input').val();
-        const tradeTypeButtonValue = $('.trade-status-search-btn.active').val();
-        const selectSort = $('input[name="search-sort"]:checked').val();
+    $.ajax({
+        url: '/api/employee/trade/search/result',
+        method: 'GET',
+        data: {
+            accId: constAccId,
+            tradeType: tradeTypeButtonValue,
+            startDate: searchStartDate,
+            endDate: searchEndDate,
+            sortOrder: selectSort,
+            'criteria.pageNum': pageNum, // Criteria의 pageNum
+            'criteria.amount': amount
+        },
+        success: function (data) {
+            renderOfSearchResults(data);
+            updatePagination(data.pageDTO);
+        }, error: function (error) {
+            alert('검색 요청에 실패했습니다: ' + error);
+        }
+    })
+}
 
-        const searchDates  = calculationResultOfDateType();
+// paging 버튼 동적 생성 및 버튼 클릭시 동작
+function updatePagination(pageDTO) {
+    const paginationContainer = $('#pagination'); // 페이지네이션을 넣을 컨테이너
+    paginationContainer.empty(); // 기존 내용 제거
 
-        const searchStartDate = searchDates.resultStartDate;
-        const searchEndDate = searchDates.resultEndDate;
+    console.log("pageDTO.startPage" + pageDTO.startPage);
+    if (pageDTO.prev) {
+        const prevButton = $('<a href="#" data-page="' + (pageDTO.startPage - 1) + '" class="pagination-btn">이전</a>');
+        paginationContainer.append(prevButton);
+    }
 
-        console.log("constAccId" + constAccId);
-        console.log("tradeTypeButtonValue"+tradeTypeButtonValue);
-        console.log("selectSort" + selectSort);
+    for (let i = pageDTO.startPage; i <= pageDTO.endPage; i++) {
+        const pageButton = $('<a href="#" data-page="' + i + '" class="pagination-btn ' + (pageDTO.criteria.pageNum === i ? 'active' : '') + '">' + i + '</a>');
+        paginationContainer.append(pageButton);
+    }
 
-        console.log("searchStartDate" + searchStartDate);
-        console.log("searchEndDate" + searchEndDate);
+    if (pageDTO.next) {
+        const nextButton = $('<a href="#" data-page="' + (pageDTO.endPage + 1) + '" class="pagination-btn">다음</a>');
+        paginationContainer.append(nextButton);
+    }
 
-        $.ajax({
-            url: '/api/employee/trade/search/result',
-            method: 'GET',
-            data: {
-                accId: constAccId,
-                tradeType: tradeTypeButtonValue,
-                startDate: searchStartDate,
-                endDate: searchEndDate,
-                sortOrder: selectSort
-            },
-            success: function (data) {
-                renderOfSearchResults(data);
+    // 페이지 버튼 클릭 이벤트 처리
+    paginationContainer.find('a').on('click', function (e) {
+        e.preventDefault(); // 기본 링크 동작 방지
+        const selectedPage = $(this).data('page'); // 클릭한 페이지 번호 가져오기
+        searchResultOfTradeList(selectedPage); // 페이지 번호를 전달하여 다시 검색
+    });
+}
 
-            }, error: function (error) {
-                alert('검색 요청에 실패했습니다: ' + error);
-            }
-        })
+function getTradeTypeInfo(tradeType) {
+    switch (tradeType) {
+        case 'OPEN':
+            return {type: '개설', cssClass: 'open-text'}; // 개설
+        case 'CLOSE':
+            return {type: '해지', cssClass: 'close-text'}; // 해지
+        case 'WITHDRAWAL':
+            return {type: '출금', cssClass: 'withdrawal-text'}; // 출금
+        case 'DEPOSIT':
+            return {type: '입금', cssClass: 'deposit-text'}; // 입금
+        default:
+            return {type: tradeType, cssClass: ''};
+    }
 }
 
 // 거래내역 동적 테이블 생성 : 검색결과 뿌리기
@@ -210,21 +261,58 @@ function renderOfSearchResults(data) {
 
     const tradeList = data.tradeList;
 
+
     $.each(tradeList, function (index, trade) {
+        // 영업일 포맷
+        const businessDayValue = $('#businessDay').val();
+        const businessDate = new Date(businessDayValue);
+        const formattedBusinessDay = `${businessDate.toLocaleDateString('ko-KR')}`;
+
+        // 거래 날짜 포맷
+        const tradeDate = new Date(trade.tradeDate);
+        const formattedTradeDate = `${tradeDate.toLocaleDateString('ko-KR')}`;
+
+
+        // 현금 이체 css 표시
+        const cashIndicatorText = trade.cashIndicator === 'TRUE' ? '현금' : '이체';
+        const cashIndicatorClass = trade.cashIndicator === 'TRUE' ? 'cash-text' : 'transfer-text';
+
+        const statusMap = {
+            'NOR': { text: '취소 신청', class: 'status-nor' },
+            'CAN': { text: '취소 신청 진행중', class: 'status-can' },
+            'RVK': { text: '취소 신청 완료', class: 'status-rvk' }
+        };
+
+        // 상태에 따른 텍스트와 클래스 가져오기
+        const statusInfo = statusMap[trade.status] || { text: '', class: '' };
+        
+        // 유형 가져오기
+        const tradeTypeInfo = getTradeTypeInfo(trade.tradeType);
+
         var row = $('<tr>')
             .append($('<td>').text(index + 1))
-            .append($('<td>').text(trade.tradeDate))
+            .append($('<td>').text(formattedTradeDate))
             .append($('<td>').text(trade.accId))
             .append($('<td>').text(trade.targetAccId))
-            .append($('<td>').text(trade.cashIndicator))
             .append($('<td>').text(trade.amount))
             .append($('<td>').text(trade.balance))
-            .append($('<td>').text(trade.tradeType))
-            .append($('<td>').text(trade.status))
+            .append($('<td>')
+                .addClass(cashIndicatorClass)
+                .text(cashIndicatorText))
+            .append($('<td>').addClass(tradeTypeInfo.cssClass).text(tradeTypeInfo.type));
+
+        if (formattedBusinessDay === formattedTradeDate && trade.tradeType !== 'OPEN') {
+            // 영업일과 거래일이 동일하고 거래 유형이 'OPEN'이 아닐 경우 버튼 추가
+            row.append($('<td>').append($('<button>').text(statusInfo.text).addClass(statusInfo.class)));
+        } else {
+            // 조건에 맞지 않으면 빈 td 추가
+            row.append($('<td>').text('')); // 빈 td 추가
+        }
 
         tradeResultsTableBody.append(row);
     })
 }
+
 
 function calculateOfMonthDate() {
 

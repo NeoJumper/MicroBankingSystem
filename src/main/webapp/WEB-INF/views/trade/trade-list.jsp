@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -163,9 +165,9 @@
             <th><label id="trade-date">거래일시</label></th>
             <th><label id="acc-id">대상계좌</label></th>
             <th><label id="target-acc-id">상대계좌</label></th>
-            <th><label id="cash-indicator">현금여부</label></th>
             <th><label id="amount">거래액</label></th>
             <th><label id="balance">잔액</label></th>
+            <th><label id="cash-indicator">현금여부</label></th>
             <th><label id="trade-type">거래유형</label></th>
             <th><label id="status">상태</label></th>
             </thead>
@@ -173,6 +175,12 @@
 
             </tbody>
         </table>
+    </div>
+
+    <hr>
+    <div id="pagination">
+
+
     </div>
 
     <input type="hidden" id="businessDay" value="${businessDay}">

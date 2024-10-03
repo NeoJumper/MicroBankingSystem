@@ -291,22 +291,210 @@ VALUES('2024-08-02 00:00:00', 2, 1, 'OPEN',   51110000,  50520000,2);
 
 
 -----------------------------------------거래내역을 위한 sql---------------------------------------------------------
+/*
+
+     --계좌 개설
+*/
+
+--  계좌 생성 : 회사A(88), 사원(77)
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
-VALUES ('6634567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+VALUES ('7734567890123', 1, 5, 5, 2, TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 80000000, TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('8834567890123', 1, 5, 5, 2, TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 10000000, TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 
--- 6634567890123번 고객 계좌 2024-01-01
-INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
-VALUES (trade_seq.nextval, '6634567890123', 2, 1, TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 250000, 250000, 'OPEN', 'NOR', 'TRUE', '계좌개설', 1);
+-- 계좌 생성 : 회사 B (66) - 알바 90, 91 ~ 99 (10명)
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('6634567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 100000, SYSDATE, 'OPN', 1);
 
--- 6634567890123번 고객 계좌 출금 -20000 2024-01-02
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9034567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 10, SYSDATE, 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9134567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9234567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9334567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9434567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9534567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9634567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9734567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9834567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('9934567890123', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+
+
+-- 1월 송금
+-- 회사에서 사원 5000000원 송금
 INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
-VALUES (trade_seq.nextval, '6634567890123', 1, 1, TO_TIMESTAMP('2024-01-02 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 20000, 180000, 'WITHDRAWAL', 'NOR', 'FALSE', '9월 용돈', 6, '2345678901234');
-
--- 6634567890123번 고객 계좌 출금 2024-04-01
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-01-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 75000000, 'WITHDRAWAL', 'NOR', 'FALSE', '1월 월급 송금', 1, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
 INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
-VALUES (trade_seq.nextval, '6634567890123', 1, 1, TO_TIMESTAMP('2024-04-01 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 80000, 100000, 'WITHDRAWAL', 'NOR', 'FALSE', '9월 용돈', 6, '2345678901234');
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-01-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 15000000, 'DEPOSIT', 'NOR', 'FALSE', '1월 월급 입금', 1, '8834567890123');
 
--- 6634567890123번 고객 계좌 입금 2024-07-01
+-- 2월 송금
+-- 회사에서 부모님에게 5000000원 송금
 INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
-VALUES (trade_seq.nextval, '6634567890123', 1, 1, TO_TIMESTAMP('2024-07-01 00:00:02', 'YYYY-MM-DD HH24:MI:SS'), 150000, 200000, 'DEPOSIT', 'NOR', 'FALSE', '명절 선물', 7, '1234567890123');
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-02-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 70000000, 'WITHDRAWAL', 'NOR', 'FALSE', '2월 월급 송금', 2, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-02-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 20000000, 'DEPOSIT', 'NOR', 'FALSE', '2월 월급 입금', 2, '8834567890123');
+
+-- 3월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-03-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 65000000, 'WITHDRAWAL', 'NOR', 'FALSE', '3월 월급 송금', 3, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-03-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 25000000, 'DEPOSIT', 'NOR', 'FALSE', '3월 월급 입금', 3, '8834567890123');
+
+-- 4월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-04-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 60000000, 'WITHDRAWAL', 'NOR', 'FALSE', '4월 월급 송금', 4, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-04-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 30000000, 'DEPOSIT', 'NOR', 'FALSE', '4월 월급 입금', 4, '8834567890123');
+
+-- 5월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-05-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 55000000, 'WITHDRAWAL', 'NOR', 'FALSE', '5월 월급 송금', 5, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-05-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 35000000, 'DEPOSIT', 'NOR', 'FALSE', '5월 월급 입금', 5, '8834567890123');
+
+
+
+-- 6월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-06-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 50000000, 'WITHDRAWAL', 'NOR', 'FALSE', '6월 월급 송금', 6, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-06-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 40000000, 'DEPOSIT', 'NOR', 'FALSE', '6월 월급 입금', 6, '8834567890123');
+
+-- 7월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-07-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 45000000, 'WITHDRAWAL', 'NOR', 'FALSE', '7월 월급 송금', 7, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-07-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 45000000, 'DEPOSIT', 'NOR', 'FALSE', '7월 월급 입금', 7, '8834567890123');
+
+-- 8월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-08-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 40000000, 'WITHDRAWAL', 'NOR', 'FALSE', '8월 월급 송금', 8, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-08-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 50000000, 'DEPOSIT', 'NOR', 'FALSE', '8월 월급 입금', 8, '8834567890123');
+
+-- 9월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-09-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 35000000, 'WITHDRAWAL', 'NOR', 'FALSE', '9월 월급 송금', 9, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-09-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 55000000, 'DEPOSIT', 'NOR', 'FALSE', '9월 월급 입금', 9, '8834567890123');
+
+-- 10월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-10-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 30000000, 'WITHDRAWAL', 'NOR', 'FALSE', '10월 월급 송금', 10, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-10-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 60000000, 'DEPOSIT', 'NOR', 'FALSE', '10월 월급 입금', 10, '8834567890123');
+
+-- 11월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-11-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 25000000, 'WITHDRAWAL', 'NOR', 'FALSE', '11월 월급 송금', 11, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-11-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 65000000, 'DEPOSIT', 'NOR', 'FALSE', '11월 월급 입금', 11, '8834567890123');
+
+-- 12월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2024-12-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 20000000, 'WITHDRAWAL', 'NOR', 'FALSE', '12월 월급 송금', 12, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2024-12-11 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 70000000, 'DEPOSIT', 'NOR', 'FALSE', '12월 월급 입금', 12,'8834567890123');
+
+-- 12월 송금
+-- 회사에서 부모님에게 5000000원 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '8834567890123', 1, 1, TO_TIMESTAMP('2023-01-15 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 20000000, 'WITHDRAWAL', 'NOR', 'FALSE', '12월 월급 송금', 12, '7734567890123');
+-- 부모님 계좌에 5000000원 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '7734567890123', 1, 1, TO_TIMESTAMP('2023-01-15 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 5000000, 70000000, 'DEPOSIT', 'NOR', 'FALSE', '12월 월급 입금', 12,'8834567890123');
+
+
+
+/*
+    8834567890123 계좌 (회사 A): 초기 금액 8000만 원, 매달 500만 원을 7734567890123 계좌로 이체.
+    7734567890123 계좌 (사원1): 초기 금액 1000만 원, 매달 100만 원을 6634567890123 계좌로 이체.
+
+    6634567890123 계좌 (회사 B ): 초기 금액 1억, 매달 15일 100만 원을 알바 91 ~ 99 계좌로 이체.
+    B 회사 사원 계좌 (알바91,92,93,94,95,96,97,98,99): 초기 금액 0만 원, 매달 10만 원을 이체
+    B 회사 직원
+        9034567890123,
+        9134567890123,
+        9234567890123,
+        9334567890123,
+        9434567890123,
+        9534567890123,
+        9634567890123,
+        9734567890123,
+        9834567890123,
+        9934567890123
+    */
+-- 1월 송금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '6634567890123', 1, 1, TO_TIMESTAMP('2024-01-02 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 10, 99990, 'WITHDRAWAL', 'NOR', 'FALSE', '송금', 1, '9034567890123');
+
+-- 알바 계좌 9034567890123 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '9034567890123', 1, 1, TO_TIMESTAMP('2024-01-02 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 10, 20, 'DEPOSIT', 'NOR', 'FALSE', '입금', 1, '6634567890123');
+
+-- 3
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '6634567890123', 1, 1, TO_TIMESTAMP('2024-01-03 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 10, 99980, 'WITHDRAWAL', 'NOR', 'FALSE', '송금', 1, '9034567890123');
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '9034567890123', 1, 1, TO_TIMESTAMP('2024-01-03 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 10, 30, 'DEPOSIT', 'NOR', 'FALSE', '입금', 1, '6634567890123');
+
+
+-- 4
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '6634567890123', 1, 1, TO_TIMESTAMP('2024-01-04 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 10, 99970, 'WITHDRAWAL', 'NOR', 'FALSE', '송금', 1, '9034567890123');
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '9034567890123', 1, 1, TO_TIMESTAMP('2024-01-04 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 10, 40, 'DEPOSIT', 'NOR', 'FALSE', '입금', 1, '6634567890123');
+
+
+-------------------------------------------------- 입출금 66 90 --------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
