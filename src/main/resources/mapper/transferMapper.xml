@@ -26,4 +26,10 @@
         SELECT * from Trade WHERE trade_number = #{tradeNumber}
     </select>
 
+    <update id="updateCancelTransferCAN" parameterType="java.lang.Long">
+        UPDATE Trade
+        SET status = 'CAN'
+        WHERE trade_number = #{tradeNumber}
+    </update>
+
 </mapper>

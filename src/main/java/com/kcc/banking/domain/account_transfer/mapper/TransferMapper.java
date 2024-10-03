@@ -18,4 +18,7 @@ public interface TransferMapper {
 
     // 거래 번호로 내역 조회
     List<TransferDetail> getTradeDetailsByTradeNumber(Long tradeNumber);
+
+    // 거래 취소 요청
+    int updateCancelTransferCAN(Long tradeNumber);
 }
