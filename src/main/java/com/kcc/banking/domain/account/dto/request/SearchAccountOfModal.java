@@ -9,9 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SearchAccountOfModal {
-    String accId;
-    String productName;
-    String status;
+    private String accId;
+    private String productName;
+    private String status;
 
     @Builder
     public SearchAccountOfModal(String accId, String productName, String status) {

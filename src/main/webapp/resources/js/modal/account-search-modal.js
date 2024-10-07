@@ -1,8 +1,25 @@
 
 $(document).ready(function() {
 
-    $('#modal-check-account-btn').click(function() {
-        checkAccount( $('#modal-check-account-btn').val() );  // 계좌 조회 함수 호출
+    $('#modal-check-account-btn').click(function () {
+        let status = '';
+        const currentUrl = extractUrl(window.location.href);
+        switch (currentUrl) {
+            case 'account-close':
+                status = 'OPN';
+                break;
+
+            case 'account-close-cancel':
+                status = 'CLS';
+                break;
+
+            case '':
+
+                break;
+
+        }
+
+        checkAccount(status);  // 계좌 조회 함수 호출
     });
 
     $('#modal-check-account-reset-btn').click(function() {
@@ -23,11 +40,11 @@ $(document).ready(function() {
 
 
 // 계좌 조회 함수
-function checkAccount( status ) {
+function checkAccount(status) {
     var accountId = $('#modal-input-account').val();
     $.ajax({
         url: "/api/employee/account",
-        data: { accId: accountId, productName: null, status: status },
+        data: {accId: accountId, productName: null, status:status},
         type: "GET",
         success: function(data) {
             var accountTableBody = $("#search-modal-common-table tbody");

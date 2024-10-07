@@ -109,6 +109,7 @@
 <%@ include file="/resources/components/modal/account-close-result-modal.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 
 </html>
