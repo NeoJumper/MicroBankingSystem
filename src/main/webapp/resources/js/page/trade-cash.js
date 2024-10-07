@@ -151,7 +151,7 @@ function showCashTradeResultModal(data){
 
 function setAuthData(){
     $.ajax({
-        url: "/api/auth-data",
+        url: "/api/common/auth-data",
         type: "GET",
         success: function(data) {
             $('#cash-trade-employee').val(data.name);
@@ -163,7 +163,7 @@ function setAuthData(){
 
 function setNowDate() {
     $.ajax({
-        url: '/api/current-business-day',
+        url: '/api/common/current-business-day',
         type: 'GET',
         success: function(data) {
             var formattedDate = data.businessDate.substring(0, 10);

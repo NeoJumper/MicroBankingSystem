@@ -14,7 +14,7 @@ $(document).ready(function() {
  */
 function handleCurrentBusinessDay(){
     $.ajax({
-        url: '/api/current-business-day',
+        url: '/api/common/current-business-day',
         type: 'GET',
         success: function(response) {
 
@@ -43,7 +43,7 @@ function handleCurrentBusinessDay(){
 // 다음 영업일 란 채우기
 function handleNextBusinessDay(){
     $.ajax({
-        url: '/api/next-business-day',
+        url: '/api/common/next-business-day',
         type: 'GET',
         success: function(response) {
             // 성공 시 처리할 로직 작성

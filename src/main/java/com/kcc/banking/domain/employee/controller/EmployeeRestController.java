@@ -39,7 +39,7 @@ public class EmployeeRestController {
 
     }
 
-    @GetMapping("/api/auth-data")
+    @GetMapping("/api/common/auth-data")
     public AuthData getAuthData() {
         return employeeService.getAuthData();
     }
