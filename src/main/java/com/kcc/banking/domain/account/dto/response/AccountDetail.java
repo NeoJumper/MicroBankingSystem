@@ -23,12 +23,13 @@ public class AccountDetail {
     private String status;
     private String tradeNumber;
     private Timestamp registrationDate;
-    private String registrant;
     private Timestamp modificationDate;
     private Long modifierId;
     private Long version;
+    // JOIN
+    private String customerName;
 
-    public AccountDetail(String id, Long branchId, Long customerId, Long productId, Long registrantId, Timestamp startDate, BigDecimal preferentialInterestRate, Timestamp expireDate, String password, BigDecimal balance, Timestamp openDate, String status, String tradeNumber, Timestamp registrationDate, String registrant, Timestamp modificationDate, Long modifierId, Long version) {
+    public AccountDetail(String id, Long branchId, Long customerId, Long productId, Long registrantId, Timestamp startDate, BigDecimal preferentialInterestRate, Timestamp expireDate, String password, BigDecimal balance, Timestamp openDate, String status, String tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version, String customerName) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;
@@ -43,9 +44,9 @@ public class AccountDetail {
         this.status = status;
         this.tradeNumber = tradeNumber;
         this.registrationDate = registrationDate;
-        this.registrant = registrant;
         this.modificationDate = modificationDate;
         this.modifierId = modifierId;
         this.version = version;
+        this.customerName = customerName;
     }
 }

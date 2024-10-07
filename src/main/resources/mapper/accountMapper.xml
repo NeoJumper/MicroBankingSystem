@@ -150,8 +150,30 @@
     </select>
 
     <select id="getAccountDetail" resultType="AccountDetail">
-        SELECT * FROM Account WHERE id = #{accountId}
+        SELECT
+            a.id AS id,
+            a.branch_id AS branchId,
+            a.customer_id AS customerId,
+            a.product_id AS productId,
+            a.registrant_id AS registrantId,
+            a.start_date AS startDate,
+            a.preferential_interest_rate AS preferentialInterestRate,
+            a.expire_date AS expireDate,
+            a.password AS password,
+            a.balance AS balance,
+            a.open_date AS openDate,
+            a.status AS status,
+            a.trade_number AS tradeNumber,
+            a.registration_date AS registrationDate,
+            a.modification_date AS modificationDate,
+            a.modifier_id AS modifierId,
+            a.version AS version,
+            c.name AS customerName
+        FROM Account a
+                 JOIN Customer c ON a.customer_id = c.id
+        WHERE a.id = #{accountId}
     </select>
+
 
     <select id="findAccountByBranchId" parameterType="Long">
         SELECT

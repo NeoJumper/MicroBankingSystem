@@ -27,6 +27,10 @@
                         <td><span id="modal-result-withdrawal-account"></span></td>
                     </tr>
                     <tr>
+                        <th>출금 계좌 고객명</th>
+                        <td><span id="modal-result-withdrawal-customer-name"></span></td>
+                    </tr>
+                    <tr>
                         <th>출금 금액</th>
                         <td><span id="modal-result-withdrawal-amount"></span></td>
                     </tr>
@@ -41,6 +45,10 @@
                     <tr>
                         <th>입금 계좌 번호</th>
                         <td><span id="modal-result-deposit-account"></span></td>
+                    </tr>
+                    <tr>
+                        <th>입금 계좌 고객명</th>
+                        <td><span id="modal-result-deposit-customer-name"></span></td>
                     </tr>
                     <tr>
                         <th>입금 금액</th>
