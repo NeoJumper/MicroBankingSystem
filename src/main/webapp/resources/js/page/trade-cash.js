@@ -151,7 +151,7 @@ function showCashTradeResultModal(data){
 
 function setAuthData(){
     $.ajax({
-        url: "/api/auth-data",
+        url: "/api/common/auth-data",
         type: "GET",
         success: function(data) {
             $('#cash-trade-employee').val(data.name);

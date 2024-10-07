@@ -22,7 +22,7 @@
         <div id="user-roles"></div>
         <div id="user-branch-name"></div>
         <div id="user-name"></div>
-        <div id="logoutButton"><a href="/auth/logout">로그아웃</a></div>
+        <div id="logoutButton"><a href="/api/common/logout">로그아웃</a></div>
       </div>
     </div>
     <div id="business-day-header">
@@ -33,13 +33,6 @@
     </div>
   </div>
   <nav id="navbar">
-    <ul id="navbar-globalMenu">
-      <li id="header-account-management" ><a href="/page/employee/account-open">계좌 관리</a></li>
-      <li id="header-customer-management"><a href="/page/employee/account-open">고객 관리</a></li>
-      <li id="header-employee-management"><a href="/page/manager/employee-save">행원 관리</a></li>
-      <li id="header-businessday-management"><a href="/page/manager/business-day-management">영업일 관리</a></li>
-      <li id="header-branch-management"><a href="/page/employee/account-open">지점 관리</a></li>
-    </ul>
   </nav>
 
 </div>
