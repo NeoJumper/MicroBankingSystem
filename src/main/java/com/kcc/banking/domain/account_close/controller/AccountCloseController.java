@@ -18,10 +18,15 @@ public class AccountCloseController {
         return "account_close/account-close";
     }
 
+//    @GetMapping("/page/employee/account-close-cancel")
+//    public String accountCloseCancel(Model model, @RequestParam long accId) {
+//        model.addAttribute("accId", accId);
+//        System.out.println(accId+"================================");
+//        return "account_close/account-close-cancel";
+//    }
     @GetMapping("/page/employee/account-close-cancel")
-    public String accountCloseCancel(Model model, @RequestParam long accId) {
-        model.addAttribute("accId", accId);
-        System.out.println(accId+"================================");
+    public String accountCloseCancel() {
+
         return "account_close/account-close-cancel";
     }
 }
