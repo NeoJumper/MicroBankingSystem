@@ -163,7 +163,7 @@ function setAuthData(){
 
 function setNowDate() {
     $.ajax({
-        url: '/api/current-business-day',
+        url: '/api/common/current-business-day',
         type: 'GET',
         success: function(data) {
             var formattedDate = data.businessDate.substring(0, 10);
