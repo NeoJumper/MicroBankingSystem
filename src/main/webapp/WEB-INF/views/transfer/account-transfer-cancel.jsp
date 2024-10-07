@@ -9,6 +9,7 @@
     <title>거래 취소</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/account-transfer-cancel.css"/>
 </head>
 
 <body>
@@ -78,7 +79,7 @@
     <table class="common-table">
         <tbody>
         <tr>
-            <th><label for="cancel-transfer-account-password">출금계좌 비밀번호</label></th>
+            <th><label for="cancel-transfer-account-password">입금계좌 비밀번호</label></th>
             <td><input id="cancel-transfer-account-password" type="password"><button class="search-btn" id="cancel-transfer-validate">비밀번호 인증</button></td>
         </tr>
         </tbody>

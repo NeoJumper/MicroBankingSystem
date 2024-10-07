@@ -2,7 +2,7 @@
 $(document).ready(function() {
 
     $('#modal-check-account-btn').click(function() {
-        checkAccount();  // 계좌 조회 함수 호출
+        checkAccount( $('#modal-check-account-btn').val() );  // 계좌 조회 함수 호출
     });
 
     $('#modal-check-account-reset-btn').click(function() {
@@ -23,11 +23,11 @@ $(document).ready(function() {
 
 
 // 계좌 조회 함수
-function checkAccount() {
+function checkAccount( status ) {
     var accountId = $('#modal-input-account').val();
     $.ajax({
         url: "/api/employee/account",
-        data: { accId: accountId, productName: null },
+        data: { accId: accountId, productName: null, status: status },
         type: "GET",
         success: function(data) {
             var accountTableBody = $("#search-modal-common-table tbody");

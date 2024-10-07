@@ -11,10 +11,12 @@ import lombok.Setter;
 public class SearchAccountOfModal {
     String accId;
     String productName;
+    String status;
 
     @Builder
-    public SearchAccountOfModal(String accId, String productName) {
+    public SearchAccountOfModal(String accId, String productName, String status) {
         this.accId = accId;
         this.productName = productName;
+        this.status = status;
     }
 }

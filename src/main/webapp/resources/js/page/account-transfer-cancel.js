@@ -46,7 +46,7 @@ function handleTransferData() {
 
 // 비밀번호 인증
 function validateAccountPassword() {
-    var accountNumber = $('#cancel-transfer-withdrawal-acc-id').text();
+    var accountNumber = $('#cancel-transfer-deposit-acc-id').text();
     var accountPassword = $('#cancel-transfer-account-password').val();
 
     $.ajax({
