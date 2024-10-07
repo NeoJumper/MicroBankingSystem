@@ -61,11 +61,12 @@
                 <table class="table">
                     <tbody>
                     <tr>
-                        <th style="width: 5%;background-color: #F5F5F5;">총 기간</th>
-                        <th style="width: 5%;background-color: #F5F5F5;">총 이율</th>
-                        <th style="width: 10%;background-color: #F5F5F5;">예상이자</th>
-                        <th style="width: 10%;background-color: #F5F5F5;">총 금액</th>
+                        <th style="width: 5%;background-color: #F5F5F5;">계좌 잔액</th>
+                        <th style="width: 5%;background-color: #F5F5F5;">이율</th>
+                        <th style="width: 5%;background-color: #F5F5F5;">우대 이율</th>
                         <th style="width: 10%;background-color: #F5F5F5;">세율</th>
+                        <th style="width: 10%;background-color: #F5F5F5;">세전 이자</th>
+                        <th style="width: 10%;background-color: #F5F5F5;">세후 이자</th>
                         <th style="width: 10%;background-color: #F5F5F5;">지급 총 금액</th>
                     </tr>
                     </tbody>
@@ -75,12 +76,7 @@
                     <table id="table-content" class="table">
                         <tbody>
                         <tr>
-<%--                            <td style="width: 5%; height: 100%;"> </td>--%>
-<%--                            <td style="width: 5%;"> </td>--%>
-<%--                            <td style="width: 10%;"> </td>--%>
-<%--                            <td style="width: 10%;"> </td>--%>
-<%--                            <td style="width: 10%;"> </td>--%>
-<%--                            <td style="width: 10%;"> </td>--%>
+                            <%--  js 동적생성  --%>
                         </tr>
                         </tbody>
                     </table>

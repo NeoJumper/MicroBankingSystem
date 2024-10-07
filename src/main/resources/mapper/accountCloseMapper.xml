@@ -17,6 +17,7 @@
         <result column="product_name" property="productName" />
         <result column="amount_date" property="amountDate" />
         <result column="account_pre_inter_rate" property="accountPreInterRate" />
+        <result column="product_inter_rate" property="productInterRate" />
         <result column="account_bal" property="accountBal" />
         <result column="product_tax_rate" property="productTaxRate" />
     </resultMap>
@@ -41,7 +42,8 @@
                c.id as customer_id,
                p.name as product_name,
                a.start_date as amount_date,
-               a.preferential_interest_rate + p.interest_rate as account_pre_inter_rate,
+               a.preferential_interest_rate as account_pre_inter_rate,
+               p.interest_rate as product_inter_rate,
                a.balance as account_bal,
                p.tax_rate as product_tax_rate
         FROM Account a JOIN Customer c ON a.customer_id = c.id

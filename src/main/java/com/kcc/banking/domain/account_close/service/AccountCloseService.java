@@ -100,6 +100,7 @@ public class AccountCloseService {
                 .productName(closeAccount.getProductName())
                 .amountDate(closeAccount.getAmountDate())
                 .accountPreInterRate(closeAccount.getAccountPreInterRate())
+                .productInterRate(closeAccount.getProductInterRate())
                 .accountBal(closeAccount.getAccountBal())
                 .productTaxRate(closeAccount.getProductTaxRate())
                 .amountSum(interestSum.getAmountSum()).build();
