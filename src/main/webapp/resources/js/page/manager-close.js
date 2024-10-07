@@ -72,7 +72,7 @@ function handleEmpCloseBtnStatus(){
 
 function handleCurrentBusinessDay(){
     $.ajax({
-        url: '/api/current-business-day',
+        url: '/api/common/current-business-day',
         type: 'GET',
         success: function(response) {
             // 성공 시 처리할 로직 작성
