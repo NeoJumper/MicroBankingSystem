@@ -30,7 +30,11 @@ function getAccountDetail() {
                 $('#table-content tbody').empty();
                 // 취소신청이 완료된 계좌는 alert로 알림
                 if (data.accountStatus === "CLS") {
-                    window.alert("해지 신청이 완료된 계좌입니다.");
+                    swal({
+                        title: "해지 신청이 완료된 계좌입니다.",
+                        // text: "비밀번호 인증 성공",
+                        icon: "warning",
+                    });
                     return;
                 }else{
                     accountData = data;
@@ -67,16 +71,29 @@ function getAccountDetail() {
 function checkAccountId() {
     const inputId = $('#account-pw-input').val();
     if (!inputId) {
-        alert("비밀번호를 입력하세요.");
+        swal({
+            title: "비밀번호를 입력하세요.",
+            // text: "비밀번호 인증 성공",
+            icon: "warning",
+        });
         return;
     }
     if (accountData.customerId == inputId) {
+        swal({
+            title: "비밀번호 인증 성공.",
+            // text: "비밀번호 인증 성공",
+            icon: "success",
+        });
         //비밀번호 성공시 opacity 스타일 제거
         $('#submit-btn').removeAttr('style');
         $('#submit-btn').prop('disabled', false);
     }else {
         $('#account-pw-input').val('');
-        window.alert("비밀번호 불일치");
+        swal({
+            title: "비밀번호 인증 실패",
+            // text: "비밀번호 인증 성공",
+            icon: "warning",
+        });
     }
 }
 
@@ -92,7 +109,11 @@ function closeAccount() {
             contentType: 'application/json', // JSON 형식으로 전송
             data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "CLS", description:"계좌해지", balance:0, tradeType:"CLOSE"}), // JSON으로 변환하여 전송
             success: function (response) {
-                alert('해지완료');
+                swal({
+                    title: "해지 성공",
+                    // text: "비밀번호 인증 성공",
+                    icon: "success",
+                });
                 const registrationDate = new Date(accountData.amountDate);
                 const now = new Date();
                 const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
@@ -112,7 +133,11 @@ function closeAccount() {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('오류 발생:', textStatus, errorThrown);
-                // 오류 처리 로직
+                swal({
+                    title: "해지 실패",
+                    // text: "비밀번호 인증 성공",
+                    icon: "warning",
+                });
             }
         }).always(function () {
             accountData = {};
@@ -122,7 +147,12 @@ function closeAccount() {
             $('#account-pw-input').val("");
         });
     } else {
-        alert('계좌 ID를 입력해주세요.'); // accountId가 없을 경우 경고
+        // accountId가 없을 경우 경고
+        swal({
+            title: "계좌 ID를 입력해주세요.",
+            // text: "비밀번호 인증 성공",
+            icon: "warning",
+        });
     }
 }
 
@@ -132,7 +162,11 @@ function selectAccount() {
     var selectedAccountId = selectedRow.find('td:eq(1)').text();  // 해당 행의 2번째 열(계좌번호 열)에서 값 추출
 
     if (!selectedAccountId) {
-        alert("계좌를 선택해 주세요.");
+        swal({
+            title: "계좌를 선택해 주세요.",
+            // text: "비밀번호 인증 성공",
+            icon: "warning",
+        });
         return;
     }
     // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
@@ -141,6 +175,8 @@ function selectAccount() {
         data: {accId: selectedAccountId, productName: null},
         type: "GET",
         success: function (data) {
+            console.log("======!!!",data);
+           // const openAccount = data.filter((account)=> account.)
             console.log(data);
             $('#account-number').val(data[0].accId);
             $('#product-name').val(data[0].productName);
