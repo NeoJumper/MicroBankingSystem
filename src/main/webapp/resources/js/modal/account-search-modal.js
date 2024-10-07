@@ -1,4 +1,5 @@
-$(document).ready(function () {
+
+$(document).ready(function() {
 
     $('#modal-check-account-btn').click(function () {
         let status = '';
@@ -21,12 +22,12 @@ $(document).ready(function () {
         checkAccount(status);  // 계좌 조회 함수 호출
     });
 
-    $('#modal-check-account-reset-btn').click(function () {
+    $('#modal-check-account-reset-btn').click(function() {
         resetAccountInput();  // 입력 및 테이블 초기화 함수 호출
     });
 
     // 모달이 닫힐 때 테이블 초기화
-    $('#search-modal-account').on('hide.bs.modal', function () {
+    $('#search-modal-account').on('hide.bs.modal', function() {
         resetAccountInput();  // 입력 및 테이블 초기화 함수 호출
     });
 
@@ -45,12 +46,13 @@ function checkAccount(status) {
         url: "/api/employee/account",
         data: {accId: accountId, productName: null, status:status},
         type: "GET",
-        success: function (data) {
+        success: function(data) {
             var accountTableBody = $("#search-modal-common-table tbody");
             accountTableBody.empty();
 
-            $.each(data, function (index, account) {
+            $.each(data, function(index, account) {
                 var openDateOnly = account.openDate.split(' ')[0];
+
                 var row = "<tr>" +
                     "<td><input type='radio' name='select-account' value='" + account.accId + "' class='select-account-radio'></td>" +
                     "<td>" + account.accId + "</td>" +
@@ -62,7 +64,7 @@ function checkAccount(status) {
                 accountTableBody.append(row);
             });
         },
-        error: function (error) {
+        error: function(error) {
             console.log("Error while fetching accounts", error);
         }
     });

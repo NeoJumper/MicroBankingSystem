@@ -43,8 +43,8 @@ CREATE TABLE Employee (
 CREATE TABLE Trade (
                        id NUMBER NOT NULL,
                        registrant_id NUMBER NOT NULL,
-                       acc_id VARCHAR(15) NOT NULL,
-                       target_acc_id VARCHAR(15) NULL,
+                       acc_id VARCHAR(20) NOT NULL,
+                       target_acc_id VARCHAR(20) NULL,
                        branch_id NUMBER NOT NULL,
                        trade_date TIMESTAMP NULL,
                        amount NUMBER NULL,
@@ -79,7 +79,7 @@ CREATE TABLE Customer (
 );
 
 CREATE TABLE Account (
-                         id VARCHAR(15) NOT NULL,
+                         id VARCHAR(20) NOT NULL,
                          branch_id NUMBER NOT NULL,
                          registrant_id NUMBER NOT NULL,
                          customer_id NUMBER NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE Account (
 
 CREATE TABLE Interest (
                           id NUMBER NOT NULL,
-                          acc_id VARCHAR(15) NOT NULL,
+                          acc_id VARCHAR(20) NOT NULL,
                           registrant_id NUMBER NOT NULL,
                           branch_id NUMBER NOT NULL,
                           payment_date TIMESTAMP NULL,
