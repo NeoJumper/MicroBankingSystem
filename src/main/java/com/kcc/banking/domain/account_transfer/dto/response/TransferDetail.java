@@ -33,9 +33,10 @@ public class TransferDetail {
 
     // Additional
     private String customerName;
+    private String targetCustomerName;
 
     @Builder
-    public TransferDetail(Long id, Long registrantId, String accId, String targetAccId, Long branchId, Timestamp tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version, String customerName) {
+    public TransferDetail(Long id, Long registrantId, String accId, String targetAccId, Long branchId, Timestamp tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version, String customerName, String targetCustomerName) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;
@@ -55,5 +56,6 @@ public class TransferDetail {
         this.version = version;
 
         this.customerName = customerName;
+        this.targetCustomerName = targetCustomerName;
     }
 }

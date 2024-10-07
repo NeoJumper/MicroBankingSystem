@@ -35,6 +35,10 @@
             <td id="cancel-transfer-withdrawal-acc-id"></td>
         </tr>
         <tr>
+            <th>출금 계좌 고객명</th>
+            <td id="cancel-transfer-withdrawal-customer-name"></td>
+        </tr>
+        <tr>
             <th>출금 금액</th>
             <td id="cancel-transfer-withdrawal-amount"></td>
         </tr>
@@ -64,6 +68,10 @@
         <tr>
             <th>입금 계좌번호</th>
             <td id="cancel-transfer-deposit-acc-id"></td>
+        </tr>
+        <tr>
+            <th>입금 계좌 고객명</th>
+            <td id="cancel-transfer-deposit-customer-name"></td>
         </tr>
         <tr>
             <th>입금 금액</th>
