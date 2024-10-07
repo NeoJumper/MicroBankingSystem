@@ -5,8 +5,8 @@
 <mapper namespace="com.kcc.banking.domain.account_transfer.mapper.TransferMapper">
 
     <insert id="insertTransfer" parameterType="TransferDetail">
-        INSERT INTO Trade (id, registrant_id, acc_id, target_acc_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, registration_date, modification_date, modifier_id, version)
-        VALUES (trade_seq.nextval, #{registrantId}, #{accId}, #{targetAccId}, #{branchId}, #{tradeDate}, #{amount}, #{balance}, #{tradeType}, #{status}, #{cashIndicator}, #{description}, #{tradeNumber}, #{registrationDate}, #{modificationDate}, #{modifierId}, #{version})
+        INSERT INTO Trade (id, registrant_id, acc_id, target_acc_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, registration_date, version)
+        VALUES (trade_seq.nextval, #{registrantId}, #{accId}, #{targetAccId}, #{branchId}, #{tradeDate}, #{amount}, #{balance}, #{tradeType}, #{status}, #{cashIndicator}, #{description}, #{tradeNumber}, #{registrationDate}, #{version})
     </insert>
 
     <update id="updateAccountBalance" parameterType="TransferDetail">

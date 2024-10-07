@@ -269,12 +269,14 @@ function showTransferResultModal(data) {
     // 출금 내역
     var withdrawal = data[0];
     $('#modal-result-withdrawal-account').text(withdrawal.accId);
+    $('#modal-result-withdrawal-customer-name').text(withdrawal.customerName);
     $('#modal-result-withdrawal-amount').text(comma(withdrawal.amount));
     $('#modal-result-withdrawal-balance').text(comma(withdrawal.balance));
 
     // 입금 내역
     var deposit = data[1];
     $('#modal-result-deposit-account').text(deposit.accId);
+    $('#modal-result-deposit-customer-name').text(deposit.customerName);
     $('#modal-result-deposit-amount').text(comma(deposit.amount));
     $('#modal-result-deposit-balance').text(comma(deposit.balance));
 

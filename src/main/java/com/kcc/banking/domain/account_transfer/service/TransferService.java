@@ -10,6 +10,7 @@ import com.kcc.banking.domain.account_transfer.dto.request.TransferCreate;
 import com.kcc.banking.domain.account_transfer.dto.response.TransferDetail;
 import com.kcc.banking.domain.account_transfer.mapper.TransferMapper;
 import com.kcc.banking.domain.business_day.service.BusinessDayService;
+import com.kcc.banking.domain.customer.service.CustomerService;
 import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class TransferService {
     private final TransferMapper transferMapper;
 
     private final AccountService accountService;
+    private final CustomerService customerService;
     private final EmployeeService employeeService;
     private final BusinessDayService businessDayService;
 
@@ -103,12 +105,11 @@ public class TransferService {
                 .cashIndicator("FALSE")
                 // 거래 상태: 정상
                 .status("NOR")
-                // 수정일
-                .modificationDate(tradeDate)
-                // 수정자
-                .modifierId(employeeId)
+                // 고객명
+                .customerName(withdrawalAccount.getCustomerName())
                 // 버전: 1
                 .version(1L)
+                // 사용자
                 .build();
 
 
@@ -158,10 +159,8 @@ public class TransferService {
                 .cashIndicator("FALSE")
                 // 거래 상태: 정상
                 .status("NOR")
-                // 수정일
-                .modificationDate(tradeDate)
-                // 수정자
-                .modifierId(employeeId)
+                // 고객명
+                .customerName(depositAccount.getCustomerName())
                 // 버전: 1
                 .version(1L)
                 .build();
