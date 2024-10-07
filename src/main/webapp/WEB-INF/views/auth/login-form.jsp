@@ -30,7 +30,7 @@
             <h2 class="fw-bold">로그인</h2>
         </div>
 
-        <form action="/auth/login" method="post">
+        <form action="/api/anonymous/login" method="post">
 
             <div class="d-flex justify-content-start"><p class="fw-bold">아이디</p></div>
             <div class="d-flex justify-content-start">

@@ -12,13 +12,11 @@ import java.math.BigDecimal;
 @Setter
 public class InterestSum {
     private String accountId;
-    private BigDecimal interestRateSum;
     private BigDecimal amountSum;
 
     @Builder
-    public InterestSum(String accountId, BigDecimal interestRateSum, BigDecimal amountSum) {
+    public InterestSum(String accountId, BigDecimal amountSum) {
         this.accountId = accountId;
-        this.interestRateSum = interestRateSum;
         this.amountSum = amountSum;
     }
 }

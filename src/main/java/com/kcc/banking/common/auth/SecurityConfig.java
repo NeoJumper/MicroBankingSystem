@@ -52,12 +52,12 @@ public class SecurityConfig {
                                 //.anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .formLogin(form -> form.loginPage("/page/auth/login-form")
-                        .loginProcessingUrl("/auth/login")
+                .formLogin(form -> form.loginPage("/page/anonymous/login-form")
+                        .loginProcessingUrl("/api/anonymous/login")
                         .defaultSuccessUrl("/page/employee/account-transfer")
                         .failureHandler(authenticationFailureHandler())
                 ).logout(logout ->
-                        logout.logoutUrl("/auth/logout"));
+                        logout.logoutUrl("/api/common/logout"));
         return http.build();
     }
 

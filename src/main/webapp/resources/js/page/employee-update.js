@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     handleEmpDataOfUpdateForm();
-
+    handleAuthDataOfEmpUpdateForm();
 
     registerClickEventOfEmpSearchBtn();
     registerClickEventOfEmpUpdateCompleteBtn();
@@ -34,7 +34,7 @@ function registerClickEventOfEmpUpdateCompleteBtn(){
             birthDate : $('#emp-birth-date').val(),
             email : $('#emp-email').val(),
             password : $('#emp-password').val(),
-            branchId : $('#emp-branch-id').val(),
+            branchId: $('#emp-branch-id').data('branchId'),
             phoneNumber : $('#emp-phone-number').val(),
             roles : $('#emp-roles').val()
         };
@@ -144,4 +144,20 @@ function fillEmpDataOfDetailModal(updatedEmployee){
     $('#detail-modal-emp-branch-name').val(updatedEmployee.branchName); // 지점명은 id로 받음, 필요 시 변환
     $('#detail-modal-emp-roles').val(updatedEmployee.roles);
 
+}
+function handleAuthDataOfEmpUpdateForm(){
+    $.ajax({
+        url: '/api/common/auth-data',
+        type: 'GET',
+        success: function(authData) {
+            // 성공 시 처리할 로직 작성
+            $('#emp-branch-id')
+                .val(authData.branchName)
+                .data('branchId', authData.branchId);  // branchId를 저장
+        },
+        error: function(xhr, status, error) {
+            // 에러 발생 시 처리할 로직 작성
+            console.error('에러 발생:', error);
+        }
+    });
 }

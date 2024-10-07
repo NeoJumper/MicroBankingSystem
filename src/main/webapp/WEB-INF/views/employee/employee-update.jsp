@@ -49,14 +49,7 @@
         <tr>
             <th>지점명</th>
             <td>
-                <select id="emp-branch-id">
-                    <option disabled selected>지점 선택</option>
-                    <option value="1">강남점</option>
-                    <option value="2">은평점</option>
-                    <option value="3">서초점</option>
-                    <option value="4">마포점</option>
-                    <option value="5">영등포점</option>
-                </select>
+                <input type="text" id="emp-branch-id" disabled>
             </td>
             <th>전화번호</th>
             <td><input type="text" id="emp-phone-number"></td>
