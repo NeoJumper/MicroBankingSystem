@@ -6,7 +6,6 @@ import com.kcc.banking.domain.trade.dto.response.Criteria;
 import com.kcc.banking.domain.trade.dto.response.PageDTO;
 import com.kcc.banking.domain.trade.dto.response.PagingInfoOfTradeList;
 
-
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeOfList;
 import com.kcc.banking.domain.trade.service.TradeService;
