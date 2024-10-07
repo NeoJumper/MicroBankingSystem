@@ -73,7 +73,6 @@ function accountOpen(){
                 preferentialInterestRate: preferentialInterestRate,
                 password: password,
                 balance: balance
-
             }),
             success: function(accountId) {
                 swal({
@@ -110,16 +109,14 @@ function clearCustomerSearchModal() {
 // 계좌 개설 완료 모달 호출 함수
 function accountOpenResult(accountId){
 
-
-
    $.ajax({
         url: '/api/employee/account/open/'+accountId,
         method: 'GET',
         success: function(data) {
-            const customerName = data.customerName;
+
 
             $('#result-modal-account-id-input').val(data.accId);
-            $('#result-modal-customer-name-input').val(customerName)
+            $('#result-modal-customer-name-input').val(data.customerName)
             $('#result-modal-customer-number-input').val(data.customerId);
             $('#result-modal-phone-number-input').val(data.phoneNumber);
             $('#result-modal-product-name-input').val(data.productName);
@@ -132,9 +129,6 @@ function accountOpenResult(accountId){
             $('#result-modal-total-interest-input').val(data.totalInterestRate);
 
             $("#result-modal-open-account").modal("show");
-
-
-
 
 
         },

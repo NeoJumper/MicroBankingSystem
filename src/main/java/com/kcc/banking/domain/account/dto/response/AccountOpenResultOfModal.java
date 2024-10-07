@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter
@@ -16,7 +17,7 @@ public class AccountOpenResultOfModal {
     private String phoneNumber;
 
     private String productName;
-    private Date startDate;
+    private Timestamp startDate;
     private BigDecimal balance;
     private String branchName;
     private String registrantName;
@@ -24,7 +25,7 @@ public class AccountOpenResultOfModal {
     //총이율
     private BigDecimal totalInterestRate;
 
-    public AccountOpenResultOfModal(String accId, String customerName, int customerId, String phoneNumber, String productName, Date startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal totalInterestRate) {
+    public AccountOpenResultOfModal(String accId, String customerName, int customerId, String phoneNumber, String productName, Timestamp startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal totalInterestRate) {
         this.accId = accId;
         this.customerName = customerName;
         this.customerId = customerId;

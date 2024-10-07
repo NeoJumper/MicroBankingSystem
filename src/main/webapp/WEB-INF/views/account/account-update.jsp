@@ -46,7 +46,7 @@
             <th>고객명</th>
             <td><input type="text" id="customer-name-input" disabled></td>
             <th>이자시작일자</th>
-            <td><input type="text" id="start-date-input" value='${tradeDate}' disabled></td>
+            <td><input type="text" id="start-date-input" disabled></td>
 
         </tr>
         <tr>
@@ -73,22 +73,13 @@
         </tr>
         <input type="hidden" id="emp-id-hidden-input" value="${employeeId}" >
         <input type="hidden" id="branch-id-hidden-input" value="${branchId}" >
+        <input type="hidden" id="trade-date-hidden-input" value="${tradeDate}" >
         <input type="hidden" id="product-id-hidden-input">
     </table>
 
-    <div  style="text-align:center;">
-        <button class="btn btn-primary" id="account-create-btn">계좌 개설</button>
-
-    </div>
-
-
 
 </div>
-
-<%@ include file="/resources/components/modal/search-modal-customer.jsp" %>
-<%@ include file="/resources/components/modal/result-modal-open-account.jsp" %>
 <script src="/resources/js/footer.js"></script>
-<script src="/resources/js/page/account-open.js"></script>
 
 </body>
 </html>

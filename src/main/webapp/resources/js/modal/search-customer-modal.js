@@ -114,6 +114,7 @@ function insertCustomerId() {
 
             });
 
+
             $('#search-customer-modal').modal('hide');
 
         } else {
@@ -122,5 +123,6 @@ function insertCustomerId() {
     });
 
 }
+
 // ------------------------------- END insertCustomerId()------------------------------------------
 
