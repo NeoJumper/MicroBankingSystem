@@ -31,24 +31,28 @@
                         <td><span id="modal-account-close-productName"></span></td>
                     </tr>
                     <tr>
-                        <th>해지 총 기간</th>
-                        <td><span id="modal-account-close-totalDays"></span> 일</td>
-                    </tr>
-                    <tr>
-                        <th>총 이율</th>
-                        <td><span id="modal-account-close-totalIntRate"></span> %</td>
-                    </tr>
-                    <tr>
-                        <th>예상 이자</th>
-                        <td><span id="modal-account-close-amountSum"></span> 원</td>
-                    </tr>
-                    <tr>
-                        <th>총 금액</th>
+                        <th>계좌 잔액</th>
                         <td><span id="modal-account-close-accountBal"></span> 원</td>
+                    </tr>
+                    <tr>
+                        <th>이율</th>
+                        <td><span id="modal-account-close-productInterRate"></span> %</td>
+                    </tr>
+                    <tr>
+                        <th>우대 이율</th>
+                        <td><span id="modal-account-close-accountPreInterRate"></span> %</td>
                     </tr>
                     <tr>
                         <th>세율</th>
                         <td><span id="modal-account-close-productTaxRate"></span> %</td>
+                    </tr>
+                    <tr>
+                        <th>세전 이자</th>
+                        <td><span id="modal-account-close-amountSum"></span> 원</td>
+                    </tr>
+                    <tr>
+                        <th>세후 이자</th>
+                        <td><span id="modal-account-close-textAfterInter"></span> 원</td>
                     </tr>
                     <tr>
                         <th>지급 총 금액</th>

@@ -56,10 +56,10 @@ function cancelCloseAccount(){
 
     if (accountNumber) {
         $.ajax({
-            url: '/api/employee/close-trade',
+            url: '/api/employee/close-cancel-trade',
             type: 'POST',
             contentType: 'application/json', // JSON 형식으로 전송
-            data: JSON.stringify({accId: accountNumber, amount: 0, status: "OPN", description:"계좌해지 취소", balance:totalAmount, tradeType:"OPEN"}), // JSON으로 변환하여 전송
+            data: JSON.stringify({accountId: accountNumber}), // JSON으로 변환하여 전송
             success: function (response) {
                 swal({
                     title: "해지 취소 완료",

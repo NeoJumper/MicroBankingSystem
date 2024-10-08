@@ -39,19 +39,22 @@ function getAccountDetail() {
                 }else{
                     accountData = data;
                     console.log(data)
-                    const registrationDate = new Date(data.amountDate);
-                    const now = new Date();
-                    const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                    const totalPayment = data.accountBal + data.amountSum;
-                    console.log("=========================");
+
+                    const textAfterInter = Number(data.amountSum) * (1-Number(data.productTaxRate));
+                    const totalPayment = data.accountBal + textAfterInter;
+                    accountData.textAfterInter = textAfterInter;
+                    accountData.totalPayment = totalPayment;
+                    console.log("=========================accountDataTotalPaymemt");
+                    console.log(accountData.totalPayment, "==============총 지급 금액")
                     console.log(data.accountId);
                     $('#table-content tbody').append(
                         '<tr>' +
-                        '<td style="width: 5%;">' + totalDays + '일' + '</td>' +
+                        '<td style="width: 5%;">' + data.accountBal + '원' + '</td>' +
+                        '<td style="width: 5%;">' + data.productInterRate + '%' + '</td>' +
                         '<td style="width: 5%;">' + data.accountPreInterRate + '%' + '</td>' +
-                        '<td style="width: 10%;">' + data.amountSum + '</td>' +
-                        '<td style="width: 10%;">' + data.accountBal + '</td>' +
                         '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
+                        '<td style="width: 10%;">' + data.amountSum + '</td>' +
+                        '<td style="width: 10%;">' + textAfterInter + '</td>' +
                         '<td style="width: 10%;">' + totalPayment + '</td>' +
                         '</tr>'
                     );
@@ -107,7 +110,7 @@ function closeAccount() {
             url: '/api/employee/close-trade',
             type: 'POST',
             contentType: 'application/json', // JSON 형식으로 전송
-            data: JSON.stringify({accId: accountNumber, amount: totalAmount, status: "CLS", description:"계좌해지", balance:0, tradeType:"CLOSE"}), // JSON으로 변환하여 전송
+            data: JSON.stringify({accId: accountNumber, amount: accountData.totalPayment, status: "CLS", description:"계좌해지", balance:0, tradeType:"CLOSE"}), // JSON으로 변환하여 전송
             success: function (response) {
                 swal({
                     title: "해지 성공",
@@ -124,12 +127,13 @@ function closeAccount() {
                 $('#modal-account-close-customerName').text(accountData.customerName);
                 $('#modal-account-close-accountId').text(accountData.accountId);
                 $('#modal-account-close-productName').text(accountData.productName);
-                $('#modal-account-close-totalDays').text(totalDays);
-                $('#modal-account-close-totalIntRate').text(accountData.accountPreInterRate);
-                $('#modal-account-close-amountSum').text(accountData.amountSum);
                 $('#modal-account-close-accountBal').text(accountData.accountBal);
+                $('#modal-account-close-productInterRate').text(accountData.productInterRate);
+                $('#modal-account-close-accountPreInterRate').text(accountData.accountPreInterRate);
                 $('#modal-account-close-productTaxRate').text(accountData.productTaxRate);
-                $('#modal-account-close-totalPayment').text(totalPayment);
+                $('#modal-account-close-amountSum').text(accountData.amountSum);
+                $('#modal-account-close-textAfterInter').text(accountData.textAfterInter);
+                $('#modal-account-close-totalPayment').text(accountData.totalPayment);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('오류 발생:', textStatus, errorThrown);

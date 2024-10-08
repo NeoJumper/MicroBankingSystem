@@ -1,11 +1,12 @@
 package com.kcc.banking.domain.account_close.mapper;
 
-import com.kcc.banking.domain.account_close.dto.request.AccountStatus;
-import com.kcc.banking.domain.account_close.dto.request.CloseTrade;
-import com.kcc.banking.domain.account_close.dto.request.PaymentStatus;
+import com.kcc.banking.domain.account_close.dto.request.*;
 import com.kcc.banking.domain.account_close.dto.response.CloseAccount;
 import com.kcc.banking.domain.account_close.dto.response.InterestSum;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Mapper
 public interface AccountCloseMapper {
@@ -19,5 +20,13 @@ public interface AccountCloseMapper {
     CloseAccount findCloseAccount(String accountId);
 
     int updatePaymentStatus(PaymentStatus paymentStatus);
+
+    Timestamp findExpireDateById(String id);
+
+    int rollbackPaymentStatus(RollbackPaymentStatus rollbackPaymentStatus);
+
+    InterestSum rollbackInterestSum(AccountIdWithExpireDate accountIdWithExpireDate);
+
+    BigDecimal rollbackAmount(AccountIdWithExpireDate accountIdWithExpireDate);
 
 }
