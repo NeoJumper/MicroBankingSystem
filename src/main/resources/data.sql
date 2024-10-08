@@ -1564,4 +1564,5 @@ UPDATE Account
 SET balance = 3750000
 WHERE id = '004-0000060-6060';
 
+-- 추후 등록일 / 등록자 / 수정일 / 수정자 각 INSERT 와 UPDATE 문에 맞춰서 작성 예정
 
