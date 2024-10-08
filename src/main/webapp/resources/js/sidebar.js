@@ -192,17 +192,28 @@ function createBusinessDayManagementSidebar() {
 }
 
 function createBusinessDayCloseManagementSidebar(selectedSidebarMenu, roles){
-    console.log(selectedSidebarMenu);
-    console.log(roles);
-    var menuData = [
-        {
+    var menuData;
+    if(roles === "행원")
+    {
+        menuData = [{
+            title: '마감 관리',
+            icon: 'bi bi-file-earmark-check',
+            submenu: [
+                { name: '마감 상태 관리', url: '/page/employee/business-day-close' }
+            ]
+        }];
+    }else{
+        menuData = [{
             title: '마감 관리',
             icon: 'bi bi-file-earmark-check',
             submenu: [
                 { name: '마감 상태 관리', url: '/page/manager/business-day-close' }
             ]
-        }
-    ];
+        }];
+    }
+
+
+
 
     //console.log("영업일 관리 사이드바 생성");
     createSidebar(menuData);

@@ -13,11 +13,13 @@ function handleAuthDataOfHeader(){
         type: 'GET',
         success: function(authData) {
             // 성공 시 처리할 로직 작성
-            $('#user-roles').text(authData.roles);
+            let role = authData.roles === ("ROLE_MANAGER") ? "매니저" : "행원";
+            console.log(role);
+            $('#user-roles').text(role);
             $('#user-branch-name').text(authData.branchName);
             $('#user-name').text(authData.name + '님');
-            createHeader(authData.roles);
-            handleHeaderAndSidebar(authData.roles);
+            createHeader(role);
+            handleHeaderAndSidebar(role);
         },
         error: function(xhr, status, error) {
             // 에러 발생 시 처리할 로직 작성
@@ -61,8 +63,8 @@ function createHeader(roles){
 
         $('#navbar').append(`
             <ul id="navbar-globalMenu">
-                <li id="header-customer-management"><a href="/page/common/account-open">고객 관리</a></li>
                 <li id="header-employee-management"><a href="/page/manager/employee-save">행원 관리</a></li>
+                <li id="header-customer-management"><a href="/page/common/account-open">고객 관리</a></li>
                 <li id="header-business-day-management"><a href="/page/manager/business-day-management">영업일 관리</a></li>
                 <li id="header-business-day-close-management"><a href="/page/manager/business-day-close">마감 관리</a></li>
                 <li id="header-branch-management"><a href="/page/manager/account-open">지점 관리</a></li>

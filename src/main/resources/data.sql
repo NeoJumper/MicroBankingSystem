@@ -15,59 +15,59 @@ VALUES (branch_seq.NEXTVAL, '강남동5호점', '서울시 강남구 강남동 2
 
 -- 지점 1 매니저
 INSERT INTO Employee (id, name,birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL,  '김철수','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-1111-1111', '매니저', 1);
+VALUES (employee_seq.NEXTVAL,  '김철수','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-1111-1111', 'ROLE_MANAGER', 1);
 
 -- 지점 1 행원
 INSERT INTO Employee (id, name,birth_date,  password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '김하늘','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-5678-9101', '행원', 1);
+VALUES (employee_seq.NEXTVAL, '김하늘','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-5678-9101', 'ROLE_EMPLOYEE', 1);
 
 INSERT INTO Employee (id, name,birth_date,  password,email,  phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '이수진', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-2345-6789', '행원', 1);
+VALUES (employee_seq.NEXTVAL, '이수진', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-2345-6789', 'ROLE_EMPLOYEE', 1);
 
 INSERT INTO Employee (id, name,birth_date,  password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '박준호', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 'test1@gmail.com','010-3456-7890', '행원', 1);
+VALUES (employee_seq.NEXTVAL, '박준호', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 'test1@gmail.com','010-3456-7890', 'ROLE_EMPLOYEE', 1);
 
 INSERT INTO Employee (id, name,birth_date,  password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '정미래','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 'test1@gmail.com','010-4567-8901', '행원', 1);
+VALUES (employee_seq.NEXTVAL, '정미래','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 'test1@gmail.com','010-4567-8901', 'ROLE_EMPLOYEE', 1);
 
 INSERT INTO Employee (id, name,birth_date,  password,email,  phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '최유리','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-5678-9012', '행원', 1);
+VALUES (employee_seq.NEXTVAL, '최유리','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-5678-9012', 'ROLE_EMPLOYEE', 1);
 
 -- 지점 2 매니저
 INSERT INTO Employee (id, name,birth_date,  password,email,  phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '박영희','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-2222-2222', '매니저', 2);
+VALUES (employee_seq.NEXTVAL, '박영희','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-2222-2222', 'ROLE_MANAGER', 2);
 
 -- 지점 2 행원
 INSERT INTO Employee (id, name,birth_date,  password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '임도현','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-6789-0123', '행원', 2);
+VALUES (employee_seq.NEXTVAL, '임도현','1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-6789-0123', 'ROLE_EMPLOYEE', 2);
 
 
 -- 지점 3 매니저
 INSERT INTO Employee (id, name,birth_date,  password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '이민호', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-3333-3333', '매니저', 3);
+VALUES (employee_seq.NEXTVAL, '이민호', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-3333-3333', 'ROLE_MANAGER', 3);
 -- 지점 3 행원
 INSERT INTO Employee (id, name,birth_date,  password,email,  phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '홍서연', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 'test1@gmail.com','010-7890-1234', '행원', 3);
+VALUES (employee_seq.NEXTVAL, '홍서연', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 'test1@gmail.com','010-7890-1234', 'ROLE_EMPLOYEE', 3);
 
 
 -- 지점 4 매니저
 INSERT INTO Employee (id, name,birth_date,  password,email,  phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '최지훈', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-4444-4444', '매니저', 4);
+VALUES (employee_seq.NEXTVAL, '최지훈', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-4444-4444', 'ROLE_MANAGER', 4);
 -- 지점 4 행원
 INSERT INTO Employee (id, name,birth_date,  password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '정세진', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-8901-2345', '행원', 4);
+VALUES (employee_seq.NEXTVAL, '정세진', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-8901-2345', 'ROLE_EMPLOYEE', 4);
 
 
 -- 지점 5 매니저
 INSERT INTO Employee (id, name,birth_date,  password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '정유진', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-5555-5555', '매니저', 5);
+VALUES (employee_seq.NEXTVAL, '정유진', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-5555-5555', 'ROLE_MANAGER', 5);
 
 -- 지점 5 행원
 INSERT INTO Employee (id, name,birth_date,  password,email,  phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '민정호', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 'test1@gmail.com','010-9012-3456', '행원', 5);
+VALUES (employee_seq.NEXTVAL, '민정호', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 'test1@gmail.com','010-9012-3456', 'ROLE_EMPLOYEE', 5);
 
 INSERT INTO Employee (id, name,birth_date,  password,email,  phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '이경호', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-0123-4567', '행원', 5);
+VALUES (employee_seq.NEXTVAL, '이경호', '1999-02-14','$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','test1@gmail.com', '010-0123-4567', 'ROLE_EMPLOYEE', 5);
 
 ---------- 고객 데이터 ----------
 /*
