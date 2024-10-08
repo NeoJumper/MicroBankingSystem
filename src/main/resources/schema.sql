@@ -32,7 +32,7 @@ CREATE TABLE Employee (
                           name VARCHAR(100) NOT NULL,
                           password VARCHAR(1000) NOT NULL,
                           phone_number VARCHAR(13) NULL,
-                          roles VARCHAR(10) NULL,
+                          roles VARCHAR(20) NULL,
                           registration_date TIMESTAMP NULL,
                           registrant VARCHAR(100) NULL,
                           modification_date TIMESTAMP NULL,
