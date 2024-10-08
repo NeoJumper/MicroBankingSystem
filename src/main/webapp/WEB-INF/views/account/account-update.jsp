@@ -21,22 +21,30 @@
 
 <div id="main-area">
     <div>
-        <h5>예금 관리 > </h5>
-        <h5>&nbsp 계좌 개설 </h5>
+        <h5>계좌 관리 > </h5>
+        <h5>&nbsp 계좌 수정 </h5>
     </div>
+    <div>
+        <h3>계좌 수정</h3>
+        <hr>
+        <div class="d-flex align-items-center">
+            <input style="width:30%;" type="text" id="search-account-id-input" placeholder="계좌 번호를 입력하세요" readonly>
+            <button id="check-deposit-account-btn" class="update-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
+        </div>
+    </div>
+    <br><br>
+
 
     <div>
-        <h3>계좌 개설 정보 입력</h3>
+        <h3>계좌 개설 정보</h3>
         <hr>
     </div>
     <table class="common-table">
         <tr>
             <th>고객번호</th>
             <td style="display: flex; align-items: center;">
-                <input type="text" id="customer-id-input" readonly >
-                <button data-bs-toggle="modal" data-bs-target="#search-customer-modal"  type="button" id="customer-id-search-btn" class="btn btn-primary" style="margin-left: 10px; padding: 5px; width:80px;height:40px">
-                    <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
-                </button>
+                <input type="text" id="customer-id-input" disabled >
+
             </td>
             <th>비밀번호</th>
             <td><input type="text" id="password-input"></td>
@@ -45,13 +53,12 @@
         <tr>
             <th>고객명</th>
             <td><input type="text" id="customer-name-input" disabled></td>
-            <th>이자시작일자</th>
-            <td><input type="text" id="start-date-input" value='${tradeDate}' disabled></td>
-
+            <th>잔액</th>
+            <td><input type="text" id="balance-input" disabled></td>
         </tr>
         <tr>
-            <th>초기 예치금(KRW)</th>
-            <td><input type="text" id="balance-input"></td>
+            <th>계좌번호</th>
+            <td><input type="text" id="acc-id-input" disabled></td>
             <td colspan="2"></td>
         </tr>
         <tr>
@@ -68,27 +75,23 @@
         </tr>
         <tr>
             <th>담당자</th>
-            <td><input type="text" id="emp-name-input" value="${employeeName}" disabled></td>
-            <td colspan="2"></td>
+            <td><input type="text" id="emp-name-input"  disabled></td>
+            <th>개설지점</th>
+            <td><input type="text" id="branch-name"  disabled></td>
+
         </tr>
-        <input type="hidden" id="emp-id-hidden-input" value="${employeeId}" >
-        <input type="hidden" id="branch-id-hidden-input" value="${branchId}" >
-        <input type="hidden" id="product-id-hidden-input">
+
     </table>
 
-    <div  style="text-align:center;">
-        <button class="btn btn-primary" id="account-create-btn">계좌 개설</button>
-
+    <div style="display: flex; justify-content : right">
+        <button id="update-account-btn" class="update-btn" type="button" >계좌 수정</button>
     </div>
-
-
 
 </div>
 
-<%@ include file="/resources/components/modal/search-modal-customer.jsp" %>
-<%@ include file="/resources/components/modal/result-modal-open-account.jsp" %>
-<script src="/resources/js/footer.js"></script>
-<script src="/resources/js/page/account-open.js"></script>
+<%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 
+<script src="/resources/js/footer.js"></script>
+<script src="/resources/js/page/account-update.js"></script>
 </body>
 </html>

@@ -64,21 +64,41 @@
 
     <insert id="openAccount" parameterType="AccountCreate">
         INSERT INTO Account (
-                                id,
-                                branch_id,
-                                customer_id,
-                                product_id,
-                                registrant_id,
-                                start_date,
-                                preferential_interest_rate,
-                                password,
-                                balance,
-                                open_date,
-                                status
+            id,
+            branch_id,
+            customer_id,
+            product_id,
+            registrant_id,
+
+            start_date,
+            preferential_interest_rate,
+            password,
+            balance,
+            open_date,
+
+            status,
+            registration_date,
+            Trade_number,
+            version
+
         ) VALUES (
-                        #{id}, #{branchId}, #{customerId}, #{productId}, #{registrantId},
-                        SYSDATE, #{preferentialInterestRate},
-                        #{password}, #{balance}, SYSDATE, 'OPN'
+                     #{id},
+                     #{branchId},
+                     #{customerId},
+                     #{productId},
+                     #{registrantId},
+
+                     SYSDATE,
+                     #{preferentialInterestRate},
+                     #{password},
+                     #{balance},
+                     #{startDate},
+
+                     'OPN',
+                     SYSDATE,
+                     TRADE_SEQ.nextval,
+                     1
+
                  )
     </insert>
 
@@ -113,6 +133,7 @@
 
     <resultMap id="AccountOpenModalResultMap" type="AccountOpenResultOfModal">
         <result property="accId" column="acc_id" />
+        <result property="password" column="password" />
         <result property="customerName" column="customer_name" />
         <result property="customerId" column="customer_id" />
         <result property="phoneNumber" column="phone_number" />
@@ -121,12 +142,15 @@
         <result property="balance" column="balance" />
         <result property="branchName" column="branch_name" />
         <result property="registrantName" column="registrant_name" />
+        <result property="preferentialInterestRate" column="preferential_interest_rate" />
+        <result property="interestRate" column="interest_rate" />
         <result property="totalInterestRate" column="total_interest_rate" />
     </resultMap>
 
     <select id="getAccountOpenResultOfModal" resultMap="AccountOpenModalResultMap">
         SELECT
             a.id AS acc_id,
+            a.password AS password,
             c.name AS customer_name,
             c.id AS customer_id,
             c.phone_number AS phone_number,
@@ -135,6 +159,8 @@
             a.balance AS balance,
             b.name AS branch_name,
             e.name AS registrant_name,
+            a.preferential_interest_rate AS preferential_interest_rate,
+            p.interest_rate AS interest_rate,
             (a.preferential_interest_rate +p.interest_rate) AS total_interest_rate
         FROM
             Account a

@@ -132,11 +132,16 @@ public class TradeService {
         else if(tradeCreate.getTradeType().equals("DEPOSIT")){
             tradeDetail.setBalance(cashTradeAccountBalance.add(tradeCreate.getAmount()));
         }
+        // 개설일 경우 (현금입금)
+        else if(tradeCreate.getTradeType().equals("OPEN")){
+            tradeDetail.setBalance(cashTradeAccountBalance.add(tradeCreate.getAmount()));
+        }
 
         // 현금 거래내역 추가
         tradeMapper.createCashTrade(tradeDetail);
         // 잔액 업데이트
         tradeMapper.updateCashTradeBalance(tradeDetail);
+
         return tradeDetail;
     }
 

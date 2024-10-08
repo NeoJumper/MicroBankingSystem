@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Criteria {
+public class   Criteria {
 
     private int pageNum;  // 현재 페이지 번호
     private int amount;   // 페이지당 항목 수

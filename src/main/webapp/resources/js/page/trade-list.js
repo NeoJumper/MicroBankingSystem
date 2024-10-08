@@ -108,6 +108,7 @@ function tradePeriodSelectDisplay() {
     });
 }
 
+// 계좌 선택 값 넣게
 function accIdOfSearchAccountModal() {
     $('#search-modal-select-account-btn').on("click", function () {
 
@@ -236,6 +237,7 @@ function updatePagination(pageDTO) {
     });
 }
 
+// 거래상태별 css 적용
 function getTradeTypeInfo(tradeType) {
     switch (tradeType) {
         case 'OPEN':
@@ -278,14 +280,14 @@ function renderOfSearchResults(data) {
         const cashIndicatorClass = trade.cashIndicator === 'TRUE' ? 'cash-text' : 'transfer-text';
 
         const statusMap = {
-            'NOR': { text: '취소 신청', class: 'status-nor' },
-            'CAN': { text: '취소 신청 진행중', class: 'status-can' },
-            'RVK': { text: '취소 신청 완료', class: 'status-rvk' }
+            'NOR': {text: '취소 신청', class: 'status-nor'},
+            'CAN': {text: '취소 신청 진행중', class: 'status-can'},
+            'RVK': {text: '취소 신청 완료', class: 'status-rvk'}
         };
 
         // 상태에 따른 텍스트와 클래스 가져오기
-        const statusInfo = statusMap[trade.status] || { text: '', class: '' };
-        
+        const statusInfo = statusMap[trade.status] || {text: '', class: ''};
+
         // 유형 가져오기
         const tradeTypeInfo = getTradeTypeInfo(trade.tradeType);
 
@@ -297,16 +299,29 @@ function renderOfSearchResults(data) {
             .append($('<td>').text(trade.amount))
             .append($('<td>').text(trade.balance))
             .append($('<td>')
+                .addClass('text-center')
                 .addClass(cashIndicatorClass)
                 .text(cashIndicatorText))
-            .append($('<td>').addClass(tradeTypeInfo.cssClass).text(tradeTypeInfo.type));
+            .append($('<td>')
+                .addClass('text-center')
+                .addClass(tradeTypeInfo.cssClass)
+                .text(tradeTypeInfo.type));
 
         if (formattedBusinessDay === formattedTradeDate && trade.tradeType !== 'OPEN') {
             // 영업일과 거래일이 동일하고 거래 유형이 'OPEN'이 아닐 경우 버튼 추가
-            row.append($('<td>').append($('<button>').text(statusInfo.text).addClass(statusInfo.class)));
+            row.append($('<td>')
+                .addClass('text-center')
+                .append($('<button>')
+                    .text(statusInfo.text)
+                    .addClass(statusInfo.class)
+
+                )
+            );
         } else {
             // 조건에 맞지 않으면 빈 td 추가
-            row.append($('<td>').text('')); // 빈 td 추가
+            row.append($('<td>')
+                .text('')
+                .addClass('text-center')); // 빈 td 추가
         }
 
         tradeResultsTableBody.append(row);
