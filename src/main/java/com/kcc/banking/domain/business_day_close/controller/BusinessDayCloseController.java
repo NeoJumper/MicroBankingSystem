@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.business_day_close.controller;
 
+import com.kcc.banking.domain.business_day.service.BusinessDayManagementFacade;
 import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
@@ -16,11 +17,12 @@ import java.util.List;
 public class BusinessDayCloseController {
 
     private final BusinessDayCloseService businessDayCloseService;
+    private final BusinessDayManagementFacade businessDayManagementFacade;
 
     @GetMapping("/page/employee/business-day-close")
     public String businessDayCloseOfEmployeePage(Model model){
 
-        EmployeeClosingData employeeClosingData = businessDayCloseService.getEmployeeClosingData();
+        EmployeeClosingData employeeClosingData = businessDayManagementFacade.getEmployeeClosingData();
         model.addAttribute("employeeClosingData", employeeClosingData);
 
         return "business-day/employee-close";
@@ -29,7 +31,7 @@ public class BusinessDayCloseController {
     @GetMapping("/page/manager/business-day-close")
     public String businessDayCloseOfManagerPage(Model model)
     {
-        ManagerClosingData managerClosingData = businessDayCloseService.getManagerClosingData();
+        ManagerClosingData managerClosingData = businessDayManagementFacade.getManagerClosingData();
         model.addAttribute("managerClosingData", managerClosingData);
 
         return "business-day/manager-close";

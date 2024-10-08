@@ -1,6 +1,7 @@
 package com.kcc.banking.domain.business_day_close.controller;
 
 
+import com.kcc.banking.domain.business_day.service.BusinessDayManagementFacade;
 import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
@@ -15,20 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class BusinessDayCloseRestController {
 
     private final BusinessDayCloseService businessDayCloseService;
+    private final BusinessDayManagementFacade businessDayManagementFacade;
 
     @PatchMapping("/api/employee/business-day-close")
     public void businessDayCloseOfEmployee(Model model){
-        businessDayCloseService.closeByEmployee();
+        businessDayManagementFacade.closeByEmployee();
     }
 
     @PatchMapping("/api/manager/business-day-close")
     public void businessDayCloseOfManager(Model model)
     {
-        businessDayCloseService.closeByManager();
+        businessDayManagementFacade.closeByManager();
     }
     @GetMapping("/api/manager/business-day-close")
     public ManagerClosingData getBusinessDayChangeDataOfManager(Model model)
     {
-        return businessDayCloseService.getManagerClosingData();
+        return businessDayManagementFacade.getManagerClosingData();
     }
 }
