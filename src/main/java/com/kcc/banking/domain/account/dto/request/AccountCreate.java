@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -25,7 +26,7 @@ public class AccountCreate {
     private Timestamp expireDate;
     private float preferentialInterestRate;
     private String password;
-    private int balance;
+    private BigDecimal balance;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp openDate;
@@ -40,7 +41,7 @@ public class AccountCreate {
 
 
     @Builder
-    public AccountCreate(String id, int branchId, int customerId, int productId, Long registrantId, Timestamp startDate, Timestamp expireDate, float preferentialInterestRate, String password, int balance, Timestamp openDate,  String tradeNumber) {
+    public AccountCreate(String id, int branchId, int customerId, int productId, Long registrantId, Timestamp startDate, Timestamp expireDate, float preferentialInterestRate, String password, BigDecimal balance, Timestamp openDate,  String tradeNumber) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;

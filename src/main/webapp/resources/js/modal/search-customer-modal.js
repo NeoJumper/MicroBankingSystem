@@ -114,7 +114,6 @@ function insertCustomerId() {
 
             });
 
-
             $('#search-customer-modal').modal('hide');
 
         } else {

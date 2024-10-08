@@ -12,6 +12,7 @@ import java.util.Date;
 public class AccountOpenResultOfModal {
 
     private String accId;
+    private String password;
     private String customerName;
     private int customerId;
     private String phoneNumber;
@@ -22,11 +23,14 @@ public class AccountOpenResultOfModal {
     private String branchName;
     private String registrantName;
 
+    private BigDecimal preferentialInterestRate;
+    private BigDecimal interestRate;
     //총이율
     private BigDecimal totalInterestRate;
 
-    public AccountOpenResultOfModal(String accId, String customerName, int customerId, String phoneNumber, String productName, Timestamp startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal totalInterestRate) {
+    public AccountOpenResultOfModal(String accId, String password, String customerName, int customerId, String phoneNumber, String productName, Timestamp startDate, BigDecimal balance, String branchName, String registrantName,BigDecimal preferentialInterestRate, BigDecimal interestRate, BigDecimal totalInterestRate) {
         this.accId = accId;
+        this.password = password;
         this.customerName = customerName;
         this.customerId = customerId;
         this.phoneNumber = phoneNumber;
@@ -36,5 +40,7 @@ public class AccountOpenResultOfModal {
         this.branchName = branchName;
         this.registrantName = registrantName;
         this.totalInterestRate = totalInterestRate;
+        this.interestRate = interestRate;
+        this.preferentialInterestRate = preferentialInterestRate;
     }
 }
