@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.account_close.controller;
 
+import com.kcc.banking.domain.account_close.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.account_close.dto.request.AccountStatus;
 import com.kcc.banking.domain.account_close.dto.request.CloseTrade;
 import com.kcc.banking.domain.account_close.dto.request.StatusWithTrade;
@@ -42,5 +43,11 @@ public class AccountCloseRestController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("계좌해지 거래 실패");
         }
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PostMapping("/api/employee/close-cancel-trade")
+    public void cancelCloseTrade(@RequestBody AccountIdWithExpireDate accountIdWithExpireDate) {
+
+        accountCloseService.rollbackAccountCancel(accountIdWithExpireDate.getAccountId());
     }
 }
