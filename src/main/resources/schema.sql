@@ -330,9 +330,7 @@ create sequence employee_seq;
 create sequence business_day_seq;
 create sequence branch_seq;
 create sequence trade_seq;
-CREATE SEQUENCE trade_num_seq
-    START WITH 16
-    INCREMENT BY 1;
+CREATE SEQUENCE trade_num_seq;
 create sequence interest_seq;
 create sequence product_seq;
 create sequence customer_seq;

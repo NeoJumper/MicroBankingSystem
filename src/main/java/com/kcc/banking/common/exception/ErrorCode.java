@@ -22,6 +22,7 @@ public enum ErrorCode {
     REQUIRED_EMPLOYEE_CLOSING("개인마감을 진행중인 사원이 존재합니다.", HttpStatus.BAD_REQUEST),
     // 403
     NOT_LOGIN("로그인 후 이용할 수 있습니다.", HttpStatus.FORBIDDEN),
+    NOT_OPEN("영업 마감된 상태입니다.", HttpStatus.FORBIDDEN),
     FORBIDDEN_CREATE("생성 권한이 없습니다.", HttpStatus.FORBIDDEN),
     FORBIDDEN_DELETE("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN),
     FORBIDDEN_UPDATE("수정 권한이 없습니다.", HttpStatus.FORBIDDEN),
