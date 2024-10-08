@@ -32,7 +32,7 @@ CREATE TABLE Employee (
                           name VARCHAR(100) NOT NULL,
                           password VARCHAR(1000) NOT NULL,
                           phone_number VARCHAR(13) NULL,
-                          roles VARCHAR(10) NULL,
+                          roles VARCHAR(20) NULL,
                           registration_date TIMESTAMP NULL,
                           registrant VARCHAR(100) NULL,
                           modification_date TIMESTAMP NULL,
@@ -330,9 +330,7 @@ create sequence employee_seq;
 create sequence business_day_seq;
 create sequence branch_seq;
 create sequence trade_seq;
-CREATE SEQUENCE trade_num_seq
-    START WITH 16
-    INCREMENT BY 1;
+CREATE SEQUENCE trade_num_seq;
 create sequence interest_seq;
 create sequence product_seq;
 create sequence customer_seq;

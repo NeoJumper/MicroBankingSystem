@@ -14,4 +14,15 @@ public class HelloController {
         return "index";
     }
 
+    @GetMapping("/page/error/error-404")
+    public String error404(Model model) {
+        return "error-404";
+    }
+
+    @GetMapping("/page/error/error-403")
+    public String error403(Model model) {
+        return "error-403";
+    }
+
+
 }

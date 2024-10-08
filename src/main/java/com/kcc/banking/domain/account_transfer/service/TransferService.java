@@ -37,6 +37,11 @@ public class TransferService {
     @Transactional(rollbackFor = {Exception.class})  // 모든 예외 발생 시 롤백
     public List<TransferDetail> processTransfer(TransferCreate transferCreate) {
 
+        // OPEN 상태가 아니라면
+        if(!businessDayService.getCurrentBusinessDay().getStatus().equals("OPEN")){
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
         // 출금 계좌 조회
         AccountDetail withdrawalAccount = accountService.getAccountDetail(transferCreate.getWithdrawalAccount());
         // 입금 계좌 조회
@@ -188,6 +193,7 @@ public class TransferService {
     public List<TransferDetail> updateCancelTransferCAN(TradeCancelRequest tradeCancelRequest) {
         Long tradeNumber = Long.valueOf(tradeCancelRequest.getTradeNumber());
         // 업데이트 구문
+
         int transferUpdateCAN = transferMapper.updateCancelTransferCAN(tradeNumber);
         if(transferUpdateCAN == 0){
             throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
