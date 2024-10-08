@@ -14,8 +14,12 @@ headerMap.set("header-account-management", {
         "trade-list": ["account-transfer-cancel"] // trade-list 내의 하위 URL을 관리
     }
 });
-headerMap.set("header-businessday-management", {
-    sidebar: ["business-day-management", "business-day-close"],
+headerMap.set("header-business-day-management", {
+    sidebar: ["business-day-management"],
+    sub: {}
+});
+headerMap.set("header-business-day-close-management", {
+    sidebar: ["business-day-close"],
     sub: {}
 });
 headerMap.set("header-branch-management", {
@@ -43,19 +47,18 @@ $(document).ready(function () {
 
 
 
-    handleHeaderAndSidebar();
-
 });
 
-function handleHeaderAndSidebar() {
+function handleHeaderAndSidebar(roles) {
     const currentUrl = extractUrl(window.location.href);
     const selectedHeaderMenu = findHeader(currentUrl);
     const selectedSidebarMenu = findSidebar(currentUrl);
     console.log(selectedHeaderMenu);
     console.log(selectedSidebarMenu);
 
+
     // 사이드바 내용을 처리하고 완료 후 추가 작업 수행
-    handleSidebarContent(selectedHeaderMenu , selectedSidebarMenu)
+    handleSidebarContent(selectedHeaderMenu , selectedSidebarMenu, roles)
         .then(() => {
             // 추가 작업 수행
             $('#' + selectedHeaderMenu  + ' > a').css({
@@ -68,7 +71,6 @@ function handleHeaderAndSidebar() {
                 'color' : 'white',
                 'font-weight' : 'bold'
             });
-
         })
         .catch((error) => {
             // 오류 처리
@@ -77,35 +79,34 @@ function handleHeaderAndSidebar() {
 
 
 
-function  handleSidebarContent(selectedHeaderMenu, selectedSidebarMenu){
+function  handleSidebarContent(selectedHeaderMenu, selectedSidebarMenu, roles){
     switch (selectedHeaderMenu) {
         case 'header-account-management':
-            console.log('계좌 관리 선택됨');
+            //console.log('계좌 관리 선택됨');
             createAccountManagementSidebar(selectedSidebarMenu);
             break;
-
         case 'header-customer-management':
-            console.log('고객 관리 선택됨');
+            //console.log('고객 관리 선택됨');
             createCustomerManagementSidebar(selectedSidebarMenu);
             break;
-
+        case 'header-business-day-close-management':
+            //console.log('마감 관리 선택됨');
+            createBusinessDayCloseManagementSidebar(selectedSidebarMenu, roles);
+            break;
         case 'header-employee-management':
-            console.log('행원 관리 선택됨');
+            //console.log('행원 관리 선택됨');
             createEmployeeManagementSidebar(selectedSidebarMenu);
             break;
-
-        case 'header-businessday-management':
-            console.log('영업일 관리 선택됨');
+        case 'header-business-day-management':
+            //console.log('영업일 관리 선택됨');
             createBusinessDayManagementSidebar(selectedSidebarMenu);
             break;
-
         case 'header-branch-management':
-            console.log('지점 관리 선택됨');
+            //console.log('지점 관리 선택됨');
             createBranchManagementSidebar(selectedSidebarMenu);
             break;
-
         default:
-            console.log('알 수 없는 항목 선택됨');
+            //console.log('알 수 없는 항목 선택됨');
             break;
     }
 
@@ -137,7 +138,7 @@ function createAccountManagementSidebar(selectedSidebarMenu) {
         }
     ];
 
-    console.log("계좌 관리 사이드바 생성");
+    //console.log("계좌 관리 사이드바 생성");
     createSidebar(menuData);
 }
 
@@ -147,14 +148,14 @@ function createCustomerManagementSidebar() {
             title: '고객 관리',
             icon: 'bi bi-person',
             submenu: [
-                { name: '고객 등록', url: '/page/employee/customer/register' },
-                { name: '고객 목록', url: '/page/employee/customer/list' },
-                { name: '고객 수정', url: '/page/employee/customer/edit' }
+                { name: '고객 등록', url: '/page/common/customer/register' },
+                { name: '고객 목록', url: '/page/common/customer/list' },
+                { name: '고객 수정', url: '/page/common/customer/edit' }
             ]
         }
     ];
 
-    console.log("고객 관리 사이드바 생성");
+    //console.log("고객 관리 사이드바 생성");
     createSidebar(menuData);
 }
 
@@ -171,7 +172,7 @@ function createEmployeeManagementSidebar() {
         }
     ];
 
-    console.log("행원 관리 사이드바 생성");
+    //console.log("행원 관리 사이드바 생성");
     createSidebar(menuData);
 }
 
@@ -183,17 +184,38 @@ function createBusinessDayManagementSidebar() {
             submenu: [
                 { name: '영업일 변경', url: '/page/manager/business-day-management' }
             ]
-        },
-        {
+        }
+    ];
+
+    //console.log("영업일 관리 사이드바 생성");
+    createSidebar(menuData);
+}
+
+function createBusinessDayCloseManagementSidebar(selectedSidebarMenu, roles){
+    var menuData;
+    if(roles === "행원")
+    {
+        menuData = [{
+            title: '마감 관리',
+            icon: 'bi bi-file-earmark-check',
+            submenu: [
+                { name: '마감 상태 관리', url: '/page/employee/business-day-close' }
+            ]
+        }];
+    }else{
+        menuData = [{
             title: '마감 관리',
             icon: 'bi bi-file-earmark-check',
             submenu: [
                 { name: '마감 상태 관리', url: '/page/manager/business-day-close' }
             ]
-        }
-    ];
+        }];
+    }
 
-    console.log("영업일 관리 사이드바 생성");
+
+
+
+    //console.log("영업일 관리 사이드바 생성");
     createSidebar(menuData);
 }
 
@@ -209,7 +231,7 @@ function createBranchManagementSidebar() {
         }
     ];
 
-    console.log("지점 관리 사이드바 생성");
+    //console.log("지점 관리 사이드바 생성");
     createSidebar(menuData);
 }
 

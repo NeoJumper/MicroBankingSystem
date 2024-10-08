@@ -21,19 +21,16 @@ public class EmployeeClosingCreate {
     private BigDecimal prevCashBalance;
     private Long tradeNumber; // 마감 번호
     private String registrantId; // 담당자
-    private String registrationDate;
-    private Long version;
 
     @Builder
-    public EmployeeClosingCreate(String closingDate, String branchId, String status, BigDecimal prevCashBalance, Long tradeNumber, String registrantId, String registrationDate, Long version) {
+    public EmployeeClosingCreate(String closingDate, String branchId, String status, BigDecimal prevCashBalance, Long tradeNumber, String registrantId) {
         this.closingDate = closingDate;
         this.branchId = branchId;
         this.status = status;
         this.prevCashBalance = prevCashBalance;
         this.tradeNumber = tradeNumber;
         this.registrantId = registrantId;
-        this.registrationDate = registrationDate;
-        this.version = version;
+
     }
 
     public static EmployeeClosingCreate of(WorkerData workerData, String businessDateToChange, BusinessDateAndBranchId businessDateAndBranchId, Long tradeNumber){
@@ -44,8 +41,6 @@ public class EmployeeClosingCreate {
                 .prevCashBalance(workerData.getPrevCashBalance())
                 .tradeNumber(tradeNumber)
                 .registrantId(workerData.getId())
-                .registrationDate(businessDateAndBranchId.getBusinessDate())
-                .version(1L)
                 .build();
     }
 }

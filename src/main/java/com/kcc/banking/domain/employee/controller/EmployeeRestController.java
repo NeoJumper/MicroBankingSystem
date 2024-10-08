@@ -1,5 +1,7 @@
 package com.kcc.banking.domain.employee.controller;
 
+import com.kcc.banking.common.exception.ErrorCode;
+import com.kcc.banking.common.exception.custom_exception.ForbiddenException;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
 import com.kcc.banking.domain.employee.dto.request.EmployeeUpdate;
@@ -35,11 +37,13 @@ public class EmployeeRestController {
 
     @GetMapping("/api/manager/employee")
     public List<EmployeeDataOfList> getEmployeeList(@ModelAttribute EmployeeSearch employeeSearch) {
-        return employeeService.getEmployeeListByOption(employeeSearch);
+        if(true)
+            throw new ForbiddenException(ErrorCode.FORBIDDEN_CREATE);
+         return employeeService.getEmployeeListByOption(employeeSearch);
 
     }
 
-    @GetMapping("/api/auth-data")
+    @GetMapping("/api/common/auth-data")
     public AuthData getAuthData() {
         return employeeService.getAuthData();
     }

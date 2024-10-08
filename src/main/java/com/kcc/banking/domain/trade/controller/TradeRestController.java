@@ -3,7 +3,6 @@ package com.kcc.banking.domain.trade.controller;
 import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
 import com.kcc.banking.domain.trade.dto.response.Criteria;
-import com.kcc.banking.domain.trade.dto.response.PageDTO;
 import com.kcc.banking.domain.trade.dto.response.PagingInfoOfTradeList;
 
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;

@@ -46,8 +46,8 @@ public class AccountRestController {
 
     // 상품테이블 정보 및 기존이율 가져오기
     @GetMapping("/account/productInterest")
-    public AccountProductInfo getProductInterest(){
-        System.out.println("getAccountProductInfo"+accountService.getAccountProductInfo().getName());
+    public AccountProductInfo getProductInterest() {
+        System.out.println("getAccountProductInfo" + accountService.getAccountProductInfo().getName());
         return accountService.getAccountProductInfo();
     }
 
@@ -56,9 +56,9 @@ public class AccountRestController {
     @PostMapping("/account/open")
     public ResponseEntity<String> openAccount(@RequestBody AccountCreate accountCreate) {
 
-        System.out.println("accountCreate.getPreferentialInterestRate();"+accountCreate.getPreferentialInterestRate());
+        System.out.println("accountCreate.getPreferentialInterestRate();" + accountCreate.getPreferentialInterestRate());
         accountService.openAccount(accountCreate);
-        System.out.println(accountCreate.getId()+"accountCreate>>>>>>>>>>>>> getId();");
+        System.out.println(accountCreate.getId() + "accountCreate>>>>>>>>>>>>> getId();");
         return ResponseEntity.ok(accountCreate.getId());
 
     }
@@ -74,5 +74,6 @@ public class AccountRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 계좌 정보가 없는 경우 404 처리
         }
     }
+
 }
 

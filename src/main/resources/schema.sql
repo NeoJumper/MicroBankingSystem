@@ -32,7 +32,7 @@ CREATE TABLE Employee (
                           name VARCHAR(100) NOT NULL,
                           password VARCHAR(1000) NOT NULL,
                           phone_number VARCHAR(13) NULL,
-                          roles VARCHAR(10) NULL,
+                          roles VARCHAR(20) NULL,
                           registration_date TIMESTAMP NULL,
                           registrant VARCHAR(100) NULL,
                           modification_date TIMESTAMP NULL,
@@ -43,8 +43,8 @@ CREATE TABLE Employee (
 CREATE TABLE Trade (
                        id NUMBER NOT NULL,
                        registrant_id NUMBER NOT NULL,
-                       acc_id VARCHAR(15) NOT NULL,
-                       target_acc_id VARCHAR(15) NULL,
+                       acc_id VARCHAR(20) NOT NULL,
+                       target_acc_id VARCHAR(20) NULL,
                        branch_id NUMBER NOT NULL,
                        trade_date TIMESTAMP NULL,
                        amount NUMBER NULL,
@@ -79,7 +79,7 @@ CREATE TABLE Customer (
 );
 
 CREATE TABLE Account (
-                         id VARCHAR(15) NOT NULL,
+                         id VARCHAR(20) NOT NULL,
                          branch_id NUMBER NOT NULL,
                          registrant_id NUMBER NOT NULL,
                          customer_id NUMBER NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE Account (
 
 CREATE TABLE Interest (
                           id NUMBER NOT NULL,
-                          acc_id VARCHAR(15) NOT NULL,
+                          acc_id VARCHAR(20) NOT NULL,
                           registrant_id NUMBER NOT NULL,
                           branch_id NUMBER NOT NULL,
                           payment_date TIMESTAMP NULL,
@@ -132,7 +132,12 @@ CREATE TABLE Branch (
 CREATE TABLE Business_day (
                               business_date DATE NOT NULL,
                               status VARCHAR(255) NULL,
-                              is_current_business_day VARCHAR(10)
+                              is_current_business_day VARCHAR(10),
+                              modification_date TIMESTAMP NULL,
+                              modifier_id NUMBER,
+                              version NUMBER NULL
+
+
 );
 
 CREATE TABLE Product (
@@ -330,9 +335,7 @@ create sequence employee_seq;
 create sequence business_day_seq;
 create sequence branch_seq;
 create sequence trade_seq;
-CREATE SEQUENCE trade_num_seq
-    START WITH 16
-    INCREMENT BY 1;
+CREATE SEQUENCE trade_num_seq;
 create sequence interest_seq;
 create sequence product_seq;
 create sequence customer_seq;

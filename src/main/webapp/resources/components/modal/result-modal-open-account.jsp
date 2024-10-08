@@ -6,7 +6,7 @@
     <title>Insert title here</title>
 
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
-    <script src="/resources/js/modal/result-modal-open-account.js"></script>
+
 </head>
 <body>
 
@@ -34,7 +34,6 @@
                         <td><input type="text" id="result-modal-customer-name-input" disabled></td>
                         <th>고객번호</th>
                         <td><input type="text" id="result-modal-customer-number-input" disabled></td>
-
                     </tr>
                     <tr>
                         <th>전화번호</th>
@@ -51,7 +50,7 @@
                         <th>총 이자율</th>
                         <td><input type="text" id="result-modal-total-interest-input" disabled> %</td>
                         <th>잔액</th>
-                        <td><input type="text" id="result-modal-balance-input" disabled> %</td>
+                        <td><input type="text" id="result-modal-balance-input" disabled> KRW</td>
                     </tr>
                     <tr>
                         <th>관리지점명</th>

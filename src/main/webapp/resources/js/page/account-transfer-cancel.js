@@ -22,16 +22,19 @@ function handleTransferData() {
             type: 'GET',
             url: '/api/employee/account-transfer/cancel/' + tradeNumber,
             success: function (response) {
+                console.log(response);
                 // 응답 데이터를 처리해서 테이블에 값 설정
                 response.forEach(function (trade) {
                     if (trade.tradeType === "WITHDRAWAL") {
                         $('#cancel-transfer-withdrawal-acc-id').text(trade.accId);
+                        $('#cancel-transfer-withdrawal-customer-name').text(trade.customerName);
                         $('#cancel-transfer-withdrawal-amount').text(trade.amount.toLocaleString('ko-KR'));
                         $('#cancel-transfer-withdrawal-balance').text(trade.balance.toLocaleString('ko-KR'));
                         $('#cancel-transfer-withdrawal-trade-date').text(trade.tradeDate.substring(0, 10));
                         $('#cancel-transfer-withdrawal-description').text(trade.description);
                     } else if (trade.tradeType === "DEPOSIT") {
                         $('#cancel-transfer-deposit-acc-id').text(trade.accId);
+                        $('#cancel-transfer-deposit-customer-name').text(trade.customerName);
                         $('#cancel-transfer-deposit-amount').text(trade.amount.toLocaleString('ko-KR'));
                         $('#cancel-transfer-deposit-balance').text(trade.balance.toLocaleString('ko-KR'));
                     }
@@ -46,7 +49,7 @@ function handleTransferData() {
 
 // 비밀번호 인증
 function validateAccountPassword() {
-    var accountNumber = $('#cancel-transfer-withdrawal-acc-id').text();
+    var accountNumber = $('#cancel-transfer-deposit-acc-id').text();
     var accountPassword = $('#cancel-transfer-account-password').val();
 
     $.ajax({

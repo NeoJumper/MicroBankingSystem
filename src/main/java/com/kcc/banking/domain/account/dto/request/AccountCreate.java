@@ -1,10 +1,13 @@
 package com.kcc.banking.domain.account.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -18,13 +21,15 @@ public class AccountCreate {
     private int branchId;
     private int customerId;
     private int productId;
-    private int registrantId;
-    private Date startDate;
-    private Date expireDate;
+    private Long registrantId;
+    private Timestamp startDate;
+    private Timestamp expireDate;
     private float preferentialInterestRate;
     private String password;
-    private int balance;
-    private Date openDate;
+    private BigDecimal balance;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Timestamp openDate;
     private String status;
 
     // 입력된 고객의 관리지점명 가져오기
@@ -36,7 +41,7 @@ public class AccountCreate {
 
 
     @Builder
-    public AccountCreate(String id, int branchId, int customerId, int productId, int registrantId, Date startDate, Date expireDate, float preferentialInterestRate, String password, int balance, Date openDate, String status, String tradeNumber) {
+    public AccountCreate(String id, int branchId, int customerId, int productId, Long registrantId, Timestamp startDate, Timestamp expireDate, float preferentialInterestRate, String password, BigDecimal balance, Timestamp openDate,  String tradeNumber) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;

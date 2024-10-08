@@ -92,7 +92,7 @@ function fillEmpDataOfDetailModal(createdEmployee){
 
 function handleAuthDataOfEmpSaveForm(){
     $.ajax({
-        url: '/api/auth-data',
+        url: '/api/common/auth-data',
         type: 'GET',
         success: function(authData) {
             // 성공 시 처리할 로직 작성

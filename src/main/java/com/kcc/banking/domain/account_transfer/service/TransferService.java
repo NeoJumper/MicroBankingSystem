@@ -10,6 +10,7 @@ import com.kcc.banking.domain.account_transfer.dto.request.TransferCreate;
 import com.kcc.banking.domain.account_transfer.dto.response.TransferDetail;
 import com.kcc.banking.domain.account_transfer.mapper.TransferMapper;
 import com.kcc.banking.domain.business_day.service.BusinessDayService;
+import com.kcc.banking.domain.customer.service.CustomerService;
 import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,18 @@ public class TransferService {
     private final TransferMapper transferMapper;
 
     private final AccountService accountService;
+    private final CustomerService customerService;
     private final EmployeeService employeeService;
     private final BusinessDayService businessDayService;
 
     // 예외 발생 시 롤백을 강제
     @Transactional(rollbackFor = {Exception.class})  // 모든 예외 발생 시 롤백
     public List<TransferDetail> processTransfer(TransferCreate transferCreate) {
+
+        // OPEN 상태가 아니라면
+        if(!businessDayService.getCurrentBusinessDay().getStatus().equals("OPEN")){
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
 
         // 출금 계좌 조회
         AccountDetail withdrawalAccount = accountService.getAccountDetail(transferCreate.getWithdrawalAccount());
@@ -103,12 +110,11 @@ public class TransferService {
                 .cashIndicator("FALSE")
                 // 거래 상태: 정상
                 .status("NOR")
-                // 수정일
-                .modificationDate(tradeDate)
-                // 수정자
-                .modifierId(employeeId)
+                // 고객명
+                .customerName(withdrawalAccount.getCustomerName())
                 // 버전: 1
                 .version(1L)
+                // 사용자
                 .build();
 
 
@@ -158,10 +164,8 @@ public class TransferService {
                 .cashIndicator("FALSE")
                 // 거래 상태: 정상
                 .status("NOR")
-                // 수정일
-                .modificationDate(tradeDate)
-                // 수정자
-                .modifierId(employeeId)
+                // 고객명
+                .customerName(depositAccount.getCustomerName())
                 // 버전: 1
                 .version(1L)
                 .build();
@@ -189,6 +193,7 @@ public class TransferService {
     public List<TransferDetail> updateCancelTransferCAN(TradeCancelRequest tradeCancelRequest) {
         Long tradeNumber = Long.valueOf(tradeCancelRequest.getTradeNumber());
         // 업데이트 구문
+
         int transferUpdateCAN = transferMapper.updateCancelTransferCAN(tradeNumber);
         if(transferUpdateCAN == 0){
             throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
