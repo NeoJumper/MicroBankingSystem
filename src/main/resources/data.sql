@@ -319,7 +319,9 @@ VALUES (trade_seq.nextval, '001-0000006-6789', 2, 1, TO_TIMESTAMP('2024-08-02 00
 -- 계좌 상태(해지) 및 잔액 업데이트
 UPDATE Account
 SET status = 'CLS',
-    balance = 0
+    balance = 0,
+    expire_date = TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS')
+
 WHERE id IN ('001-0000001-1234', '001-0000002-2345', '001-0000003-3456');
 
 UPDATE Account
