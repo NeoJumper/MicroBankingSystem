@@ -1,18 +1,11 @@
 package com.kcc.banking.domain.business_day_close.service;
 
-import com.kcc.banking.common.exception.ErrorCode;
-import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.business_day.dto.request.BusinessDayChange;
 import com.kcc.banking.domain.business_day.dto.request.WorkerData;
-import com.kcc.banking.domain.business_day_close.dto.request.BranchClosingCreate;
-import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
-import com.kcc.banking.domain.business_day.service.BusinessDayService;
-import com.kcc.banking.domain.business_day_close.dto.request.EmployeeClosingCreate;
+import com.kcc.banking.domain.business_day_close.dto.request.*;
 import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
-import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
 import com.kcc.banking.domain.common.service.CommonService;
-import com.kcc.banking.domain.interest.service.InterestService;
 import com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +22,13 @@ public class BusinessDayCloseService {
     private final CommonService commonService;
 
 
-    public Long createClosingData(BusinessDayChange businessDayChange) {
+    public void createClosingData(BusinessDayChange businessDayChange) {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
         Long tradeNumber = businessDayCloseMapper.getNextTradeNumberVal();
 
         createEmployeeClosing(businessDayChange.getWorkerDataList(),businessDayChange.getBusinessDateToChange(), currentBusinessDateAndBranchId, tradeNumber);
         createBranchClosing(businessDayChange.getBusinessDateToChange(), businessDayChange.getPrevCashBalanceOfBranch(), tradeNumber, currentBusinessDateAndBranchId);
 
-        return tradeNumber;
     }
 
     private void createBranchClosing(String businessDateToChange, BigDecimal prevCashBalanceOfBranch, Long tradeNumber, BusinessDateAndBranchId businessDateAndBranchId) {
@@ -49,8 +41,6 @@ public class BusinessDayCloseService {
                 .prevCashBalance(prevCashBalanceOfBranch)
                 .tradeNumber(tradeNumber)
                 .registrantId(String.valueOf(loginMemberId))
-                .registrationDate(businessDateAndBranchId.getBusinessDate())
-                .version(1L)
                 .build();
 
         businessDayCloseMapper.insertBranchClosing(branchClosingCreate);
@@ -78,12 +68,28 @@ public class BusinessDayCloseService {
     }
 
 
-    public void employeeDeadlineStatusToClosed(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId) {
-        businessDayCloseMapper.employeeDeadlineStatusToClosed(currentBusinessDateAndEmployeeId);
+    public void closeEmployeeBusinessDay(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId) {
+        EmployeeClosingUpdate employeeClosingUpdate = EmployeeClosingUpdate.builder()
+                .targetClosingDate(currentBusinessDateAndEmployeeId.getBusinessDate())
+                .targetEmployeeId(currentBusinessDateAndEmployeeId.getEmployeeId())
+                .modifierId(currentBusinessDateAndEmployeeId.getEmployeeId())
+                .status("CLOSED")
+                .vaultCash(BigDecimal.valueOf(10000)) // 임의의 값 수정해줘야함
+                .build();
+
+        businessDayCloseMapper.updateEmployeeClosing(employeeClosingUpdate);
     }
 
-    public void branchDeadlineStatusToClosed(BusinessDateAndBranchId businessDateAndBranchId) {
-        businessDayCloseMapper.branchDeadlineStatusToClosed(businessDateAndBranchId);
+    public void closeBranchBusinessDay(BusinessDateAndBranchId businessDateAndBranchId) {
+        Long loginMemberId = AuthenticationUtils.getLoginMemberId();
+        BranchClosingUpdate branchClosingUpdate = BranchClosingUpdate.builder().targetClosingDate(businessDateAndBranchId.getBusinessDate())
+                .targetBranchId(Long.valueOf(businessDateAndBranchId.getBranchId()))
+                .modifierId(loginMemberId)
+                .status("CLOSED")
+                .vaultCash(BigDecimal.valueOf(10000)) // 임의의 값 수정해줘야함
+                .build();
+
+        businessDayCloseMapper.updateBranchClosing(branchClosingUpdate);
     }
 
     public String getClosingTradeNumber(BusinessDateAndBranchId businessDateAndBranchId) {

@@ -1,13 +1,12 @@
 package com.kcc.banking.domain.business_day.service;
 
 
+import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.business_day.dto.request.BusinessDayUpdate;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 
 import com.kcc.banking.domain.business_day.mapper.BusinessDayMapper;
-import com.kcc.banking.domain.common.service.CommonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 
@@ -30,37 +29,40 @@ public class BusinessDayService {
     }
 
 
-    // DB업데이트 및 변경사항 객체에 반영
+    /**
+     * @Description
+     * 1. DB 업데이트(현재 영업일 지정 상태를 변경 FALSE로 변경 + 다음 영업일을 오픈 및 현재 영업일로 지정)
+     * 2. 변경사항 객체에 반영()
+     */
     public void businessDayChange(BusinessDay currentBusinessDay, BusinessDay nextBusinessDay) {
-        int updateResult1 = currentBusinessDayToFalse(currentBusinessDay.getBusinessDate());
-        int updateResult2 = businessDayStatusToOPEN(nextBusinessDay.getBusinessDate());
 
+        // 1
+        String loginMemberId = String.valueOf(AuthenticationUtils.getLoginMemberId());
+
+        int updateResult1 = finishCurrentBusinessDay(currentBusinessDay.getBusinessDate(), loginMemberId);
+        int updateResult2 = openNextBusinessDay(nextBusinessDay.getBusinessDate(), loginMemberId);
+
+        // 2
         if(updateResult1 == 1 && updateResult2 == 1) {
             reflectUpdateResult(currentBusinessDay, nextBusinessDay);
         }
     }
 
-    public int currentBusinessDayToFalse(String targetDate) {
+    public int finishCurrentBusinessDay(String targetDate, String modifierId) {
         return businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)
                 .isCurrentBusinessDay("FALSE")
+                .modifierId(modifierId)
                 .build()
         );
 
     }
-    public int businessDayStatusToOPEN(String targetDate) {
+    public int openNextBusinessDay(String targetDate, String modifierId) {
         return businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)
                 .status("OPEN")
                 .isCurrentBusinessDay("TRUE")
-                .build()
-        );
-
-    }
-    public int businessDayStatusToClosed(String targetDate) {
-        return businessDayMapper.update(BusinessDayUpdate.builder()
-                .targetDate(targetDate)
-                .status("CLOSED")
+                .modifierId(modifierId)
                 .build()
         );
 
@@ -68,5 +70,15 @@ public class BusinessDayService {
     private void reflectUpdateResult(BusinessDay currentBusinessDay, BusinessDay nextBusinessDay) {
         currentBusinessDay.toClose();
         nextBusinessDay.toOpen();
+    }
+
+    public void businessDayStatusToClosed(String targetDate) {
+        String loginMemberId = String.valueOf(AuthenticationUtils.getLoginMemberId());
+        businessDayMapper.update(BusinessDayUpdate.builder()
+                .targetDate(targetDate)
+                .status("CLOSED")
+                .modifierId(loginMemberId)
+                .build()
+        );
     }
 }

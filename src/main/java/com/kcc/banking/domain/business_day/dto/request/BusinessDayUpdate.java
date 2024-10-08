@@ -12,11 +12,13 @@ public class BusinessDayUpdate {
     private String status;
     private String isCurrentBusinessDay;
     private Timestamp targetDate;
+    private String modifierId;
 
     @Builder
-    public BusinessDayUpdate(String status, String isCurrentBusinessDay, String targetDate) {
+    public BusinessDayUpdate(String status, String isCurrentBusinessDay, String targetDate, String modifierId) {
         this.status = status;
         this.isCurrentBusinessDay = isCurrentBusinessDay;
         this.targetDate = Timestamp.valueOf(targetDate);
+        this.modifierId = modifierId;
     }
 }
