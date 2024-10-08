@@ -132,7 +132,12 @@ CREATE TABLE Branch (
 CREATE TABLE Business_day (
                               business_date DATE NOT NULL,
                               status VARCHAR(255) NULL,
-                              is_current_business_day VARCHAR(10)
+                              is_current_business_day VARCHAR(10),
+                              modification_date TIMESTAMP NULL,
+                              modifier_id NUMBER,
+                              version NUMBER NULL
+
+
 );
 
 CREATE TABLE Product (

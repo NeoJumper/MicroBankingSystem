@@ -56,6 +56,11 @@
             <if test="status != null">
                 status = #{status},
             </if>
+            <if test="modifierId != null">
+                modifier_id = #{modifierId},
+            </if>
+            modification_date = SYSTIMESTAMP,
+            version = version + 1
         </set>
         where business_date = #{targetDate}
     </update>
