@@ -1,6 +1,6 @@
 package com.kcc.banking.domain.interest.mapper;
 
-import com.kcc.banking.domain.account_close.dto.request.AccountIdWithExpireDate;
+import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.interest.dto.request.PaymentStatus;
 import com.kcc.banking.domain.interest.dto.request.RollbackPaymentStatus;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;

@@ -2,6 +2,8 @@ package com.kcc.banking.domain.trade.service;
 
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.service.AccountService;
+import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
+import com.kcc.banking.domain.trade.dto.request.CloseTrade;
 import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 
@@ -145,4 +147,15 @@ public class TradeService {
         return tradeDetail;
     }
 
+    public int addCancelTrade(CloseTrade closeTrade) {
+        return tradeMapper.createCancelTrade(closeTrade);
+    }
+
+    /**
+     * @Description
+     *
+     */
+    public BigDecimal rollbackAmount(AccountIdWithExpireDate awe) {
+        return tradeMapper.rollbackAmount(awe);
+    }
 }

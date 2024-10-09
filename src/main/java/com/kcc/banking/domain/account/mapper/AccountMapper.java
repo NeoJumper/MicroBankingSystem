@@ -3,8 +3,8 @@ package com.kcc.banking.domain.account.mapper;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.response.*;
-import com.kcc.banking.domain.account_close.dto.request.AccountStatus;
-import com.kcc.banking.domain.account_close.dto.response.CloseAccount;
+import com.kcc.banking.domain.account.dto.request.AccountStatus;
+import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.Timestamp;

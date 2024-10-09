@@ -1,4 +1,4 @@
-package com.kcc.banking.domain.account_close.dto.response;
+package com.kcc.banking.domain.account.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CloseAccount {
+public class CloseAccountTotal {
     private String accountId;
     private String accountStatus;
     private String customerName;
@@ -22,9 +22,11 @@ public class CloseAccount {
     private BigDecimal productInterRate;
     private BigDecimal accountBal;
     private BigDecimal productTaxRate;
+    // 총 이율, 총 이자
+    private BigDecimal amountSum;
 
     @Builder
-    public CloseAccount(String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp amountDate, BigDecimal accountPreInterRate, BigDecimal productInterRate, BigDecimal accountBal, BigDecimal productTaxRate) {
+    public CloseAccountTotal(String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp amountDate, BigDecimal accountPreInterRate, BigDecimal productInterRate, BigDecimal accountBal, BigDecimal productTaxRate, BigDecimal amountSum) {
         this.accountId = accountId;
         this.accountStatus = accountStatus;
         this.customerName = customerName;
@@ -35,5 +37,6 @@ public class CloseAccount {
         this.productInterRate = productInterRate;
         this.accountBal = accountBal;
         this.productTaxRate = productTaxRate;
+        this.amountSum = amountSum;
     }
 }

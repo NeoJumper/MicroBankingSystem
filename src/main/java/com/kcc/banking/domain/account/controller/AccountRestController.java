@@ -3,31 +3,28 @@ package com.kcc.banking.domain.account.controller;
 import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
-import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.AccountOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountOpenResultOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
 import com.kcc.banking.domain.account.service.AccountService;
-import com.kcc.banking.domain.account_close.dto.request.AccountIdWithExpireDate;
-import com.kcc.banking.domain.account_close.dto.request.StatusWithTrade;
-import com.kcc.banking.domain.account_close.dto.response.CloseAccountTotal;
-import com.kcc.banking.domain.account_close.service.AccountCloseService;
+import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
+import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
+import com.kcc.banking.domain.trade.service.AccountTradeFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Scanner;
 
 @RestController
 @RequiredArgsConstructor
 public class AccountRestController {
 
     private final AccountService accountService;
-    private final AccountCloseService accountCloseService;
+    private final AccountTradeFacade accountTradeFacade;
 
     @PostMapping("/api/employee/account-validate")
     public ResponseEntity<Void> validatePassword(@ModelAttribute PasswordValidation passwordValidation) {
@@ -88,7 +85,7 @@ public class AccountRestController {
     // 해지 페이지에 필요한 Customer DETAIL 데이터
     @GetMapping("/api/employee/account-close-details/{accountId}")
     public ResponseEntity<?> getEmployeeDetail(@PathVariable("accountId") String accountId) {
-        CloseAccountTotal cat = accountCloseService.findCloseAccountTotal(accountId);
+        CloseAccountTotal cat = accountTradeFacade.findCloseAccountTotal(accountId);
         return ResponseEntity.status(HttpStatus.OK).body(cat);
     }
 
@@ -105,7 +102,7 @@ public class AccountRestController {
 
     @PostMapping("/api/employee/close-trade")
     public ResponseEntity<?> addCloseTrade(@RequestBody StatusWithTrade statusWithTrade) {
-        String result = accountCloseService.addCloseTrade(statusWithTrade);
+        String result = accountTradeFacade.addCloseTrade(statusWithTrade);
 
         if(result.equals("FAIL")) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("계좌해지 거래 실패");
@@ -116,7 +113,7 @@ public class AccountRestController {
     @PostMapping("/api/employee/close-cancel-trade")
     public void cancelCloseTrade(@RequestBody AccountIdWithExpireDate accountIdWithExpireDate) {
 
-        accountCloseService.rollbackAccountCancel(accountIdWithExpireDate.getAccountId());
+        accountTradeFacade.rollbackAccountCancel(accountIdWithExpireDate.getAccountId());
     }
 }
 

@@ -6,9 +6,9 @@ import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.response.*;
-import com.kcc.banking.domain.account_close.dto.request.AccountStatus;
-import com.kcc.banking.domain.account_close.dto.response.CloseAccount;
-import com.kcc.banking.domain.common.dto.request.RegistrantNameAndInfoAndDate;
+import com.kcc.banking.domain.account.dto.request.AccountStatus;
+import com.kcc.banking.domain.trade.dto.request.CloseAccount;
+import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,8 +27,8 @@ public class AccountService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final CommonService commonService;
 
-    public RegistrantNameAndInfoAndDate getRegistrantInfo() {
-        return commonService.getDateAndBranchIdAndEmpIdAndEmpName();
+    public CurrentData getRegistrantInfo() {
+        return commonService.getCurrentData();
     }
 
     public void validatePassword(PasswordValidation passwordValidation) {
@@ -72,8 +72,8 @@ public class AccountService {
         int customerSeq = accountMapper.getAccountSeq();
 
         // 버전 update 관리
-        RegistrantNameAndInfoAndDate rnid = commonService.getDateAndBranchIdAndEmpIdAndEmpName();
-        accountCreate.setStartDate(Timestamp.valueOf(rnid.getTradeDate()));
+        CurrentData rnid = commonService.getCurrentData();
+        accountCreate.setStartDate(Timestamp.valueOf(rnid.getCurrentBusinessDate()));
         accountCreate.setBranchId(Integer.parseInt(String.valueOf(rnid.getBranchId())));
         accountCreate.setRegistrantId(rnid.getEmployeeId());
 
