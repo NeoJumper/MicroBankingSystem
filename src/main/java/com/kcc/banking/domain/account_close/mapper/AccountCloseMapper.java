@@ -15,15 +15,10 @@ public interface AccountCloseMapper {
 
     int addCancelTrade(CloseTrade closeTrade);
 
-    InterestSum findInterestSum(String accountId);
 
     CloseAccount findCloseAccount(String accountId);
 
-    int updatePaymentStatus(PaymentStatus paymentStatus);
-
     Timestamp findExpireDateById(String id);
-
-    int rollbackPaymentStatus(RollbackPaymentStatus rollbackPaymentStatus);
 
     InterestSum rollbackInterestSum(AccountIdWithExpireDate accountIdWithExpireDate);
 

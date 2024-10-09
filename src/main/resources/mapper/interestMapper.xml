@@ -4,8 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcc.banking.domain.interest.mapper.InterestMapper">
 
+    <resultMap id="interestSumMap" type="InterestSum">
+        <id column="account_id" property="accountId" />
+        <result column="amount_sum" property="amountSum" />
+    </resultMap>
 
-
+    <!--    계좌번호로 미지급 이자,미지급 이자율 총합-->
+    <select id="findInterestSum" parameterType="java.lang.String" resultMap="interestSumMap">
+        SELECT a.id AS account_id,
+        sum(i.amount) AS amount_sum
+        FROM Account a
+        JOIN Interest i ON  i.acc_id = a.id
+        WHERE a.id = #{accountId}
+        AND i.payment_status = 'N'
+        GROUP BY a.id
+    </select>
 
     <insert id="save" parameterType="EmployeeCreate">
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
@@ -36,5 +49,36 @@
         #{version}
         )
     </insert>
+
+    <!--    이자 테이블 상태 변경-->
+    <update id="updatePaymentStatus" parameterType="PaymentStatus">
+        UPDATE INTEREST
+        SET
+        branch_id = #{branchId},
+        payment_date = #{payDate},
+        payment_status = 'Y',
+        modifier_date = SYSDATE,
+        modifier_id = #{modifierId},
+        version = version + 1
+        WHERE
+        acc_id = #{accId}
+        AND
+        payment_status = 'N'
+    </update>
+
+    <update id="rollbackPaymentStatus" parameterType="RollbackPaymentStatus">
+        UPDATE INTEREST
+        SET
+        branch_id = #{branchId},
+        payment_date = NULL,
+        payment_status = 'N',
+        modifier_date = SYSDATE,
+        modifier_id = #{modifierId},
+        version = version + 1
+        WHERE
+        acc_id = #{accId}
+        AND
+        modifier_date = #{expireDate}
+    </update>
 
 </mapper>

@@ -8,6 +8,7 @@ import com.kcc.banking.domain.account_close.mapper.AccountCloseMapper;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day.mapper.BusinessDayMapper;
 import com.kcc.banking.domain.employee.service.EmployeeService;
+import com.kcc.banking.domain.interest.service.InterestService;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.jdbc.Null;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class AccountCloseService {
     private final AccountCloseMapper accountCloseMapper;
     private final BusinessDayMapper businessDayMapper;
     private final EmployeeService employeeService;
+    private final InterestService interestService;
 
     //계좌해지신청
     @Transactional(rollbackFor = Exception.class)
@@ -67,7 +69,7 @@ public class AccountCloseService {
 
         int tradeResult = accountCloseMapper.addCancelTrade(closeTrade);
         int statusResult = accountCloseMapper.updateStatus(accountStatus);
-        int paymentStatusResult = accountCloseMapper.updatePaymentStatus(paymentStatus);
+        int paymentStatusResult = interestService.updatePaymentStatus(paymentStatus);
         if (tradeResult > 0) {
             resultText.append(" 'tradeResult' ");
         }
@@ -81,10 +83,9 @@ public class AccountCloseService {
     }
 
     public CloseAccountTotal findCloseAccountTotal(String accountId) {
-        Optional<InterestSum> optInterestSum = Optional.ofNullable(accountCloseMapper.findInterestSum(accountId));
-        InterestSum interestSum = optInterestSum.orElse(InterestSum.builder()
-                .accountId(accountId)
-                .amountSum(new BigDecimal("0")).build());
+
+        InterestSum interestSum = interestService.getInterestSum(accountId);
+
 
         Optional<CloseAccount> optCloseAccount = Optional.ofNullable(accountCloseMapper.findCloseAccount(accountId));
         CloseAccount closeAccount = optCloseAccount.orElse(new CloseAccount());
@@ -173,7 +174,7 @@ public class AccountCloseService {
         //계좌상테 변경
         int resultAccount = accountCloseMapper.updateStatus(accountStatus);
         // 이자 테이블 상태변경 rollbackPaymentStatus 사용
-        int resultInterest = accountCloseMapper.rollbackPaymentStatus(rollbackPaymentStatus);
+        int resultInterest = interestService.rollbackPaymentStatus(rollbackPaymentStatus);
         // 해지 취소 거래 등록 addCancelTrade
         int resultTrade = accountCloseMapper.addCancelTrade(closeTrade);
         
