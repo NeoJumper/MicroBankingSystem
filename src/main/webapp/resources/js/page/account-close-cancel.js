@@ -150,7 +150,7 @@ function selectAccount() {
     }
     // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
     $.ajax({
-        url: "/api/employee/account",
+        url: "/api/employee/accounts",
         data: {accId: selectedAccountId, productName: null},
         type: "GET",
         success: function (data) {

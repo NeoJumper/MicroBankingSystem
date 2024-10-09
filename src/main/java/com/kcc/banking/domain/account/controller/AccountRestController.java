@@ -32,15 +32,13 @@ public class AccountRestController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * @Description
+     * 계좌 이체, 현금 입출금, 해지 거래 등 계좌를 찾는검색하는 모달에서 사용
+     */
     @GetMapping("/accounts")
-    public ResponseEntity<List<AccountDetail>> getAllAccounts(Model model) {
-        List<AccountDetail> accounts = accountService.getAccountList();
-        return ResponseEntity.ok(accounts);
-    }
-
-    @GetMapping("/account")
-    public ResponseEntity<List<AccountOfModal>> getAccountById(@ModelAttribute SearchAccountOfModal searchAccountOfModal) {
-        List<AccountOfModal> accounts = accountService.getAccount(searchAccountOfModal);
+    public ResponseEntity<List<AccountOfModal>> getAccountsBySearchOption(@ModelAttribute SearchAccountOfModal searchAccountOfModal) {
+        List<AccountOfModal> accounts = accountService.getAccountsBySearchOption(searchAccountOfModal);
         return ResponseEntity.ok(accounts);
     }
 

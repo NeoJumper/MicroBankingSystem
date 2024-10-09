@@ -1,15 +1,11 @@
 package com.kcc.banking.domain.account.controller;
 
 import com.kcc.banking.domain.account.service.AccountService;
-import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import com.kcc.banking.domain.common.dto.request.RegistrantNameAndInfoAndDate;
-import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.sql.Timestamp;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +16,7 @@ public class AccountController {
     @GetMapping("/page/employee/account-open")
     public String accountCreate(Model model){
 
-        RegistrantNameAndInfoAndDate registerInfo = accountService.getRegistarntInfo();
+        RegistrantNameAndInfoAndDate registerInfo = accountService.getRegistrantInfo();
 
         model.addAttribute("branchId", registerInfo.getBranchId());
         model.addAttribute("employeeName", registerInfo.getEmployeeName());
@@ -33,5 +29,16 @@ public class AccountController {
     @GetMapping("/page/employee/account-update")
     public String accountUpdate(){
         return "account/account-update";
+    }
+
+    @GetMapping("/page/employee/account-close")
+    public String accountClose() {
+        return "account_close/account-close";
+    }
+
+    @GetMapping("/page/employee/account-close-cancel")
+    public String accountCloseCancel() {
+
+        return "account_close/account-close-cancel";
     }
 }

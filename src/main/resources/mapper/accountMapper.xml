@@ -103,7 +103,7 @@
     </insert>
 
 
-    <select id="findAccount" resultMap="AccountModalResultMap">
+    <select id="findAccountsBySearchOption" resultMap="AccountModalResultMap">
         SELECT
         a.id AS acc_id,
         a.open_date AS open_date,

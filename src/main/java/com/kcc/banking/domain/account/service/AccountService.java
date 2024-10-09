@@ -9,15 +9,12 @@ import com.kcc.banking.domain.account.dto.response.*;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 import com.kcc.banking.domain.common.dto.request.RegistrantNameAndInfoAndDate;
 import com.kcc.banking.domain.common.service.CommonService;
-import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 //import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -29,7 +26,7 @@ public class AccountService {
     private final CommonService commonService;
     //private final TradeService tradeService;
 
-    public RegistrantNameAndInfoAndDate getRegistarntInfo() {
+    public RegistrantNameAndInfoAndDate getRegistrantInfo() {
         return commonService.getDateAndBranchIdAndEmpIdAndEmpName();
     }
 
@@ -39,10 +36,6 @@ public class AccountService {
         if (!passwordEncoder.matches(passwordValidation.getPassword(), accountPassword)) {
             throw new BadRequestException(ErrorCode.INVALID_ACCOUNT_PASSWORD);
         }
-    }
-
-    public List<AccountDetail> getAccountList() {
-        return accountMapper.findAll();
     }
 
     public AccountProductInfo getAccountProductInfo() {
@@ -95,8 +88,8 @@ public class AccountService {
 
     }
 
-    public List<AccountOfModal> getAccount(SearchAccountOfModal searchAccountOfModal) {
-        return accountMapper.findAccount(searchAccountOfModal);
+    public List<AccountOfModal> getAccountsBySearchOption(SearchAccountOfModal searchAccountOfModal) {
+        return accountMapper.findAccountsBySearchOption(searchAccountOfModal);
     }
 
     public AccountDetail getAccountDetail(String accountId) {
