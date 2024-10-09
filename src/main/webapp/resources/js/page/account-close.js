@@ -74,6 +74,8 @@ function getAccountDetail() {
 
 function checkAccountId() {
     const inputId = $('#account-pw-input').val();
+    console.log(inputId);
+    console.log(accountData.customerId);
     if (!inputId) {
         swal({
             title: "비밀번호를 입력하세요.",

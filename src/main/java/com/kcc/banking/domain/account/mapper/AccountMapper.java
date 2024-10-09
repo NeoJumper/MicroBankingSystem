@@ -3,8 +3,11 @@ package com.kcc.banking.domain.account.mapper;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.response.*;
+import com.kcc.banking.domain.account_close.dto.request.AccountStatus;
+import com.kcc.banking.domain.account_close.dto.response.CloseAccount;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -30,4 +33,13 @@ public interface AccountMapper {
     AccountOpenResultOfModal findAccountOpenResultOfModal(String accId);
 
     List<AccountDetailForInterest> findAccountByBranchId(Long branchId);
+
+    // 계좌 해지 및 해지 취소 시 사용
+    int updateStatus(AccountStatus accountStatus);
+
+    // 해지 계좌 조회
+    CloseAccount findCloseAccount(String accountId);
+
+    // 계좌 해지일 조회
+    Timestamp findExpireDateById(String id);
 }

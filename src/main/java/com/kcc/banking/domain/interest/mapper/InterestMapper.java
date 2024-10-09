@@ -1,9 +1,9 @@
 package com.kcc.banking.domain.interest.mapper;
 
 import com.kcc.banking.domain.account_close.dto.request.AccountIdWithExpireDate;
-import com.kcc.banking.domain.account_close.dto.request.PaymentStatus;
-import com.kcc.banking.domain.account_close.dto.request.RollbackPaymentStatus;
-import com.kcc.banking.domain.account_close.dto.response.InterestSum;
+import com.kcc.banking.domain.interest.dto.request.PaymentStatus;
+import com.kcc.banking.domain.interest.dto.request.RollbackPaymentStatus;
+import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import com.kcc.banking.domain.interest.dto.request.InterestCreate;
 import org.apache.ibatis.annotations.Mapper;
 

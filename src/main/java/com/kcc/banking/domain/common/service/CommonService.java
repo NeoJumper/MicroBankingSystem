@@ -44,7 +44,7 @@ public class CommonService {
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
 
         // 지점 번호
-        String branchId = employeeMapper.findAuthDataById(loginMemberId).getBranchId();
+        Long branchId = Long.valueOf(employeeMapper.findAuthDataById(loginMemberId).getBranchId());
 
         // 행원 이름
         String employeeName = employeeMapper.findAuthDataById(loginMemberId).getName();

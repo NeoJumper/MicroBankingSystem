@@ -1,16 +1,20 @@
 package com.kcc.banking.domain.account_close.service;
 
+import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.account_close.dto.request.*;
 import com.kcc.banking.domain.account_close.dto.response.CloseAccount;
 import com.kcc.banking.domain.account_close.dto.response.CloseAccountTotal;
-import com.kcc.banking.domain.account_close.dto.response.InterestSum;
+import com.kcc.banking.domain.common.dto.request.RegistrantNameAndInfoAndDate;
+import com.kcc.banking.domain.common.service.CommonService;
+import com.kcc.banking.domain.interest.dto.request.PaymentStatus;
+import com.kcc.banking.domain.interest.dto.request.RollbackPaymentStatus;
+import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import com.kcc.banking.domain.account_close.mapper.AccountCloseMapper;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day.mapper.BusinessDayMapper;
 import com.kcc.banking.domain.employee.service.EmployeeService;
 import com.kcc.banking.domain.interest.service.InterestService;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +29,8 @@ public class AccountCloseService {
     private final BusinessDayMapper businessDayMapper;
     private final EmployeeService employeeService;
     private final InterestService interestService;
+    private final AccountService accountService;
+    private final CommonService commonService;
 
     //계좌해지신청
     @Transactional(rollbackFor = Exception.class)
@@ -36,39 +42,35 @@ public class AccountCloseService {
         if (businessDay.getIsCurrentBusinessDay().equals("FALSE")) {
             return "FAIL";
         }
-        // 지점번호
-        Long branchId = Long.parseLong(employeeService.getAuthData().getBranchId());
-        // 행원번호
-        Long employeeId = Long.parseLong(employeeService.getAuthData().getId());
-        // 영업일자
-        Timestamp tradeDate = Timestamp.valueOf(businessDay.getBusinessDate());
+
+        RegistrantNameAndInfoAndDate currentData = commonService.getDateAndBranchIdAndEmpIdAndEmpName();
 
         //  CloseTrade, AccountStatus에 분배
         CloseTrade closeTrade = CloseTrade.builder()
                 .accId(statusWithTrade.getAccId())
-                .registrantId(employeeId)
-                .branchId(branchId)
+                .registrantId(currentData.getEmployeeId())
+                .branchId(currentData.getBranchId())
                 .amount(statusWithTrade.getAmount())
                 .description(statusWithTrade.getDescription())
                 .balance(statusWithTrade.getBalance())
                 .tradeType(statusWithTrade.getTradeType())
-                .businessDay(tradeDate).build();
+                .businessDay(Timestamp.valueOf(currentData.getTradeDate())).build();
 
         AccountStatus accountStatus = AccountStatus.builder()
                 .id(statusWithTrade.getAccId())
                 .status(statusWithTrade.getStatus())
-                .modifierId(employeeId)
+                .modifierId(currentData.getEmployeeId())
                 .balance(statusWithTrade.getBalance())
-                .businessDay(tradeDate).build();
+                .businessDay(Timestamp.valueOf(currentData.getTradeDate())).build();
 
         PaymentStatus paymentStatus = PaymentStatus.builder()
-                .branchId(branchId)
-                .payDate(tradeDate)
-                .modifierId(employeeId)
+                .branchId(currentData.getBranchId())
+                .payDate(Timestamp.valueOf(currentData.getTradeDate()))
+                .modifierId(currentData.getEmployeeId())
                 .accId(statusWithTrade.getAccId()).build();
 
         int tradeResult = accountCloseMapper.addCancelTrade(closeTrade);
-        int statusResult = accountCloseMapper.updateStatus(accountStatus);
+        int statusResult = accountService.updateStatus(accountStatus);
         int paymentStatusResult = interestService.updatePaymentStatus(paymentStatus);
         if (tradeResult > 0) {
             resultText.append(" 'tradeResult' ");
@@ -87,7 +89,7 @@ public class AccountCloseService {
         InterestSum interestSum = interestService.getInterestSum(accountId);
 
 
-        Optional<CloseAccount> optCloseAccount = Optional.ofNullable(accountCloseMapper.findCloseAccount(accountId));
+        Optional<CloseAccount> optCloseAccount = Optional.ofNullable(accountService.getCloseAccount(accountId));
         CloseAccount closeAccount = optCloseAccount.orElse(new CloseAccount());
 
         CloseAccountTotal cat = CloseAccountTotal.builder()
@@ -116,7 +118,7 @@ public class AccountCloseService {
         }
 
         // 계좌 해지 날짜
-        Timestamp expireDate = accountCloseMapper.findExpireDateById(accId);
+        Timestamp expireDate = accountService.getExpireDateById(accId);
 
         System.out.println("expireDate ===================!! 컨트롤러 안에서 해지일 " + expireDate);
         
@@ -131,7 +133,7 @@ public class AccountCloseService {
         // 행원번호
         Long employeeId = Long.parseLong(employeeService.getAuthData().getId());
 
-        CloseAccount closeAccount = Optional.ofNullable(accountCloseMapper.findCloseAccount(accId)).orElse(new CloseAccount());
+        CloseAccount closeAccount = Optional.ofNullable(accountService.getCloseAccount(accId)).orElse(new CloseAccount());
 
         // 세율
         BigDecimal productTaxRate = closeAccount.getProductTaxRate();
@@ -174,7 +176,7 @@ public class AccountCloseService {
                 .businessDay(tradeDate).build();
 
         //계좌상테 변경
-        int resultAccount = accountCloseMapper.updateStatus(accountStatus);
+        int resultAccount = accountService.updateStatus(accountStatus);
         // 이자 테이블 상태변경 rollbackPaymentStatus 사용
         int resultInterest = interestService.rollbackPaymentStatus(rollbackPaymentStatus);
         // 해지 취소 거래 등록 addCancelTrade

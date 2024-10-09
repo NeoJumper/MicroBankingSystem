@@ -1,4 +1,4 @@
-package com.kcc.banking.domain.account_close.dto.request;
+package com.kcc.banking.domain.interest.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,17 +10,17 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PaymentStatus {
+public class RollbackPaymentStatus {
     private long branchId;
-    private Timestamp payDate;
     private long modifierId;
     private String accId;
+    private Timestamp expireDate;
 
     @Builder
-    public PaymentStatus(long branchId, Timestamp payDate, long modifierId, String accId) {
+    public RollbackPaymentStatus(long branchId, long modifierId, String accId, Timestamp expireDate) {
         this.branchId = branchId;
-        this.payDate = payDate;
         this.modifierId = modifierId;
         this.accId = accId;
+        this.expireDate = expireDate;
     }
 }
