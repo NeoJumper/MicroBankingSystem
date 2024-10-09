@@ -14,7 +14,7 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping("/page/employee/account-open")
-    public String accountCreate(Model model){
+    public String getAccountCreatePage(Model model){
 
         CurrentData registerInfo = accountService.getRegistrantInfo();
 
@@ -27,18 +27,18 @@ public class AccountController {
     }
 
     @GetMapping("/page/employee/account-update")
-    public String accountUpdate(){
+    public String getAccountUpdatePage(){
         return "account/account-update";
     }
 
     @GetMapping("/page/employee/account-close")
-    public String accountClose() {
-        return "account_close/account-close";
+    public String getAccountClosePage() {
+        return "account/account-close";
     }
 
     @GetMapping("/page/employee/account-close-cancel")
-    public String accountCloseCancel() {
+    public String getAccountCloseCancelPage() {
 
-        return "account_close/account-close-cancel";
+        return "account/account-close-cancel";
     }
 }

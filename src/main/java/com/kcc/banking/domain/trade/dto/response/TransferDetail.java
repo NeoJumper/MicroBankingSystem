@@ -1,4 +1,4 @@
-package com.kcc.banking.domain.account_transfer.dto.response;
+package com.kcc.banking.domain.trade.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class TransferDetail {
     private String accId;
     private String targetAccId;
     private Long branchId;
-    private Timestamp tradeDate;
+    private String tradeDate;
     private BigDecimal amount;
     private BigDecimal balance;
     private String tradeType;
@@ -36,7 +36,7 @@ public class TransferDetail {
     private String targetCustomerName;
 
     @Builder
-    public TransferDetail(Long id, Long registrantId, String accId, String targetAccId, Long branchId, Timestamp tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version, String customerName, String targetCustomerName) {
+    public TransferDetail(Long id, Long registrantId, String accId, String targetAccId, Long branchId, String tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version, String customerName, String targetCustomerName) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;

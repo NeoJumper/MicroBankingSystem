@@ -87,7 +87,7 @@ public class TradeService {
         Timestamp tradeDate = Timestamp.valueOf(businessDayService.getCurrentBusinessDay().getBusinessDate());
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
-        Long tradeNumber = tradeMapper.getNextTradeNumberVal();
+        Long tradeNumber = tradeMapper.findNextTradeNumberVal();
 
         // 거래 계좌 잔액 조회
         BigDecimal cashTradeAccountBalance = cashTradeAccount.getBalance();
@@ -158,4 +158,23 @@ public class TradeService {
     public BigDecimal rollbackAmount(AccountIdWithExpireDate awe) {
         return tradeMapper.rollbackAmount(awe);
     }
+
+    public Long getNextTradeNumberVal() {
+        return tradeMapper.findNextTradeNumberVal();
+    }
+
+    public void createTransferTrade(TransferDetail withdrawalTrade) {
+        tradeMapper.insertTransfer(withdrawalTrade);
+    }
+
+    public List<TransferDetail> getTradeDetailsByTradeNumber(Long tradeNumber) {
+        return tradeMapper.getTradeDetailsByTradeNumber(tradeNumber);
+    }
+
+    public int cancelTrade(Long tradeNumber) {
+        return tradeMapper.updateTradeStatusToCancel(tradeNumber);
+    }
 }
+
+
+

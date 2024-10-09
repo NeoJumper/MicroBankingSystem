@@ -10,6 +10,7 @@ import com.kcc.banking.domain.account.dto.request.AccountStatus;
 import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
+import com.kcc.banking.domain.trade.dto.response.TransferDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -121,5 +122,9 @@ public class AccountService {
 
     public Timestamp getExpireDateById(String accId) {
         return accountMapper.findExpireDateById(accId);
+    }
+
+    public void updateAccountBalance(TransferDetail withdrawalTrade) {
+        accountMapper.updateAccountBalance(withdrawalTrade);
     }
 }

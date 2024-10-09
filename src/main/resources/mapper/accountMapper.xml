@@ -273,5 +273,13 @@
         FROM ACCOUNT
         WHERE id = #{id}
     </select>
-
+    <!-- 계좌 잔액 변경 -->
+    <update id="updateAccountBalance" parameterType="TransferDetail">
+        UPDATE Account
+        SET balance = #{balance},
+        modification_date = #{tradeDate},
+        modifier_id = #{registrantId},
+        version = version + 1
+        WHERE id = #{accId}
+    </update>
 </mapper>

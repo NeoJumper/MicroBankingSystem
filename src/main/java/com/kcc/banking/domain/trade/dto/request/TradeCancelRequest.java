@@ -1,4 +1,5 @@
-package com.kcc.banking.domain.account_transfer.dto.request;
+package com.kcc.banking.domain.trade.dto.request;
+
 
 import lombok.Builder;
 import lombok.Getter;
