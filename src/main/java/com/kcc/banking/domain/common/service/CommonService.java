@@ -1,15 +1,15 @@
 package com.kcc.banking.domain.common.service;
 
 import com.kcc.banking.common.util.AuthenticationUtils;
+import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day.mapper.BusinessDayMapper;
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
-import com.kcc.banking.domain.common.dto.request.RegistrantNameAndInfoAndDate;
+import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
+import com.kcc.banking.domain.employee.dto.response.AuthData;
 import com.kcc.banking.domain.employee.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
 
 @Service
 @RequiredArgsConstructor
@@ -39,24 +39,29 @@ public class CommonService {
                 .branchId(branchId).build();
     }
 
-    public RegistrantNameAndInfoAndDate getDateAndBranchIdAndEmpIdAndEmpName() {
+    /**
+     * @Description
+     * 1. 현재 거래일
+     * 2. 현재 접속한 사용자 ID
+     * 3. 현재 접속한 사용자 이름
+     * 4. 현재 접속한 브랜치 ID
+     * 5. 현재 접속한 브랜치 명
+     */
+    public CurrentData getCurrentData() {
 
-        Long loginMemberId = AuthenticationUtils.getLoginMemberId();
-
-        // 지점 번호
-        String branchId = employeeMapper.findAuthDataById(loginMemberId).getBranchId();
-
-        // 행원 이름
-        String employeeName = employeeMapper.findAuthDataById(loginMemberId).getName();
+        AuthData authData = employeeMapper.findAuthDataById(AuthenticationUtils.getLoginMemberId());
 
         // 등록 일자
         String currentBusinessDate = businessDayMapper.findCurrentBusinessDay().getBusinessDate();
 
-        return RegistrantNameAndInfoAndDate.builder()
-                .employeeName(employeeName)
-                .employeeId(loginMemberId)
-                .tradeDate(currentBusinessDate)
-                .branchId(branchId).build();
+        return CurrentData.builder()
+                .employeeId(Long.valueOf(authData.getId()))
+                .employeeName(authData.getName())
+                .currentBusinessDate(currentBusinessDate)
+                .branchId(Long.valueOf(authData.getBranchId()))
+                .branchName(authData.getBranchName()).build();
     }
-
+    public BusinessDay getCurrentBusinessDay(){
+        return businessDayMapper.findCurrentBusinessDay();
+    }
 }

@@ -11,8 +11,9 @@ import java.sql.Timestamp;
 public class BusinessDayUpdate {
     private String status;
     private String isCurrentBusinessDay;
-    private Timestamp targetDate;
     private String modifierId;
+    private Timestamp targetDate;
+
 
     @Builder
     public BusinessDayUpdate(String status, String isCurrentBusinessDay, String targetDate, String modifierId) {

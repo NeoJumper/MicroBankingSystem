@@ -2,6 +2,7 @@ let accountData = {};
 
 $(document).ready(function () {
     $('#search-modal-account').on('hidden.bs.modal', function () {
+        console.log("모달 닫힘");
         getAccountDetail();
     });
 
@@ -73,6 +74,8 @@ function getAccountDetail() {
 
 function checkAccountId() {
     const inputId = $('#account-pw-input').val();
+    console.log(inputId);
+    console.log(accountData.customerId);
     if (!inputId) {
         swal({
             title: "비밀번호를 입력하세요.",
@@ -175,7 +178,7 @@ function selectAccount() {
     }
     // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
     $.ajax({
-        url: "/api/employee/account",
+        url: "/api/employee/accounts",
         data: {accId: selectedAccountId, productName: null},
         type: "GET",
         success: function (data) {

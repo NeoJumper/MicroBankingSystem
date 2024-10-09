@@ -18,6 +18,7 @@ public enum ErrorCode {
     OVER_AMOUNT("계좌 잔액보다 이체 금액이 더 많습니다.", HttpStatus.BAD_REQUEST),
     ALREADY_CHANGED_BUSINESS_DAY("이미 변경된 영업일입니다.", HttpStatus.BAD_REQUEST),
     ALREADY_CLOSED_BUSINESS_DAY("이미 마감된 영업일입니다.", HttpStatus.BAD_REQUEST),
+    CLOSED_BUSINESS_DAY("영업일이 마감되었습니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_BRANCH_CLOSING("지점 마감이 처리되지 않았습니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_EMPLOYEE_CLOSING("개인마감을 진행중인 사원이 존재합니다.", HttpStatus.BAD_REQUEST),
     // 403

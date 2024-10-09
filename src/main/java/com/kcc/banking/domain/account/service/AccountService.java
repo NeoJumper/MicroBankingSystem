@@ -6,18 +6,17 @@ import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.response.*;
-import com.kcc.banking.domain.account.mapper.AccountMapper;
-import com.kcc.banking.domain.common.dto.request.RegistrantNameAndInfoAndDate;
+import com.kcc.banking.domain.account.dto.request.AccountStatus;
+import com.kcc.banking.domain.trade.dto.request.CloseAccount;
+import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
-import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.kcc.banking.domain.account.mapper.AccountMapper;
 //import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -27,10 +26,9 @@ public class AccountService {
     private final AccountMapper accountMapper;
     private final BCryptPasswordEncoder passwordEncoder;
     private final CommonService commonService;
-    //private final TradeService tradeService;
 
-    public RegistrantNameAndInfoAndDate getRegistarntInfo() {
-        return commonService.getDateAndBranchIdAndEmpIdAndEmpName();
+    public CurrentData getRegistrantInfo() {
+        return commonService.getCurrentData();
     }
 
     public void validatePassword(PasswordValidation passwordValidation) {
@@ -41,19 +39,21 @@ public class AccountService {
         }
     }
 
-    public List<AccountDetail> getAccountList() {
-        return accountMapper.findAll();
-    }
-
     public AccountProductInfo getAccountProductInfo() {
         return accountMapper.findAccountProductInfo();
     }
 
-    // 계좌 번호 생성 함수
+    /**
+     * @Description
+     * - 계좌 번호 생성 함수
+     *   (브랜치 번호 - 계좌번호 - 랜덤 번호)
+     *   (001 - 0000001 - 4256)
+     */
     public String generateAccountNumber(int branchNumber, int accountSeq) {
 
         String formattedBranchNumber = String.format("%03d", branchNumber);
         String formattedAccountSeq = String.format("%07d", accountSeq);
+
         Random random = new Random();
         int randomDigit = random.nextInt(10);
 
@@ -72,9 +72,9 @@ public class AccountService {
         int customerSeq = accountMapper.getAccountSeq();
 
         // 버전 update 관리
-        RegistrantNameAndInfoAndDate rnid = commonService.getDateAndBranchIdAndEmpIdAndEmpName();
-        accountCreate.setStartDate(Timestamp.valueOf(rnid.getTradeDate()));
-        accountCreate.setBranchId(Integer.parseInt(rnid.getBranchId()));
+        CurrentData rnid = commonService.getCurrentData();
+        accountCreate.setStartDate(Timestamp.valueOf(rnid.getCurrentBusinessDate()));
+        accountCreate.setBranchId(Integer.parseInt(String.valueOf(rnid.getBranchId())));
         accountCreate.setRegistrantId(rnid.getEmployeeId());
 
 
@@ -95,8 +95,8 @@ public class AccountService {
 
     }
 
-    public List<AccountOfModal> getAccount(SearchAccountOfModal searchAccountOfModal) {
-        return accountMapper.findAccount(searchAccountOfModal);
+    public List<AccountOfModal> getAccountsBySearchOption(SearchAccountOfModal searchAccountOfModal) {
+        return accountMapper.findAccountsBySearchOption(searchAccountOfModal);
     }
 
     public AccountDetail getAccountDetail(String accountId) {
@@ -104,10 +104,22 @@ public class AccountService {
     }
 
     public AccountOpenResultOfModal getAccountOpenResultOfModal(String accId) {
-        return accountMapper.getAccountOpenResultOfModal(accId);
+        return accountMapper.findAccountOpenResultOfModal(accId);
     }
 
     public List<AccountDetailForInterest> getAccountListByBranchId(Long branchId) {
         return accountMapper.findAccountByBranchId(branchId);
+    }
+
+    public int updateStatus(AccountStatus accountStatus) {
+        return accountMapper.updateStatus(accountStatus);
+    }
+
+    public CloseAccount getCloseAccount(String accountId) {
+        return accountMapper.findCloseAccount(accountId);
+    }
+
+    public Timestamp getExpireDateById(String accId) {
+        return accountMapper.findExpireDateById(accId);
     }
 }

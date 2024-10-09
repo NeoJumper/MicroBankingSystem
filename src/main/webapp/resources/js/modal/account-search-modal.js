@@ -43,7 +43,7 @@ $(document).ready(function() {
 function checkAccount(status) {
     var accountId = $('#modal-input-account').val();
     $.ajax({
-        url: "/api/employee/account",
+        url: "/api/employee/accounts",
         data: {accId: accountId, productName: null, status:status},
         type: "GET",
         success: function(data) {

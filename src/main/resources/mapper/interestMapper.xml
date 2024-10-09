@@ -5,6 +5,23 @@
 <mapper namespace="com.kcc.banking.domain.interest.mapper.InterestMapper">
 
 
+    <!--    계좌번호로 미지급 이자,미지급 이자율 총합-->
+    <select id="findInterestSum" parameterType="java.lang.String">
+        SELECT acc_id AS account_id,
+        sum(amount) AS amount_sum
+        FROM Interest
+        WHERE acc_id = #{accountId} AND payment_status = 'N'
+        GROUP BY acc_id
+    </select>
+
+    <!--  되돌려야할 이자액 합계  -->
+    <select id="findRollbackInterestSum" parameterType="AccountIdWithExpireDate">
+        SELECT acc_id AS account_id,
+        sum(amount) AS amount_sum
+        FROM Interest
+        WHERE acc_id = #{accountId} AND modifier_date = #{expireDate}
+        GROUP BY acc_id
+    </select>
 
 
     <insert id="save" parameterType="EmployeeCreate">
@@ -36,5 +53,36 @@
         #{version}
         )
     </insert>
+
+    <!--    이자 테이블 상태 변경-->
+    <update id="updatePaymentStatus" parameterType="PaymentStatus">
+        UPDATE INTEREST
+        SET
+        branch_id = #{branchId},
+        payment_date = #{payDate},
+        payment_status = 'Y',
+        modifier_date = SYSDATE,
+        modifier_id = #{modifierId},
+        version = version + 1
+        WHERE
+        acc_id = #{accId}
+        AND
+        payment_status = 'N'
+    </update>
+
+    <update id="rollbackPaymentStatus" parameterType="RollbackPaymentStatus">
+        UPDATE INTEREST
+        SET
+        branch_id = #{branchId},
+        payment_date = NULL,
+        payment_status = 'N',
+        modifier_date = SYSDATE,
+        modifier_id = #{modifierId},
+        version = version + 1
+        WHERE
+        acc_id = #{accId}
+        AND
+        modifier_date = #{expireDate}
+    </update>
 
 </mapper>

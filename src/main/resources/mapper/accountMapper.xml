@@ -63,7 +63,8 @@
     </select>
 
     <insert id="openAccount" parameterType="AccountCreate">
-        INSERT INTO Account (
+        INSERT INTO Account
+        (
             id,
             branch_id,
             customer_id,
@@ -78,32 +79,33 @@
 
             status,
             registration_date,
-            Trade_number,
+            trade_number,
             version
 
-        ) VALUES (
-                     #{id},
-                     #{branchId},
-                     #{customerId},
-                     #{productId},
-                     #{registrantId},
+        ) VALUES
+        (
+             #{id},
+             #{branchId},
+             #{customerId},
+             #{productId},
+             #{registrantId},
 
-                     SYSDATE,
-                     #{preferentialInterestRate},
-                     #{password},
-                     #{balance},
-                     #{startDate},
+             SYSDATE,
+             #{preferentialInterestRate},
+             #{password},
+             #{balance},
+             #{startDate},
 
-                     'OPN',
-                     SYSDATE,
-                     TRADE_SEQ.nextval,
-                     1
+             'OPN',
+             SYSTIMESTAMP,
+             TRADE_SEQ.nextval,
+             1
 
-                 )
+         )
     </insert>
 
 
-    <select id="findAccount" resultMap="AccountModalResultMap">
+    <select id="findAccountsBySearchOption" resultMap="AccountModalResultMap">
         SELECT
         a.id AS acc_id,
         a.open_date AS open_date,
@@ -147,7 +149,7 @@
         <result property="totalInterestRate" column="total_interest_rate" />
     </resultMap>
 
-    <select id="getAccountOpenResultOfModal" resultMap="AccountOpenModalResultMap">
+    <select id="findAccountOpenResultOfModal" resultMap="AccountOpenModalResultMap">
         SELECT
             a.id AS acc_id,
             a.password AS password,
@@ -213,4 +215,63 @@
         JOIN product p ON ac.product_id = p.id
         WHERE ac.branch_id = #{branchId}
     </select>
+
+    <!--    계좌 상태 변경-->
+    <update id="updateStatus" parameterType="AccountStatus">
+        UPDATE ACCOUNT
+        SET
+        status = #{status},
+        balance = #{balance},
+        modification_date = SYSDATE,
+        modifier_id = #{modifierId},
+        version = version + 1
+        <if test="businessDay != null">
+            , expire_date = #{businessDay}
+        </if>
+        <if test="businessDay == null">
+            , expire_date = null
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <!--    해지 대상 계좌 상태 조회-->
+    <resultMap id="closeAccountMap" type="CloseAccount">
+        <id column="account_id" property="accountId" />
+        <result column="account_status" property="accountStatus" />
+        <result column="customer_name" property="customerName" />
+        <result column="customer_id" property="customerId" />
+        <result column="product_name" property="productName" />
+        <result column="amount_date" property="amountDate" />
+        <result column="account_pre_inter_rate" property="accountPreInterRate" />
+        <result column="product_inter_rate" property="productInterRate" />
+        <result column="account_bal" property="accountBal" />
+        <result column="product_tax_rate" property="productTaxRate" />
+    </resultMap>
+
+
+    <select id="findCloseAccount" parameterType="java.lang.String" resultMap="closeAccountMap">
+        SELECT
+        a.id as account_id,
+        a.status as account_status,
+        c.name as customer_name,
+        c.id as customer_id,
+        p.name as product_name,
+        a.start_date as amount_date,
+        a.preferential_interest_rate as account_pre_inter_rate,
+        p.interest_rate as product_inter_rate,
+        a.balance as account_bal,
+        p.tax_rate as product_tax_rate
+        FROM Account a JOIN Customer c ON a.customer_id = c.id
+        JOIN Product p ON a.product_id = p.id
+        WHERE a.id = #{accountId}
+    </select>
+
+    <!-- 계좌 해지일 조회 -->
+    <select id="findExpireDateById" parameterType="java.lang.String" resultType="java.sql.Timestamp">
+        SELECT expire_date
+        FROM ACCOUNT
+        WHERE id = #{id}
+    </select>
+
 </mapper>

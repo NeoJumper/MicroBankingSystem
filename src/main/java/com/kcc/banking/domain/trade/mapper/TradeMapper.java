@@ -1,7 +1,8 @@
 package com.kcc.banking.domain.trade.mapper;
 
+import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
+import com.kcc.banking.domain.trade.dto.request.CloseTrade;
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
-import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 import com.kcc.banking.domain.trade.dto.response.TradeByCash;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;
@@ -9,6 +10,7 @@ import com.kcc.banking.domain.trade.dto.response.TradeInfoOfPerAccount;
 import com.kcc.banking.domain.trade.dto.response.TradeOfList;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -30,5 +32,9 @@ public interface TradeMapper {
     Long getNextTradeNumberVal();
 
     int updateCashTradeBalance(TradeDetail tradeDetail);
+
+    int createCancelTrade(CloseTrade closeTrade);
+
+    BigDecimal rollbackAmount(AccountIdWithExpireDate accountIdWithExpireDate);
 
 }

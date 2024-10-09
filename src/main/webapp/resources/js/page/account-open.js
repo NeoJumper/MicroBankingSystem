@@ -15,7 +15,7 @@ $(document).ready(function () {
 function accoutOpenProductInfo(){
     // 상품이율 구하기
     $.ajax({
-        url: '/api/employee/account/productInterest',
+        url: '/api/employee/account/product-interest',
         method: 'GET',
         success: function(data) {
             $('#product-interest-input').val(data.interestRate);
