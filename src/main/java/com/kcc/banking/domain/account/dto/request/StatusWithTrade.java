@@ -12,6 +12,5 @@ public class StatusWithTrade {
     private BigDecimal amount;
     private String status;
     private String description;
-    private BigDecimal balance;
     private String tradeType;
 }

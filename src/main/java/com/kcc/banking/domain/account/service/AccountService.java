@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 //import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
@@ -108,9 +109,6 @@ public class AccountService {
         return accountMapper.findAccountByBranchId(branchId);
     }
 
-    public int updateStatus(AccountStatus accountStatus) {
-        return accountMapper.updateStatus(accountStatus);
-    }
 
     public CloseAccount getCloseAccount(String accountId) {
         return accountMapper.findCloseAccount(accountId);
@@ -120,7 +118,35 @@ public class AccountService {
         return accountMapper.findExpireDateById(accId);
     }
 
-    public void updateAccountBalance(AccountBalanceUpdate accountBalanceUpdate) {
-        accountMapper.updateAccountBalance(accountBalanceUpdate);
+    /**
+     * @Description
+     * 잔액만을 변경
+     * 이체, 현금, 거래에 사용
+     */
+    public void updateBalance(AccountUpdate accountUpdate) {
+        accountMapper.updateAccountStatusAndBalance(accountUpdate);
+    }
+
+    public int updateByClose(StatusWithTrade statusWithTrade, CurrentData currentData) {
+        AccountUpdate accountUpdate = AccountUpdate.builder()
+                .targetAccId(statusWithTrade.getAccId())
+                .status(statusWithTrade.getStatus())
+                .modifierId(currentData.getEmployeeId())
+                .balance(BigDecimal.valueOf(0))
+                .build();
+
+        return accountMapper.updateAccountStatusAndBalance(accountUpdate);
+    }
+
+    public int updateByCloseCancel(String accId, CurrentData currentData, BigDecimal balance) {
+        // 계좌 업데이트 파라미터 타입
+        AccountUpdate accountUpdate = AccountUpdate.builder()
+                .targetAccId(accId)
+                .status("OPN")
+                .modifierId(currentData.getEmployeeId())
+                .balance(balance).build();
+
+        return accountMapper.updateAccountStatusAndBalance(accountUpdate);
+
     }
 }

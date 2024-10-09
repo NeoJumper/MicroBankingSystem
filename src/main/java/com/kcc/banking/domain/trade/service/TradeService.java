@@ -2,6 +2,7 @@ package com.kcc.banking.domain.trade.service;
 
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
+import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
@@ -70,12 +71,6 @@ public class TradeService {
         String getDay = businessDayService.getCurrentBusinessDay().getBusinessDate();
         System.out.println("businessDayService.getCurrentBusinessDay().getBusinessDate()"+ getDay);
         return businessDayService.getCurrentBusinessDay().getBusinessDate();
-    }
-
-
-
-    public int addCancelTrade(CloseTrade closeTrade) {
-        return tradeMapper.createCancelTrade(closeTrade);
     }
 
     /**
@@ -209,6 +204,40 @@ public class TradeService {
 
 
         return TradeDetail.of(tradeCreate);
+    }
+
+    public int createCloseTrade(StatusWithTrade statusWithTrade, CurrentData currentData, Long tradeNumber) {
+        TradeCreate tradeCreate = TradeCreate.builder()
+                .accId(statusWithTrade.getAccId())
+                .branchId(currentData.getBranchId())
+                .amount(statusWithTrade.getAmount())
+                .description(statusWithTrade.getDescription())
+                .balance(BigDecimal.valueOf(0))
+                .registrantId(currentData.getEmployeeId())
+                .tradeType(statusWithTrade.getTradeType())
+                .tradeNumber(tradeNumber)  // 거래 번호
+                .cashIndicator("TRUE")  // 현금 여부 : TRUE
+                .status("NOR") // 거래 상태: 정상
+                .tradeDate(currentData.getCurrentBusinessDate()).build();
+
+        return tradeMapper.insertTrade(tradeCreate);
+    }
+
+    public int createCloseCancelTrade(String accId, CurrentData currentData, Long tradeNumber) {
+        TradeCreate tradeCreate = TradeCreate.builder()
+                .accId(accId)
+                .branchId(currentData.getBranchId())
+                .amount(new BigDecimal("0"))
+                .balance(BigDecimal.valueOf(0))
+                .description("계좌해지취소")
+                .registrantId(currentData.getEmployeeId())
+                .tradeType("CLOSE")
+                .tradeNumber(tradeNumber)  // 거래 번호
+                .cashIndicator("TRUE")  // 현금 여부 : TRUE
+                .status("RVK") // 거래 상태: 정상
+                .tradeDate(currentData.getCurrentBusinessDate()).build();
+
+        return tradeMapper.insertTrade(tradeCreate);
     }
 }
 

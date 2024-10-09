@@ -14,11 +14,11 @@ public class PaymentStatus {
     private long branchId;
     private long modifierId;
     private String accId;
-    private Timestamp payDate;
+    private String payDate;
 
 
     @Builder
-    public PaymentStatus(long branchId, Timestamp payDate, long modifierId, String accId) {
+    public PaymentStatus(long branchId, String payDate, long modifierId, String accId) {
         this.branchId = branchId;
         this.payDate = payDate;
         this.modifierId = modifierId;

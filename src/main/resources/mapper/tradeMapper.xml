@@ -127,47 +127,6 @@
         SELECT  trade_num_seq.NEXTVAL FROM dual
     </select>
 
-    <!--    해지 거래 등록-->
-    <insert id="createCancelTrade" parameterType="CloseTrade">
-        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
-            SELECT trade_seq.nextval FROM dual
-        </selectKey>
-        INSERT INTO TRADE
-        (
-            id,
-            acc_id,
-            registrant_id ,
-            branch_id,
-            trade_date,
-            amount,
-            balance,
-            trade_type,
-            status,
-            cash_indicator,
-            description,
-            registration_date,
-            trade_number,
-            version
-        )
-        VALUES
-        (
-            #{id},
-            #{accId},
-            #{registrantId},
-            #{branchId},
-            #{businessDay},
-            #{amount},
-            #{balance},
-            #{tradeType},
-            'NOR',
-            'TRUE',
-            #{description},
-            SYSTIMESTAMP,
-            trade_num_seq.nextval,
-            1
-        )
-    </insert>
-
 
     <select id="rollbackAmount" parameterType="AccountIdWithExpireDate" resultType="java.math.BigDecimal">
         SELECT amount

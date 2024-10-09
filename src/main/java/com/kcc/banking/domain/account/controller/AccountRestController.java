@@ -100,20 +100,6 @@ public class AccountRestController {
 //        return ResponseEntity.status(HttpStatus.OK).body(result);
 //    }
 
-    @PostMapping("/api/employee/close-trade")
-    public ResponseEntity<?> addCloseTrade(@RequestBody StatusWithTrade statusWithTrade) {
-        String result = accountTradeFacade.addCloseTrade(statusWithTrade);
 
-        if(result.equals("FAIL")) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("계좌해지 거래 실패");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
-    @PostMapping("/api/employee/close-cancel-trade")
-    public void cancelCloseTrade(@RequestBody AccountIdWithExpireDate accountIdWithExpireDate) {
-
-        accountTradeFacade.rollbackAccountCancel(accountIdWithExpireDate.getAccountId());
-    }
 }
 

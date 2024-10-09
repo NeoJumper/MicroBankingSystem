@@ -1,5 +1,7 @@
 package com.kcc.banking.domain.trade.controller;
 
+import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.trade.dto.request.TradeCancelRequest;
 import com.kcc.banking.domain.trade.dto.request.CashTradeCreate;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
@@ -9,6 +11,7 @@ import com.kcc.banking.domain.trade.dto.response.*;
 import com.kcc.banking.domain.trade.service.AccountTradeFacade;
 import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -92,5 +95,21 @@ public class TradeRestController {
     public ResponseEntity<List<TransferDetail>> updateCancelTransferCAN(@RequestBody TradeCancelRequest tradeCancelRequest) {
         List<TransferDetail> tradeDetails = tradeService.updateCancelTransferCAN(tradeCancelRequest);
         return ResponseEntity.ok(tradeDetails);
+    }
+
+    @PostMapping("/close-trade")
+    public ResponseEntity<?> addCloseTrade(@RequestBody StatusWithTrade statusWithTrade) {
+        String result = accountTradeFacade.addCloseTrade(statusWithTrade);
+
+        if(result.equals("FAIL")) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("계좌해지 거래 실패");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PostMapping("/close-cancel-trade")
+    public void cancelCloseTrade(@RequestBody AccountIdWithExpireDate accountIdWithExpireDate) {
+
+        accountTradeFacade.rollbackAccountCancel(accountIdWithExpireDate.getAccountId());
     }
 }

@@ -27,10 +27,7 @@ public interface TradeMapper {
 
     Long findNextTradeNumberVal();
 
-    int createCancelTrade(CloseTrade closeTrade);
-
     BigDecimal rollbackAmount(AccountIdWithExpireDate accountIdWithExpireDate);
-
 
     // 거래 번호로 내역 조회
     List<TransferDetail> getTradeDetailsByTradeNumber(Long tradeNumber);
@@ -39,5 +36,5 @@ public interface TradeMapper {
     int updateTradeStatusToCancel(Long tradeNumber);
 
     // 거래 내역 추가
-    void insertTrade(TradeCreate withdrawalTrade);
+    int insertTrade(TradeCreate withdrawalTrade);
 }

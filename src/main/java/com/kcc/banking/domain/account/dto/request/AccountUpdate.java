@@ -8,17 +8,19 @@ import java.math.BigDecimal;
 
 @NoArgsConstructor
 @Getter
-public class AccountBalanceUpdate {
+public class AccountUpdate {
 
     private String targetAccId;
     private Long modifierId;
     private BigDecimal balance;
+    private String status;
 
 
     @Builder
-    public AccountBalanceUpdate(String targetAccId,Long modifierId, BigDecimal balance) {
+    public AccountUpdate(String targetAccId, Long modifierId, BigDecimal balance, String status) {
         this.modifierId = modifierId;
         this.balance = balance;
         this.targetAccId = targetAccId;
+        this.status = status;
     }
 }
