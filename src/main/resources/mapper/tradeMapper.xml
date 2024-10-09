@@ -123,7 +123,7 @@
 
     </select>
 
-    <select id="getNextTradeNumberVal">
+    <select id="findNextTradeNumberVal">
         SELECT  trade_num_seq.NEXTVAL FROM dual
     </select>
 
@@ -147,8 +147,40 @@
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
             SELECT trade_seq.nextval FROM dual
         </selectKey>
-        INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, registration_date, trade_number, version)
-        VALUES (#{id}, #{accId}, #{registrantId}, #{branchId}, #{businessDay}, #{amount}, #{balance}, #{tradeType}, 'NOR', 'TRUE', #{description}, SYSDATE, trade_num_seq.nextval, 1)
+        INSERT INTO TRADE
+        (
+            id,
+            acc_id,
+            registrant_id ,
+            branch_id,
+            trade_date,
+            amount,
+            balance,
+            trade_type,
+            status,
+            cash_indicator,
+            description,
+            registration_date,
+            trade_number,
+            version
+        )
+        VALUES
+        (
+            #{id},
+            #{accId},
+            #{registrantId},
+            #{branchId},
+            #{businessDay},
+            #{amount},
+            #{balance},
+            #{tradeType},
+            'NOR',
+            'TRUE',
+            #{description},
+            SYSTIMESTAMP,
+            trade_num_seq.nextval,
+            1
+        )
     </insert>
 
 
@@ -157,5 +189,77 @@
         FROM TRADE
         WHERE acc_id = #{accountId} AND registration_date = #{expireDate} AND trade_type = 'CLOSE'
     </select>
+    <insert id="insertTransfer" parameterType="TransferDetail">
+        INSERT INTO Trade
+        (
+            id,
+            registrant_id,
+            acc_id,
+            target_acc_id,
+            branch_id,
+            trade_date,
+            amount,
+            balance,
+            trade_type,
+            status,
+            cash_indicator,
+            description,
+            trade_number,
+            registration_date,
+            version
+        )
+        VALUES (
+            trade_seq.nextval,
+            #{registrantId},
+            #{accId},
+            #{targetAccId},
+            #{branchId},
+            #{tradeDate},
+            #{amount},
+            #{balance},
+            #{tradeType},
+            #{status},
+            #{cashIndicator},
+            #{description},
+            #{tradeNumber},
+            SYSTIMESTAMP,
+            1
+        )
+    </insert>
 
+    <select id="getTradeDetailsByTradeNumber" parameterType="java.lang.Long" resultType="TransferDetail">
+        SELECT
+        t.id,
+        t.registrant_id,
+        t.acc_id,
+        t.target_acc_id,
+        t.branch_id,
+        t.trade_date,
+        t.amount,
+        t.balance,
+        t.trade_type,
+        t.status,
+        t.cash_indicator,
+        t.description,
+        t.trade_number,
+        t.registration_date,
+        t.modification_date,
+        t.modifier_id,
+        t.version,
+        acc_customer.name AS customerName,
+        target_customer.name AS targetCustomerName
+        FROM Trade t
+        JOIN Account acc ON t.acc_id = acc.id
+        JOIN Customer acc_customer ON acc.customer_id = acc_customer.id
+        LEFT JOIN Account target_acc ON t.target_acc_id = target_acc.id
+        LEFT JOIN Customer target_customer ON target_acc.customer_id = target_customer.id
+        WHERE t.trade_number = #{tradeNumber}
+    </select>
+
+
+    <update id="updateTradeStatusToCancel" parameterType="java.lang.Long">
+        UPDATE Trade
+        SET status = 'CAN'
+        WHERE trade_number = #{tradeNumber}
+    </update>
 </mapper>

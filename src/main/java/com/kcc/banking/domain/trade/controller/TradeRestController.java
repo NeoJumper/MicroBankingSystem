@@ -1,12 +1,12 @@
 package com.kcc.banking.domain.trade.controller;
 
+import com.kcc.banking.domain.trade.dto.request.TradeCancelRequest;
 import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
-import com.kcc.banking.domain.trade.dto.response.Criteria;
-import com.kcc.banking.domain.trade.dto.response.PagingInfoOfTradeList;
+import com.kcc.banking.domain.trade.dto.request.TransferCreate;
+import com.kcc.banking.domain.trade.dto.response.*;
 
-import com.kcc.banking.domain.trade.dto.response.TradeDetail;
-import com.kcc.banking.domain.trade.dto.response.TradeOfList;
+import com.kcc.banking.domain.trade.service.AccountTradeFacade;
 import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +25,7 @@ import java.util.List;
 public class TradeRestController {
 
     private final TradeService tradeService;
+    private final AccountTradeFacade accountTradeFacade;
 
     @GetMapping("/trade/search/result")
     public ResponseEntity<PagingInfoOfTradeList> getSearchResultOfTradeList(@ModelAttribute TradeSearch tradeSearch, Model model){
@@ -72,5 +73,24 @@ public class TradeRestController {
         return ResponseEntity.ok(tradeDetail);
     }
 
+    // 계좌 이체
+    @PostMapping("/account-transfer")
+    public ResponseEntity<List<TransferDetail>> transfer(@RequestBody TransferCreate transferCreate) {
+        List<TransferDetail> tradeDetails = accountTradeFacade.processTransfer(transferCreate);
+        return ResponseEntity.ok(tradeDetails);
+    }
 
+    // 취소 페이지에서, 거래번호를 통해 취소하려는 거래 내역 GET
+    @GetMapping("/account-transfer/cancel/{tradeNumber}")
+    public ResponseEntity<List<TransferDetail>> transferCancel(@PathVariable(value = "tradeNumber", required = false) Long tradeNumber) {
+        List<TransferDetail> tradeDetails = accountTradeFacade.getTradeByTradeNumber(tradeNumber);
+        System.out.println("TradeDetail::"+tradeDetails);
+        return ResponseEntity.ok(tradeDetails);
+    }
+    // 취소 신청 - 실제 status 변경
+    @PostMapping("/account-transfer/cancel")
+    public ResponseEntity<List<TransferDetail>> updateCancelTransferCAN(@RequestBody TradeCancelRequest tradeCancelRequest) {
+        List<TransferDetail> tradeDetails = accountTradeFacade.updateCancelTransferCAN(tradeCancelRequest);
+        return ResponseEntity.ok(tradeDetails);
+    }
 }
