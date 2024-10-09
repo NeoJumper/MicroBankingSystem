@@ -1,8 +1,10 @@
 package com.kcc.banking.domain.interest.service;
 
 import com.kcc.banking.common.util.AuthenticationUtils;
+import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
 import com.kcc.banking.domain.account.dto.response.AccountDetailForInterest;
 import com.kcc.banking.domain.account.service.AccountService;
+import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.interest.dto.request.PaymentStatus;
 import com.kcc.banking.domain.interest.dto.request.RollbackPaymentStatus;
@@ -46,11 +48,18 @@ public class InterestService {
         return interestMapper.rollbackPaymentStatus(rollbackPaymentStatus);
     }
 
-    public int updatePaymentStatus(PaymentStatus paymentStatus) {
-        return interestMapper.updatePaymentStatus(paymentStatus);
-    }
-
     public InterestSum getRollbackInterestSum(AccountIdWithExpireDate awe) {
         return interestMapper.findRollbackInterestSum(awe);
+    }
+
+    public int updatePaymentStatus(StatusWithTrade statusWithTrade, CurrentData currentData) {
+        PaymentStatus paymentStatus = PaymentStatus.builder()
+                .branchId(currentData.getBranchId())
+                .payDate(currentData.getCurrentBusinessDate())
+                .modifierId(currentData.getEmployeeId())
+                .accId(statusWithTrade.getAccId())
+                .build();
+
+        return interestMapper.updatePaymentStatus(paymentStatus);
     }
 }

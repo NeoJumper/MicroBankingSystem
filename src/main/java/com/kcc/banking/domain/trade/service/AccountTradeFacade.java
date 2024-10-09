@@ -2,7 +2,7 @@ package com.kcc.banking.domain.trade.service;
 
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
-import com.kcc.banking.domain.account.dto.request.AccountStatus;
+import com.kcc.banking.domain.account.dto.request.AccountUpdate;
 import com.kcc.banking.domain.account.dto.request.PasswordValidation;
 import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
@@ -16,10 +16,8 @@ import com.kcc.banking.domain.interest.dto.request.PaymentStatus;
 import com.kcc.banking.domain.interest.dto.request.RollbackPaymentStatus;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import com.kcc.banking.domain.interest.service.InterestService;
-import com.kcc.banking.domain.trade.dto.request.CloseAccount;
-import com.kcc.banking.domain.trade.dto.request.CloseTrade;
-import com.kcc.banking.domain.trade.dto.request.TradeCancelRequest;
-import com.kcc.banking.domain.trade.dto.request.TransferCreate;
+import com.kcc.banking.domain.trade.dto.request.*;
+import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TransferDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -52,36 +50,16 @@ public class AccountTradeFacade {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
 
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
 
 
-        //  CloseTrade, AccountStatus에 분배
-        CloseTrade closeTrade = CloseTrade.builder()
-                .accId(statusWithTrade.getAccId())
-                .registrantId(currentData.getEmployeeId())
-                .branchId(currentData.getBranchId())
-                .amount(statusWithTrade.getAmount())
-                .description(statusWithTrade.getDescription())
-                .balance(statusWithTrade.getBalance())
-                .tradeType(statusWithTrade.getTradeType())
-                .businessDay(currentData.getCurrentBusinessDate()).build();
 
-        AccountStatus accountStatus = AccountStatus.builder()
-                .id(statusWithTrade.getAccId())
-                .status(statusWithTrade.getStatus())
-                .modifierId(currentData.getEmployeeId())
-                .balance(statusWithTrade.getBalance())
-                .businessDay(Timestamp.valueOf(currentData.getCurrentBusinessDate())).build();
-
-        PaymentStatus paymentStatus = PaymentStatus.builder()
-                .branchId(currentData.getBranchId())
-                .payDate(Timestamp.valueOf(currentData.getCurrentBusinessDate()))
-                .modifierId(currentData.getEmployeeId())
-                .accId(statusWithTrade.getAccId()).build();
+        int tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
+        int statusResult = accountService.updateByClose(statusWithTrade, currentData);
+        int paymentStatusResult = interestService.updatePaymentStatus(statusWithTrade, currentData);
 
 
-        int tradeResult = tradeService.addCancelTrade(closeTrade);
-        int statusResult = accountService.updateStatus(accountStatus);
-        int paymentStatusResult = interestService.updatePaymentStatus(paymentStatus);
         if (tradeResult > 0) {
             resultText.append(" 'tradeResult' ");
         }
@@ -139,6 +117,8 @@ public class AccountTradeFacade {
                 .expireDate(expireDate)
                 .accountId(accId).build();
 
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
 
         CloseAccount closeAccount = Optional.ofNullable(accountService.getCloseAccount(accId)).orElse(new CloseAccount());
 
@@ -165,40 +145,41 @@ public class AccountTradeFacade {
                 .accId(accId)
                 .expireDate(expireDate).build();
 
-        // 계좌 업데이트 파라미터 타입
-        AccountStatus accountStatus = AccountStatus.builder()
-                .id(accId)
-                .status("OPN")
-                .modifierId(currentData.getEmployeeId())
-                .balance(balance).build();
 
-        CloseTrade closeTrade = CloseTrade.builder()
-                .accId(accId)
-                .registrantId(currentData.getEmployeeId())
-                .branchId(currentData.getBranchId())
-                .amount(new BigDecimal("0"))
-                .description("계좌해지취소")
-                .balance(balance)
-                .tradeType("OPEN")
-                .businessDay(currentData.getCurrentBusinessDate()).build();
+
 
         //계좌상테 변경
-        int resultAccount = accountService.updateStatus(accountStatus);
+        int resultAccount = accountService.updateByCloseCancel(accId, currentData, balance);
         // 이자 테이블 상태변경 rollbackPaymentStatus 사용
         int resultInterest = interestService.rollbackPaymentStatus(rollbackPaymentStatus);
         // 해지 취소 거래 등록 addCancelTrade
-        int resultTrade = tradeService.addCancelTrade(closeTrade);
+        int resultTrade = tradeService.createCloseCancelTrade(accId, currentData, tradeNumber);
 
         // 예외처리문
 
         return "SUCCESS";
     }
 
-    // 예외 발생 시 롤백을 강제
+
+    /**
+     * @Description
+     * 1. 입출금 계좌 조회
+     * 2. 예외 처리
+     *      - 출금 계좌가 없을 때
+     *      - 출금 계좌가 해지됐을 때
+     *      - 비밀번호 검증에 실패했을 때
+     * 3. 출금 계좌 잔액 조회
+     * 4. 예외 처리
+     *      - 이체 금액이 잔액보다 큰 경우
+     * 5. 상대 계좌 조회 -> 입금 계좌 잔액 조회
+     * 6. 거래번호 조회
+     * 7. 입금 거래내역 추가 + 계좌 잔액 변경
+     * 8. 출금 거래내역 추가 + 계좌 잔액 변경
+     * 9. 상세보기 모달을 위한 입출금 결과 데이터 반환
+     *
+     */
     @Transactional(rollbackFor = {Exception.class})  // 모든 예외 발생 시 롤백
-    public List<TransferDetail> processTransfer(TransferCreate transferCreate) {
-
-
+    public List<TransferDetail> processTransfer(TransferTradeCreate transferTradeCreate) {
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
@@ -207,66 +188,47 @@ public class AccountTradeFacade {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
 
-        // 출금 계좌 조회
-        AccountDetail withdrawalAccount = accountService.getAccountDetail(transferCreate.getWithdrawalAccount());
-        // 입금 계좌 조회
-        AccountDetail depositAccount = accountService.getAccountDetail(transferCreate.getDepositAccount());
+        // 입출금 계좌 조회
+        AccountDetail depositAccount = accountService.getAccountDetail(transferTradeCreate.getDepositAccount());
+        AccountDetail withdrawalAccount = accountService.getAccountDetail(transferTradeCreate.getWithdrawalAccount());
 
-        // 출금 계좌 조회 시
-        if(withdrawalAccount == null) {
+
+        if(withdrawalAccount == null) {  // 출금 계좌가 없을 때
             throw new BadRequestException(ErrorCode.NOT_FOUND_ACCOUNT);
         }
-        // 출금 계좌 상태 확인
-        else if(withdrawalAccount.getStatus().equals("CLS")){
+        else if(withdrawalAccount.getStatus().equals("CLS")){  // 출금 계좌가 해지됐을 때
             throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
         }
-        // 비밀번호 검증
-        else{
-            accountService.validatePassword(new PasswordValidation(transferCreate.getWithdrawalAccount(), transferCreate.getWithdrawalAccountPassword()));
+        else{   // 비밀번호 검증에 실패했을 때
+            accountService.validatePassword(new PasswordValidation(transferTradeCreate.getWithdrawalAccount(), transferTradeCreate.getWithdrawalAccountPassword()));
         }
 
         // 출금 계좌 잔액 조회
-        BigDecimal withdrawalAccountAmount = withdrawalAccount.getBalance();
+        BigDecimal withdrawalAccountBalance = withdrawalAccount.getBalance();
 
         // 이체 금액이 잔액보다 큰 경우
-        if (withdrawalAccountAmount.subtract(transferCreate.getTransferAmount()).compareTo(BigDecimal.ZERO) < 0) {
+        if (withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()).compareTo(BigDecimal.ZERO) < 0) {
             throw new BadRequestException(ErrorCode.OVER_TRANSFER_AMOUNT);
         }
 
-        // 입금 계좌 잔액
-        BigDecimal depositAccountBalance = accountService.getAccountDetail(transferCreate.getDepositAccount()).getBalance();
+        // 상대 계좌 조회 -> 입금 계좌 잔액 조회
+        BigDecimal depositAccountBalance = accountService.getAccountDetail(transferTradeCreate.getDepositAccount()).getBalance();
 
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
-        // 출금 내역 생성
-        TransferDetail withdrawalTrade = TransferDetail.builder()
-                .accId(transferCreate.getWithdrawalAccount()) // 출금 계좌
-                .targetAccId(transferCreate.getDepositAccount())  // 상대 계좌 : 입금 계좌
-                .amount(transferCreate.getTransferAmount())   // 이체 금액
-                .balance(withdrawalAccountAmount.subtract(transferCreate.getTransferAmount()))  // 이체 후 잔액
-                .tradeType("WITHDRAWAL")  // 유형: 출금
-                .branchId(currentData.getBranchId())  // 지점 번호
-                .registrantId(currentData.getEmployeeId())  // 등록자 번호
-                .tradeDate(currentData.getCurrentBusinessDate())  // 거래 일자(영업일)
-                .tradeNumber(tradeNumber)  // 거래 번호
-                .description(transferCreate.getDescription())  // 비고
-                .cashIndicator("FALSE")  // 현금 여부: FALSE
-                .status("NOR")  // 거래 상태: 정상
-                .customerName(withdrawalAccount.getCustomerName())  // 고객명
-                .version(1L)  // 버전: 1
-                .build();
-
 
         // 출금 거래내역 추가
-        tradeService.createTransferTrade(withdrawalTrade);
+        TransferDetail withdrawalTrade = tradeService.createWithdrawalTrade(transferTradeCreate, currentData, withdrawalAccountBalance, tradeNumber);
 
         // 출금 계좌 잔액 업데이트
-        accountService.updateAccountBalance(withdrawalTrade);
-
-
-        // ---------------------------------------------------------------------------------------
+        accountService.updateBalance(AccountUpdate.builder()
+                .targetAccId(withdrawalAccount.getId())
+                .modifierId(currentData.getEmployeeId())
+                .balance(withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount())) // 이체 후 잔액
+                .build()
+        );
 
         // 입금 계좌 조회 시
         if(depositAccount == null){
@@ -277,53 +239,58 @@ public class AccountTradeFacade {
             throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
         }
 
-        // 입금 내역 생성
-        TransferDetail depositTrade = TransferDetail.builder()
-                .accId(transferCreate.getDepositAccount()) // 입금 계좌
-                .targetAccId(transferCreate.getWithdrawalAccount())  // 상대 계좌: 출금 계좌
-                .amount(transferCreate.getTransferAmount())  // 이체 금액
-                .balance(depositAccountBalance.add(transferCreate.getTransferAmount()))  // 이체 후 잔액
-                .tradeType("DEPOSIT")  // 유형: 입금
-                .branchId(currentData.getBranchId())  // 지점 번호
-                .registrantId(currentData.getEmployeeId())  // 등록자 번호
-                .tradeDate(currentData.getCurrentBusinessDate())  // 거래 일자(영업일)
-                .tradeNumber(tradeNumber)  // 거래 번호
-                .description(transferCreate.getDescription())  // 비고
-                .cashIndicator("FALSE")  // 현금 여부
-                .status("NOR")  // 거래 상태: 정상
-                .customerName(depositAccount.getCustomerName())  // 고객명
-                .version(1L)  // 버전: 1
-                .build();
-
-
         // 입금 거래내역 추가
-        tradeService.createTransferTrade(depositTrade);
+        TransferDetail depositTrade = tradeService.createDepositTrade(transferTradeCreate, currentData, depositAccountBalance, tradeNumber);
         // 입금 계좌 잔액 업데이트
-        accountService.updateAccountBalance(depositTrade);
+        accountService.updateBalance(AccountUpdate.builder()
+                .targetAccId(depositAccount.getId())
+                .modifierId(currentData.getEmployeeId())
+                .balance(depositAccountBalance.add(transferTradeCreate.getTransferAmount())) // 이체 후 잔액
+                .build()
+        );
 
 
         // 출금 내역과 입금 내역 반환
         return Arrays.asList(withdrawalTrade, depositTrade);
-
     }
 
 
-    public List<TransferDetail> getTradeByTradeNumber(Long tradeNumber) {
-        List<TransferDetail> tradeDetails = tradeService.getTradeDetailsByTradeNumber(tradeNumber);
-        if(tradeDetails == null || tradeDetails.isEmpty()){
-            throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
-        }
-        return tradeDetails;
-    }
-    public List<TransferDetail> updateCancelTransferCAN(TradeCancelRequest tradeCancelRequest) {
-        Long tradeNumber = Long.valueOf(tradeCancelRequest.getTradeNumber());
-        // 업데이트 구문
+    /**
+     * @Description
+     * 1. 거래 계좌 조회 + 거래 계좌 잔액 조회
+     * 2. 거래번호 조회
+     * 3. 거래내역 추가 + 계좌 잔액 변경
+     * 4. 상세보기 모달을 위한 거래내역 결과 데이터 반환
+     */
+    public TradeDetail createCashTrade(CashTradeCreate cashTradeCreate){
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
-        int transferUpdateCAN = tradeService.cancelTrade(tradeNumber);
-        if(transferUpdateCAN == 0){
-            throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
-        return getTradeByTradeNumber(tradeNumber);
+
+        // 거래 계좌 조회 + 거래 계좌 잔액 조회
+        AccountDetail cashTradeAccount = accountService.getAccountDetail(cashTradeCreate.getAccId());
+        BigDecimal cashTradeAccountBalance = cashTradeAccount.getBalance();
+
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+
+        // 현금 거래 내역 생성
+        TradeDetail tradeDetail = tradeService.createCashTrade(cashTradeCreate, currentData, cashTradeAccountBalance ,tradeNumber);
+
+        // 잔액 업데이트
+        accountService.updateBalance(AccountUpdate.builder()
+                .targetAccId(cashTradeAccount.getId())
+                .modifierId(currentData.getEmployeeId())
+                .balance(tradeDetail.getBalance()) // 거래 후 잔액
+                .build()
+        );
+
+        return tradeDetail;
     }
 
 }

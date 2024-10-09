@@ -113,7 +113,7 @@ function closeAccount() {
             url: '/api/employee/close-trade',
             type: 'POST',
             contentType: 'application/json', // JSON 형식으로 전송
-            data: JSON.stringify({accId: accountNumber, amount: accountData.totalPayment, status: "CLS", description:"계좌해지", balance:0, tradeType:"CLOSE"}), // JSON으로 변환하여 전송
+            data: JSON.stringify({accId: accountNumber, amount: accountData.totalPayment, status: "CLS", description:"계좌해지", tradeType:"CLOSE"}), // JSON으로 변환하여 전송
             success: function (response) {
                 swal({
                     title: "해지 성공",

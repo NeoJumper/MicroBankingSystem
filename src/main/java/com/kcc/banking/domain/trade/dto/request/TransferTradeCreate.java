@@ -10,15 +10,15 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TransferCreate {
-    private String withdrawalAccount;
+public class TransferTradeCreate {
+    private String withdrawalAccount; // 출금 계좌
     private String depositAccount;
     private BigDecimal transferAmount;
     private String description;
     private String withdrawalAccountPassword;
 
     @Builder
-    public TransferCreate(String withdrawalAccount, String depositAccount, BigDecimal transferAmount ,String description, String withdrawalAccountPassword) {
+    public TransferTradeCreate(String withdrawalAccount, String depositAccount, BigDecimal transferAmount , String description, String withdrawalAccountPassword) {
         this.withdrawalAccount = withdrawalAccount;
         this.depositAccount = depositAccount;
         this.transferAmount = transferAmount;

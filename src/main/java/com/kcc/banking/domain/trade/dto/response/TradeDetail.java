@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.trade.dto.response;
 
+import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class TradeDetail {
     private String accId;
     private String targetAccId;
     private Long branchId;
-    private Timestamp tradeDate;
+    private String tradeDate;
     private BigDecimal amount;
     private BigDecimal balance;
     private String tradeType;
@@ -32,7 +33,7 @@ public class TradeDetail {
     private Long version;
 
     @Builder
-    public TradeDetail(Long id, Long registrantId, String accId, String targetAccId, Long branchId, Timestamp tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version) {
+    public TradeDetail(Long id, Long registrantId, String accId, String targetAccId, Long branchId, String tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;
@@ -50,5 +51,20 @@ public class TradeDetail {
         this.modificationDate = modificationDate;
         this.modifierId = modifierId;
         this.version = version;
+    }
+
+    public static TradeDetail of(TradeCreate cashTradeCreate) {
+        return TradeDetail.builder()
+                .accId(cashTradeCreate.getAccId())
+                .amount(cashTradeCreate.getAmount())
+                .balance(cashTradeCreate.getBalance())
+                .tradeType(cashTradeCreate.getTradeType())
+                .branchId(cashTradeCreate.getBranchId())
+                .registrantId(cashTradeCreate.getRegistrantId())
+                .tradeDate(cashTradeCreate.getTradeDate())
+                .tradeNumber(cashTradeCreate.getTradeNumber())
+                .cashIndicator(cashTradeCreate.getCashIndicator())
+                .status(cashTradeCreate.getStatus())
+                .build();
     }
 }

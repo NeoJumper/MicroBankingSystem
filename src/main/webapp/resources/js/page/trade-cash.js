@@ -140,7 +140,7 @@ function showCashTradeResultModal(data){
     $('#result-modal-cash-trade-acc-id').text(data.accId);
     $('#result-modal-cash-trade-amount').text(comma(data.amount));  // 쉼표 추가
     $('#result-modal-cash-trade-balance').text(comma(data.balance));  // 쉼표 추가
-    $('#result-modal-cash-trade-registration-date').text(data.registrationDate.substring(0, 10));  // 날짜 부분만 표시
+    $('#result-modal-cash-trade-registration-date').text(data.tradeDate);  // 날짜 부분만 표시
     $('#result-modal-cash-trade-registrant-id').text(data.registrantId);  // 실제 담당자 이름이 필요하면 추가 처리 필요
     $('#result-modal-cash-trade-trade-type').text(data.tradeType);
 
