@@ -189,43 +189,7 @@
         FROM TRADE
         WHERE acc_id = #{accountId} AND registration_date = #{expireDate} AND trade_type = 'CLOSE'
     </select>
-    <insert id="insertTransfer" parameterType="TransferDetail">
-        INSERT INTO Trade
-        (
-            id,
-            registrant_id,
-            acc_id,
-            target_acc_id,
-            branch_id,
-            trade_date,
-            amount,
-            balance,
-            trade_type,
-            status,
-            cash_indicator,
-            description,
-            trade_number,
-            registration_date,
-            version
-        )
-        VALUES (
-            trade_seq.nextval,
-            #{registrantId},
-            #{accId},
-            #{targetAccId},
-            #{branchId},
-            #{tradeDate},
-            #{amount},
-            #{balance},
-            #{tradeType},
-            #{status},
-            #{cashIndicator},
-            #{description},
-            #{tradeNumber},
-            SYSTIMESTAMP,
-            1
-        )
-    </insert>
+
 
     <select id="getTradeDetailsByTradeNumber" parameterType="java.lang.Long" resultType="TransferDetail">
         SELECT
@@ -262,4 +226,47 @@
         SET status = 'CAN'
         WHERE trade_number = #{tradeNumber}
     </update>
+
+
+    <insert id="insertTrade" parameterType="TradeCreate">
+        INSERT INTO Trade
+        (
+        id,
+        registrant_id,
+        acc_id,
+        <if test="targetAccId != null and targetAccId != ''">
+        target_acc_id,
+        </if>
+        branch_id,
+        trade_date,
+        amount,
+        balance,
+        trade_type,
+        status,
+        cash_indicator,
+        description,
+        trade_number,
+        registration_date,
+        version
+        )
+        VALUES (
+        trade_seq.nextval,
+        #{registrantId},
+        #{accId},
+        <if test="targetAccId != null and targetAccId != ''">
+        #{targetAccId},
+        </if>
+        #{branchId},
+        #{tradeDate},
+        #{amount},
+        #{balance},
+        #{tradeType},
+        #{status},
+        #{cashIndicator},
+        #{description},
+        #{tradeNumber},
+        SYSTIMESTAMP,
+        1
+        )
+    </insert>
 </mapper>
