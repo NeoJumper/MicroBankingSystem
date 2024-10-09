@@ -127,21 +127,6 @@
         SELECT  trade_num_seq.NEXTVAL FROM dual
     </select>
 
-    <insert id="createCashTrade" parameterType="TradeDetail">
-        INSERT INTO Trade (id, registrant_id, acc_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, trade_number, registration_date, modification_date, modifier_id, version)
-        VALUES (trade_seq.nextval, #{registrantId}, #{accId}, #{branchId}, #{tradeDate}, #{amount}, #{balance}, #{tradeType}, #{status}, #{cashIndicator}, #{tradeNumber}, #{registrationDate}, #{modificationDate}, #{modifierId}, #{version})
-    </insert>
-
-    <update id="updateCashTradeBalance" parameterType="TradeDetail">
-        UPDATE Account
-        SET balance = #{balance},
-            modification_date = #{tradeDate},
-            modifier_id = #{registrantId},
-            version = version + 1
-        WHERE id = #{accId}
-    </update>
-
-
     <!--    해지 거래 등록-->
     <insert id="createCancelTrade" parameterType="CloseTrade">
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
@@ -244,7 +229,9 @@
         trade_type,
         status,
         cash_indicator,
+        <if test="description != null and description != ''">
         description,
+        </if>
         trade_number,
         registration_date,
         version
@@ -263,7 +250,9 @@
         #{tradeType},
         #{status},
         #{cashIndicator},
-        #{description},
+        <if test="description != null and description != ''">
+            #{description},
+        </if>
         #{tradeNumber},
         SYSTIMESTAMP,
         1

@@ -18,6 +18,7 @@ import com.kcc.banking.domain.interest.dto.request.RollbackPaymentStatus;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import com.kcc.banking.domain.interest.service.InterestService;
 import com.kcc.banking.domain.trade.dto.request.*;
+import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TransferDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -286,5 +287,43 @@ public class AccountTradeFacade {
         return Arrays.asList(withdrawalTrade, depositTrade);
     }
 
+
+    /**
+     * @Description
+     * 1. 거래 계좌 조회 + 거래 계좌 잔액 조회
+     * 2. 거래번호 조회
+     * 3. 거래내역 추가 + 계좌 잔액 변경
+     * 4. 상세보기 모달을 위한 거래내역 결과 데이터 반환
+     */
+    public TradeDetail createCashTrade(CashTradeCreate cashTradeCreate){
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+        // 거래 계좌 조회 + 거래 계좌 잔액 조회
+        AccountDetail cashTradeAccount = accountService.getAccountDetail(cashTradeCreate.getAccId());
+        BigDecimal cashTradeAccountBalance = cashTradeAccount.getBalance();
+
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+
+        // 현금 거래 내역 생성
+        TradeDetail tradeDetail = tradeService.createCashTrade(cashTradeCreate, currentData, cashTradeAccountBalance ,tradeNumber);
+
+        // 잔액 업데이트
+        accountService.updateAccountBalance(AccountBalanceUpdate.builder()
+                .targetAccId(cashTradeAccount.getId())
+                .modifierId(currentData.getEmployeeId())
+                .balance(tradeDetail.getBalance()) // 거래 후 잔액
+                .build()
+        );
+
+        return tradeDetail;
+    }
 
 }

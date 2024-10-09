@@ -25,11 +25,7 @@ public interface TradeMapper {
 
     List<TradeByCash> findTradeByCashList(BusinessDateAndEmployeeId businessDateAndEmployeeId);
 
-    int createCashTrade(TradeDetail tradeDetail);
-
     Long findNextTradeNumberVal();
-
-    int updateCashTradeBalance(TradeDetail tradeDetail);
 
     int createCancelTrade(CloseTrade closeTrade);
 
