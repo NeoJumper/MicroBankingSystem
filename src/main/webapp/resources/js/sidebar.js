@@ -7,7 +7,7 @@ headerMap.set("header-account-management", {
         "account-close",
         "account-close-cancel",
         "account-transfer",
-        "trade-cash",
+        "cash-trade",
         "trade-list"
     ],
     sub: {
@@ -133,7 +133,7 @@ function createAccountManagementSidebar(selectedSidebarMenu) {
             submenu: [
                 { name: '즉시 이체', url: '/page/employee/account-transfer' },
                 { name: '거래 내역', url: '/page/employee/trade-list' },
-                { name: '현금 입출금', url: '/page/employee/trade-cash' },
+                { name: '현금 입출금', url: '/page/employee/cash-trade' },
             ]
         }
     ];

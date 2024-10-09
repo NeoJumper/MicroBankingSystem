@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -15,15 +16,26 @@ public class TradeController {
     private final TradeService tradeService;
 
     @GetMapping("/trade-list")
-    public String tradeList(Model businessDay){
+    public String getTradeListPage(Model businessDay){
         String getBusinessDay = tradeService.getBusinessDay();
         System.out.println("tradeList Controller >>>>>>>>>>"+getBusinessDay);
         businessDay.addAttribute("businessDay", getBusinessDay);
         return("trade/trade-list");
     }
 
-    @GetMapping("/trade-cash")
-    public String employeeAccountTransfer() {
-        return "trade/trade-cash";
+    @GetMapping("/cash-trade")
+    public String getCashTradePage() {
+        return "trade/cash-trade";
+    }
+
+    @GetMapping("/account-transfer")
+    public String getAccountTransferPage() {
+        return "trade/account-transfer";
+    }
+
+    @GetMapping("/account-transfer-cancel")
+    public String getAccountTransferCancelPage(@RequestParam(value="tradeNumber", required = false) long tradeNumber, Model model) {
+        model.addAttribute("tradeNumber", tradeNumber);
+        return "trade/account-transfer-cancel";
     }
 }
