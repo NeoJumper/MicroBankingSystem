@@ -42,14 +42,20 @@ public class AccountRestController {
         return ResponseEntity.ok(accounts);
     }
 
-    // 상품테이블 정보 및 기존이율 가져오기
-    @GetMapping("/account/productInterest")
+    /**
+     * @Description
+     * - 상품테이블 정보 및 기존이율 가져오기
+     */
+
+    @GetMapping("/account/product-interest")
     public AccountProductInfo getProductInterest() {
         System.out.println("getAccountProductInfo" + accountService.getAccountProductInfo().getName());
         return accountService.getAccountProductInfo();
     }
-
-    // 계좌 개설하기
+    /**
+     * @Description
+     * - 계좌 개설
+     */
     @Transactional
     @PostMapping("/account/open")
     public ResponseEntity<String> openAccount(@RequestBody AccountCreate accountCreate) {
@@ -60,8 +66,10 @@ public class AccountRestController {
         return ResponseEntity.ok(accountCreate.getId());
 
     }
-    //AccountOpenResultOfModal
-
+    /**
+     * @Description
+     * - 계좌 개설 완료 시 개설된 계좌의 상세정보 조회
+     */
     // 계좌 정보 조회 API
     @GetMapping("/account/open/{accountId}")
     public ResponseEntity<AccountOpenResultOfModal> getAccountInfo(@PathVariable String accountId) {

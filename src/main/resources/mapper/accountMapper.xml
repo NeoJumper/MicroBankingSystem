@@ -63,7 +63,8 @@
     </select>
 
     <insert id="openAccount" parameterType="AccountCreate">
-        INSERT INTO Account (
+        INSERT INTO Account
+        (
             id,
             branch_id,
             customer_id,
@@ -78,28 +79,29 @@
 
             status,
             registration_date,
-            Trade_number,
+            trade_number,
             version
 
-        ) VALUES (
-                     #{id},
-                     #{branchId},
-                     #{customerId},
-                     #{productId},
-                     #{registrantId},
+        ) VALUES
+        (
+             #{id},
+             #{branchId},
+             #{customerId},
+             #{productId},
+             #{registrantId},
 
-                     SYSDATE,
-                     #{preferentialInterestRate},
-                     #{password},
-                     #{balance},
-                     #{startDate},
+             SYSDATE,
+             #{preferentialInterestRate},
+             #{password},
+             #{balance},
+             #{startDate},
 
-                     'OPN',
-                     SYSDATE,
-                     TRADE_SEQ.nextval,
-                     1
+             'OPN',
+             SYSTIMESTAMP,
+             TRADE_SEQ.nextval,
+             1
 
-                 )
+         )
     </insert>
 
 
@@ -147,7 +149,7 @@
         <result property="totalInterestRate" column="total_interest_rate" />
     </resultMap>
 
-    <select id="getAccountOpenResultOfModal" resultMap="AccountOpenModalResultMap">
+    <select id="findAccountOpenResultOfModal" resultMap="AccountOpenModalResultMap">
         SELECT
             a.id AS acc_id,
             a.password AS password,

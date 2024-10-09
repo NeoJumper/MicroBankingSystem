@@ -24,7 +24,6 @@ public class AccountService {
     private final AccountMapper accountMapper;
     private final BCryptPasswordEncoder passwordEncoder;
     private final CommonService commonService;
-    //private final TradeService tradeService;
 
     public RegistrantNameAndInfoAndDate getRegistrantInfo() {
         return commonService.getDateAndBranchIdAndEmpIdAndEmpName();
@@ -42,11 +41,17 @@ public class AccountService {
         return accountMapper.findAccountProductInfo();
     }
 
-    // 계좌 번호 생성 함수
+    /**
+     * @Description
+     * - 계좌 번호 생성 함수
+     *   (브랜치 번호 - 계좌번호 - 랜덤 번호)
+     *   (001 - 0000001 - 4256)
+     */
     public String generateAccountNumber(int branchNumber, int accountSeq) {
 
         String formattedBranchNumber = String.format("%03d", branchNumber);
         String formattedAccountSeq = String.format("%07d", accountSeq);
+
         Random random = new Random();
         int randomDigit = random.nextInt(10);
 
@@ -97,7 +102,7 @@ public class AccountService {
     }
 
     public AccountOpenResultOfModal getAccountOpenResultOfModal(String accId) {
-        return accountMapper.getAccountOpenResultOfModal(accId);
+        return accountMapper.findAccountOpenResultOfModal(accId);
     }
 
     public List<AccountDetailForInterest> getAccountListByBranchId(Long branchId) {
