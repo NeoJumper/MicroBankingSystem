@@ -5,6 +5,7 @@
 <mapper namespace="com.kcc.banking.domain.account_close.mapper.AccountCloseMapper">
 
 
+
     <resultMap id="closeAccountMap" type="CloseAccount">
         <id column="account_id" property="accountId" />
         <result column="account_status" property="accountStatus" />
@@ -64,19 +65,6 @@
         WHERE
             id = #{id}
     </update>
-
-    <!--  해지 취소 매핑  -->
-    <!--  이자 테이블 되돌리기  -->
-    <select id="rollbackInterestSum" parameterType="AccountIdWithExpireDate" resultMap="interestSumMap">
-        SELECT a.id AS account_id,
-               sum(i.amount) AS amount_sum
-        FROM Account a
-                 JOIN Interest i ON  i.acc_id = a.id
-        WHERE a.id = #{accountId}
-          AND i.modifier_date = #{expireDate}
-        GROUP BY a.id
-    </select>
-
 
     <select id="findExpireDateById" parameterType="java.lang.String" resultType="java.sql.Timestamp">
         SELECT expire_date

@@ -3,6 +3,7 @@ package com.kcc.banking.domain.interest.service;
 import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.account.dto.response.AccountDetailForInterest;
 import com.kcc.banking.domain.account.service.AccountService;
+import com.kcc.banking.domain.account_close.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.account_close.dto.request.PaymentStatus;
 import com.kcc.banking.domain.account_close.dto.request.RollbackPaymentStatus;
 import com.kcc.banking.domain.account_close.dto.response.InterestSum;
@@ -47,5 +48,9 @@ public class InterestService {
 
     public int updatePaymentStatus(PaymentStatus paymentStatus) {
         return interestMapper.updatePaymentStatus(paymentStatus);
+    }
+
+    public InterestSum getRollbackInterestSum(AccountIdWithExpireDate awe) {
+        return interestMapper.findRollbackInterestSum(awe);
     }
 }

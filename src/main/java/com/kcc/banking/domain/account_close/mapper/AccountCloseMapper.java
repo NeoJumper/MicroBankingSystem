@@ -12,16 +12,12 @@ import java.sql.Timestamp;
 public interface AccountCloseMapper {
 
     int updateStatus(AccountStatus accountStatus);
-
-    int addCancelTrade(CloseTrade closeTrade);
-
-
     CloseAccount findCloseAccount(String accountId);
-
     Timestamp findExpireDateById(String id);
 
-    InterestSum rollbackInterestSum(AccountIdWithExpireDate accountIdWithExpireDate);
 
+
+    int addCancelTrade(CloseTrade closeTrade);
     BigDecimal rollbackAmount(AccountIdWithExpireDate accountIdWithExpireDate);
 
 }

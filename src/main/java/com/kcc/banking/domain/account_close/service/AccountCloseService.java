@@ -137,7 +137,9 @@ public class AccountCloseService {
         BigDecimal productTaxRate = closeAccount.getProductTaxRate();
         // 총 이자액
 //         BigDecimal amountSum = Optional.ofNullable(accountCloseMapper.rollbackInterestSum(awe).getAmountSum()).orElse(new BigDecimal("0"));
-        BigDecimal amountSum = accountCloseMapper.rollbackInterestSum(awe) == null ? new BigDecimal("0") : accountCloseMapper.rollbackInterestSum(awe).getAmountSum();
+
+        InterestSum rollbackInterestSum = interestService.getRollbackInterestSum(awe);
+        BigDecimal amountSum = rollbackInterestSum == null ? new BigDecimal("0") : rollbackInterestSum.getAmountSum();
 
         // 세후이자 + 잔액
         BigDecimal rollbackAmount = Optional.ofNullable(accountCloseMapper.rollbackAmount(awe)).orElse(new BigDecimal("0"));

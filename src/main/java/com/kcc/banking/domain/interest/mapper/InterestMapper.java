@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.interest.mapper;
 
+import com.kcc.banking.domain.account_close.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.account_close.dto.request.PaymentStatus;
 import com.kcc.banking.domain.account_close.dto.request.RollbackPaymentStatus;
 import com.kcc.banking.domain.account_close.dto.response.InterestSum;
@@ -11,7 +12,11 @@ public interface InterestMapper {
 
     void createInterest(InterestCreate interestCreate);
 
+    // 이자 합계
     InterestSum findInterestSum(String accountId);
+
+    // 롤백해야 할 이자 합계
+    InterestSum findRollbackInterestSum(AccountIdWithExpireDate accountIdWithExpireDate);
 
     int updatePaymentStatus(PaymentStatus paymentStatus);
 
