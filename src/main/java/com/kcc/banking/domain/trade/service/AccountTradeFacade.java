@@ -35,7 +35,7 @@ public class AccountTradeFacade {
     private final TradeService tradeService;
     private final CommonService commonService;
 
-    //계좌해지신청
+    //  계좌해지신청
     @Transactional(rollbackFor = Exception.class)
     public String addCloseTrade(StatusWithTrade statusWithTrade) {
         StringBuilder resultText = new StringBuilder("SUCCESS");
@@ -72,7 +72,7 @@ public class AccountTradeFacade {
 
 
 
-    //    해지 취소 되돌리기
+    //  해지 취소 되돌리기
     @Transactional(rollbackFor = Exception.class)
     public CloseCancelDetail rollbackAccountCancel(String accId){
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
@@ -245,6 +245,11 @@ public class AccountTradeFacade {
         return Arrays.asList(withdrawalTrade, depositTrade);
     }
 
+
+    //  계좌 이체 취소
+    public void updateCancelTransferCAN(TradeCancelRequest tradeCancelRequest) {
+
+    }
 
     /**
      * @Description

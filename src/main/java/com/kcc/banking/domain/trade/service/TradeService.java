@@ -92,16 +92,6 @@ public class TradeService {
         }
         return tradeDetails;
     }
-    public List<TransferDetail> updateCancelTransferCAN(TradeCancelRequest tradeCancelRequest) {
-        Long tradeNumber = Long.valueOf(tradeCancelRequest.getTradeNumber());
-        // 업데이트 구문
-
-        int transferUpdateCAN = tradeMapper.updateTradeStatusToCancel(tradeNumber);
-        if(transferUpdateCAN == 0){
-            throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
-        }
-        return getTradeByTradeNumber(tradeNumber);
-    }
 
     /**
      * @Description
