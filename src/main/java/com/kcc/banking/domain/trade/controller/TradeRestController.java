@@ -108,8 +108,8 @@ public class TradeRestController {
     }
 
     @PostMapping("/close-cancel-trade")
-    public void cancelCloseTrade(@RequestBody AccountIdWithExpireDate accountIdWithExpireDate) {
+    public ResponseEntity<CloseCancelDetail> cancelCloseTrade(@RequestBody AccountIdWithExpireDate accountIdWithExpireDate) {
 
-        accountTradeFacade.rollbackAccountCancel(accountIdWithExpireDate.getAccountId());
+        return ResponseEntity.ok().body(accountTradeFacade.rollbackAccountCancel(accountIdWithExpireDate.getAccountId()));
     }
 }

@@ -131,7 +131,7 @@
     <select id="rollbackAmount" parameterType="AccountIdWithExpireDate" resultType="java.math.BigDecimal">
         SELECT amount
         FROM TRADE
-        WHERE acc_id = #{accountId} AND registration_date = #{expireDate} AND trade_type = 'CLOSE'
+        WHERE acc_id = #{accountId} AND trade_date = #{expireDate} AND trade_type = 'CLOSE'
     </select>
 
 

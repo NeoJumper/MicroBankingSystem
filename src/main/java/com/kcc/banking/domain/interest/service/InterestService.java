@@ -48,6 +48,7 @@ public class InterestService {
         return interestMapper.rollbackPaymentStatus(rollbackPaymentStatus);
     }
 
+    //  되돌려야할 이자액 합계
     public InterestSum getRollbackInterestSum(AccountIdWithExpireDate awe) {
         return interestMapper.findRollbackInterestSum(awe);
     }
