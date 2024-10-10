@@ -14,7 +14,6 @@ import com.kcc.banking.domain.account.mapper.AccountMapper;
 //import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
 
@@ -47,51 +46,17 @@ public class AccountService {
      *   (브랜치 번호 - 계좌번호 - 랜덤 번호)
      *   (001 - 0000001 - 4256)
      */
-    public String generateAccountNumber(int branchNumber, int accountSeq) {
+    public String generateAccountNumber(Long branchNumber, int accountSeq) {
 
         String formattedBranchNumber = String.format("%03d", branchNumber);
         String formattedAccountSeq = String.format("%07d", accountSeq);
 
         Random random = new Random();
-        int randomDigit = random.nextInt(10);
+        int randomFourDigit = 1000 + random.nextInt(9000);
 
-        return formattedBranchNumber + "-" + formattedAccountSeq + "-" + randomDigit;
+        return formattedBranchNumber + "-" + formattedAccountSeq + "-" + randomFourDigit;
     }
 
-
-    /*
-     * 계좌 개설 함수
-     *
-     * Account insert
-     * Trade insert
-     *
-     * */
-    public void openAccount(AccountCreate accountCreate) {
-        int customerSeq = accountMapper.getAccountSeq();
-
-        // 버전 update 관리
-        CurrentData rnid = commonService.getCurrentData();
-        accountCreate.setStartDate(Timestamp.valueOf(rnid.getCurrentBusinessDate()));
-        accountCreate.setBranchId(Integer.parseInt(String.valueOf(rnid.getBranchId())));
-        accountCreate.setRegistrantId(rnid.getEmployeeId());
-
-
-        int branchNumber = accountCreate.getBranchId();
-        // 계좌 번호 생성
-        String accountNumber = generateAccountNumber(branchNumber, customerSeq);
-        accountCreate.setId(accountNumber);
-
-        //DB에 계좌 정보 저장
-//        accountMapper.openAccount(accountCreate);
-//        TradeCreate tradeCreate = TradeCreate.builder()
-//                .accId(accountNumber)
-//                .tradeType("OPEN")
-//                .amount(accountCreate.getBalance())
-//                .build();
-//
-//        tradeService.createCashTrade(tradeCreate);
-
-    }
 
     public List<AccountOfModal> getAccountsBySearchOption(SearchAccountOfModal searchAccountOfModal) {
         return accountMapper.findAccountsBySearchOption(searchAccountOfModal);
@@ -166,17 +131,40 @@ public class AccountService {
 
         return accountMapper.partialUpdateAccount(accountUpdate);
     }
+
     /**
-     * @Description
-     * 잔액만을 변경
+     * @Description 잔액만을 변경
      * 현금 거래에 사용
      */
     public int updateByCashTrade(AccountDetail cashTradeAccount, CurrentData currentData, BigDecimal afterTradeBalance) {
-        AccountUpdate accountUpdate = AccountUpdate.builder()
-                .targetAccId(cashTradeAccount.getId())
-                .modifierId(currentData.getEmployeeId())
-                .balance(afterTradeBalance) // 거래 후 잔액
+        return 0;
+    }
+
+    public int getAccountSeq() {
+        return accountMapper.getAccountSeq();
+    }
+
+    public void createAccount(AccountOpen accountOpen, Long tradeNumber, CurrentData currentData) {
+
+        int accountSeq = accountMapper.getAccountSeq();
+        String accountId = generateAccountNumber(accountOpen.getBranchId(), accountSeq);
+
+        AccountCreate accountCreate = AccountCreate.builder()
+                .id(accountId)
+                .openDate(currentData.getCurrentBusinessDate())
+                .startDate(currentData.getCurrentBusinessDate())
+                .registrantId(currentData.getEmployeeId())
+                .balance(accountOpen.getBalance())
+                .branchId(currentData.getBranchId())
+                .productId(accountOpen.getProductId())
+                .customerId(accountOpen.getCustomerId())
+                .preferentialInterestRate(accountOpen.getPreferentialInterestRate())
+                .password(passwordEncoder.encode(accountOpen.getPassword()))
+                .status("OPN")
+                .tradeNumber(tradeNumber)
                 .build();
-        return accountMapper.partialUpdateAccount(accountUpdate);
+
+        accountMapper.openAccount(accountCreate);
+        accountOpen.setId(accountId);
     }
 }

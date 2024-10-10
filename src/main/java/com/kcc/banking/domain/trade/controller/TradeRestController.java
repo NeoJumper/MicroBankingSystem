@@ -90,11 +90,13 @@ public class TradeRestController {
         System.out.println("TradeDetail::"+tradeDetails);
         return ResponseEntity.ok(tradeDetails);
     }
+
     // 취소 신청 - 실제 status 변경
     @PostMapping("/account-transfer-cancel")
     public ResponseEntity<List<TransferDetail>> updateCancelTransferCAN(@RequestBody TradeCancelRequest tradeCancelRequest) {
-        List<TransferDetail> tradeDetails = tradeService.updateCancelTransferCAN(tradeCancelRequest);
-        return ResponseEntity.ok(tradeDetails);
+        accountTradeFacade.updateCancelTransferCAN(tradeCancelRequest);
+
+        return ResponseEntity.ok(null);
     }
 
     @PostMapping("/close-trade")

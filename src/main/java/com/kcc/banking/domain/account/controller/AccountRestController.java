@@ -1,14 +1,11 @@
 package com.kcc.banking.domain.account.controller;
 
-import com.kcc.banking.domain.account.dto.request.PasswordValidation;
-import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
-import com.kcc.banking.domain.account.dto.request.AccountCreate;
+import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountOpenResultOfModal;
 import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
-import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.trade.service.AccountTradeFacade;
 import lombok.RequiredArgsConstructor;
@@ -59,12 +56,10 @@ public class AccountRestController {
      */
     @Transactional
     @PostMapping("/api/employee/account/open")
-    public ResponseEntity<String> openAccount(@RequestBody AccountCreate accountCreate) {
+    public ResponseEntity<String> openAccount(@RequestBody AccountOpen accountOpen) {
 
-        System.out.println("accountCreate.getPreferentialInterestRate();" + accountCreate.getPreferentialInterestRate());
-        accountService.openAccount(accountCreate);
-        System.out.println(accountCreate.getId() + "accountCreate>>>>>>>>>>>>> getId();");
-        return ResponseEntity.ok(accountCreate.getId());
+        String accId = accountTradeFacade.openAccount(accountOpen);
+        return ResponseEntity.ok(accId);
 
     }
     /**

@@ -2,9 +2,7 @@ package com.kcc.banking.domain.trade.service;
 
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
-import com.kcc.banking.domain.account.dto.request.AccountUpdate;
-import com.kcc.banking.domain.account.dto.request.PasswordValidation;
-import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
@@ -35,7 +33,40 @@ public class AccountTradeFacade {
     private final TradeService tradeService;
     private final CommonService commonService;
 
-    //계좌해지신청
+    /**
+     *   @Description - 계좌 개설
+     *
+     *   1. 계좌 해지 거래 내역 생성
+     *   2. 계좌 잔액 및 상태 변경
+     *   3. 이자 지급일 및 상태 변경
+     */
+    public String openAccount(AccountOpen accountOpen) {
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+        // 계좌 개설
+        accountService.createAccount(accountOpen, tradeNumber, currentData);
+
+        // 계좌 개설 거래내역 생성
+        tradeService.createOpenTrade(accountOpen,currentData, tradeNumber);
+
+
+        return accountOpen.getId();
+    }
+
+    /**
+     *   @Description - 계좌 해지
+     *
+     *   1. 계좌 해지 거래 내역 생성
+     *   2. 계좌 잔액 및 상태 변경
+     *   3. 이자 지급일 및 상태 변경
+     */
     @Transactional(rollbackFor = Exception.class)
     public String addCloseTrade(StatusWithTrade statusWithTrade) {
         StringBuilder resultText = new StringBuilder("SUCCESS");
@@ -71,8 +102,13 @@ public class AccountTradeFacade {
     }
 
 
-
-    //    해지 취소 되돌리기
+    /**
+     *   @Description - 계좌 해지 취소
+     *
+     *   1. 계좌 해지 취소 거래 내역 생성
+     *   2. 계좌 잔액 및 상태 변경(Rollback)
+     *   3. 이자 지급일 및 상태 변경(Rollback)
+     */
     @Transactional(rollbackFor = Exception.class)
     public CloseCancelDetail rollbackAccountCancel(String accId){
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
@@ -137,6 +173,12 @@ public class AccountTradeFacade {
     }
 
 
+    /**
+     *   @Description - 해지 계좌 내역 조회
+     *
+     *   1. 해지된 계좌 정보
+     *   2. 해지 계좌 이자 계산 정보
+     */
     public CloseAccountTotal findCloseAccountTotal(String accountId) {
 
         InterestSum interestSum = interestService.getInterestSum(accountId);
@@ -162,7 +204,8 @@ public class AccountTradeFacade {
     }
 
     /**
-     * @Description
+     * @Description - 계좌 이체
+     *
      * 1. 입출금 계좌 조회
      * 2. 예외 처리
      *      - 출금 계좌가 없을 때
@@ -247,7 +290,16 @@ public class AccountTradeFacade {
 
 
     /**
-     * @Description
+     *   @Description - 계좌 이체 취소
+     *
+     */
+    public void updateCancelTransferCAN(TradeCancelRequest tradeCancelRequest) {
+
+    }
+
+    /**
+     * @Description - 현금 거래
+     *
      * 1. 거래 계좌 조회 + 거래 계좌 잔액 조회
      * 2. 거래번호 조회
      * 3. 거래내역 추가 + 계좌 잔액 변경
