@@ -113,7 +113,6 @@ function checkAccountId() {
 
 function closeAccount() {
     var accountNumber = $('#account-number').val();
-    var totalAmount = Number(accountData.amountSum) + Number(accountData.accountBal);
     // accountId가 비어있지 않은지 확인
     if (accountNumber) {
         console.log("accountClose Start")
@@ -128,10 +127,6 @@ function closeAccount() {
                     // text: "비밀번호 인증 성공",
                     icon: "success",
                 });
-                const registrationDate = new Date(accountData.amountDate);
-                const now = new Date();
-                const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                const totalPayment = accountData.accountBal + accountData.amountSum;
                 //상세 모달창 열어주기
                 $('#transfer-result-modal').modal('show');
 
@@ -160,6 +155,9 @@ function closeAccount() {
             $('#product-name').val("");
             $('#customer-name').val("");
             $('#account-pw-input').val("");
+            // 버튼 비활성화
+            $('#submit-btn').attr('style', 'background-color: gray; opacity: 0.5;');
+            $('#submit-btn').prop('disabled', true);
         });
     } else {
         // accountId가 없을 경우 경고
