@@ -14,13 +14,15 @@ public class AccountUpdate {
     private Long modifierId;
     private BigDecimal balance;
     private String status;
+    private String expireDate;
 
 
     @Builder
-    public AccountUpdate(String targetAccId, Long modifierId, BigDecimal balance, String status) {
+    public AccountUpdate(String targetAccId, Long modifierId, BigDecimal balance, String status, String expireDate) {
         this.modifierId = modifierId;
         this.balance = balance;
         this.targetAccId = targetAccId;
         this.status = status;
+        this.expireDate = expireDate;
     }
 }

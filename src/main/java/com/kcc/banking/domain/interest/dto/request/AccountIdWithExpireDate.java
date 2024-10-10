@@ -8,10 +8,10 @@ import java.sql.Timestamp;
 @Getter
 public class AccountIdWithExpireDate {
     private String accountId;
-    private Timestamp expireDate;
+    private String expireDate;
 
     @Builder
-    public AccountIdWithExpireDate(String accountId, Timestamp expireDate) {
+    public AccountIdWithExpireDate(String accountId, String expireDate) {
         this.accountId = accountId;
         this.expireDate = expireDate;
     }
