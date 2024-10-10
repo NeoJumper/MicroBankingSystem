@@ -2,6 +2,7 @@ package com.kcc.banking.domain.trade.service;
 
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
+import com.kcc.banking.domain.account.dto.request.AccountOpen;
 import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
@@ -185,10 +186,6 @@ public class TradeService {
         else if(cashTradeCreate.getTradeType().equals("DEPOSIT")){
             tradeCreate.setBalance(cashTradeAccountBalance.add(cashTradeCreate.getAmount()));
         }
-        // 개설일 경우 (현금입금)
-        else if(cashTradeCreate.getTradeType().equals("OPEN")){
-            tradeCreate.setBalance(cashTradeAccountBalance.add(cashTradeCreate.getAmount()));
-        }
 
         tradeMapper.insertTrade(tradeCreate);
 
@@ -228,6 +225,24 @@ public class TradeService {
                 .tradeDate(currentData.getCurrentBusinessDate()).build();
 
         return tradeMapper.insertTrade(tradeCreate);
+    }
+
+    public void createOpenTrade(AccountOpen accountOpen, CurrentData currentData, Long tradeNumber) {
+        TradeCreate tradeCreate = TradeCreate.builder()
+                .accId(accountOpen.getId())
+                .amount(accountOpen.getBalance())  // 거래 금액
+                .balance(accountOpen.getBalance())  // 거래 금액
+                .tradeType("OPEN") // 유형: 개설
+                .branchId(currentData.getBranchId())  // 지점 번호
+                .registrantId(currentData.getEmployeeId())  // 등록자 번호
+                .tradeDate(currentData.getCurrentBusinessDate())  // 거래 일자(영업일)
+                .tradeNumber(tradeNumber)  // 거래 번호
+                //.description(null)  비고 없음(?)
+                .cashIndicator("TRUE")  // 현금 여부 : TRUE
+                .status("NOR") // 거래 상태: 정상
+                .build();
+
+        tradeMapper.insertTrade(tradeCreate);
     }
 }
 

@@ -2,10 +2,7 @@ package com.kcc.banking.domain.trade.service;
 
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
-import com.kcc.banking.domain.account.dto.request.AccountCreate;
-import com.kcc.banking.domain.account.dto.request.AccountUpdate;
-import com.kcc.banking.domain.account.dto.request.PasswordValidation;
-import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
@@ -24,7 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -44,31 +40,24 @@ public class AccountTradeFacade {
      *   2. 계좌 잔액 및 상태 변경
      *   3. 이자 지급일 및 상태 변경
      */
-    public void openAccount(AccountCreate accountCreate) {
-        int customerSeq = accountMapper.getAccountSeq();
+    public String openAccount(AccountOpen accountOpen) {
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
-        // 버전 update 관리
-        CurrentData rnid = commonService.getCurrentData();
-        accountCreate.setStartDate(Timestamp.valueOf(rnid.getCurrentBusinessDate()));
-        accountCreate.setBranchId(Integer.parseInt(String.valueOf(rnid.getBranchId())));
-        accountCreate.setRegistrantId(rnid.getEmployeeId());
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+        // 계좌 개설
+        accountService.createAccount(accountOpen, tradeNumber, currentData);
+
+        // 계좌 개설 거래내역 생성
+        tradeService.createOpenTrade(accountOpen,currentData, tradeNumber);
 
 
-        int branchNumber = accountCreate.getBranchId();
-        // 계좌 번호 생성
-        String accountNumber = generateAccountNumber(branchNumber, customerSeq);
-        accountCreate.setId(accountNumber);
-
-        //DB에 계좌 정보 저장
-//        accountMapper.openAccount(accountCreate);
-//        TradeCreate tradeCreate = TradeCreate.builder()
-//                .accId(accountNumber)
-//                .tradeType("OPEN")
-//                .amount(accountCreate.getBalance())
-//                .build();
-//
-//        tradeService.createCashTrade(tradeCreate);
-
+        return accountOpen.getId();
     }
 
     /**

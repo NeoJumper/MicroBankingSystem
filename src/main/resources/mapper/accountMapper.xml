@@ -70,13 +70,11 @@
             customer_id,
             product_id,
             registrant_id,
-
             start_date,
             preferential_interest_rate,
             password,
             balance,
             open_date,
-
             status,
             registration_date,
             trade_number,
@@ -89,16 +87,14 @@
              #{customerId},
              #{productId},
              #{registrantId},
-
-             SYSDATE,
+             #{startDate},
              #{preferentialInterestRate},
              #{password},
              #{balance},
-             #{startDate},
-
+             #{openDate},
              'OPN',
              SYSTIMESTAMP,
-             TRADE_SEQ.nextval,
+             #{tradeNumber},
              1
 
          )
