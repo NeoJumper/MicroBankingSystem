@@ -20,7 +20,7 @@ function handleTransferData() {
     if (tradeNumber) {
         $.ajax({
             type: 'GET',
-            url: '/api/employee/account-transfer/cancel/' + tradeNumber,
+            url: '/api/employee/account-transfer-cancel/' + tradeNumber,
             success: function (response) {
                 console.log(response);
                 // 응답 데이터를 처리해서 테이블에 값 설정
@@ -95,7 +95,7 @@ function cancelTransfer(){
 
     if(tradeNumber){
         $.ajax({
-            url: '/api/employee/account-transfer/cancel',
+            url: '/api/employee/account-transfer-cancel',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({

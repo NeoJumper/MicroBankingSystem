@@ -5,23 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-
 @NoArgsConstructor
 @Getter
 @Setter
-public class PaymentStatus {
+public class PaymentStatusRollback {
     private long branchId;
     private long modifierId;
     private String accId;
-    private String payDate;
-
+    private String expireDate;
 
     @Builder
-    public PaymentStatus(long branchId, String payDate, long modifierId, String accId) {
+    public PaymentStatusRollback(long branchId, long modifierId, String accId, String expireDate) {
         this.branchId = branchId;
-        this.payDate = payDate;
         this.modifierId = modifierId;
         this.accId = accId;
+        this.expireDate = expireDate;
     }
 }

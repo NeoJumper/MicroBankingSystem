@@ -6,8 +6,8 @@ import com.kcc.banking.domain.account.dto.response.AccountDetailForInterest;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
-import com.kcc.banking.domain.interest.dto.request.PaymentStatus;
-import com.kcc.banking.domain.interest.dto.request.RollbackPaymentStatus;
+import com.kcc.banking.domain.interest.dto.request.PaymentStatusRollback;
+import com.kcc.banking.domain.interest.dto.request.PaymentStatusUpdate;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.interest.dto.request.InterestCreate;
@@ -36,6 +36,12 @@ public class InterestService {
 
         interestCreateList.forEach(interestMapper::createInterest);
     }
+
+
+    /**
+     *  @Description
+     *  세전 이자액 합계(해지 시 사용)
+     */
     public InterestSum getInterestSum(String accountId){
         Optional<InterestSum> optInterestSum = Optional.ofNullable(interestMapper.findInterestSum(accountId));
 
@@ -44,23 +50,41 @@ public class InterestService {
                 .amountSum(new BigDecimal("0")).build());
     }
 
-    public int rollbackPaymentStatus(RollbackPaymentStatus rollbackPaymentStatus) {
-        return interestMapper.rollbackPaymentStatus(rollbackPaymentStatus);
+    /**
+     *  @Description
+     *  세전 이자액 합계(해지 취소 시 사용)
+     */
+    public InterestSum getPreTaxInterestSum(AccountIdWithExpireDate awe) {
+        return interestMapper.findPreTaxInterestSum(awe);
     }
 
-    //  되돌려야할 이자액 합계
-    public InterestSum getRollbackInterestSum(AccountIdWithExpireDate awe) {
-        return interestMapper.findRollbackInterestSum(awe);
-    }
-
-    public int updatePaymentStatus(StatusWithTrade statusWithTrade, CurrentData currentData) {
-        PaymentStatus paymentStatus = PaymentStatus.builder()
+    /**
+     *  @Description
+     *  해지에 의한 이자 테이블 상태 및 지급일 변경
+     */
+    public int updateByClose(StatusWithTrade statusWithTrade, CurrentData currentData) {
+        PaymentStatusUpdate paymentStatusUpdate = PaymentStatusUpdate.builder()
                 .branchId(currentData.getBranchId())
                 .payDate(currentData.getCurrentBusinessDate())
                 .modifierId(currentData.getEmployeeId())
                 .accId(statusWithTrade.getAccId())
                 .build();
 
-        return interestMapper.updatePaymentStatus(paymentStatus);
+        return interestMapper.updateByClose(paymentStatusUpdate);
+    }
+
+    /**
+     *  @Description
+     *  해지 취소에 의한 이자 테이블 상태 및 지급일 변경
+     */
+    public int updateByCloseCancel(String accId, CurrentData currentData, String expireDate) {
+
+        PaymentStatusRollback paymentStatusRollback = PaymentStatusRollback.builder()
+                .branchId(currentData.getBranchId())
+                .modifierId(currentData.getEmployeeId())
+                .accId(accId)
+                .expireDate(expireDate).build();
+
+        return interestMapper.updateByCloseCancel(paymentStatusRollback);
     }
 }

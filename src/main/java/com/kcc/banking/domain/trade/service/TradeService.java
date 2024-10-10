@@ -77,8 +77,8 @@ public class TradeService {
      * @Description
      *
      */
-    public BigDecimal rollbackAmount(AccountIdWithExpireDate awe) {
-        return tradeMapper.rollbackAmount(awe);
+    public BigDecimal getPaidAmount(AccountIdWithExpireDate awe) {
+        return tradeMapper.findPaidAmount(awe);
     }
 
     public Long getNextTradeNumberVal() {
