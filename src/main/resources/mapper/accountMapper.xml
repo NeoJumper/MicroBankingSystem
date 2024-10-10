@@ -216,24 +216,6 @@
         WHERE ac.branch_id = #{branchId}
     </select>
 
-    <!--    계좌 상태 변경-->
-    <update id="updateStatus" parameterType="AccountStatus">
-        UPDATE ACCOUNT
-        SET
-        status = #{status},
-        balance = #{balance},
-        modification_date = SYSDATE,
-        modifier_id = #{modifierId},
-        version = version + 1
-        <if test="businessDay != null">
-            , expire_date = #{businessDay}
-        </if>
-        <if test="businessDay == null">
-            , expire_date = null
-        </if>
-        WHERE
-        id = #{id}
-    </update>
 
     <!--    해지 대상 계좌 상태 조회-->
     <resultMap id="closeAccountMap" type="CloseAccount">
@@ -268,18 +250,21 @@
     </select>
 
     <!-- 계좌 해지일 조회 -->
-    <select id="findExpireDateById" parameterType="java.lang.String" resultType="java.sql.Timestamp">
+    <select id="findExpireDateById" parameterType="java.lang.String">
         SELECT expire_date
         FROM ACCOUNT
         WHERE id = #{id}
     </select>
     <!-- 계좌 잔액 변경 -->
-    <update id="updateAccountStatusAndBalance" parameterType="AccountUpdate">
+    <update id="partialUpdateAccount" parameterType="AccountUpdate">
         UPDATE Account
         SET
         balance = #{balance},
         <if test="status != null and !status.equals('')">
             status =  #{status},
+        </if>
+        <if test="expireDate != null and !expireDate.equals('')">
+            expire_date =  #{expireDate},
         </if>
         modification_date = SYSTIMESTAMP,
         modifier_id = #{modifierId},

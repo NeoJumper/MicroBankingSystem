@@ -114,7 +114,7 @@ public class AccountService {
         return accountMapper.findCloseAccount(accountId);
     }
 
-    public Timestamp getExpireDateById(String accId) {
+    public String getExpireDateById(String accId) {
         return accountMapper.findExpireDateById(accId);
     }
 
@@ -124,7 +124,7 @@ public class AccountService {
      * 이체, 현금, 거래에 사용
      */
     public void updateBalance(AccountUpdate accountUpdate) {
-        accountMapper.updateAccountStatusAndBalance(accountUpdate);
+        accountMapper.partialUpdateAccount(accountUpdate);
     }
 
     public int updateByClose(StatusWithTrade statusWithTrade, CurrentData currentData) {
@@ -133,9 +133,10 @@ public class AccountService {
                 .status(statusWithTrade.getStatus())
                 .modifierId(currentData.getEmployeeId())
                 .balance(BigDecimal.valueOf(0))
+                .expireDate(currentData.getCurrentBusinessDate())
                 .build();
 
-        return accountMapper.updateAccountStatusAndBalance(accountUpdate);
+        return accountMapper.partialUpdateAccount(accountUpdate);
     }
 
     public int updateByCloseCancel(String accId, CurrentData currentData, BigDecimal balance) {
@@ -146,7 +147,7 @@ public class AccountService {
                 .modifierId(currentData.getEmployeeId())
                 .balance(balance).build();
 
-        return accountMapper.updateAccountStatusAndBalance(accountUpdate);
+        return accountMapper.partialUpdateAccount(accountUpdate);
 
     }
 }

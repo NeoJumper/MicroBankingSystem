@@ -4,11 +4,9 @@ import com.kcc.banking.domain.account.dto.request.AccountUpdate;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
 import com.kcc.banking.domain.account.dto.response.*;
-import com.kcc.banking.domain.account.dto.request.AccountStatus;
 import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -39,9 +37,9 @@ public interface AccountMapper {
     CloseAccount findCloseAccount(String accountId);
 
     // 계좌 해지일 조회
-    Timestamp findExpireDateById(String id);
+    String findExpireDateById(String id);
 
     // 계좌 잔액 업데이트
-    int updateAccountStatusAndBalance(AccountUpdate accountUpdate);
+    int partialUpdateAccount(AccountUpdate accountUpdate);
 
 }

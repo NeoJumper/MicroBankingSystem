@@ -14,10 +14,10 @@ public class RollbackPaymentStatus {
     private long branchId;
     private long modifierId;
     private String accId;
-    private Timestamp expireDate;
+    private String expireDate;
 
     @Builder
-    public RollbackPaymentStatus(long branchId, long modifierId, String accId, Timestamp expireDate) {
+    public RollbackPaymentStatus(long branchId, long modifierId, String accId, String expireDate) {
         this.branchId = branchId;
         this.modifierId = modifierId;
         this.accId = accId;

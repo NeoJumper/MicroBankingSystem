@@ -107,7 +107,7 @@ public class AccountTradeFacade {
         }
 
         // 계좌 해지 날짜
-        Timestamp expireDate = accountService.getExpireDateById(accId);
+        String expireDate = accountService.getExpireDateById(accId);
 
         System.out.println("expireDate ===================!! 컨트롤러 안에서 해지일 " + expireDate);
 
