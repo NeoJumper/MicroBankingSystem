@@ -63,14 +63,14 @@ function handleHeaderAndSidebar(roles) {
             // 추가 작업 수행
             $('#' + selectedHeaderMenu  + ' > a').css({
                 'background-color': 'white',
-                'color': '#0079D4'
+                'color': '#0079D4',
             });
             console.log(selectedSidebarMenu);
             $('#sidebar-' + selectedSidebarMenu + ' > a').css({
-                'background-color' : '#073082',
+                'background-color' : '#0079D4',
                 'color' : 'white',
-                'font-weight' : 'bold'
             });
+
         })
         .catch((error) => {
             // 오류 처리

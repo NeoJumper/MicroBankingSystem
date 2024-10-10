@@ -13,25 +13,26 @@
 <div id="customHeader">
   <div id="informationHeader">
     <div id="imgContainer">
-      <img  src="/resources/assets/kcc-logo.png" alt="Logo" id="header-logo-img"  />
-
+      <img  src="/resources/assets/neobank-logo.png" alt="Logo" id="header-logo-img"  />
     </div>
-    <div id="userInfoHeader">
-      <div id="systemName">Micro Banking System</div>
-      <div id="systemInfo">
-        <div id="user-roles"></div>
-        <div id="user-branch-name"></div>
-        <div id="user-name"></div>
-        <div id="logoutButton"><a href="/api/common/logout">로그아웃</a></div>
-      </div>
-    </div>
-    <div id="business-day-header">
+    <div id="systemName">네오은행</div>
+    <div id="colContianer">
+      <div id="business-day-header">
       <div id="business-day-date"></div>
       <div id="business-day-status">
         <span></span>
       </div>
     </div>
-  </div>
+      <div id="userInfoHeader">
+        <div id="systemInfo">
+          <div id="user-branch-name"></div>
+          <div id="user-roles"></div>
+          <div id="user-name"></div>
+          <div id="logoutButton"><a href="/api/common/logout">로그아웃</a></div>
+        </div>
+      </div>
+    </div>
+    </div>
   <nav id="navbar">
   </nav>
 
