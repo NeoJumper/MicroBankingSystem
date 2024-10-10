@@ -84,14 +84,14 @@ public class TradeRestController {
     }
 
     // 취소 페이지에서, 거래번호를 통해 취소하려는 거래 내역 GET
-    @GetMapping("/account-transfer/cancel/{tradeNumber}")
+    @GetMapping("/account-transfer-cancel/{tradeNumber}")
     public ResponseEntity<List<TransferDetail>> transferCancel(@PathVariable(value = "tradeNumber", required = false) Long tradeNumber) {
         List<TransferDetail> tradeDetails = tradeService.getTradeByTradeNumber(tradeNumber);
         System.out.println("TradeDetail::"+tradeDetails);
         return ResponseEntity.ok(tradeDetails);
     }
     // 취소 신청 - 실제 status 변경
-    @PostMapping("/account-transfer/cancel")
+    @PostMapping("/account-transfer-cancel")
     public ResponseEntity<List<TransferDetail>> updateCancelTransferCAN(@RequestBody TradeCancelRequest tradeCancelRequest) {
         List<TransferDetail> tradeDetails = tradeService.updateCancelTransferCAN(tradeCancelRequest);
         return ResponseEntity.ok(tradeDetails);

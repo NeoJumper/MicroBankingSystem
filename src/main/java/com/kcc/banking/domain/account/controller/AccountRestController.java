@@ -89,17 +89,6 @@ public class AccountRestController {
         return ResponseEntity.status(HttpStatus.OK).body(cat);
     }
 
-    // DemandDeposit테이블의  status컬럼 상태 변경 기능
-//    @PatchMapping("/api/employee/account/status")
-//    public ResponseEntity<?> updateDemandDepositStatus(@RequestBody AccountStatus accountStatus) {
-//        AccountStatus result = accountCloseService.updateStatus(accountStatus);
-//
-//        if(result == null){
-//            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(null);
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(result);
-//    }
-
 
 }
 

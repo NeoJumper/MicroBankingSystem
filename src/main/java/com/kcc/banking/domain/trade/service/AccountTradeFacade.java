@@ -12,7 +12,6 @@ import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
-import com.kcc.banking.domain.interest.dto.request.RollbackPaymentStatus;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import com.kcc.banking.domain.interest.service.InterestService;
 import com.kcc.banking.domain.trade.dto.request.*;
@@ -55,8 +54,8 @@ public class AccountTradeFacade {
 
 
         int tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
-        int statusResult = accountService.updateByClose(statusWithTrade, currentData);
-        int paymentStatusResult = interestService.updatePaymentStatus(statusWithTrade, currentData);
+        int statusResult = accountService.updateByCloseTrade(statusWithTrade, currentData);
+        int paymentStatusResult = interestService.updateByClose(statusWithTrade, currentData);
 
 
         if (tradeResult > 0) {
@@ -95,17 +94,18 @@ public class AccountTradeFacade {
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
+        // 해지 계좌 조회
         CloseAccount closeAccount = Optional.ofNullable(accountService.getCloseAccount(accId)).orElse(new CloseAccount());
 
         // 세율
         BigDecimal productTaxRate = closeAccount.getProductTaxRate();
 
         // 세전 이자 합계
-        InterestSum preTaxInterest = interestService.getRollbackInterestSum(awe);
+        InterestSum preTaxInterest = interestService.getPreTaxInterestSum(awe);
         BigDecimal preTaxInterestAmount = preTaxInterest == null ? new BigDecimal("0") : preTaxInterest.getAmountSum();
 
         // 지급됐던 금액(계좌 잔액 + 세후 이자)
-        BigDecimal paidAmount = Optional.ofNullable(tradeService.rollbackAmount(awe)).orElse(new BigDecimal("0"));
+        BigDecimal paidAmount = Optional.ofNullable(tradeService.getPaidAmount(awe)).orElse(new BigDecimal("0"));
 
         // 세후이자 = (세전 이자 합계) * (1 - 세율)
         BigDecimal afterTaxInterest = preTaxInterestAmount.multiply(BigDecimal.ONE.subtract(productTaxRate));
@@ -115,17 +115,10 @@ public class AccountTradeFacade {
 
 
 
-        // 이자 테이블 업데이트 파라미터 타입
-        RollbackPaymentStatus rollbackPaymentStatus = RollbackPaymentStatus.builder()
-                .branchId(currentData.getBranchId())
-                .modifierId(currentData.getEmployeeId())
-                .accId(accId)
-                .expireDate(expireDate).build();
-
         //계좌상태 변경
-        int resultAccount = accountService.updateByCloseCancel(accId, currentData, balanceToRollback);
+        int resultAccount = accountService.updateByCloseCancelTrade(accId, currentData, balanceToRollback);
         // 이자 테이블 상태변경 rollbackPaymentStatus 사용
-        int resultInterest = interestService.rollbackPaymentStatus(rollbackPaymentStatus);
+        int resultInterest = interestService.updateByCloseCancel(accId, currentData, expireDate);
         // 해지 취소 거래 등록 addCancelTrade
         int resultTrade = tradeService.createCloseCancelTrade(accId, currentData, balanceToRollback,tradeNumber);
 
@@ -228,14 +221,9 @@ public class AccountTradeFacade {
 
         // 출금 거래내역 추가
         TransferDetail withdrawalTrade = tradeService.createWithdrawalTrade(transferTradeCreate, currentData, withdrawalAccountBalance, tradeNumber);
-
         // 출금 계좌 잔액 업데이트
-        accountService.updateBalance(AccountUpdate.builder()
-                .targetAccId(withdrawalAccount.getId())
-                .modifierId(currentData.getEmployeeId())
-                .balance(withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount())) // 이체 후 잔액
-                .build()
-        );
+        accountService.updateByTransferTrade(withdrawalAccount, currentData, withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()));
+
 
         // 입금 계좌 조회 시
         if(depositAccount == null){
@@ -249,12 +237,8 @@ public class AccountTradeFacade {
         // 입금 거래내역 추가
         TransferDetail depositTrade = tradeService.createDepositTrade(transferTradeCreate, currentData, depositAccountBalance, tradeNumber);
         // 입금 계좌 잔액 업데이트
-        accountService.updateBalance(AccountUpdate.builder()
-                .targetAccId(depositAccount.getId())
-                .modifierId(currentData.getEmployeeId())
-                .balance(depositAccountBalance.add(transferTradeCreate.getTransferAmount())) // 이체 후 잔액
-                .build()
-        );
+        accountService.updateByTransferTrade(depositAccount, currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()));
+
 
 
         // 출금 내역과 입금 내역 반환
@@ -290,12 +274,8 @@ public class AccountTradeFacade {
         TradeDetail tradeDetail = tradeService.createCashTrade(cashTradeCreate, currentData, cashTradeAccountBalance ,tradeNumber);
 
         // 잔액 업데이트
-        accountService.updateBalance(AccountUpdate.builder()
-                .targetAccId(cashTradeAccount.getId())
-                .modifierId(currentData.getEmployeeId())
-                .balance(tradeDetail.getBalance()) // 거래 후 잔액
-                .build()
-        );
+        accountService.updateByCashTrade(cashTradeAccount, currentData, tradeDetail.getBalance());
+
 
         return tradeDetail;
     }
