@@ -121,13 +121,24 @@ public class AccountService {
     /**
      * @Description
      * 잔액만을 변경
-     * 이체, 현금, 거래에 사용
+     * 이체 거래에 사용
      */
-    public void updateBalance(AccountUpdate accountUpdate) {
+    public void updateByTransferTrade(AccountDetail depositAccount, CurrentData currentData, BigDecimal transferAfterAccountBalance) {
+        AccountUpdate accountUpdate =  AccountUpdate.builder()
+                .targetAccId(depositAccount.getId())
+                .modifierId(currentData.getEmployeeId())
+                .balance(transferAfterAccountBalance) // 이체 후 잔액
+                .build();
+
         accountMapper.partialUpdateAccount(accountUpdate);
     }
 
-    public int updateByClose(StatusWithTrade statusWithTrade, CurrentData currentData) {
+    /**
+     * @Description
+     * 잔액과 상태를 변경
+     * 해지 거래에 사용
+     */
+    public int updateByCloseTrade(StatusWithTrade statusWithTrade, CurrentData currentData) {
         AccountUpdate accountUpdate = AccountUpdate.builder()
                 .targetAccId(statusWithTrade.getAccId())
                 .status(statusWithTrade.getStatus())
@@ -139,15 +150,33 @@ public class AccountService {
         return accountMapper.partialUpdateAccount(accountUpdate);
     }
 
-    public int updateByCloseCancel(String accId, CurrentData currentData, BigDecimal balance) {
-        // 계좌 업데이트 파라미터 타입
+    /**
+     * @Description
+     * 잔액과 상태를 변경
+     * 해지 취소 거래에 사용
+     */
+    public int updateByCloseCancelTrade(String accId, CurrentData currentData, BigDecimal balance) {
         AccountUpdate accountUpdate = AccountUpdate.builder()
                 .targetAccId(accId)
                 .status("OPN")
                 .modifierId(currentData.getEmployeeId())
-                .balance(balance).build();
+                .balance(balance)
+                //.expireDate(null)  SQL문에서 NULL값으로 직접 변경
+                .build();
 
         return accountMapper.partialUpdateAccount(accountUpdate);
-
+    }
+    /**
+     * @Description
+     * 잔액만을 변경
+     * 현금 거래에 사용
+     */
+    public int updateByCashTrade(AccountDetail cashTradeAccount, CurrentData currentData, BigDecimal afterTradeBalance) {
+        AccountUpdate accountUpdate = AccountUpdate.builder()
+                .targetAccId(cashTradeAccount.getId())
+                .modifierId(currentData.getEmployeeId())
+                .balance(afterTradeBalance) // 거래 후 잔액
+                .build();
+        return accountMapper.partialUpdateAccount(accountUpdate);
     }
 }
