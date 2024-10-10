@@ -100,6 +100,9 @@ function cancelCloseAccount(){
             $('#product-name').val("");
             $('#customer-name').val("");
             $('#account-pw-input').val("");
+            // 버튼 비활성화
+            $('#cancel-submit-btn').attr('style', 'background-color: gray; opacity: 0.5;');
+            $('#cancel-submit-btn').prop('disabled', true);
         });
     } else {
       // accountId가 없을 경우 경고
