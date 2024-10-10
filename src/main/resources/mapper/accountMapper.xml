@@ -266,6 +266,9 @@
         <if test="expireDate != null and !expireDate.equals('')">
             expire_date =  #{expireDate},
         </if>
+        <if test="expireDate == null">
+            expire_date =  NULL,
+        </if>
         modification_date = SYSTIMESTAMP,
         modifier_id = #{modifierId},
         version = version + 1
