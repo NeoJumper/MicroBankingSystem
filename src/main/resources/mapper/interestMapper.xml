@@ -5,7 +5,7 @@
 <mapper namespace="com.kcc.banking.domain.interest.mapper.InterestMapper">
 
 
-    <!--    계좌번호로 미지급 이자,미지급 이자율 총합-->
+    <!--  세전 이자액 합계(해지 시 사용)  -->
     <select id="findInterestSum" parameterType="java.lang.String">
         SELECT acc_id AS account_id,
         sum(amount) AS amount_sum
@@ -14,8 +14,8 @@
         GROUP BY acc_id
     </select>
 
-    <!--  되돌려야할 이자액 합계  -->
-    <select id="findRollbackInterestSum" parameterType="AccountIdWithExpireDate">
+    <!--  세전 이자액 합계(해지 취소 시 사용)  -->
+    <select id="findPreTaxInterestSum" parameterType="AccountIdWithExpireDate">
         SELECT acc_id AS account_id,
         sum(amount) AS amount_sum
         FROM Interest
@@ -38,29 +38,40 @@
         </selectKey>
 
 
-        INSERT INTO interest (
-        id, acc_id, branch_id, amount, interest_rate, payment_status, trade_number, registrant_id, registration_date, version
-        ) VALUES (
-        #{id},
-        #{accId, jdbcType=VARCHAR},
-        #{branchId, jdbcType=BIGINT},
-        #{amount, jdbcType=DECIMAL},
-        #{interestRate, jdbcType=FLOAT},
-        #{paymentStatus, jdbcType=VARCHAR},
-        #{tradeNumber, jdbcType=BIGINT},
-        #{registrantId, jdbcType=BIGINT},
-        #{registrationDate},
-        #{version}
+        INSERT INTO interest
+        (
+            id,
+            acc_id,
+            branch_id,
+            amount,
+            interest_rate,
+            payment_status,
+            trade_number,
+            registrant_id,
+            registration_date,
+            version
+        ) VALUES
+        (
+            #{id},
+            #{accId, jdbcType=VARCHAR},
+            #{branchId, jdbcType=BIGINT},
+            #{amount, jdbcType=DECIMAL},
+            #{interestRate, jdbcType=FLOAT},
+            #{paymentStatus, jdbcType=VARCHAR},
+            #{tradeNumber, jdbcType=BIGINT},
+            #{registrantId, jdbcType=BIGINT},
+            #{registrationDate},
+            #{version}
         )
     </insert>
 
-    <!--    이자 테이블 상태 변경-->
-    <update id="updatePaymentStatus" parameterType="PaymentStatus">
+    <!--    해지에 의한 이자 테이블 상태 및 지급일 변경  -->
+    <update id="updateByClose" parameterType="PaymentStatusUpdate">
         UPDATE INTEREST
         SET
-        branch_id = #{branchId},
         payment_date = #{payDate},
         payment_status = 'Y',
+        branch_id = #{branchId},
         modifier_date = SYSDATE,
         modifier_id = #{modifierId},
         version = version + 1
@@ -70,12 +81,13 @@
         payment_status = 'N'
     </update>
 
-    <update id="rollbackPaymentStatus" parameterType="RollbackPaymentStatus">
+    <!--    해지 취소에 의한 이자 테이블 상태 및 지급일 변경-->
+    <update id="updateByCloseCancel" parameterType="PaymentStatusRollback">
         UPDATE INTEREST
         SET
-        branch_id = #{branchId},
         payment_date = NULL,
         payment_status = 'N',
+        branch_id = #{branchId},
         modifier_date = SYSDATE,
         modifier_id = #{modifierId},
         version = version + 1

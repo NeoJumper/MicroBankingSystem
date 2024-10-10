@@ -1,7 +1,6 @@
 package com.kcc.banking.domain.trade.mapper;
 
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
-import com.kcc.banking.domain.trade.dto.request.CloseTrade;
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 import com.kcc.banking.domain.trade.dto.response.*;
@@ -27,7 +26,7 @@ public interface TradeMapper {
 
     Long findNextTradeNumberVal();
 
-    BigDecimal rollbackAmount(AccountIdWithExpireDate accountIdWithExpireDate);
+    BigDecimal findPaidAmount(AccountIdWithExpireDate accountIdWithExpireDate);
 
     // 거래 번호로 내역 조회
     List<TransferDetail> getTradeDetailsByTradeNumber(Long tradeNumber);
