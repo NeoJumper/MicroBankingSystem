@@ -61,9 +61,7 @@ public class AccountRestController {
     @PostMapping("/api/employee/account/open")
     public ResponseEntity<String> openAccount(@RequestBody AccountCreate accountCreate) {
 
-        System.out.println("accountCreate.getPreferentialInterestRate();" + accountCreate.getPreferentialInterestRate());
-        accountService.openAccount(accountCreate);
-        System.out.println(accountCreate.getId() + "accountCreate>>>>>>>>>>>>> getId();");
+        accountTradeFacade.openAccount(accountCreate);
         return ResponseEntity.ok(accountCreate.getId());
 
     }

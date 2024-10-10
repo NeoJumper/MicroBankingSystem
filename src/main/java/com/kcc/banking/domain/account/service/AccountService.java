@@ -59,40 +59,6 @@ public class AccountService {
     }
 
 
-    /*
-     * 계좌 개설 함수
-     *
-     * Account insert
-     * Trade insert
-     *
-     * */
-    public void openAccount(AccountCreate accountCreate) {
-        int customerSeq = accountMapper.getAccountSeq();
-
-        // 버전 update 관리
-        CurrentData rnid = commonService.getCurrentData();
-        accountCreate.setStartDate(Timestamp.valueOf(rnid.getCurrentBusinessDate()));
-        accountCreate.setBranchId(Integer.parseInt(String.valueOf(rnid.getBranchId())));
-        accountCreate.setRegistrantId(rnid.getEmployeeId());
-
-
-        int branchNumber = accountCreate.getBranchId();
-        // 계좌 번호 생성
-        String accountNumber = generateAccountNumber(branchNumber, customerSeq);
-        accountCreate.setId(accountNumber);
-
-        //DB에 계좌 정보 저장
-//        accountMapper.openAccount(accountCreate);
-//        TradeCreate tradeCreate = TradeCreate.builder()
-//                .accId(accountNumber)
-//                .tradeType("OPEN")
-//                .amount(accountCreate.getBalance())
-//                .build();
-//
-//        tradeService.createCashTrade(tradeCreate);
-
-    }
-
     public List<AccountOfModal> getAccountsBySearchOption(SearchAccountOfModal searchAccountOfModal) {
         return accountMapper.findAccountsBySearchOption(searchAccountOfModal);
     }
