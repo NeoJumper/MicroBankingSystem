@@ -15,13 +15,13 @@
 </head>
 <body>
 <div id="leftSidebar-wrapper" class="open">
-  <button
+<%--  <button
           id="leftSidebarBtn"
           onclick="toggleSidebar()"
           class="btn btn-primary"
   >
     <i class="bi bi-chevron-right"></i>
-  </button>
+  </button>--%>
 
   <div id="menubar" class="show-content">
     <!-- Sidebar -->

@@ -1,4 +1,10 @@
 /*------------------------------------------------------------*/
+@font-face {
+  font-family: 'TheJamsil5Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
 
 #customHeader {
   position: fixed;
@@ -6,25 +12,23 @@
   left: 0;
   display: flex;
   flex-direction: column;
-  height: 100px;
   width: 100%;
   z-index: 10;
   background-color: white;
+  opacity: 0.9;
 }
 /*------- informationHeader : 정보 전달 헤더 css -----------*/
 #informationHeader {
   display: flex;
   align-items: center;
   flex-grow: 1;
-  height: 55%;
-
+  padding: 0px 10px;
 }
 /*------- 회사 로고 / 이미지 css -----------*/
 #imgContainer {
-
   margin-left: 9px;
   margin-right: 9px;
-  flex:0.05;
+  width: 40px;
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -48,32 +52,30 @@
 
 #systemName {
   flex: 1;
-  height: 100%;
-  font-size:20px;
+  font-size: 30px;
   overflow: hidden;
   font-weight: bold ;
-
   align-items: baseline;
+  font-family: 'TheJamsil5Bold';
 }
 
 #systemInfo {
   flex:1;
   height: 100%;
   overflow: hidden;
-
   display:flex;
-  font-size: 14px;
   gap: 5px;
   justify-content: left;
   align-items: center;
   margin :0;
   padding-bottom:5.8px;
+  font-size: medium;
 }
 
 #user-roles{
-  background-color: #0079D4;
+
   padding : 2px 5px;
-  color: white;
+  color: #0079D4;
 
 }
 
@@ -94,6 +96,7 @@
 
 #business-day-header{
   display: flex;
+  align-items: center;
 }
 #business-day-date {
   flex:4;
@@ -102,28 +105,30 @@
   justify-content: right;
   gap:10px;
   align-items: center;
-  padding :10px;
+  font-size: medium;
+  font-weight: bold;
+  padding: 5px;
 }
 #business-day-status {
-  padding:0 10px;
   display:flex;
   align-items: center;
   justify-content: center;
+  font-size: medium;
+
 }
 #business-day-status > span{
   padding:0 10px;
-  background-color: #ffeb07;
-  color: #000000;
+  border: 2px solid #0079D4;
+  color: #0079D4;
   font-weight:bold;
 }
 
 
 /* ------------- 메뉴 바 헤더 ------------- */
 #navbar {
-  background-color: #0079D4;
+  border-bottom: 2px solid #0079D4;
   flex-grow: 1;
-  height: 25%;
-  margin :0;
+  padding: 5px;
 }
 
 #navbar-globalMenu {
@@ -149,12 +154,11 @@
   height: 100%;
   display: flex;
   align-items: center;
-  color : white;
+  color : black;
   padding-left : 40px;
   padding-right : 40px;
 }
 
-/* 안먹음 */
 #navbar-globalMenu a:hover{
   background-color:white;
   color :#0079D4;
