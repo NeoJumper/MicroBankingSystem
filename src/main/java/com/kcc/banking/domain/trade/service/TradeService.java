@@ -223,12 +223,12 @@ public class TradeService {
         return tradeMapper.insertTrade(tradeCreate);
     }
 
-    public int createCloseCancelTrade(String accId, CurrentData currentData, Long tradeNumber) {
+    public int createCloseCancelTrade(String accId, CurrentData currentData, BigDecimal rollbackBalance, Long tradeNumber) {
         TradeCreate tradeCreate = TradeCreate.builder()
                 .accId(accId)
                 .branchId(currentData.getBranchId())
-                .amount(new BigDecimal("0"))
-                .balance(BigDecimal.valueOf(0))
+                .amount(rollbackBalance)
+                .balance(rollbackBalance)
                 .description("계좌해지취소")
                 .registrantId(currentData.getEmployeeId())
                 .tradeType("CLOSE")

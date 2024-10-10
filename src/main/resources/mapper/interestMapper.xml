@@ -19,7 +19,7 @@
         SELECT acc_id AS account_id,
         sum(amount) AS amount_sum
         FROM Interest
-        WHERE acc_id = #{accountId} AND modifier_date = #{expireDate}
+        WHERE acc_id = #{accountId} AND payment_date = #{expireDate}
         GROUP BY acc_id
     </select>
 
@@ -82,7 +82,7 @@
         WHERE
         acc_id = #{accId}
         AND
-        modifier_date = #{expireDate}
+        payment_date = #{expireDate}
     </update>
 
 </mapper>

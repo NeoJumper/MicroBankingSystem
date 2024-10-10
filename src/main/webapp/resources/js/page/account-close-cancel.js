@@ -61,27 +61,29 @@ function cancelCloseAccount(){
             contentType: 'application/json', // JSON 형식으로 전송
             data: JSON.stringify({accountId: accountNumber}), // JSON으로 변환하여 전송
             success: function (response) {
+                console.log(response);
                 swal({
                     title: "해지 취소 완료",
                     // text: "비밀번호 인증 성공",
                     icon: "success",
                 });
-                const registrationDate = new Date(accountData.amountDate);
-                const now = new Date();
-                const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
-                const totalPayment = accountData.accountBal + accountData.amountSum;
+                // const registrationDate = new Date(accountData.amountDate);
+                // const now = new Date();
+                // const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
+                // const totalPayment = accountData.accountBal + accountData.amountSum;
                 //상세 모달창 열어주기
+
                 $('#transfer-result-modal').modal('show');
 
-                $('#modal-account-close-customerName').text(accountData.customerName);
-                $('#modal-account-close-accountId').text(accountData.accountId);
-                $('#modal-account-close-productName').text(accountData.productName);
-                $('#modal-account-close-totalDays').text(totalDays);
-                $('#modal-account-close-totalIntRate').text(accountData.accountPreInterRate);
-                $('#modal-account-close-amountSum').text(accountData.amountSum);
-                $('#modal-account-close-accountBal').text(accountData.accountBal);
-                $('#modal-account-close-productTaxRate').text(accountData.productTaxRate);
-                $('#modal-account-close-totalPayment').text(totalPayment);
+                $('#modal-account-close-customerName').text(response.customerName);
+                $('#modal-account-close-accountId').text(response.accountId);
+                $('#modal-account-close-productName').text(response.productName);
+                $('#modal-account-close-interRate').text(response.interRate); // 기본 이율
+                $('#modal-account-close-preInterRate').text(response.preInterRate);
+                $('#modal-account-close-taxRate').text(response.taxRate);
+                $('#modal-account-close-preTaxInterest').text(response.preTaxInterest);
+                $('#modal-account-close-afterTaxInterest').text(response.afterTaxInterest);
+                $('#modal-account-close-balanceToRollback').text(response.balanceToRollback);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 swal({

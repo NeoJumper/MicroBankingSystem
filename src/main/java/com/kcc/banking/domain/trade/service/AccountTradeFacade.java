@@ -12,11 +12,11 @@ import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
-import com.kcc.banking.domain.interest.dto.request.PaymentStatus;
 import com.kcc.banking.domain.interest.dto.request.RollbackPaymentStatus;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import com.kcc.banking.domain.interest.service.InterestService;
 import com.kcc.banking.domain.trade.dto.request.*;
+import com.kcc.banking.domain.trade.dto.response.CloseCancelDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TransferDetail;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -72,6 +71,79 @@ public class AccountTradeFacade {
         return (tradeResult + statusResult + paymentStatusResult) > 0 ? resultText.toString() : "FAIL";
     }
 
+
+
+    //    해지 취소 되돌리기
+    @Transactional(rollbackFor = Exception.class)
+    public CloseCancelDetail rollbackAccountCancel(String accId){
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+        // 계좌 해지 날짜
+        String expireDate = accountService.getExpireDateById(accId);
+
+        CurrentData currentData = commonService.getCurrentData();
+
+        AccountIdWithExpireDate awe = AccountIdWithExpireDate.builder()
+                .expireDate(expireDate)
+                .accountId(accId).build();
+
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+        CloseAccount closeAccount = Optional.ofNullable(accountService.getCloseAccount(accId)).orElse(new CloseAccount());
+
+        // 세율
+        BigDecimal productTaxRate = closeAccount.getProductTaxRate();
+
+        // 세전 이자 합계
+        InterestSum preTaxInterest = interestService.getRollbackInterestSum(awe);
+        BigDecimal preTaxInterestAmount = preTaxInterest == null ? new BigDecimal("0") : preTaxInterest.getAmountSum();
+
+        // 지급됐던 금액(계좌 잔액 + 세후 이자)
+        BigDecimal paidAmount = Optional.ofNullable(tradeService.rollbackAmount(awe)).orElse(new BigDecimal("0"));
+
+        // 세후이자 = (세전 이자 합계) * (1 - 세율)
+        BigDecimal afterTaxInterest = preTaxInterestAmount.multiply(BigDecimal.ONE.subtract(productTaxRate));
+
+        // 이자를 제외한 잔액(되돌려야할 계좌 잔액) = 지급됐던 금액 - 세후 이자
+        BigDecimal balanceToRollback = paidAmount.subtract(afterTaxInterest);
+
+
+
+        // 이자 테이블 업데이트 파라미터 타입
+        RollbackPaymentStatus rollbackPaymentStatus = RollbackPaymentStatus.builder()
+                .branchId(currentData.getBranchId())
+                .modifierId(currentData.getEmployeeId())
+                .accId(accId)
+                .expireDate(expireDate).build();
+
+        //계좌상태 변경
+        int resultAccount = accountService.updateByCloseCancel(accId, currentData, balanceToRollback);
+        // 이자 테이블 상태변경 rollbackPaymentStatus 사용
+        int resultInterest = interestService.rollbackPaymentStatus(rollbackPaymentStatus);
+        // 해지 취소 거래 등록 addCancelTrade
+        int resultTrade = tradeService.createCloseCancelTrade(accId, currentData, balanceToRollback,tradeNumber);
+
+
+        return CloseCancelDetail.builder()
+                .customerName(closeAccount.getCustomerName())
+                .accountId((closeAccount.getAccountId()))
+                .productName(closeAccount.getProductName())
+                .interRate(closeAccount.getProductInterRate())
+                .preInterRate(closeAccount.getAccountPreInterRate())
+                .taxRate(closeAccount.getProductTaxRate())
+                .preTaxInterest(preTaxInterestAmount)
+                .afterTaxInterest(afterTaxInterest)
+                .balanceToRollback(balanceToRollback)
+                .build();
+    }
+
+
     public CloseAccountTotal findCloseAccountTotal(String accountId) {
 
         InterestSum interestSum = interestService.getInterestSum(accountId);
@@ -95,71 +167,6 @@ public class AccountTradeFacade {
 
         return cat;
     }
-
-    //    해지 취소 되돌리기
-    @Transactional(rollbackFor = Exception.class)
-    public String rollbackAccountCancel(String accId){
-        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
-
-        // OPEN 상태가 아니라면
-        if (!currentBusinessDay.getStatus().equals("OPEN")) {
-            throw new BadRequestException(ErrorCode.NOT_OPEN);
-        }
-
-        // 계좌 해지 날짜
-        String expireDate = accountService.getExpireDateById(accId);
-
-        System.out.println("expireDate ===================!! 컨트롤러 안에서 해지일 " + expireDate);
-
-        CurrentData currentData = commonService.getCurrentData();
-
-        AccountIdWithExpireDate awe = AccountIdWithExpireDate.builder()
-                .expireDate(expireDate)
-                .accountId(accId).build();
-
-        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
-        Long tradeNumber = tradeService.getNextTradeNumberVal();
-
-        CloseAccount closeAccount = Optional.ofNullable(accountService.getCloseAccount(accId)).orElse(new CloseAccount());
-
-        // 세율
-        BigDecimal productTaxRate = closeAccount.getProductTaxRate();
-        // 총 이자액
-//         BigDecimal amountSum = Optional.ofNullable(accountCloseMapper.rollbackInterestSum(awe).getAmountSum()).orElse(new BigDecimal("0"));
-
-        InterestSum rollbackInterestSum = interestService.getRollbackInterestSum(awe);
-        BigDecimal amountSum = rollbackInterestSum == null ? new BigDecimal("0") : rollbackInterestSum.getAmountSum();
-
-        // 세후이자 + 잔액
-        BigDecimal rollbackAmount = Optional.ofNullable(tradeService.rollbackAmount(awe)).orElse(new BigDecimal("0"));
-        // 잔액 == (거래테이블총액) - (총 이자합)*(1-세율)
-        // (총 이자합) * (1 - 세율) 계산
-        BigDecimal interestAfterTax = amountSum.multiply(BigDecimal.ONE.subtract(productTaxRate));
-        // 잔액 계산: rollbackAmount - (총 이자합 * (1 - 세율))
-        BigDecimal balance = rollbackAmount.subtract(interestAfterTax);
-
-        // 이자 테이블 업데이트 파라미터 타입
-        RollbackPaymentStatus rollbackPaymentStatus = RollbackPaymentStatus.builder()
-                .branchId(currentData.getBranchId())
-                .modifierId(currentData.getEmployeeId())
-                .accId(accId)
-                .expireDate(expireDate).build();
-
-
-
-
-        //계좌상테 변경
-        int resultAccount = accountService.updateByCloseCancel(accId, currentData, balance);
-        // 이자 테이블 상태변경 rollbackPaymentStatus 사용
-        int resultInterest = interestService.rollbackPaymentStatus(rollbackPaymentStatus);
-        // 해지 취소 거래 등록 addCancelTrade
-        int resultTrade = tradeService.createCloseCancelTrade(accId, currentData, tradeNumber);
-
-        // 예외처리문
-
-        return "SUCCESS";
-    }
-
 
     /**
      * @Description

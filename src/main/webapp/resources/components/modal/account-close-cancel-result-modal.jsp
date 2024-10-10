@@ -31,32 +31,28 @@
                         <td><span id="modal-account-close-productName"></span></td>
                     </tr>
                     <tr>
-                        <th>계좌 잔액</th>
-                        <td><span id="modal-account-close-accountBal"></span> 원</td>
-                    </tr>
-                    <tr>
-                        <th>이율</th>
-                        <td><span id="modal-account-close-productInterRate"></span> %</td>
+                        <th>기본 이율</th>
+                        <td><span id="modal-account-close-interRate"></span> %</td>
                     </tr>
                     <tr>
                         <th>우대 이율</th>
-                        <td><span id="modal-account-close-accountPreInterRate"></span> %</td>
+                        <td><span id="modal-account-close-preInterRate"></span> %</td>
                     </tr>
                     <tr>
                         <th>세율</th>
-                        <td><span id="modal-account-close-productTaxRate"></span> %</td>
+                        <td><span id="modal-account-close-taxRate"></span> %</td>
                     </tr>
                     <tr>
                         <th>세전 이자</th>
-                        <td><span id="modal-account-close-amountSum"></span> 원</td>
+                        <td><span id="modal-account-close-preTaxInterest"></span> 원</td>
                     </tr>
                     <tr>
                         <th>세후 이자</th>
-                        <td><span id="modal-account-close-textAfterInter"></span> 원</td>
+                        <td><span id="modal-account-close-afterTaxInterest"></span> 원</td>
                     </tr>
                     <tr>
-                        <th>지급 총 금액</th>
-                        <td><span id="modal-account-close-totalPayment"></span> 원</td>
+                        <th>취소 후 잔액</th>
+                        <td><span id="modal-account-close-balanceToRollback"></span> 원</td>
                     </tr>
                 </table>
             </div>
