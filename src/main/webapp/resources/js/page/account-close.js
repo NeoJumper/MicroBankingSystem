@@ -74,33 +74,41 @@ function getAccountDetail() {
 
 function checkAccountId() {
     const inputId = $('#account-pw-input').val();
-    console.log(inputId);
-    console.log(accountData.customerId);
-    if (!inputId) {
-        swal({
-            title: "비밀번호를 입력하세요.",
-            // text: "비밀번호 인증 성공",
-            icon: "warning",
-        });
-        return;
-    }
-    if (accountData.customerId == inputId) {
-        swal({
-            title: "비밀번호 인증 성공.",
-            // text: "비밀번호 인증 성공",
-            icon: "success",
-        });
-        //비밀번호 성공시 opacity 스타일 제거
-        $('#submit-btn').removeAttr('style');
-        $('#submit-btn').prop('disabled', false);
-    }else {
-        $('#account-pw-input').val('');
-        swal({
-            title: "비밀번호 인증 실패",
-            // text: "비밀번호 인증 성공",
-            icon: "warning",
-        });
-    }
+    var accountNumber = $('#account-number').val();
+
+    $.ajax( {
+        url: '/api/employee/account-validate',
+        contentType: "application/x-www-form-urlencoded",
+        type: "POST",
+        data: {
+            accountNumber: accountNumber,
+            password: inputId
+        },
+        success: function (response) {
+            swal({
+                title: "검증 완료",
+                text: "비밀번호 인증 성공",
+                icon: "success",
+            })
+
+            //비밀번호 성공시 opacity 스타일 제거
+            $('#submit-btn').removeAttr('style');
+            $('#submit-btn').prop('disabled', false);
+
+        }, error: function (error){
+            swal({
+                title: "검증 실패",
+                text: error.responseText,
+                icon: "error",
+                buttons: {
+                    cancel: true,
+                    confirm: false,
+                },
+            });
+
+            console.log("Transfer failed", error);
+        }
+    })
 }
 
 function closeAccount() {
