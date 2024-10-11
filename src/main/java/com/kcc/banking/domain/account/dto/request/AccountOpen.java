@@ -16,13 +16,13 @@ public class AccountOpen {
     private Long branchId;
     private Long customerId;
     private Long productId;
-    private float preferentialInterestRate;
+    private BigDecimal preferentialInterestRate;
     private String password;
     private BigDecimal balance;
 
 
     @Builder
-    public AccountOpen(String id, Long branchId, Long customerId, Long productId, float preferentialInterestRate, String password, BigDecimal balance) {
+    public AccountOpen(String id, Long branchId, Long customerId, Long productId, BigDecimal preferentialInterestRate, String password, BigDecimal balance) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;

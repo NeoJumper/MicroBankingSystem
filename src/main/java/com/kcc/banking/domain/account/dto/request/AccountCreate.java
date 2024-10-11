@@ -23,7 +23,7 @@ public class AccountCreate {
     private Long productId;
     private Long registrantId;
     private String startDate;
-    private float preferentialInterestRate;
+    private BigDecimal preferentialInterestRate;
     private String password;
     private BigDecimal balance;
     private String openDate;
@@ -31,7 +31,7 @@ public class AccountCreate {
     private Long tradeNumber;
 
     @Builder
-    public AccountCreate(String id, Long branchId, Long customerId, Long productId, Long registrantId, String startDate, float preferentialInterestRate, String password, BigDecimal balance, String openDate, String status, Long tradeNumber) {
+    public AccountCreate(String id, Long branchId, Long customerId, Long productId, Long registrantId, String startDate, BigDecimal preferentialInterestRate, String password, BigDecimal balance, String openDate, String status, Long tradeNumber) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;
