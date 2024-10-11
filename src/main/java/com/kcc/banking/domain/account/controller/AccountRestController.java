@@ -62,6 +62,7 @@ public class AccountRestController {
         return ResponseEntity.ok(accId);
 
     }
+
     /**
      * @Description
      * - 계좌 개설 완료 시 개설된 계좌의 상세정보 조회

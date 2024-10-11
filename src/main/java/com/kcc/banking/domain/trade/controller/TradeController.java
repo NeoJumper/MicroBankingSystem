@@ -20,6 +20,7 @@ public class TradeController {
         String getBusinessDay = tradeService.getBusinessDay();
         System.out.println("tradeList Controller >>>>>>>>>>"+getBusinessDay);
         businessDay.addAttribute("businessDay", getBusinessDay);
+
         return("trade/trade-list");
     }
 

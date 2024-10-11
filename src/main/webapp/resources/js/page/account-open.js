@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     // 상품 정보 api 함수
     accoutOpenProductInfo();
@@ -12,16 +11,16 @@ $(document).ready(function () {
 });
 
 // 상품이율, 상품번호 api
-function accoutOpenProductInfo(){
+function accoutOpenProductInfo() {
     // 상품이율 구하기
     $.ajax({
         url: '/api/employee/account/product-interest',
         method: 'GET',
-        success: function(data) {
+        success: function (data) {
             $('#product-interest-input').val(data.interestRate);
             $('#product-id-hidden-input').val(data.id)
         },
-        error: function(error) {
+        error: function (error) {
             console.error('Error fetching product interest:', error);
             $('#preferred-interest-input').val('error');
         }
@@ -39,26 +38,26 @@ function calculateTotalInterest() {
 }
 
 function InputChangeOfTotalInterest() {
-    $('#preferred-interest-input').on('input', function() {
+    $('#preferred-interest-input').on('input', function () {
         calculateTotalInterest();
     });
 }
 
 // 계좌 생성 함수
-function accountOpen(){
+function accountOpen() {
 
-    $('#account-create-btn').on("click",function (){
+    $('#account-create-btn').on("click", function () {
 
 
         const customerId = $('#customer-id-input').val();
         const productId = $('#product-id-hidden-input').val();
 
         //const startDate = $('startDate').val();
-        const preferentialInterestRate =$('#preferred-interest-input').val();
-        const password =$('#password-input').val();
-        const balance =$('#balance-input').val();
+        const preferentialInterestRate = $('#preferred-interest-input').val();
+        const password = $('#password-input').val();
+        const balance = $('#balance-input').val();
 
-        const empId =$('#emp-id-hidden-input').val();
+        const empId = $('#emp-id-hidden-input').val();
         const branchId = $('#branch-id-hidden-input').val();
 
         $.ajax({
@@ -74,7 +73,7 @@ function accountOpen(){
                 password: password,
                 balance: balance
             }),
-            success: function(accountId) {
+            success: function (accountId) {
                 swal({
                     title: " 계좌 생성 성공",
                     text: "계좌가 성공적으로 개설되었습니다.",
@@ -86,11 +85,19 @@ function accountOpen(){
                 });
 
             },
-            error: function() {
-                alert('계좌 생성에 실패했습니다.');
+            error: function (error) {
+                swal({
+                    title: "검증 실패",
+                    text: error.responseText,
+                    icon: "error",
+                    buttons: {
+                        cancel: true,
+                        confirm: false,
+                    },
+                });
             }
-        });
 
+        });// end
     });
 }
 
@@ -107,12 +114,12 @@ function clearCustomerSearchModal() {
 
 
 // 계좌 개설 완료 모달 호출 함수
-function accountOpenResult(accountId){
+function accountOpenResult(accountId) {
 
-   $.ajax({
-        url: '/api/employee/account/open/'+accountId,
+    $.ajax({
+        url: '/api/employee/account/open/' + accountId,
         method: 'GET',
-        success: function(data) {
+        success: function (data) {
 
 
             $('#result-modal-account-id-input').val(data.accId);
@@ -132,7 +139,7 @@ function accountOpenResult(accountId){
 
 
         },
-        error: function(error) {
+        error: function (error) {
             $('#product-interest-input').val('error');
         }
     });
