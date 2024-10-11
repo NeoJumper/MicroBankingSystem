@@ -232,9 +232,10 @@ public class AccountTradeFacade {
         }
 
         // 입출금 계좌 조회
-        AccountDetail depositAccount = accountService.getAccountDetail(transferTradeCreate.getDepositAccount());
-        AccountDetail withdrawalAccount = accountService.getAccountDetail(transferTradeCreate.getWithdrawalAccount());
-
+        // 출금 계좌: accId
+        // 입금 계좌: targetAccId
+        AccountDetail withdrawalAccount = accountService.getAccountDetail(transferTradeCreate.getAccId());
+        AccountDetail depositAccount = accountService.getAccountDetail(transferTradeCreate.getTargetAccId());
 
         if(withdrawalAccount == null) {  // 출금 계좌가 없을 때
             throw new BadRequestException(ErrorCode.NOT_FOUND_ACCOUNT);
@@ -243,7 +244,7 @@ public class AccountTradeFacade {
             throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
         }
         else{   // 비밀번호 검증에 실패했을 때
-            accountService.validatePassword(new PasswordValidation(transferTradeCreate.getWithdrawalAccount(), transferTradeCreate.getWithdrawalAccountPassword()));
+            accountService.validatePassword(new PasswordValidation(transferTradeCreate.getAccId(), transferTradeCreate.getAccountPassword()));
         }
 
         // 출금 계좌 잔액 조회
@@ -255,7 +256,7 @@ public class AccountTradeFacade {
         }
 
         // 상대 계좌 조회 -> 입금 계좌 잔액 조회
-        BigDecimal depositAccountBalance = accountService.getAccountDetail(transferTradeCreate.getDepositAccount()).getBalance();
+        BigDecimal depositAccountBalance = accountService.getAccountDetail(transferTradeCreate.getTargetAccId()).getBalance();
 
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
@@ -263,7 +264,7 @@ public class AccountTradeFacade {
 
 
         // 출금 거래내역 추가
-        TransferDetail withdrawalTrade = tradeService.createWithdrawalTrade(transferTradeCreate, currentData, withdrawalAccountBalance, tradeNumber);
+        TransferDetail withdrawalTrade = tradeService.createTransferTrade(transferTradeCreate, currentData, withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()), tradeNumber, "WITHDRAWAL");
         // 출금 계좌 잔액 업데이트
         accountService.updateByTransferTrade(withdrawalAccount, currentData, withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()));
 
@@ -277,8 +278,12 @@ public class AccountTradeFacade {
             throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
         }
 
+        // 계좌번호 바꾸기
+        transferTradeCreate.setAccId(depositAccount.getId());
+        transferTradeCreate.setTargetAccId(withdrawalAccount.getId());
+
         // 입금 거래내역 추가
-        TransferDetail depositTrade = tradeService.createDepositTrade(transferTradeCreate, currentData, depositAccountBalance, tradeNumber);
+        TransferDetail depositTrade = tradeService.createTransferTrade(transferTradeCreate, currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()), tradeNumber, "DEPOSIT");
         // 입금 계좌 잔액 업데이트
         accountService.updateByTransferTrade(depositAccount, currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()));
 
@@ -290,11 +295,74 @@ public class AccountTradeFacade {
 
 
     /**
-     *   @Description - 계좌 이체 취소
-     *
+     * @return
+     * @Description - 계좌 이체 취소
+     * 1. 거래 내역 조회 + 거래 계좌 잔액 조회
+     * 1-1 예외처리: 비밀번호 검증
+     * 2. 거래 번호 내역의 상태 값 CAN으로 변경
+     * 3. 역거래 내역 추가
      */
-    public void updateCancelTransferCAN(TradeCancelRequest tradeCancelRequest) {
+    @Transactional(rollbackFor = {Exception.class})
+    public List<TransferDetail> updateTransferCancel(TradeCancelRequest tradeCancelRequest) {
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+        // 거래 내역 조회
+        List<TransferDetail> tradeList = tradeService.getTradeByTradeNumber(tradeCancelRequest.getTradeNumber());
+
+        // 거래번호가 없다면
+        if(tradeList == null || tradeList.isEmpty()) {
+            throw new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER);
+        }
+
+        // status 값 CAN 으로 변경
+        int updateCancelStatus = tradeService.updateTradeStatusToCancel(tradeCancelRequest.getTradeNumber());
+
+        // status 값 변경 실패
+        if(updateCancelStatus == 0){
+            throw new BadRequestException(ErrorCode.REQUIRED_UPDATE_TRANSFER_CANCEL);
+        }
+
+
+        // 입금된 계좌 번호
+        String depositAccId = tradeList.stream().filter(t -> t.getTradeType().equals("DEPOSIT")).map(t -> t.getAccId()).findFirst().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_FOUND_ACCOUNT));
+        // 입금된 계좌 정보 
+        AccountDetail depositAccountDetail = accountService.getAccountDetail(depositAccId);
+
+        // 계좌 비밀번호 판별
+        accountService.validatePassword(new PasswordValidation(depositAccountDetail.getId(), tradeCancelRequest.getPassword()));
+
+        // 출금된 계좌 번호
+        String withdrawalAccId = tradeList.stream().filter(t -> t.getTradeType().equals("WITHDRAWAL")).map(t -> t.getAccId()).findFirst().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_FOUND_ACCOUNT));
+        // 출금된 계좌 정보
+        AccountDetail withdrawalAccountDetail = accountService.getAccountDetail(withdrawalAccId);
+
+        // 거래 금액
+        BigDecimal amount = tradeList.stream().filter(t -> t.getTradeType().equals("WITHDRAWAL")).map(t -> t.getAmount()).findFirst().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_FOUND_TRADE_NUMBER));
+
+        // 입금 -> 출금 역거래 생성 내역
+        // 입금된 계좌에서 출금
+        TransferDetail reverseWithdrawalTrade = tradeService.createTransferCancelTrade(
+                TransferTradeCreate.builder().accId(depositAccountDetail.getId()).targetAccId(withdrawalAccountDetail.getId()).transferAmount(amount).description("거래 취소").build(),
+                currentData, depositAccountDetail.getBalance().subtract(amount), tradeCancelRequest.getTradeNumber(), "WITHDRAWAL");
+        
+        // 입금된 계좌에서 출금 후 잔액 업데이트
+        accountService.updateByTransferTrade(depositAccountDetail, currentData, depositAccountDetail.getBalance().subtract(amount));
+        
+        // 출금 -> 입금 역거래 생성 내역
+        // 출금된 계좌에서 입금
+        TransferDetail reverseDepositTrade = tradeService.createTransferCancelTrade(TransferTradeCreate.builder().accId(withdrawalAccountDetail.getId()).targetAccId(depositAccountDetail.getId()).transferAmount(amount).description("거래 취소").build(),
+                currentData, withdrawalAccountDetail.getBalance().add(amount), tradeCancelRequest.getTradeNumber(), "DEPOSIT");
+
+        // 출금된 계좌에서 입금 후 잔액 업데이트
+        accountService.updateByTransferTrade(withdrawalAccountDetail, currentData, withdrawalAccountDetail.getBalance().add(amount));
+
+        return Arrays.asList(reverseWithdrawalTrade, reverseDepositTrade);
     }
 
     /**
@@ -320,7 +388,6 @@ public class AccountTradeFacade {
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
-
 
         // 현금 거래 내역 생성
         TradeDetail tradeDetail = tradeService.createCashTrade(cashTradeCreate, currentData, cashTradeAccountBalance ,tradeNumber);

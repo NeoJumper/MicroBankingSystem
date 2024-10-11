@@ -10,12 +10,12 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class TradeCancelRequest {
-    private String tradeNumber;
+    private Long tradeNumber;
     private String password;
 
 
     @Builder
-    public TradeCancelRequest(String tradeNumber, String password) {
+    public TradeCancelRequest(Long tradeNumber, String password) {
         this.tradeNumber = tradeNumber;
         this.password = password;
     }

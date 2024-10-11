@@ -86,6 +86,13 @@ public class TradeService {
         return tradeMapper.findNextTradeNumberVal();
     }
 
+    /**
+     *@param tradeNumber
+     * @return List<TransferDetail>
+     * 
+     * @Description
+     * - 거래 번호로 조회하여 여러 거래 내역 반환
+     */
     public List<TransferDetail> getTradeByTradeNumber(Long tradeNumber) {
         List<TransferDetail> tradeDetails = tradeMapper.getTradeDetailsByTradeNumber(tradeNumber);
         if(tradeDetails == null || tradeDetails.isEmpty()){
@@ -94,51 +101,20 @@ public class TradeService {
         return tradeDetails;
     }
 
-    /**
-     * @Description
-     * - 이체 거래시 사용
-     * - 출금 계좌 거래 데이터 생성 및 상세내역 반환
-     */
-    public TransferDetail createWithdrawalTrade(TransferTradeCreate transferTradeCreate, CurrentData currentData, BigDecimal withdrawalAccountBalance, Long tradeNumber) {
-        // 출금 내역 생성
-        TradeCreate withdrawalTrade = TradeCreate.builder()
-                .accId(transferTradeCreate.getWithdrawalAccount()) // 출금 계좌
-                .targetAccId(transferTradeCreate.getDepositAccount())  // 상대 계좌 : 입금 계좌
-                .amount(transferTradeCreate.getTransferAmount())   // 이체 금액
-                .balance(withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()))  // 이체 후 잔액
-                .tradeType("WITHDRAWAL")  // 유형: 출금
-                .branchId(currentData.getBranchId())  // 지점 번호
-                .registrantId(currentData.getEmployeeId())  // 등록자 번호
-                .tradeDate(currentData.getCurrentBusinessDate())  // 거래 일자(영업일)
-                .tradeNumber(tradeNumber)  // 거래 번호
-                .description(transferTradeCreate.getDescription())  // 비고
-                .cashIndicator("FALSE")  // 현금 여부: FALSE
-                .status("NOR")  // 거래 상태: 정상
-                .build();
-
-        tradeMapper.insertTrade(withdrawalTrade);
-
-        return TransferDetail.builder()
-                .accId(transferTradeCreate.getWithdrawalAccount())
-                .customerName(currentData.getEmployeeName())
-                .amount(transferTradeCreate.getTransferAmount())   // 이체 금액
-                .balance(withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()))  // 이체 후 잔액
-                .build();
-    }
 
     /**
      * @Description
      * - 이체 거래시 사용
-     * - 입금 계좌 거래 데이터 생성 및 상세내역 반환
+     * - 입금/출금 계좌 거래 데이터 생성 및 상세내역 반환
      */
-    public TransferDetail createDepositTrade(TransferTradeCreate transferTradeCreate, CurrentData currentData, BigDecimal depositAccountBalance, Long tradeNumber) {
-        // 입금 내역 생성
-        TradeCreate depositTrade = TradeCreate.builder()
-                .accId(transferTradeCreate.getDepositAccount()) // 입금 계좌
-                .targetAccId(transferTradeCreate.getWithdrawalAccount())  // 상대 계좌: 출금 계좌
+    public TransferDetail createTransferTrade(TransferTradeCreate transferTradeCreate, CurrentData currentData, BigDecimal afterBalance, Long tradeNumber, String tradeType) {
+        // 이체 내역 생성
+        TradeCreate transferTrade = TradeCreate.builder()
+                .accId(transferTradeCreate.getAccId()) // 본인 계좌
+                .targetAccId(transferTradeCreate.getTargetAccId())  // 상대 계좌
                 .amount(transferTradeCreate.getTransferAmount())  // 이체 금액
-                .balance(depositAccountBalance.add(transferTradeCreate.getTransferAmount()))  // 이체 후 잔액
-                .tradeType("DEPOSIT")  // 유형: 입금
+                .balance(afterBalance)  // 이체 후 잔액
+                .tradeType(tradeType)  // 유형: 입금 / 출금
                 .branchId(currentData.getBranchId())  // 지점 번호
                 .registrantId(currentData.getEmployeeId())  // 등록자 번호
                 .tradeDate(currentData.getCurrentBusinessDate())  // 거래 일자(영업일)
@@ -148,15 +124,44 @@ public class TradeService {
                 .status("NOR")  // 거래 상태: 정상
                 .build();
 
-        tradeMapper.insertTrade(depositTrade);
+        tradeMapper.insertTrade(transferTrade);
 
         return TransferDetail.builder()
-                .accId(transferTradeCreate.getWithdrawalAccount())
+                .accId(transferTradeCreate.getAccId())
                 .customerName(currentData.getEmployeeName())
                 .amount(transferTradeCreate.getTransferAmount())   // 이체 금액
-                .balance(depositAccountBalance.add(transferTradeCreate.getTransferAmount()))  // 이체 후 잔액
+                .balance(afterBalance)  // 이체 후 잔액
                 .build();
     }
+
+    public TransferDetail createTransferCancelTrade(TransferTradeCreate transferTradeCreate, CurrentData currentData, BigDecimal afterBalance, Long tradeNumber, String tradeType) {
+        // 입금 내역 생성
+        TradeCreate transferTrade = TradeCreate.builder()
+                .accId(transferTradeCreate.getAccId()) // 본인 계좌
+                .targetAccId(transferTradeCreate.getTargetAccId())  // 상대 계좌
+                .amount(transferTradeCreate.getTransferAmount())  // 이체 금액
+                .balance(afterBalance)  // 이체 후 잔액
+                .tradeType(tradeType)  // 유형: 입금 / 출금
+                .branchId(currentData.getBranchId())  // 지점 번호
+                .registrantId(currentData.getEmployeeId())  // 등록자 번호
+                .tradeDate(currentData.getCurrentBusinessDate())  // 거래 일자(영업일)
+                .tradeNumber(tradeNumber)  // 거래 번호
+                .description(transferTradeCreate.getDescription())  // 비고
+                .cashIndicator("FALSE")  // 현금 여부
+                .status("RVK")  // 거래 상태: 역거래
+                .build();
+
+        tradeMapper.insertTrade(transferTrade);
+
+        return TransferDetail.builder()
+                .accId(transferTradeCreate.getAccId())
+                .customerName(currentData.getEmployeeName())
+                .amount(transferTradeCreate.getTransferAmount())   // 이체 금액
+                .balance(afterBalance)  // 이체 후 잔액
+                .build();
+    }
+
+
 
     /**
      * @Description
@@ -243,6 +248,10 @@ public class TradeService {
                 .build();
 
         tradeMapper.insertTrade(tradeCreate);
+    }
+
+    public int updateTradeStatusToCancel(Long tradeNumber) {
+        return tradeMapper.updateTradeStatusToCancel(tradeNumber);
     }
 }
 
