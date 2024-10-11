@@ -32,32 +32,45 @@
             <div class="d-flex w-100">
                 <div class="me-5 mb-2">
                     <label class="amount-label1">현금 입금액</label>
-                    <input class="amount-input" type="text" value="<c:out value='${employeeClosingData.closingData.totalDeposit}' />" disabled>
+                    <input class="emp-close-cash-deposit" type="text" value="<c:out value='${employeeClosingData.closingData.totalDeposit}' />" disabled>
                 </div>
                 <div>
                     <label class="amount-label2">거래내역 현금 입금액</label>
-                    <input class="amount-input" type="text" value="<c:out value='${employeeClosingData.totalDepositOfTrade}' />" disabled>
+                    <input class="emp-close-trade-list-deposit" type="text" value="<c:out value='${employeeClosingData.totalDepositOfTrade}' />" disabled>
                 </div>
             </div>
             <div class="d-flex w-100">
                 <div class="me-5 mb-2">
                     <label class="amount-label1">현금 출금액</label>
-                    <input class="amount-input" type="text" value="<c:out value='${employeeClosingData.closingData.totalWithdrawal}' />" disabled>
+                    <input class="emp-close-cash-withdrawal" type="text" value="<c:out value='${employeeClosingData.closingData.totalWithdrawal}' />" disabled>
                 </div>
                 <div>
                     <label class="amount-label2">거래내역 현금 출금액</label>
-                    <input class="amount-input" type="text" value="<c:out value='${employeeClosingData.totalWithdrawalOfTrade}' />" disabled>
+                    <input class="emp-close-trade-list-withdrawal" type="text" value="<c:out value='${employeeClosingData.totalWithdrawalOfTrade}' />" disabled>
                 </div>
             </div>
             <div class="d-flex w-100">
                 <div class="me-5 mb-2">
                     <label class="amount-label1">전일자 현금 잔액</label>
-                    <input class="amount-input" type="text" value="<c:out value='${employeeClosingData.closingData.prevCashBalance}' />" disabled>
+                    <input class="emp-close-prev-cash-balance" type="text"
+                           value="<c:out value='${employeeClosingData.closingData.prevCashBalance}' />" disabled>
 
                 </div>
                 <div>
                     <label class="amount-label2">금일 마감 금액</label>
-                    <input class="amount-input" type="text" value="<c:out value='${employeeClosingData.closingData.vaultCash}' />" disabled>
+                    <c:choose>
+                        <c:when test="${employeeClosingData.closingData.vaultCash != null}">
+                            <input class="emp-close-vault-cash" type="text"
+                                   value="<c:out value='${employeeClosingData.closingData.vaultCash}' />"
+                                   disabled>
+                        </c:when>
+
+                        <c:otherwise>
+                            <input class="emp-close-vault-cash" type="text"
+                                   placeholder="처리중..."
+                                   disabled>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
 
@@ -69,17 +82,19 @@
                 </button>
             </div>
             <div >
-                <button id="employee-business-day-close-btn"
-                        class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'update-btn'}"
-                        <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>>
-                    <c:choose>
-                        <c:when test="${employeeClosingData.closingData.status == 'CLOSED'}">
-                            마감 완료
-                        </c:when>
-                        <c:otherwise>
-                            개인 마감
-                        </c:otherwise>
-                    </c:choose>
+                <button
+                    id="employee-business-day-close-btn"
+                    class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'update-btn'}"
+                    <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>
+                >
+                        <c:choose>
+                            <c:when test="${employeeClosingData.closingData.status == 'CLOSED'}">
+                                마감 완료
+                            </c:when>
+                            <c:otherwise>
+                                개인 마감
+                            </c:otherwise>
+                        </c:choose>
 
                 </button>
             </div>
@@ -127,6 +142,7 @@
     </div>
 
 </div>
+
 
 <script src="/resources/js/page/employee-close.js"></script>
 <script src="/resources/js/footer.js"></script>

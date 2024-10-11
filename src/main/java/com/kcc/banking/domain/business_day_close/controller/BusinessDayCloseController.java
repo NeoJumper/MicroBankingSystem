@@ -31,7 +31,7 @@ public class BusinessDayCloseController {
     @GetMapping("/page/manager/business-day-close")
     public String businessDayCloseOfManagerPage(Model model)
     {
-        ManagerClosingData managerClosingData = businessDayManagementFacade.getManagerClosingData();
+        ManagerClosingData managerClosingData = businessDayCloseService.getManagerClosingData();
         model.addAttribute("managerClosingData", managerClosingData);
 
         return "business-day/manager-close";

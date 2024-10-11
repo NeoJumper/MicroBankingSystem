@@ -43,6 +43,12 @@
         where branch_id = #{branchId} and closing_date = #{businessDate}
     </select>
 
+    <select id="findBranchClosingVaultCash" parameterType="BusinessDateAndBranchId" >
+        select vault_cash from branch_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
+    </select>
+
+
     <!-- ****************************** INSERT ****************************** -->
 
 
@@ -71,7 +77,7 @@
             #{item.prevCashBalance},
             0,
             0,
-            #{item.prevCashBalance},
+            0,
             #{item.tradeNumber},
             #{item.registrantId},
             SYSTIMESTAMP,
@@ -92,7 +98,7 @@
             #{branchId},
             #{status},
             #{prevCashBalance},
-            #{prevCashBalance}, -- 총 마감액은 전일자 잔액과 동일
+            0,
             #{tradeNumber},
             SYSTIMESTAMP,
             1
