@@ -85,18 +85,17 @@ public class TradeRestController {
 
     // 취소 페이지에서, 거래번호를 통해 취소하려는 거래 내역 GET
     @GetMapping("/account-transfer-cancel/{tradeNumber}")
-    public ResponseEntity<List<TransferDetail>> transferCancel(@PathVariable(value = "tradeNumber", required = false) Long tradeNumber) {
+    public ResponseEntity<List<TransferDetail>> getTransferCancel(@PathVariable(value = "tradeNumber", required = false) Long tradeNumber) {
         List<TransferDetail> tradeDetails = tradeService.getTradeByTradeNumber(tradeNumber);
         System.out.println("TradeDetail::"+tradeDetails);
         return ResponseEntity.ok(tradeDetails);
     }
 
-    // 취소 신청 - 실제 status 변경
+    // 취소 신청 - 실제 status 변경 및 역거래
     @PostMapping("/account-transfer-cancel")
-    public ResponseEntity<List<TransferDetail>> updateCancelTransferCAN(@RequestBody TradeCancelRequest tradeCancelRequest) {
-        accountTradeFacade.updateCancelTransferCAN(tradeCancelRequest);
-
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<TransferDetail>> transferCancel(@RequestBody TradeCancelRequest tradeCancelRequest) {
+        List<TransferDetail> transferCancelDetails = accountTradeFacade.updateTransferCancel(tradeCancelRequest);
+        return ResponseEntity.ok(transferCancelDetails);
     }
 
     @PostMapping("/close-trade")

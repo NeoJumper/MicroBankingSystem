@@ -11,18 +11,18 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 public class TransferTradeCreate {
-    private String withdrawalAccount; // 출금 계좌
-    private String depositAccount;
+    private String accId;
+    private String targetAccId;
     private BigDecimal transferAmount;
     private String description;
-    private String withdrawalAccountPassword;
+    private String accountPassword;
 
     @Builder
-    public TransferTradeCreate(String withdrawalAccount, String depositAccount, BigDecimal transferAmount , String description, String withdrawalAccountPassword) {
-        this.withdrawalAccount = withdrawalAccount;
-        this.depositAccount = depositAccount;
+    public TransferTradeCreate(String accId, String targetAccId, BigDecimal transferAmount , String description, String accountPassword) {
+        this.accId = accId;
+        this.targetAccId = targetAccId;
         this.transferAmount = transferAmount;
         this.description = description;
-        this.withdrawalAccountPassword = withdrawalAccountPassword;
+        this.accountPassword = accountPassword;
     }
 }

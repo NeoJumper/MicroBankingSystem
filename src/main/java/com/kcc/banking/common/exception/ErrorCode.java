@@ -22,6 +22,9 @@ public enum ErrorCode {
     CLOSED_BUSINESS_DAY("영업일이 마감되었습니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_BRANCH_CLOSING("지점 마감이 처리되지 않았습니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_EMPLOYEE_CLOSING("개인마감을 진행중인 사원이 존재합니다.", HttpStatus.BAD_REQUEST),
+    REQUIRED_UPDATE_TRANSFER_CANCEL("이체 상태 변경이 처리되지 않았습니다.", HttpStatus.BAD_REQUEST),
+
+    // 403
 
     NOT_INSERT_ACCOUNT_ID("계좌번호가 생성되지 않았습니다.", HttpStatus.BAD_REQUEST),
     NOT_INSERT_BALANCE("잔액이 입력되지 않았습니다.", HttpStatus.BAD_REQUEST),
