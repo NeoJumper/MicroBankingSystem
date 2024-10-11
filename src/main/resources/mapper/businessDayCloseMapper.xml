@@ -71,7 +71,7 @@
             #{item.prevCashBalance},
             0,
             0,
-            #{item.prevCashBalance},
+            0,
             #{item.tradeNumber},
             #{item.registrantId},
             SYSTIMESTAMP,
@@ -92,7 +92,7 @@
             #{branchId},
             #{status},
             #{prevCashBalance},
-            #{prevCashBalance}, -- 총 마감액은 전일자 잔액과 동일
+            0,
             #{tradeNumber},
             SYSTIMESTAMP,
             1

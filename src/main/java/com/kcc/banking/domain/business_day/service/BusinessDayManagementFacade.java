@@ -36,8 +36,8 @@ public class BusinessDayManagementFacade {
      * 1. 영업일 변경(현재 영업일을 지정 상태를 FALSE 로 변경 + 다음 영업일을 오픈 및 현재 영업일로 지정)
      * 2. 업데이트 내용을 객체에 반영
      * 3. 예외 처리
-     *      - 영업일 변경을 눌렀는데 현재 영업일이 영업중일 때 -> REQUIRED_BRANCH_CLOSING
-     *      - 요청한 다음 영업일이 서버상의 현재 영업일일 때 -> THROW ALREADY_CHANGED_BUSINESS_DAY
+     *      3.1 영업일 변경을 눌렀는데 현재 영업일이 영업중일 때 -> REQUIRED_BRANCH_CLOSING
+     *      3.2 요청한 다음 영업일이 서버상의 현재 영업일일 때 -> THROW ALREADY_CHANGED_BUSINESS_DAY
      * 4. 마감 데이터(행원, 매니저) 생성
      */
     @Transactional(rollbackFor = Exception.class)
