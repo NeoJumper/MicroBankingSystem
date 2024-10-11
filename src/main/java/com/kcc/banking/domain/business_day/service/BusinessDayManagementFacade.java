@@ -5,6 +5,7 @@ import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.business_day.dto.request.BusinessDayChange;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
+import com.kcc.banking.domain.business_day_close.dto.request.VaultCashRequest;
 import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
@@ -86,27 +87,14 @@ public class BusinessDayManagementFacade {
         return EmployeeClosingData.of(closingData, tradeByCashList);
     }
 
-    /**
-     * @Description
-     * 1. 개인 마감 데이터 조회(거래내역과 마감 데이터)
-     *      - 사원들의 마감 내역(전일자 현금 잔액, 입출금액, 금일 마감 금액 등)
-     *      - 지점의 전일자 현금 잔액
-     *      - 지점의 현금 입출금액, 금일 마감 금액(사원들의 )
-     */
-    public ManagerClosingData getManagerClosingData() {
 
-        BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        List<ClosingData> closingDataList = businessDayCloseService.getClosingDataList(currentBusinessDateAndBranchId);
-        return ManagerClosingData.of(closingDataList);
-
-    }
     /**
      * @Description
      * 1. 마감 데이터를 불러와 마감 상태 확인 -> CLOSED 라면 ALREADY_CLOSED_BUSINESS_DAY
      * 2. 예외 처리
      * 3. 사원 개인 마감
      */
-    public void closeByEmployee() {
+    public void closeByEmployee(VaultCashRequest vaultCashRequest) {
         // 1
         BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
 
@@ -117,7 +105,7 @@ public class BusinessDayManagementFacade {
             throw new BadRequestException(ErrorCode.ALREADY_CLOSED_BUSINESS_DAY);
 
         // 3
-        businessDayCloseService.closeEmployeeBusinessDay(currentBusinessDateAndEmployeeId);
+        businessDayCloseService.closeEmployeeBusinessDay(currentBusinessDateAndEmployeeId, vaultCashRequest);
 
     }
 
@@ -131,15 +119,13 @@ public class BusinessDayManagementFacade {
      * 4. 영업일의 마감 상태도 CLOSED로 변경
      * 5. 지점마감의 거래번호를 가져와 이자 생성
      */
-    public void closeByManager() {
+    public void closeByManager(VaultCashRequest vaultCashRequest) {
 
         // 1
         BusinessDateAndBranchId businessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
         String currentBusinessDate = businessDateAndBranchId.getBusinessDate();
 
-        List<ClosingData> closingDataList = businessDayCloseService.getClosingDataList(businessDateAndBranchId);
-
-        ManagerClosingData managerClosingData =  ManagerClosingData.of(closingDataList);
+        ManagerClosingData managerClosingData =  businessDayCloseService.getManagerClosingData();
 
 
         // 2
@@ -151,7 +137,7 @@ public class BusinessDayManagementFacade {
 
         // 3
 
-        businessDayCloseService.closeBranchBusinessDay(businessDateAndBranchId);
+        businessDayCloseService.closeBranchBusinessDay(businessDateAndBranchId, vaultCashRequest);
 
         // 4
 

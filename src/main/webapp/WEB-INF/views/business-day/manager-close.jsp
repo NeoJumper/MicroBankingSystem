@@ -77,22 +77,35 @@
             <div class="d-flex w-100">
                 <div class="ms-5 mb-2 ">
                     <label class="amount-label1">현금 입금액</label>
-                    <input id ="manager-total-deposit" class="amount-input" type="text" value="<c:out value='${managerClosingData.totalDepositOfBranch}' />" disabled>
+                    <input id ="manager-close-total-deposit" class="amount-input" type="text" value="<c:out value='${managerClosingData.totalDepositOfBranch}' />" disabled>
                 </div>
                 <div class="ms-5 mb-2">
                     <label class="amount-label1">현금 출금액</label>
-                    <input id ="manager-total-withdrawal" class="amount-input" type="text"  value="<c:out value='${managerClosingData.totalWithdrawalOfBranch}' />" disabled>
+                    <input id ="manager-close-total-withdrawal" class="amount-input" type="text"  value="<c:out value='${managerClosingData.totalWithdrawalOfBranch}' />" disabled>
                 </div>
             </div>
 
             <div class="d-flex w-100">
                 <div class="ms-5 mb-2">
                     <label class="amount-label1">전일자 현금</label>
-                    <input id ="manager-prev-cash-balance" class="amount-input" type="text"  value="<c:out value='${managerClosingData.prevCashBalanceOfBranch}' />" disabled>
+                    <input id ="manager-close-prev-cash-balance" class="amount-input" type="text"  value="<c:out value='${managerClosingData.prevCashBalanceOfBranch}' />" disabled>
                 </div>
                 <div class="ms-5 mb-2">
                     <label class="amount-label1">금일 마감 금액</label>
-                    <input id ="manager-vaultCash" class="amount-input" type="text"  value="<c:out value='${managerClosingData.vaultCashOfBranch}' />" disabled>
+                    <c:choose>
+                        <c:when test="${managerClosingData.vaultCashOfBranch != null}">
+                            <input id="manager-close-vault-cash" class="amount-input" type="text"
+                                   value="<c:out value='${managerClosingData.vaultCashOfBranch}' />"
+                                   disabled>
+                        </c:when>
+
+                        <c:otherwise>
+                            <input id="manager-close-vault-cash" class="amount-input" type="text"
+                                   placeholder="처리중..."
+                                   disabled>
+                        </c:otherwise>
+                    </c:choose>
+
                 </div>
             </div>
 

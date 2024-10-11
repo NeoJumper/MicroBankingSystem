@@ -13,9 +13,14 @@ function registerClickEventOfEmpCloseBtn(){
 
 
 function closeBusinessDayOfManager(){
+
+    let vaultCash = calculateVaultCash();
+
     $.ajax({
         url: '/api/manager/business-day-close',
         type: 'PATCH',
+        contentType: 'application/json',
+        data: JSON.stringify({ vaultCash: vaultCash }),
         success: function(response) {
             console.log('성공');
             swal({
@@ -28,6 +33,9 @@ function closeBusinessDayOfManager(){
             $("#manager-business-day-close-btn").prop("disabled", true);
             $("#manager-business-day-close-btn").text("마감 완료");
             $('#business-day-status > span').text("CLOSED");
+
+            let todayClosingAmount = calculateVaultCash();
+            fillEmpVaultCash(todayClosingAmount);
         },
         error: function(xhr, status, error) {
             swal({
@@ -38,6 +46,8 @@ function closeBusinessDayOfManager(){
             })
         }
     });
+
+
 }
 
 /**
@@ -93,4 +103,22 @@ function handleCurrentBusinessDay(){
 
         }
     });
+}
+
+function calculateVaultCash(){
+    // 전일자 현금 잔액
+    const prevCashBalance = parseFloat($('#manager-close-prev-cash-balance').val()) || 0;
+    // 현금 입금액
+    const cashDeposit = parseFloat($('#manager-close-cash-deposit').val()) || 0;
+    // 현금 출금액
+    const cashWithdrawal = parseFloat($('#manager-close-cash-withdrawal').val()) || 0;
+
+    // 금일 마감 금액 계산
+    return prevCashBalance - (cashDeposit + cashWithdrawal);
+}
+
+function fillEmpVaultCash(todayClosingAmount) {
+
+    // 금일 마감 금액 입력란에 값 설정
+    $('#manager-close-vault-cash').val(todayClosingAmount);
 }

@@ -5,6 +5,7 @@ import com.kcc.banking.domain.business_day.dto.request.BusinessDayChange;
 import com.kcc.banking.domain.business_day.dto.request.WorkerData;
 import com.kcc.banking.domain.business_day_close.dto.request.*;
 import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
+import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
@@ -63,30 +64,42 @@ public class BusinessDayCloseService {
         return businessDayCloseMapper.findClosingData(currentBusinessDateAndEmployeeId);
     }
 
-    public List<ClosingData> getClosingDataList(BusinessDateAndBranchId currentBusinessDateAndBranchId) {
-        return businessDayCloseMapper.findClosingDataList(currentBusinessDateAndBranchId);
+    /**
+     * @Description
+     * 1. 개인 마감 데이터 조회(거래내역과 마감 데이터)
+     *      - 사원들의 마감 내역(전일자 현금 잔액, 입출금액, 금일 마감 금액 등)
+     *      - 지점의 전일자 현금 잔액
+     *      - 지점의 현금 입출금액, 금일 마감 금액(사원들의 )
+     */
+    public ManagerClosingData getManagerClosingData() {
+        BusinessDateAndBranchId currentBusinessDateAndBranchId= commonService.getCurrentBusinessDateAndBranchId();
+        List<ClosingData> closingDataList = businessDayCloseMapper.findClosingDataList(currentBusinessDateAndBranchId);
+        BigDecimal branchClosingVaultCash = businessDayCloseMapper.findBranchClosingVaultCash(currentBusinessDateAndBranchId);
+
+        return ManagerClosingData.of(closingDataList, branchClosingVaultCash);
     }
 
 
-    public void closeEmployeeBusinessDay(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId) {
+
+    public void closeEmployeeBusinessDay(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId, VaultCashRequest vaultCashRequest) {
         EmployeeClosingUpdate employeeClosingUpdate = EmployeeClosingUpdate.builder()
                 .targetClosingDate(currentBusinessDateAndEmployeeId.getBusinessDate())
                 .targetEmployeeId(currentBusinessDateAndEmployeeId.getEmployeeId())
                 .modifierId(currentBusinessDateAndEmployeeId.getEmployeeId())
                 .status("CLOSED")
-                .vaultCash(BigDecimal.valueOf(10000)) // 임의의 값 수정해줘야함
+                .vaultCash(vaultCashRequest.getVaultCash()) // 임의의 값 수정해줘야함
                 .build();
 
         businessDayCloseMapper.updateEmployeeClosing(employeeClosingUpdate);
     }
 
-    public void closeBranchBusinessDay(BusinessDateAndBranchId businessDateAndBranchId) {
+    public void closeBranchBusinessDay(BusinessDateAndBranchId businessDateAndBranchId, VaultCashRequest vaultCashRequest) {
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
         BranchClosingUpdate branchClosingUpdate = BranchClosingUpdate.builder().targetClosingDate(businessDateAndBranchId.getBusinessDate())
                 .targetBranchId(Long.valueOf(businessDateAndBranchId.getBranchId()))
                 .modifierId(loginMemberId)
                 .status("CLOSED")
-                .vaultCash(BigDecimal.valueOf(10000)) // 임의의 값 수정해줘야함
+                .vaultCash(vaultCashRequest.getVaultCash()) // 임의의 값 수정해줘야함
                 .build();
 
         businessDayCloseMapper.updateBranchClosing(branchClosingUpdate);

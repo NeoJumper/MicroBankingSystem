@@ -43,6 +43,12 @@
         where branch_id = #{branchId} and closing_date = #{businessDate}
     </select>
 
+    <select id="findBranchClosingVaultCash" parameterType="BusinessDateAndBranchId" >
+        select vault_cash from branch_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
+    </select>
+
+
     <!-- ****************************** INSERT ****************************** -->
 
 
