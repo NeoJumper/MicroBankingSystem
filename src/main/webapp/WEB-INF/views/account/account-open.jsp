@@ -34,7 +34,7 @@
             <th>고객번호</th>
             <td style="display: flex; align-items: center;">
                 <input type="text" id="customer-id-input" readonly >
-                <button data-bs-toggle="modal" data-bs-target="#search-customer-modal"  type="button" id="customer-id-search-btn" class="btn btn-primary" style="margin-left: 10px; padding: 5px; width:80px;height:40px">
+                <button data-bs-toggle="modal" data-bs-target="#search-customer-modal"  type="button" id="customer-id-search-btn" class="search-btn" style="margin-left: 10px; padding: 5px; width:80px;height:40px">
                     <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
                 </button>
             </td>
@@ -77,7 +77,7 @@
     </table>
 
     <div  style="text-align:center;">
-        <button class="btn btn-primary" id="account-create-btn">계좌 개설</button>
+        <button class="basic-btn" id="account-create-btn">계좌 개설</button>
 
     </div>
 

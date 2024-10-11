@@ -72,6 +72,10 @@
   font-size: medium;
 }
 
+#colContianer{
+  padding: 20px 12px 0px 0px;
+}
+
 #user-roles{
 
   padding : 2px 5px;

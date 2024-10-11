@@ -7,6 +7,7 @@ import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
+import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
@@ -32,6 +33,7 @@ public class AccountTradeFacade {
     private final AccountService accountService;
     private final TradeService tradeService;
     private final CommonService commonService;
+    private final BusinessDayCloseService businessDayCloseService;
 
     /**
      *   @Description - 계좌 개설
@@ -395,6 +397,15 @@ public class AccountTradeFacade {
         // 잔액 업데이트
         accountService.updateByCashTrade(cashTradeAccount, currentData, tradeDetail.getBalance());
 
+        /**
+         * 현금 마감 업데이트
+         * 변동될 금액 : cashTradeCreate.getAmount()
+         * 거래 유형 : cashTradeCreate.getTradeType()
+         * 1. DEPOSIT 이면 마감에는  + getAmount()
+         * 2. WITHDRAWAL 이면 마감에는 -getAmount()
+         */
+
+//        businessDayCloseService.updateTotalCash(cashTradeCreate.getTradeType(), cashTradeCreate.getAmount());
 
         return tradeDetail;
     }

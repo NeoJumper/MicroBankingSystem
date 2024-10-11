@@ -24,7 +24,7 @@ function closeBusinessDayOfManager(){
                 icon: "success",
                 button: "닫기",
             });
-            $("#manager-business-day-close-btn").removeClass("update-btn").addClass("closed-btn");
+            $("#manager-business-day-close-btn").removeClass("basic-btn").addClass("closed-btn");
             $("#manager-business-day-close-btn").prop("disabled", true);
             $("#manager-business-day-close-btn").text("마감 완료");
             $('#business-day-status > span').text("CLOSED");
@@ -60,7 +60,7 @@ function handleEmpCloseBtnStatus(){
 
     if (totalStatuses === totalClosedStatuses) {
         $('#manager-business-day-close-btn')
-            .addClass('update-btn')
+            .addClass('basic-btn')
             .text("지점 마감");
     } else {
         $('#manager-business-day-close-btn')
@@ -81,7 +81,7 @@ function handleCurrentBusinessDay(){
             if(response.status === "CLOSED")
             {
 
-                $("#manager-business-day-close-btn").removeClass("update-btn").addClass("closed-btn");
+                $("#manager-business-day-close-btn").removeClass("basic-btn").addClass("closed-btn");
                 $("#manager-business-day-close-btn").prop("disabled", true);
                 $("#manager-business-day-close-btn").text("마감 완료");
 

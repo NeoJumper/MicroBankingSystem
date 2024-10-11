@@ -1,3 +1,12 @@
+:root {
+  --basic-color: #152D6B;
+  --basic-hover-color: #2A49A1;
+  --point-red: #D40000;
+  --point-yellow: #FFD80D;
+  --h5-color: #646464;
+  --border-gray: #C8C8C8;
+  --table-header: #F5F5F5;
+}
 
 /* Bootstrap CSS (Bootstrap 5.3.2 기준) */
 @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css");
@@ -37,8 +46,9 @@ body {
   align-items: center;
   margin-bottom: 30px;
 }
+
 #main-area > div:first-child h5 {
-  color: rgb(100, 100, 100);
+  color: var(--h5-color);
   margin-bottom: 0;
 }
 
@@ -49,27 +59,26 @@ body {
   color: initial; /* 마지막 h3는 기본 스타일로 설정 */
   font-weight: bold;
 }
-.update-btn {
-  background: #0079D4;
+.basic-btn {
+  background: var(--basic-color);
   color: #F5F5F5;
   font-weight: bold;
   font-size: 1.0rem;
   padding: 10px 10px;
   margin: 0 6px;
   border: none;
-  border-radius: 5px;
 }
 
-.update-btn:hover {
+.basic-btn:hover {
   background: #0062A8;
 }
 
-.update-btn:disabled {
+.basic-btn:disabled {
   background-color: #ccc;
   color: black;
 }
 
-.update-btn:disabled:hover {
+.basic-btn:disabled:hover {
   background-color: #ccc;
   color: black;
 }

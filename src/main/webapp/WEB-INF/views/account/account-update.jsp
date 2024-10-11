@@ -29,7 +29,7 @@
         <hr>
         <div class="d-flex align-items-center">
             <input style="width:30%;" type="text" id="search-account-id-input" placeholder="계좌 번호를 입력하세요" readonly>
-            <button id="check-deposit-account-btn" class="update-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
+            <button id="check-deposit-account-btn" class="basic-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
         </div>
     </div>
     <br><br>
@@ -84,7 +84,7 @@
     </table>
 
     <div style="display: flex; justify-content : right">
-        <button id="update-account-btn" class="update-btn" type="button" >계좌 수정</button>
+        <button id="update-account-btn" class="basic-btn" type="button" >계좌 수정</button>
     </div>
 
 </div>

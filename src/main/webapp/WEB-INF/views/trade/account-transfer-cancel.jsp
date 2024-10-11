@@ -94,7 +94,7 @@
     </table>
 
     <div class="row justify-content-center mb-5">
-        <button disabled id="cancel-transfer-submit" class="col-1 update-btn">거래 취소 요청</button>
+        <button disabled id="cancel-transfer-submit" class="col-1 basic-btn">거래 취소 요청</button>
     </div>
 </div>
 

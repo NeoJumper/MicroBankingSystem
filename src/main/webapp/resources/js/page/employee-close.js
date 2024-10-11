@@ -27,7 +27,7 @@ function closeBusinessDayOfEmployee(){
                 icon: "success",
                 button: "닫기",
             });
-            $("#employee-business-day-close-btn").removeClass("update-btn").addClass("closed-btn");
+            $("#employee-business-day-close-btn").removeClass("basic-btn").addClass("closed-btn");
             $("#employee-business-day-close-btn").prop("disabled", true);
             $("#employee-business-day-close-btn").text("마감 완료");
 

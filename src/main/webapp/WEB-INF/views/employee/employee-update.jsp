@@ -67,7 +67,7 @@
         </tr>
     </table>
     <div class="d-flex justify-content-end mt-4 mb-4">
-        <button class="update-btn" id="emp-update-btn">수정사항 저장</button>
+        <button class="basic-btn" id="emp-update-btn">수정사항 저장</button>
     </div>
 
 </div>

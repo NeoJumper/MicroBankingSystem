@@ -26,7 +26,7 @@
             <h3>계좌 해지 신청</h3>
             <div id="search-content">
                 <div><input style="height: 100%;" placeholder="계좌번호 조회" id="search-input" value="" disabled="TRUE"></div>
-                <button id="check-withdrawal-account-btn" class="update-btn" type="button"
+                <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
                         data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">
                     계좌조회
                 </button>

@@ -64,7 +64,7 @@
         </div>
         <div class="col-3 d-flex justify-content-end">
             <div >
-                <button id="trade-list-detail-btn" class ="update-btn">
+                <button id="trade-list-detail-btn" class ="basic-btn">
                     내역 상세보기
                 </button>
             </div>
