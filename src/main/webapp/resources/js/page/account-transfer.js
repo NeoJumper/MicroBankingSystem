@@ -228,11 +228,11 @@ function transferSubmit() {
         contentType: "application/json",
         type: "POST",
         data: JSON.stringify({
-            withdrawalAccount: withdrawalAccountId,
-            depositAccount: depositAccountId,
+            accId: withdrawalAccountId,
+            targetAccId: depositAccountId,
             transferAmount: transferAmount,
             description: description,
-            withdrawalAccountPassword: accountPassword
+            accountPassword: accountPassword
         }),
 
         success: function (data) {

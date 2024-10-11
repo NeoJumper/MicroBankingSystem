@@ -21,6 +21,8 @@ public enum ErrorCode {
     CLOSED_BUSINESS_DAY("영업일이 마감되었습니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_BRANCH_CLOSING("지점 마감이 처리되지 않았습니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_EMPLOYEE_CLOSING("개인마감을 진행중인 사원이 존재합니다.", HttpStatus.BAD_REQUEST),
+    REQUIRED_UPDATE_TRANSFER_CANCEL("이체 상태 변경이 처리되지 않았습니다.", HttpStatus.BAD_REQUEST),
+
     // 403
     NOT_LOGIN("로그인 후 이용할 수 있습니다.", HttpStatus.FORBIDDEN),
     NOT_OPEN("영업 마감된 상태입니다.", HttpStatus.FORBIDDEN),
