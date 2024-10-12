@@ -10,6 +10,7 @@ import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
+import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.interest.service.InterestService;
@@ -148,4 +149,37 @@ public class BusinessDayManagementFacade {
         interestService.createInterest(tradeNumber, businessDateAndBranchId);
     }
 
+    /**
+     * @Description
+     * 1. 현재 영업일의 마감 데이터(행원, 지점) 삭제
+     * 2. 이전 영업일의 마감 데이터 원복 -> 마감 총액 0, 마감 상태 OPEN
+     * 3. 이전 영업일의 이자 데이터 삭제
+     * 4. 현재 영업일 -> 현재영업일 여부 FALSE, 상태 SCHEDULED
+     * 5. 이전 영업일 -> 현재영업일 여부 TRUE, 상태 OPEN
+     */
+    public void resetBusinessDay() {
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId(currentData);
+
+        String closingTradeNumber = businessDayCloseService.getClosingTradeNumber(currentBusinessDateAndBranchId);
+
+        // 1
+        businessDayCloseService.deleteBranchClosing(closingTradeNumber);
+        businessDayCloseService.deleteEmployeeClosing(closingTradeNumber);
+
+
+        // 2
+        String prevBusinessDate = businessDayService.getPrevBusinessDay().getBusinessDate();
+        businessDayCloseService.resetEmployeeClosing(currentData, prevBusinessDate);
+        businessDayCloseService.resetBranchClosing(currentData, prevBusinessDate);
+
+        // 3
+        interestService.deleteInterest(currentData, prevBusinessDate);
+
+        // 4
+        businessDayService.resetBusinessDay(currentData.getCurrentBusinessDate(), String.valueOf(currentData.getEmployeeId()));
+
+        // 5
+        businessDayService.openBusinessDay(prevBusinessDate, String.valueOf(currentData.getEmployeeId()));
+    }
 }

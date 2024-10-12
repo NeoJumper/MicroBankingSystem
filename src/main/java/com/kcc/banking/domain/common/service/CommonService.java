@@ -81,4 +81,12 @@ public class CommonService {
     public BusinessDay getCurrentBusinessDay(){
         return businessDayMapper.findCurrentBusinessDay();
     }
+
+    public BusinessDateAndBranchId getCurrentBusinessDateAndBranchId(CurrentData currentData) {
+
+
+        return BusinessDateAndBranchId.builder()
+                .businessDate(currentData.getCurrentBusinessDate())
+                .branchId(String.valueOf(currentData.getBranchId())).build();
+    }
 }

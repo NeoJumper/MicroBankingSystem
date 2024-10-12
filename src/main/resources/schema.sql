@@ -105,6 +105,7 @@ CREATE TABLE Interest (
                           registrant_id NUMBER NOT NULL,
                           branch_id NUMBER NOT NULL,
                           payment_date TIMESTAMP NULL,
+                          creation_date TIMESTAMP NULL,
                           amount DECIMAL NULL,
                           interest_rate NUMBER NULL,
                           payment_status VARCHAR(1) NULL,

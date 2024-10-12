@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.interest.mapper;
 
+import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.interest.dto.request.PaymentStatusRollback;
 import com.kcc.banking.domain.interest.dto.request.PaymentStatusUpdate;
@@ -23,4 +24,7 @@ public interface InterestMapper {
 
     // 해지 취소에 의한 이자 테이블 상태 및 지급일 변경
     int updateByCloseCancel(PaymentStatusRollback paymentStatusRollback);
+
+    // 영업일 되돌리기에 의한 이자 삭제
+    void deleteInterest(BusinessDateAndBranchId businessDateAndBranchId);
 }

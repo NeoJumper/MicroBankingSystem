@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.account.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,21 +14,19 @@ public class AccountDetailForInterest {
     private Long branchId;
     private Long productId;
     private Long registrantId;
-    private float interestRate;
+    private BigDecimal interestRate;
+    private BigDecimal preferentialInterestRate;
     private BigDecimal balance;
 
 
-
-
-
-    public AccountDetailForInterest(String accId, Long branchId, Long productId, Long registrantId,  float interestRate, BigDecimal balance) {
+    @Builder
+    public AccountDetailForInterest(String accId, Long branchId, Long productId, Long registrantId, BigDecimal interestRate, BigDecimal preferentialInterestRate, BigDecimal balance) {
         this.accId = accId;
         this.branchId = branchId;
         this.productId = productId;
         this.registrantId = registrantId;
         this.interestRate = interestRate;
+        this.preferentialInterestRate = preferentialInterestRate;
         this.balance = balance;
-
-
     }
 }

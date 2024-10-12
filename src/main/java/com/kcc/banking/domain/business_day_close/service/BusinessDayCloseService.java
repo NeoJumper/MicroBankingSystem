@@ -10,7 +10,6 @@ import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
-import com.kcc.banking.domain.employee.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,6 @@ public class BusinessDayCloseService {
 
     private final BusinessDayCloseMapper businessDayCloseMapper;
     private final CommonService commonService;
-    private final EmployeeMapper employeeMapper;
 
 
     public void createClosingData(BusinessDayChange businessDayChange) {
@@ -139,5 +137,57 @@ public class BusinessDayCloseService {
 
 
         businessDayCloseMapper.updateEmployeeClosing(employeeClosingUpdate);
+    }
+
+    public void deleteEmployeeClosing(String tradeNumber) {
+
+        businessDayCloseMapper.deleteEmployeeClosing(tradeNumber);
+    }
+
+    public void deleteBranchClosing(String tradeNumber) {
+
+        businessDayCloseMapper.deleteBranchClosing(tradeNumber);
+    }
+
+
+    /**
+     * @Description
+     * 이전 영업일의 현재 지점에 있는 모든 사원의 마감 상태를 되돌린다.
+     */
+    public void resetEmployeeClosing(CurrentData currentData, String prevBusinessDate) {
+        BusinessDateAndBranchId prevBusinessDateAndBranchId = BusinessDateAndBranchId.builder()
+                .businessDate(prevBusinessDate)
+                .branchId(String.valueOf(currentData.getBranchId()))
+                .build();
+
+        List<ClosingData> closingDataList = businessDayCloseMapper.findClosingDataList(prevBusinessDateAndBranchId);
+        List<String> employeeIdList = closingDataList.stream().map(ClosingData::getId).toList();
+
+
+        employeeIdList.forEach(employeeId -> {
+
+            EmployeeClosingUpdate employeeClosingUpdate = EmployeeClosingUpdate.builder()
+                    .targetClosingDate(prevBusinessDate)
+                    .targetEmployeeId(Long.valueOf(employeeId))
+                    .modifierId(currentData.getEmployeeId())
+                    .status("OPEN")
+                    .vaultCash(BigDecimal.ZERO)
+                    .build();
+
+            businessDayCloseMapper.updateEmployeeClosing(employeeClosingUpdate);
+        });
+
+    }
+
+    public void resetBranchClosing(CurrentData currentData, String prevBusinessDate) {
+        BranchClosingUpdate branchClosingUpdate = BranchClosingUpdate.builder()
+                .targetClosingDate(prevBusinessDate)
+                .targetBranchId(currentData.getBranchId())
+                .modifierId(currentData.getEmployeeId())
+                .status("OPEN")
+                .vaultCash(BigDecimal.ZERO)
+                .build();
+
+        businessDayCloseMapper.updateBranchClosing(branchClosingUpdate);
     }
 }

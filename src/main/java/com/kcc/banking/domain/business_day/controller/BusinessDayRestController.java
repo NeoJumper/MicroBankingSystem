@@ -27,9 +27,13 @@ public class BusinessDayRestController {
         BusinessDay nextBusinessDay = businessDayService.getNextBusinessDay();
         return nextBusinessDay;
     }
-    @PatchMapping("/api/manager/business-day")
+    @PatchMapping("/api/manager/business-day-change")
     public void changeBusinessDay(@RequestBody BusinessDayChange businessDayChange){
         businessDayManagementFacade.changeBusinessDay(businessDayChange);
+    }
+    @PatchMapping("/api/manager/business-day-reset")
+    public void resetBusinessDay(){
+        businessDayManagementFacade.resetBusinessDay();
     }
 
 }
