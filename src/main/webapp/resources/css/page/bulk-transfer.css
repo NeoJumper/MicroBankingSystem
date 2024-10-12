@@ -1,0 +1,48 @@
+#register-result-toggle-btn {
+    display: flex;
+    height: 55px;
+    border: 1px solid #D4D4D5;
+    margin-bottom: 16px;
+}
+/*등록, 결과확인 toggle css*/
+.active-toggle-btn{
+    width: 50%;
+    border: 0;
+    background-color: #093378;
+    color: white;
+    border-radius: 5px;
+    font-weight: bolder;
+}
+
+.off-toggle-btn {
+    width: 50%;
+    border: 0;
+    background-color: white;
+    border-radius: 5px;
+    font-weight: bolder;
+}
+/* 공통 css */
+section h4 {
+    font-weight: bold;
+}
+
+/* 등록 페이지 css */
+#select-account-form{
+    border: 2px solid black;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.account-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 40px;
+}
+.account-balance{
+    background-color: #F5F5F5;
+    padding: 20px 40px;
+}
+
+/* 결과확인 페이지 css */

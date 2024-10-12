@@ -39,4 +39,9 @@ public class TradeController {
         model.addAttribute("tradeNumber", tradeNumber);
         return "trade/account-transfer-cancel";
     }
+
+    @GetMapping("/bulk-transfer")
+    public String getBulkTransferPage() {
+        return "trade/bulk-transfer";
+    }
 }
