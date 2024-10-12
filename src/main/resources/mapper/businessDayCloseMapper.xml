@@ -14,8 +14,21 @@
         where ec.registrant_id = #{employeeId} and ec.closing_date = #{businessDate}
     </select>
 
+    <select id="findEmployeeClosingTotalDeposit" parameterType="BusinessDateAndEmployeeId" >
+        select total_deposit
+        from employee_closing
+        where registrant_id = #{employeeId} and closing_date = #{businessDate}
+    </select>
+
+    <select id="findEmployeeClosingTotalWithdrawal" parameterType="BusinessDateAndEmployeeId" >
+        select total_withdrawal
+        from employee_closing
+        where registrant_id = #{employeeId} and closing_date = #{businessDate}
+    </select>
+
     <select id="findBranchClosingStatusByDate" parameterType="BusinessDateAndBranchId" >
-        select status from branch_closing
+        select status
+        from branch_closing
         where branch_id = #{branchId} and closing_date = #{businessDate}
     </select>
 
@@ -111,8 +124,18 @@
     <update id="updateEmployeeClosing" parameterType="EmployeeClosingUpdate" >
         update employee_closing
         set
-        status = 'CLOSED',
-        vault_cash = #{vaultCash},
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="totalDeposit != null">
+            total_deposit = #{totalDeposit},
+        </if>
+        <if test="totalWithdrawal != null">
+            total_withdrawal = #{totalWithdrawal},
+        </if>
+        <if test="vaultCash != null">
+            vault_cash = #{vaultCash},
+        </if>
         modifier_id = #{modifierId},
         modification_date = SYSTIMESTAMP,
         version = version + 1
@@ -122,8 +145,12 @@
     <update id="updateBranchClosing" parameterType="BranchClosingUpdate" >
         update branch_closing
         set
-        status = 'CLOSED',
-        vault_cash = #{vaultCash},
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="vaultCash != null">
+            vault_cash = #{vaultCash},
+        </if>
         modifier_id = #{modifierId},
         modification_date = SYSTIMESTAMP,
         version = version + 1

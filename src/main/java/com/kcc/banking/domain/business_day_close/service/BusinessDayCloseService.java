@@ -6,9 +6,11 @@ import com.kcc.banking.domain.business_day.dto.request.WorkerData;
 import com.kcc.banking.domain.business_day_close.dto.request.*;
 import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
+import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
+import com.kcc.banking.domain.employee.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ public class BusinessDayCloseService {
 
     private final BusinessDayCloseMapper businessDayCloseMapper;
     private final CommonService commonService;
+    private final EmployeeMapper employeeMapper;
 
 
     public void createClosingData(BusinessDayChange businessDayChange) {
@@ -87,7 +90,7 @@ public class BusinessDayCloseService {
                 .targetEmployeeId(currentBusinessDateAndEmployeeId.getEmployeeId())
                 .modifierId(currentBusinessDateAndEmployeeId.getEmployeeId())
                 .status("CLOSED")
-                .vaultCash(vaultCashRequest.getVaultCash()) // 임의의 값 수정해줘야함
+                .vaultCash(vaultCashRequest.getVaultCash())
                 .build();
 
         businessDayCloseMapper.updateEmployeeClosing(employeeClosingUpdate);
@@ -107,5 +110,34 @@ public class BusinessDayCloseService {
 
     public String getClosingTradeNumber(BusinessDateAndBranchId businessDateAndBranchId) {
         return businessDayCloseMapper.findClosingTradeNumber(businessDateAndBranchId);
+    }
+
+    public void updateTradeAmount(BigDecimal amount, CurrentData currentData, String tradeType) {
+        BusinessDateAndEmployeeId businessDateAndEmployeeId = BusinessDateAndEmployeeId.builder()
+                .employeeId(currentData.getEmployeeId())
+                .businessDate(currentData.getCurrentBusinessDate()).build();
+
+        EmployeeClosingUpdate employeeClosingUpdate = EmployeeClosingUpdate.builder()
+                .targetClosingDate(currentData.getCurrentBusinessDate())
+                .targetEmployeeId(currentData.getEmployeeId())
+                .modifierId(currentData.getEmployeeId())
+                .status("CLOSED")
+                .build();
+
+        // 출금, 해지일 경우
+        if(tradeType.equals("WITHDRAWAL") || tradeType.equals("CLOSE")){
+            BigDecimal employeeClosingTotalWithdrawal = businessDayCloseMapper.findEmployeeClosingTotalWithdrawal(businessDateAndEmployeeId);
+
+            employeeClosingUpdate.setTotalWithdrawal(employeeClosingTotalWithdrawal.add(amount));
+        }
+        // 입금, 개설일 경우
+        else if(tradeType.equals("DEPOSIT") || tradeType.equals("OPEN") || tradeType.equals("CLOSE_CANCEL")){
+            BigDecimal employeeClosingTotalDeposit = businessDayCloseMapper.findEmployeeClosingTotalDeposit(businessDateAndEmployeeId);
+
+            employeeClosingUpdate.setTotalDeposit(employeeClosingTotalDeposit.add(amount));
+        }
+
+
+        businessDayCloseMapper.updateEmployeeClosing(employeeClosingUpdate);
     }
 }
