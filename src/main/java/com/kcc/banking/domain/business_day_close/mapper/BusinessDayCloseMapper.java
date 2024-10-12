@@ -43,4 +43,12 @@ public interface BusinessDayCloseMapper {
     BigDecimal findEmployeeClosingTotalDeposit(BusinessDateAndEmployeeId currentBusinessDateAndBranchId);
 
     BigDecimal findEmployeeClosingTotalWithdrawal(BusinessDateAndEmployeeId currentBusinessDateAndBranchId);
+
+
+    /**
+     *  DELETE
+     */
+    void deleteEmployeeClosing(String businessDateAndEmployeeId);
+
+    void deleteBranchClosing(String businessDateAndBranchId);
 }

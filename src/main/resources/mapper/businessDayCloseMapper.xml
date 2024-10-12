@@ -157,5 +157,15 @@
         where branch_id = #{targetBranchId} and closing_date = #{targetClosingDate}
     </update>
 
+    <!-- ****************************** DELETE ****************************** -->
+    <delete id="deleteEmployeeClosing" parameterType="String">
+        delete from employee_closing
+        where trade_number = #{tradeNumber}
+    </delete>
+
+    <delete id="deleteBranchClosing" parameterType="String">
+        delete from branch_closing
+        where trade_number = #{tradeNumber}
+    </delete>
 
 </mapper>
