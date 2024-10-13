@@ -138,6 +138,10 @@
                 <li>받는분 조회 결과에 ‘오류’ 건이 있는 경우, 잘못 입력한 내용이 없는지 다시 한번 계좌정보를 확인해 주세요.</li>
             </ul>
         </section>
+        <section class="submit-btns">
+            <input class="update-btn" type="button" value="초기화" style="background-color: white; color: black; border: 1px solid #D5D5D5">
+            <input class="update-btn" type="button" value="이체실행">
+        </section>
     </container>
 
     <%--  result-confirmation-page  --%>

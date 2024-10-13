@@ -14,7 +14,6 @@
     border-radius: 5px;
     font-weight: bolder;
 }
-
 .off-toggle-btn {
     width: 50%;
     border: 0;
@@ -22,8 +21,13 @@
     border-radius: 5px;
     font-weight: bolder;
 }
+.active-toggle-btn:hover, .off-toggle-btn:hover{
+    opacity: 0.8;
+    background-color: rgba(0, 0, 0, 0.6); /* hover 시 배경색 어둡게 */
+}
 
-/*등록, 결과확인 container toggle*/
+
+    /*등록, 결과확인 container toggle*/
 .display-container-on {
     display: block;
 }
@@ -84,6 +88,18 @@ section h4 {
     padding-left: 17px;
     padding-top: 10px;
     line-height: 18px;
+}
+
+.submit-btns{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.submit-btns > input[type="button"]{
+    width: 200px;
+    font-weight: bold;
+    margin-top: 30px;
 }
 
 /* 등록 페이지 css */
