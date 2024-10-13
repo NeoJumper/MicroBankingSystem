@@ -20,5 +20,27 @@
             tradeMonth DESC
     </select>
 
+    <select id="findYearlyTransactionComparison" parameterType="map" resultType="map">
+        SELECT
+            CASE
+                WHEN cash_indicator = 'TRUE' THEN '현금 거래'
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
+                WHEN trade_type = 'CLOSE' THEN '해지'
+                END AS transactionType,
+            TO_CHAR(trade_date, 'YYYY') AS transactionYear,
+            COUNT(*) AS transactionCount
+        FROM trade
+        WHERE
+            registrant_id = #{registrantId} -- 행원의 ID로 필터링
+          AND TO_CHAR(trade_date, 'YYYY') IN (#{lastYear}, #{currentYear})
+        GROUP BY
+            CASE
+                WHEN cash_indicator = 'TRUE' THEN '현금 거래'
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
+                WHEN trade_type = 'CLOSE' THEN '해지'
+                END,
+            TO_CHAR(trade_date, 'YYYY')
+        ORDER BY transactionType, transactionYear
+    </select>
 
 </mapper>
