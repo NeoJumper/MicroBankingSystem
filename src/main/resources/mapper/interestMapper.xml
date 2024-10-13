@@ -47,6 +47,7 @@
             interest_rate,
             payment_status,
             trade_number,
+            creation_date,
             registrant_id,
             registration_date,
             version
@@ -59,8 +60,9 @@
             #{interestRate, jdbcType=FLOAT},
             #{paymentStatus, jdbcType=VARCHAR},
             #{tradeNumber, jdbcType=BIGINT},
+            #{creationDate},
             #{registrantId, jdbcType=BIGINT},
-            #{registrationDate},
+            SYSTIMESTAMP,
             #{version}
         )
     </insert>
@@ -97,4 +99,8 @@
         payment_date = #{expireDate}
     </update>
 
+    <delete id="deleteInterest" parameterType="BusinessDateAndBranchId">
+        delete from interest
+        where branch_id = #{branchId} and creation_date = #{businessDate}
+    </delete>
 </mapper>

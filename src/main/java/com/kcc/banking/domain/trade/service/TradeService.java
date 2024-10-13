@@ -237,7 +237,7 @@ public class TradeService {
                 .accId(accountOpen.getId())
                 .amount(accountOpen.getBalance())  // 거래 금액
                 .balance(accountOpen.getBalance())  // 거래 금액
-                .tradeType("OPEN") // 유형: 개설
+                .tradeType(accountOpen.getTradeType()) // 유형: 개설
                 .branchId(currentData.getBranchId())  // 지점 번호
                 .registrantId(currentData.getEmployeeId())  // 등록자 번호
                 .tradeDate(currentData.getCurrentBusinessDate())  // 거래 일자(영업일)

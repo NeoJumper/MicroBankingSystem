@@ -7,6 +7,7 @@ import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
+import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
@@ -31,6 +32,7 @@ public class AccountTradeFacade {
     private final InterestService interestService;
     private final AccountService accountService;
     private final TradeService tradeService;
+    private final BusinessDayCloseService businessDayCloseService;
     private final CommonService commonService;
 
     /**
@@ -56,7 +58,8 @@ public class AccountTradeFacade {
         // 계좌 개설 거래내역 생성
         tradeService.createOpenTrade(accountOpen,currentData, tradeNumber);
 
-
+        // 행원 마감 입금액 변경
+        businessDayCloseService.updateTradeAmount(accountOpen.getBalance(), currentData, accountOpen.getTradeType());
         return accountOpen.getId();
     }
 
@@ -98,6 +101,10 @@ public class AccountTradeFacade {
         if (paymentStatusResult > 0) {
             resultText.append(" 'paymentStatusResult' ");
         }
+
+        // 행원 마감 출금액 변경
+        businessDayCloseService.updateTradeAmount(statusWithTrade.getAmount(), currentData, statusWithTrade.getTradeType());
+
         return (tradeResult + statusResult + paymentStatusResult) > 0 ? resultText.toString() : "FAIL";
     }
 
@@ -158,6 +165,8 @@ public class AccountTradeFacade {
         // 해지 취소 거래 등록 addCancelTrade
         int resultTrade = tradeService.createCloseCancelTrade(accId, currentData, balanceToRollback,tradeNumber);
 
+        // 행원 마감 입금액 변경
+        businessDayCloseService.updateTradeAmount(paidAmount, currentData, "CLOSE_CANCEL");
 
         return CloseCancelDetail.builder()
                 .customerName(closeAccount.getCustomerName())
@@ -395,6 +404,8 @@ public class AccountTradeFacade {
         // 잔액 업데이트
         accountService.updateByCashTrade(cashTradeAccount, currentData, tradeDetail.getBalance());
 
+        // 행원 마감 입출금액 변경
+        businessDayCloseService.updateTradeAmount(cashTradeCreate.getAmount(), currentData, cashTradeCreate.getTradeType());
 
         return tradeDetail;
     }
