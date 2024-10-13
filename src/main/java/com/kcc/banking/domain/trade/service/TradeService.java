@@ -112,6 +112,7 @@ public class TradeService {
         TradeCreate transferTrade = TradeCreate.builder()
                 .accId(transferTradeCreate.getAccId()) // 본인 계좌
                 .targetAccId(transferTradeCreate.getTargetAccId())  // 상대 계좌
+                .bulkTransferId(transferTradeCreate.getBulkTransferId()) // 대량 이체 번호
                 .amount(transferTradeCreate.getTransferAmount())  // 이체 금액
                 .balance(afterBalance)  // 이체 후 잔액
                 .tradeType(tradeType)  // 유형: 입금 / 출금
@@ -132,6 +133,27 @@ public class TradeService {
                 .amount(transferTradeCreate.getTransferAmount())   // 이체 금액
                 .balance(afterBalance)  // 이체 후 잔액
                 .build();
+    }
+    public void createTransferFailureTrade(TransferTradeCreate transferTradeCreate, CurrentData currentData, BigDecimal afterBalance, Long tradeNumber, String tradeType) {
+        // 이체 내역 생성
+        TradeCreate transferTrade = TradeCreate.builder()
+                .accId(transferTradeCreate.getAccId()) // 본인 계좌
+                .targetAccId(transferTradeCreate.getTargetAccId())  // 상대 계좌
+                .bulkTransferId(transferTradeCreate.getBulkTransferId())
+                .amount(transferTradeCreate.getTransferAmount())  // 이체 금액
+                .balance(afterBalance)  // 이체 후 잔액
+                .tradeType(tradeType)  // 유형: 입금 / 출금
+                .branchId(currentData.getBranchId())  // 지점 번호
+                .registrantId(currentData.getEmployeeId())  // 등록자 번호
+                .tradeDate(currentData.getCurrentBusinessDate())  // 거래 일자(영업일)
+                .tradeNumber(tradeNumber)  // 거래 번호
+                .failureReason(transferTradeCreate.getFailureReason())
+                .description(transferTradeCreate.getDescription())  // 비고
+                .cashIndicator("FALSE")  // 현금 여부
+                .status("FAIL")  // 거래 상태: 정상
+                .build();
+
+        tradeMapper.insertTrade(transferTrade);
     }
 
     public TransferDetail createTransferCancelTrade(TransferTradeCreate transferTradeCreate, CurrentData currentData, BigDecimal afterBalance, Long tradeNumber, String tradeType) {

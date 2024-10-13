@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.bulk_transfer.mapper.BulkTransferMapper">
+
+
+
+    <select id="findNextBulkTransferId">
+        SELECT  bulk_transfer_seq.NEXTVAL FROM dual
+    </select>
+
+
+    <insert id="insertBulkTransfer" parameterType="BulkTransferCreate">
+        INSERT INTO Bulk_Transfer
+        (
+            id,
+            registrant_id,
+            acc_id,
+            branch_id,
+            trade_date,
+            amount,
+            success_cnt,
+            failure_cnt,
+            status,
+            <if test="description != null and description != ''">
+            description,
+            </if>
+            registration_date,
+            version
+        )
+        VALUES
+        (
+            bulk_transfer_seq.nextval,
+            #{registrantId},
+            #{accId},
+            #{branchId},
+            #{tradeDate},
+            #{amount},
+            #{successCnt},
+            #{failureCnt},
+            #{status},
+            <if test="description != null and description != ''">
+            #{description},
+            </if>
+            SYSTIMESTAMP,
+            1
+        )
+    </insert>
+</mapper>
