@@ -17,51 +17,17 @@
 <div id="main-area">
     <h5>실적 관리 > 행원 실적 관리</h5>
     <div class="row">
-        <div class="col-6">
-            <span>작년 대비 계좌 개설 수 증감 현황</span>
-            <canvas id="myChart" width="400" height="200"></canvas>
-        </div>
-        <div class="col-6">
-            <span>시간대별 거래량 수 현황</span>
-            <canvas id="myChart" width="400" height="200"></canvas>
+        <div class="col-12">
+            <span>전체 계좌 대비 나의 개설 거래 수</span>
+            <canvas id="myAccountOpenRatioChart" width="400" height="200"></canvas>
+
         </div>
     </div>
 
 </div>
 <script src="/resources/js/footer.js"></script>
-<script>
-    // 차트 데이터를 설정
-    const data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-        datasets: [{
-            label: 'Sales',
-            data: [10, 20, 30, 40, 50, 60],
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
-    };
+<script src="/resources/js/page/employee-dashboard.js"></script>
 
-    // 차트 옵션을 설정
-    const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    };
-
-    // 차트를 렌더링
-    const myChart = new Chart(
-        document.getElementById('myChart'),
-        config
-    );
-</script>
-<script></script>
 </body>
 
 </html>
