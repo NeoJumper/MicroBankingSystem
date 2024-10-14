@@ -1,6 +1,5 @@
 /* header.css */
 #customHeader {
-
   display: flex;
   align-items: center;
   height: 52.22px;
@@ -8,7 +7,6 @@
   right: 0;
   z-index: 2000;
   font-weight: bold;
-  font-style: italic;
   padding: 0.5rem;
   margin: 1.0rem;
   margin-bottom: 30px;
@@ -46,14 +44,6 @@
   color: white;
   font-weight: bold;
 
-}
-
-.btn-color-blue {
-  background-color: rgb(76, 165, 255);
-}
-
-.login-img>img {
-  width: 25px;
 }
 
 .google-login-img>img {
