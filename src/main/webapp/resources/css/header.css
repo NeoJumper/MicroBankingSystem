@@ -16,6 +16,7 @@
   z-index: 10;
   background-color: white;
   opacity: 0.9;
+  min-height: 108.594px;
 }
 /*------- informationHeader : 정보 전달 헤더 css -----------*/
 #informationHeader {
@@ -47,7 +48,6 @@
   flex:1;
   height: 100%;
   text-align:left;
-
 }
 
 #systemName {
@@ -118,7 +118,6 @@
   align-items: center;
   justify-content: center;
   font-size: medium;
-
 }
 #business-day-status > span{
   padding:0 10px;
