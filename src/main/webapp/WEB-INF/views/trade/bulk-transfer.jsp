@@ -21,7 +21,8 @@
     <div>
         <h5>계좌관리 > </h5>
         <h5>&nbsp 계좌이체 > </h5>
-        <h5>&nbsp&nbsp;대량이체</h5>
+        <h5>&nbsp&nbsp;대량이체 > </h5>
+        <h5>&nbsp&nbsp;등록</h5>
     </div>
     <div>
         <h3>대량이체</h3>

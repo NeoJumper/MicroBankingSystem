@@ -164,6 +164,16 @@
         WHERE t.trade_number = #{tradeNumber}
     </select>
 
+    <select id="findTradeListByBulkTransfer" parameterType="java.lang.Long">
+
+        select t.id, t.target_acc_id, t.status, t.amount, e.name as target_name, description, t.failure_reason
+        from trade t
+        join account a on t.target_acc_id = a.id
+        join employee e on a.registrant_id = e.id
+        where bulk_transfer_id = #{bulkTransferId}
+
+    </select>
+
 
     <update id="updateTradeStatusToCancel" parameterType="java.lang.Long">
         UPDATE Trade

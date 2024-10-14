@@ -50,4 +50,5 @@ public class TradeController {
         model.addAttribute("accId", accId);
         return "trade/bulk-transfer-result";
     }
+
 }

@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Insert title here</title>
+    <title>실적 관리 > 행원 실적 관리</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -21,7 +21,10 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
-    <h5>실적 관리 > 행원 실적 관리</h5>
+    <div>
+    <h5>실적 관리 ></h5>
+        <h5>&nbsp 행원 실적 관리 </h5>
+    </div>
     <div class="row">
         <div class="col-6">
             <span>작년 대비 올해 나의 거래량 비교</span>

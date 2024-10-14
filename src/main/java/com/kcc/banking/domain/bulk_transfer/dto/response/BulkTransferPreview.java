@@ -1,4 +1,4 @@
-package com.kcc.banking.domain;
+package com.kcc.banking.domain.bulk_transfer.dto.response;
 
 
 import lombok.Builder;
