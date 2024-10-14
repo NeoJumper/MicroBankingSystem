@@ -1,8 +1,12 @@
 package com.kcc.banking.domain.bulk_transfer.controller;
 
 import com.kcc.banking.domain.BulkTransferPreview;
+import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
+import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferSearch;
+import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResult;
 import com.kcc.banking.domain.bulk_transfer.service.BulkTransferService;
 import com.kcc.banking.domain.trade.dto.request.TransferTradeCreate;
+import com.kcc.banking.domain.trade.dto.response.PageDTO;
 import com.kcc.banking.domain.trade.service.AccountTradeFacade;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -86,8 +90,16 @@ public class BulkTransferRestController {
 
     // 대량 이체
     @PostMapping("/api/employee/bulk-transfer")
-    public ResponseEntity<Void> bulkTransfer(@RequestBody List<TransferTradeCreate> transferTradeCreateList) {
+    public ResponseEntity<Void> processBulkTransfer(@RequestBody List<TransferTradeCreate> transferTradeCreateList) {
         accountTradeFacade.processBulkTransfer(transferTradeCreateList);
         return null;
+    }
+
+    // 대량 이체 조회
+    @GetMapping("/api/employee/bulk-transfer")
+    public ResponseEntity<BulkTransferSearchResult> getBulkTransfer(@ModelAttribute BulkTransferSearch bulkTransferSearch) {
+        List<BulkTransferDetail> bulkTransferList = bulkTransferService.getBulkTransferList(bulkTransferSearch);
+        PageDTO pageDTO = new PageDTO(bulkTransferSearch.getCriteria(), bulkTransferList.size());
+        return ResponseEntity.ok().body(BulkTransferSearchResult.of(bulkTransferList, pageDTO));
     }
 }
