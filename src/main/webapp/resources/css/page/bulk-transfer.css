@@ -1,7 +1,8 @@
 #register-result-toggle-btn {
     display: flex;
     height: 55px;
-    border: 1px solid #D4D4D5;
+    border: 3px solid #093378;
+    border-radius: 5px;
     margin-bottom: 16px;
 }
 
@@ -11,23 +12,25 @@
     border: 0;
     background-color: #093378;
     color: white;
-    border-radius: 5px;
     font-weight: bolder;
 }
 .off-toggle-btn {
     width: 50%;
     border: 0;
     background-color: white;
-    border-radius: 5px;
     font-weight: bolder;
 }
-.active-toggle-btn:hover, .off-toggle-btn:hover{
+.active-toggle-btn:hover{
     opacity: 0.8;
-    background-color: rgba(0, 0, 0, 0.6); /* hover 시 배경색 어둡게 */
+    background-color: rgb(0, 102, 212); /* hover 시 배경색 어둡게 */
+}
+.off-toggle-btn:hover{
+    opacity: 0.8;
+    background-color: rgba(121, 121, 121, 0.47); /* hover 시 배경색 어둡게 */
 }
 
 
-    /*등록, 결과확인 container toggle*/
+/*등록, 결과확인 container toggle*/
 .display-container-on {
     display: block;
 }
@@ -37,6 +40,16 @@
 }
 
 /* 공통 css */
+span {
+    font-weight: bold;
+    color: #073082;
+}
+a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
 section h4 {
     font-weight: bold;
 }
@@ -93,7 +106,9 @@ section h4 {
 .submit-btns{
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 20px;
+    padding-bottom: 17px;
 }
 
 .submit-btns > input[type="button"]{
@@ -137,4 +152,21 @@ input[placeholder="10자 이내  입력"] {
     text-align: center;
 }
 
+p {
+    margin: 0;
+}
+
+#total-registrations, #valid-recipients, #mismatch-recipients, #error-recipients{
+    color: white;
+}
 /* 결과확인 페이지 css */
+.account-info-result {
+    padding: 20px 40px;
+}
+.account-result-contents{
+    display: flex;
+    gap:50%;
+}
+.account-result-contents > div > div:nth-child(1){
+    padding-bottom: 10px;
+}

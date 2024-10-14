@@ -44,4 +44,9 @@ public class TradeController {
     public String getBulkTransferPage() {
         return "trade/bulk-transfer";
     }
+
+    @GetMapping("/bulk-transfer-result")
+    public String getBulkTransferResultPage() {
+        return "trade/bulk-transfer-result";
+    }
 }
