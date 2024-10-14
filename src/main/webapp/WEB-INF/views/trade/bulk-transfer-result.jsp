@@ -32,7 +32,7 @@
     </div>
     <div id="register-result-toggle-btn">
         <%--  등록 버튼 클릭시 registration-page 열림 --%>
-        <button class="off-toggle-btn"><a href="/page/employee/bulk-transfer">등록</a></button>
+        <button class="off-toggle-btn"><a style="text-decoration-line: none;" href="/page/employee/bulk-transfer">등록</a></button>
         <%--  결과확인 버튼 클릭시 result-confirmation-page 열림 --%>
         <button class="active-toggle-btn">결과확인</button>
     </div>
@@ -110,10 +110,10 @@
 
         </section>
         <section class="submit-btns">
-            <input class="update-btn" type="button" value="오류건재전송"
+            <input class="basic-btn" type="button" value="오류건재전송"
                    style="background-color: white; color: black; border: 1px solid #D5D5D5">
-            <input class="update-btn" type="button" value="이체확인증">
-            <input class="update-btn" type="button" value="이체확인증(일괄)">
+            <input class="basic-btn" type="button" value="이체확인증">
+            <input class="basic-btn" type="button" value="이체확인증(일괄)">
         </section>
     </container>
 </div>

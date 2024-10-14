@@ -10,8 +10,8 @@
         계좌이체 >
         대량이체</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/page/bulk-transfer.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/bulk-transfer.css"/>
 </head>
 
 <body>
@@ -32,7 +32,7 @@
         <%--  등록 버튼 클릭시 registration-page 열림 --%>
         <button  class="active-toggle-btn">등록</button>
         <%--  결과확인 버튼 클릭시 result-confirmation-page 열림 --%>
-        <button class="off-toggle-btn"><a href="/page/employee/bulk-transfer-result">결과확인</a></button>
+        <button class="off-toggle-btn"><a style="text-decoration-line: none;" href="/page/employee/bulk-transfer-result">결과확인</a></button>
     </div>
     <%--  registration-page  --%>
     <container id="registration-page">
@@ -43,9 +43,13 @@
             <%--계좌선택--%>
             <div id="select-account-form">
                 <div class="account-info">
-                    <div><span>업무계좌</span> <br> <span>0001-000xxxxxx-xxx</span></div>
+                    <div><span>업무계좌</span> <br> <span id="account-number">001-0000017-7734</span></div>
                     <div>
-                        <input type="button" value="계좌조회 >">
+                        <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
+                                data-account-type="withdrawal" data-bs-toggle="modal"
+                                data-bs-target="#search-modal-account">
+                            계좌조회
+                        </button>
                     </div>
                 </div>
                 <div class="account-balance">
@@ -55,10 +59,10 @@
             <%--계좌비밀번호 table--%>
             <table class="common-table">
                 <tr>
-                    <th><label for="withdrawal-account-number">계좌비밀번호</label></th>
+                    <th><label for="account-pw-input">계좌비밀번호</label></th>
                     <td>
-                        <input placeholder="비밀번호 입력" type="password" id="withdrawal-account-number">
-                        <button id="check-withdrawal-account-btn" class="basic-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">확인</button>
+                        <input placeholder="비밀번호 입력" type="password" id="account-pw-input">
+                        <button id="input-confirm" class="basic-btn" type="button">확인</button>
                     </td>
                 </tr>
                 <tr>
@@ -72,8 +76,8 @@
                     <td>
                         <div >
                             <label><input checked type="radio" name="salaryType" value="directInput"> 직접입력 &nbsp &nbsp</label>
-                            <label><input type="radio" name="salaryType" value="monthlySalary"> 월급여 &nbsp &nbsp</label>
-                            <label><input type="radio" name="salaryType" value="bonus"> 상여금</label>
+                            <label><input type="radio" name="salaryType" value="월급여"> 월급여 &nbsp &nbsp</label>
+                            <label><input type="radio" name="salaryType" value="상여금"> 상여금</label>
                         </div>
                         <input placeholder="10자 이내  입력" type="text" id="description">
                     </td>
@@ -145,7 +149,6 @@
     </container>
 </div>
 
-
 <!-- 직원업로드 모달 -->
 <div class="modal fade" id="uploadEmployeeModal" tabindex="-1">
     <div class="modal-dialog" style="margin-top:200px;">
@@ -170,10 +173,10 @@
                     <div class="d-flex col-12 justify-content-center align-items-center p-4" style="background-color: #E6EFFA">
 
                         <div>
-                            <p class ="text-color-gray1" style="font-size: 15px">employees-upload.xlsx</p>
+                            <p class ="text-color-gray1" style="font-size: 15px; margin: 0px;">employees-upload.xlsx</p>
                         </div>
                         <button type="button" class="d-flex ms-2 btn btn-light border border-2 align-items-center" style="height: 27px;">
-                            <a class ="text-color-gray1" style="font-size: 15px;" href="/api/employee/bulk-transfer/file-download">다운로드</a><br>
+                            <a class ="text-color-gray1" style="font-size: 15px; text-decoration-line: none;" href="/api/employee/bulk-transfer/file-download">다운로드</a><br>
                         </button>
                     </div>
                 </div>
@@ -189,12 +192,13 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" data-bs-dismiss="modal" class="btn border border-black btn-black bg-white" style="border-radius: 2px;"><p>닫기</p></button>
+                <button type="button" data-bs-dismiss="modal" class="btn border border-black btn-black bg-white" style="border-radius: 2px;"><p style="margin: 0px;">닫기</p></button>
                 <button id="uploadEmployeePreviewBtnOfTable" type="button" data-bs-dismiss="modal"  class="btn btn-primary">파일등록</button>
             </div>
         </div>
     </div>
 </div>
+<%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/bulk-transfer.js" ></script>
 </body>
