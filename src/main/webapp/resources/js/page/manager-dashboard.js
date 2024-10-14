@@ -4,6 +4,7 @@ let weeklyTransactionVolumeChartInstance = null;
 let monthlyTransactionVolumeChartInstance = null;
 let dailyTransactionChartInstance = null;
 let employeeTransactionChartInstance = null;
+let employeeTransactionTypeChartInstance = null;
 
 $(document).ready(function () {
     // 일별 거래량 차트
@@ -14,8 +15,9 @@ $(document).ready(function () {
     loadMonthlyTransactionVolumeChart();
     // 행원 거래량 비교 차트
     loadEmployeeTransactionByBranch(1); // 예시로 branchId 1로 호출
+    loadEmployeeTransactionTypesChart(1);
 
-    const today = new Date('2024-08-01');
+    const today = new Date('2024-02-01');
     const formattedToday = today.toISOString().split('T')[0]; // 오늘 날짜 (YYYY-MM-DD)
     loadTransactionData(formattedToday); // 일별 거래유형 차트
 
@@ -63,7 +65,10 @@ function loadDailyTransactionVolumeChart() {
 // 1-1. 일별 거래량 차트 렌더링
 function renderDailyTransactionVolumeChart(data) {
 
-    const dates = data.map(item => item.tradeDate);
+    const dates = data.map(item => {
+        const parts = item.tradeDate.split('-'); // ['YYYY', 'MM', 'DD']
+        return `${parts[1]}-${parts[2]}`; // 'MM-DD'
+    });
     const transactionCounts = data.map(item => item.transactionCount);
 
     const chartData = {
@@ -90,7 +95,6 @@ function renderDailyTransactionVolumeChart(data) {
         }
     });
 
-    console.log("함수끝인스턴스", dailyTransactionVolumeChartInstance);
 }
 
 // ---------------------------------------------------------------------
@@ -153,6 +157,7 @@ function renderDailyTransactionChart(data) {
 }
 
 // ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
 // 3. 주간별 거래량 차트 불러오기 함수
 function loadWeeklyTransactionVolumeChart() {
     $.ajax({
@@ -160,6 +165,7 @@ function loadWeeklyTransactionVolumeChart() {
         method: 'GET',
         dataType: 'json',
         success: function (response) {
+            console.log("주간별 거래량", response); // 디버깅을 위해 로그 출력
             renderWeeklyTransactionVolumeChart(response);
         },
         error: function (xhr, status, error) {
@@ -170,11 +176,15 @@ function loadWeeklyTransactionVolumeChart() {
 
 // 3-1. 주간별 거래량 차트 렌더링
 function renderWeeklyTransactionVolumeChart(data) {
-    const allWeeks = generateWeekLabels(); // 주 라벨 생성
-    const transactionCounts = allWeeks.map(week => {
-        const foundData = data.find(item => item.weekOfYear === week);
-        return foundData ? foundData.transactionCount : 0; // 값이 없는 주는 0
+    const allWeeks = generateWeekLabels(); // ['1주차', '2주차', ..., '12주차']
+    const transactionCounts = allWeeks.map((weekLabel, index) => {
+        const weekNumber = index + 1; // weekNumber는 1부터 12까지
+        const foundData = data.find(item => item.weekNumber === weekNumber);
+        return foundData ? foundData.transactionCount : 0; // 해당 주차에 데이터가 없으면 0
     });
+
+    console.log("주 라벨:", allWeeks);
+    console.log("주 거래량:", transactionCounts);
 
     const chartData = {
         labels: allWeeks,
@@ -189,9 +199,46 @@ function renderWeeklyTransactionVolumeChart(data) {
 
     const ctx = document.getElementById('weeklyTransactionVolumeChart').getContext('2d');
 
+    // 기존 차트가 있다면 파괴하고 새로 생성
+    if (weeklyTransactionVolumeChartInstance) {
+        weeklyTransactionVolumeChartInstance.destroy();
+    }
+
     weeklyTransactionVolumeChartInstance = new Chart(ctx, {
         type: 'bar',
         data: chartData,
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: '주차'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '거래량'
+                    }
+                }
+            },
+            animation: {
+                duration: 1000, // 애니메이션 지속 시간 (1초)
+                easing: 'easeInOutQuart' // 애니메이션 효과
+            }
+        }
     });
 }
 
@@ -280,18 +327,106 @@ function renderEmployeeTransactionChart(data) {
         data: chartData,
     });
 }
+// ---------------------------------------------------------------------
+// 6. 사원별 거래 유형 차트
+function loadEmployeeTransactionTypesChart(branchId) {
+    $.ajax({
+        url: '/api/dashboard/employeeTransactionTypes',
+        method: 'GET',
+        data: { branchId: branchId },
+        dataType: 'json',
+        success: function(response) {
+            console.log("사원별 거래 유형 및 거래량", response); // 디버깅을 위해 로그 출력
+            renderEmployeeTransactionTypesChart(response);
+        },
+        error: function(xhr, status, error) {
+            console.error("사원별 거래 유형 데이터를 가져오는 데 실패했습니다:", error);
+        }
+    });
+}
+
+// 6-1. 사원별 거래 유형 및 거래량 차트 렌더링
+function renderEmployeeTransactionTypesChart(data) {
+    // 직원 이름과 거래 유형을 추출
+    const employees = [...new Set(data.map(item => item.employeeName))];
+    const transactionTypes = [...new Set(data.map(item => item.transactionType))];
+
+    // 각 거래 유형별로 데이터셋 생성
+    const datasets = transactionTypes.map((type, index) => {
+        const color = getColor(index); // 색상 할당 함수
+        const dataPoints = employees.map(employee => {
+            const found = data.find(item => item.employeeName === employee && item.transactionType === type);
+            return found ? found.transactionCount : 0;
+        });
+        return {
+            label: type,
+            data: dataPoints,
+            backgroundColor: color.background,
+            borderColor: color.border,
+            borderWidth: 1
+        };
+    });
+
+    const chartData = {
+        labels: employees,
+        datasets: datasets
+    };
+
+    const ctx = document.getElementById('employeeTransactionTypeChart').getContext('2d');
+
+    // 기존 차트가 있다면 파괴하고 새로 생성
+    if (employeeTransactionTypeChartInstance) {
+        employeeTransactionTypeChartInstance.destroy();
+    }
+
+    employeeTransactionTypeChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+            },
+            scales: {
+                x: {
+                    stacked: true, // 누적 막대 그래프 설정
+                    title: {
+                        display: true,
+                        text: '사원'
+                    }
+                },
+                y: {
+                    stacked: true, // 누적 막대 그래프 설정
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '거래량'
+                    }
+                }
+            },
+            animation: {
+                duration: 1000, // 애니메이션 지속 시간 (1초)
+                easing: 'easeInOutQuart' // 애니메이션 효과
+            }
+        }
+    });
+}
+
 
 // ---------------------------------------------------------------------
 // +) 라벨용 함수들
-// 주 라벨을 생성하는 함수 (오늘 기준 이전 12주, YYYY-WW 형식으로)
+// 주 라벨을 생성하는 함수 (1주차 ~ 12주차)
 function generateWeekLabels() {
     const weeks = [];
-    const today = new Date();
-    for (let i = 0; i < 12; i++) {
-        const week = new Date(today);
-        week.setDate(today.getDate() - i * 7); // 7일씩 감소
-        const weekLabel = `${week.getFullYear()}-${getWeekNumber(week)}`; // 주 라벨 생성
-        weeks.unshift(weekLabel); // 주 번호 앞에 추가
+    for (let i = 1; i <= 12; i++) {
+        weeks.push(`${i}주차`);
     }
     return weeks;
 }
@@ -306,4 +441,17 @@ function getWeekNumber(date) {
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
     const pastDaysOfYear = (date - firstDayOfYear) / 86400000; // 하루는 86400000ms
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+}
+// 색상 할당 함수
+function getColor(index) {
+    const colors = [
+        { background: 'rgba(255, 99, 132, 0.2)', border: 'rgba(255, 99, 132, 1)' },
+        { background: 'rgba(54, 162, 235, 0.2)', border: 'rgba(54, 162, 235, 1)' },
+        { background: 'rgba(255, 206, 86, 0.2)', border: 'rgba(255, 206, 86, 1)' },
+        { background: 'rgba(75, 192, 192, 0.2)', border: 'rgba(75, 192, 192, 1)' },
+        { background: 'rgba(153, 102, 255, 0.2)', border: 'rgba(153, 102, 255, 1)' },
+        { background: 'rgba(255, 159, 64, 0.2)', border: 'rgba(255, 159, 64, 1)' }
+        // 필요에 따라 색상을 추가하세요.
+    ];
+    return colors[index % colors.length];
 }

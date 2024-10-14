@@ -89,22 +89,33 @@
             TO_CHAR(trade_date, 'YYYY-MM-DD')
     </select>
 
+
     <!-- 주간별 거래량 조회 (오늘이 포함된 주 + 12주) -->
     <select id="findWeeklyTransactionVolume" parameterType="map" resultType="WeeklyTransactionVolumeChart">
+        WITH weeks AS (
+            SELECT
+                TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'IW') - (LEVEL - 1) * 7 AS week_start,
+                TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'IW') - (LEVEL - 1) * 7 + 6 AS week_end,
+                LEVEL AS week_number
+            FROM dual
+        CONNECT BY LEVEL &lt;= 12
+            )
         SELECT
-            TO_CHAR(trade_date, 'IYYY-IW') AS weekOfYear,  -- ISO 주 번호
-            COUNT(*) AS transactionCount
+            weeks.week_number AS weekNumber,
+            COUNT(trade.id) AS transactionCount
         FROM
+            weeks
+                LEFT JOIN
             trade
-        WHERE
-            branch_id = #{branchId}
-          AND trade_date BETWEEN TO_DATE(#{today}, 'YYYY-MM-DD') - (12 * 7)
-            AND TO_DATE(#{today}, 'YYYY-MM-DD')
+            ON
+                trade.branch_id = #{branchId}
+                    AND trade.trade_date BETWEEN weeks.week_start AND weeks.week_end
         GROUP BY
-            TO_CHAR(trade_date, 'IYYY-IW')
+            weeks.week_number
         ORDER BY
-            TO_CHAR(trade_date, 'IYYY-IW')
+            weeks.week_number
     </select>
+
 
     <!-- 월별 거래량 조회 (1월부터 12월까지) -->
     <select id="findMonthlyTransactionVolume" parameterType="map" resultType="MonthlyTransactionVolumeChart">
@@ -140,6 +151,38 @@
             transactionCount DESC
     </select>
 
+    <!-- 사원별 거래 유형 및 거래량 조회 -->
+    <select id="findEmployeeTransactionTypes" parameterType="java.lang.Long" resultType="EmployeeTransactionVolumeChart">
+        SELECT
+            e.name AS employeeName,
+            CASE
+                WHEN t.trade_type = 'WITHDRAWAL' THEN '출금'
+                WHEN t.trade_type = 'DEPOSIT' THEN '입금'
+                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN t.trade_type = 'OPEN' THEN '가입'
+                WHEN t.trade_type = 'CLOSE' THEN '해지'
+                ELSE t.trade_type
+                END AS transactionType,
+            COUNT(*) AS transactionCount
+        FROM
+            trade t
+                JOIN
+            employee e ON t.registrant_id = e.id
+        WHERE
+            e.branch_id = #{branchId}
+        GROUP BY
+            e.name,
+            CASE
+                WHEN t.trade_type = 'WITHDRAWAL' THEN '출금'
+                WHEN t.trade_type = 'DEPOSIT' THEN '입금'
+                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN t.trade_type = 'OPEN' THEN '가입'
+                WHEN t.trade_type = 'CLOSE' THEN '해지'
+                ELSE t.trade_type
+                END
+        ORDER BY
+            e.name, transactionType
+    </select>
 
 
 </mapper>

@@ -26,6 +26,10 @@
             <h3>직원별 거래량 비교</h3>
             <canvas id="employeeTransactionChart" width="400" height="200"></canvas>
         </div>
+        <div class="col-6">
+            <h3 class="tab-title">사원별 거래 유형 및 거래량</h3>
+            <canvas id="employeeTransactionTypeChart" width="800" height="400"></canvas>
+        </div>
     </div>
 
     <!-- 탭 구성: 일별, 주간별, 월별 거래량 -->
@@ -51,12 +55,13 @@
     <div class="tab-content" id="transactionTabContent">
         <!-- 일별 거래량 탭 -->
         <div class="tab-pane show active" id="daily" role="tabpanel" aria-labelledby="daily-tab">
-            <h3 class="tab-title">일별 거래량</h3>
             <div class="row">
                 <div class="col-6">
+                    <h3 class="tab-title">일별 거래량</h3>
                     <canvas id="dailyTransactionVolumeChart" width="400" height="200"></canvas>
                 </div>
                 <div class="col-6">
+                    <h3 class="tab-title">일별 거래 유형</h3>
                     <canvas id="dailyTransactionChart" width="400" height="200"></canvas>
                 </div>
             </div>

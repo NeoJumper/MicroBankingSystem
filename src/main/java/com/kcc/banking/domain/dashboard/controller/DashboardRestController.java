@@ -52,7 +52,7 @@ public class DashboardRestController {
     // 일별 거래량 조회 (오늘 날짜 포함된 월의 데이터)
     @GetMapping("/api/dashboard/dailyTransactionVolume")
     public ResponseEntity<List<DailyTransactionVolumeChart>> getDailyTransactionVolume() {
-        String today = "2024-08-01"; // 변경해야 할 날짜
+        String today = "2024-02-20"; // 변경해야 할 날짜
         List<DailyTransactionVolumeChart> chartData = dashboardService.getDailyTransactionVolume(today);
         return ResponseEntity.ok(chartData);
     }
@@ -60,7 +60,7 @@ public class DashboardRestController {
     // 주간별 거래량 조회 (오늘 날짜 포함한 주 + 12주)
     @GetMapping("/api/dashboard/weeklyTransactionVolume")
     public ResponseEntity<List<WeeklyTransactionVolumeChart>> getWeeklyTransactionVolume() {
-        String today = "2024-08-01"; // 변경해야 할 날짜
+        String today = "2024-02-20"; // 변경해야 할 날짜
         List<WeeklyTransactionVolumeChart> chartData = dashboardService.getWeeklyTransactionVolume(today);
         return ResponseEntity.ok(chartData);
     }
@@ -68,7 +68,7 @@ public class DashboardRestController {
     // 월별 거래량 조회 (1월부터 12월까지)
     @GetMapping("/api/dashboard/monthlyTransactionVolume")
     public ResponseEntity<List<MonthlyTransactionVolumeChart>> getMonthlyTransactionVolume() {
-        String today = "2024-08-01"; // 변경해야 할 날짜
+        String today = "2024-02-20"; // 변경해야 할 날짜
         List<MonthlyTransactionVolumeChart> chartData = dashboardService.getMonthlyTransactionVolume(today);
         return ResponseEntity.ok(chartData);
     }
@@ -78,6 +78,13 @@ public class DashboardRestController {
     public ResponseEntity<List<EmployeeTransactionVolumeChart>> getEmployeeTransactionByBranch(
             @RequestParam("branchId") Long branchId) {
         List<EmployeeTransactionVolumeChart> chartData = dashboardService.getEmployeeTransactionByBranchId(branchId);
+        return ResponseEntity.ok(chartData);
+    }
+
+    // 직원별 거래 유형 비교
+    @GetMapping("/api/dashboard/employeeTransactionTypes")
+    public ResponseEntity<List<EmployeeTransactionVolumeChart>> getEmployeeTransactionTypes(@RequestParam("branchId") Long branchId) {
+        List<EmployeeTransactionVolumeChart> chartData = dashboardService.getEmployeeTransactionTypes(branchId);
         return ResponseEntity.ok(chartData);
     }
 }

@@ -8,9 +8,16 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class EmployeeTransactionVolumeChart {
-    private String employeeName;  // 직원 이름
-    private Long transactionCount;  // 거래 수
+    private String employeeName;       // 직원 이름
+    private String transactionType;    // 거래 유형
+    private long transactionCount;     // 거래 수
+
+    @Builder
+    public EmployeeTransactionVolumeChart(String employeeName, String transactionType, long transactionCount) {
+        this.employeeName = employeeName;
+        this.transactionType = transactionType;
+        this.transactionCount = transactionCount;
+    }
 }
