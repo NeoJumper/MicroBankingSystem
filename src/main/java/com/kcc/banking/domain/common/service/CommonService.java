@@ -1,5 +1,7 @@
 package com.kcc.banking.domain.common.service;
 
+import com.kcc.banking.common.exception.ErrorCode;
+import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day.mapper.BusinessDayMapper;
@@ -54,14 +56,37 @@ public class CommonService {
         // 등록 일자
         String currentBusinessDate = businessDayMapper.findCurrentBusinessDay().getBusinessDate();
 
-        return CurrentData.builder()
+        CurrentData currentData = CurrentData.builder()
                 .employeeId(Long.valueOf(authData.getId()))
                 .employeeName(authData.getName())
                 .currentBusinessDate(currentBusinessDate)
                 .branchId(Long.valueOf(authData.getBranchId()))
                 .branchName(authData.getBranchName()).build();
+
+
+        if (currentData.getCurrentBusinessDate().isEmpty()) {
+            throw new BadRequestException(ErrorCode.NOT_FOUND_BUSINESS_DATE);
+        }
+
+        if (currentData.getEmployeeId() == null || currentData.getEmployeeId() == 0) {
+            throw new BadRequestException(ErrorCode.NOT_FOUND_EMPLOYEE_ID);
+        }
+
+        if (currentData.getBranchId() == null || currentData.getBranchId() == 0) {
+            throw new BadRequestException(ErrorCode.NOT_FOUND_EMPLOYEE_ID);
+        }
+
+        return currentData;
     }
     public BusinessDay getCurrentBusinessDay(){
         return businessDayMapper.findCurrentBusinessDay();
+    }
+
+    public BusinessDateAndBranchId getCurrentBusinessDateAndBranchId(CurrentData currentData) {
+
+
+        return BusinessDateAndBranchId.builder()
+                .businessDate(currentData.getCurrentBusinessDate())
+                .branchId(String.valueOf(currentData.getBranchId())).build();
     }
 }

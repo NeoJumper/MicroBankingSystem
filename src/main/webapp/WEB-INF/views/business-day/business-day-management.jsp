@@ -39,7 +39,14 @@
 
             <div class="d-flex justify-content-end mt-4 mx-0">
                 <div >
+<<<<<<< HEAD
                     <button id="business-day-update-modal-btn" class="basic-btn" type="button" data-bs-toggle="modal" data-bs-target="#business-day-update-modal">영업일 변경</button>
+=======
+                    <button id="business-day-reset-modal-btn" class="update-btn" type="button" data-bs-toggle="modal" data-bs-target="#business-day-reset-modal">영업일 되돌리기</button>
+                </div>
+                <div >
+                    <button id="business-day-update-modal-btn" class="update-btn" type="button" data-bs-toggle="modal" data-bs-target="#business-day-update-modal">영업일 변경</button>
+>>>>>>> 2faa8539c35bb54b748720cae854e7c78b34edc5
                 </div>
             </div>
         </div>
@@ -48,6 +55,31 @@
     </div>
 
 </div>
+
+<div class="modal fade" id="business-day-reset-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="mt-4 mb-4 d-flex flex-column justify-content-center align-items-center">
+                    <h3 >영업일을 되돌리시겠습까?</h3>
+                    <h5 style="color: #cc0000">* 현재의  데이터는 유지되지않습니다. </h5>
+                    <h5 style="color: #6C757D"> 이전 영업일 - 2024-08-01 </h5>
+                </div>
+                <hr>
+
+                <div class="d-flex justify-content-center mt-3">
+                    <div >
+                        <button id="business-day-reset-modal-reset-btn" class ="update-btn">
+                            영업일 되돌리기
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <%@ include file="/resources/components/modal/business-day-update-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>

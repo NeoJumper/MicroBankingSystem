@@ -1,11 +1,14 @@
 package com.kcc.banking.domain.trade.service;
 
+import com.kcc.banking.common.exception.CustomException;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
+import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
+import com.kcc.banking.domain.bulk_transfer.service.BulkTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
@@ -18,6 +21,7 @@ import com.kcc.banking.domain.trade.dto.response.CloseCancelDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TransferDetail;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +32,16 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class AccountTradeFacade {
     private final InterestService interestService;
     private final AccountService accountService;
     private final TradeService tradeService;
+    private final BusinessDayCloseService businessDayCloseService;
+    private final BulkTransferService bulkTransferService;
     private final CommonService commonService;
     private final BusinessDayCloseService businessDayCloseService;
+
 
     /**
      *   @Description - 계좌 개설
@@ -58,7 +66,8 @@ public class AccountTradeFacade {
         // 계좌 개설 거래내역 생성
         tradeService.createOpenTrade(accountOpen,currentData, tradeNumber);
 
-
+        // 행원 마감 입금액 변경
+        businessDayCloseService.updateTradeAmount(accountOpen.getBalance(), currentData, accountOpen.getTradeType());
         return accountOpen.getId();
     }
 
@@ -100,6 +109,10 @@ public class AccountTradeFacade {
         if (paymentStatusResult > 0) {
             resultText.append(" 'paymentStatusResult' ");
         }
+
+        // 행원 마감 출금액 변경
+        businessDayCloseService.updateTradeAmount(statusWithTrade.getAmount(), currentData, statusWithTrade.getTradeType());
+
         return (tradeResult + statusResult + paymentStatusResult) > 0 ? resultText.toString() : "FAIL";
     }
 
@@ -160,6 +173,8 @@ public class AccountTradeFacade {
         // 해지 취소 거래 등록 addCancelTrade
         int resultTrade = tradeService.createCloseCancelTrade(accId, currentData, balanceToRollback,tradeNumber);
 
+        // 행원 마감 입금액 변경
+        businessDayCloseService.updateTradeAmount(paidAmount, currentData, "CLOSE_CANCEL");
 
         return CloseCancelDetail.builder()
                 .customerName(closeAccount.getCustomerName())
@@ -259,7 +274,6 @@ public class AccountTradeFacade {
 
         // 상대 계좌 조회 -> 입금 계좌 잔액 조회
         BigDecimal depositAccountBalance = accountService.getAccountDetail(transferTradeCreate.getTargetAccId()).getBalance();
-
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
@@ -397,6 +411,7 @@ public class AccountTradeFacade {
         // 잔액 업데이트
         accountService.updateByCashTrade(cashTradeAccount, currentData, tradeDetail.getBalance());
 
+<<<<<<< HEAD
         /**
          * 현금 마감 업데이트
          * 변동될 금액 : cashTradeCreate.getAmount()
@@ -406,8 +421,68 @@ public class AccountTradeFacade {
          */
 
 //        businessDayCloseService.updateTotalCash(cashTradeCreate.getTradeType(), cashTradeCreate.getAmount());
+=======
+        // 행원 마감 입출금액 변경
+        businessDayCloseService.updateTradeAmount(cashTradeCreate.getAmount(), currentData, cashTradeCreate.getTradeType());
+>>>>>>> 2faa8539c35bb54b748720cae854e7c78b34edc5
 
         return tradeDetail;
     }
 
+    public void processBulkTransfer(List<TransferTradeCreate> transferTradeCreateList) {
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+        CurrentData currentData = commonService.getCurrentData();
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+        Long bulkTransferId = bulkTransferService.getNextId();
+        int successCnt = 0;
+        int failureCnt = 0;
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        for(TransferTradeCreate transferTradeCreate : transferTradeCreateList){
+            try{
+                transferTradeCreate.setBulkTransferId(bulkTransferId);
+                processTransfer(transferTradeCreate);
+                successCnt++;
+                BigDecimal transferAmount = transferTradeCreate.getTransferAmount();
+                totalAmount = totalAmount.add(transferAmount);
+            }catch (CustomException e){
+                transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
+                processFailTransfer(transferTradeCreate);
+                failureCnt++;
+            }
+        }
+
+        BulkTransferCreate bulkTransferCreate = BulkTransferCreate.builder()
+                .id(bulkTransferId)
+                .registrantId(currentData.getEmployeeId())
+                .branchId(currentData.getBranchId())
+                .accId(transferTradeCreateList.get(0).getAccId())
+                .tradeDate(currentData.getCurrentBusinessDate())
+                .amount(totalAmount)
+                .status("NOR")
+                .successCnt(successCnt)
+                .failureCnt(failureCnt)
+                .description(transferTradeCreateList.get(0).getDescription())
+                .build();
+
+
+        bulkTransferService.createBulkTransfer(bulkTransferCreate);
+
+    }
+
+    public void processFailTransfer(TransferTradeCreate transferTradeCreate) {
+        CurrentData currentData = commonService.getCurrentData();
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+        AccountDetail withdrawalAccount = accountService.getAccountDetail(transferTradeCreate.getAccId());
+        BigDecimal withdrawalAccountBalance = withdrawalAccount.getBalance();
+
+        tradeService.createTransferFailureTrade(transferTradeCreate, currentData, withdrawalAccountBalance, tradeNumber, "WITHDRAWAL");
+
+    }
 }

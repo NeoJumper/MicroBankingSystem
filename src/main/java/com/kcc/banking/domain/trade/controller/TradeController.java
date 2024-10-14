@@ -20,6 +20,7 @@ public class TradeController {
         String getBusinessDay = tradeService.getBusinessDay();
         System.out.println("tradeList Controller >>>>>>>>>>"+getBusinessDay);
         businessDay.addAttribute("businessDay", getBusinessDay);
+
         return("trade/trade-list");
     }
 
@@ -37,5 +38,10 @@ public class TradeController {
     public String getAccountTransferCancelPage(@RequestParam(value="tradeNumber", required = false) long tradeNumber, Model model) {
         model.addAttribute("tradeNumber", tradeNumber);
         return "trade/account-transfer-cancel";
+    }
+
+    @GetMapping("/bulk-transfer")
+    public String getBulkTransferPage() {
+        return "trade/bulk-transfer";
     }
 }

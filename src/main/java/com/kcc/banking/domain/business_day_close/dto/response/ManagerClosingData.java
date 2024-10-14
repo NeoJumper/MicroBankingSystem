@@ -26,13 +26,13 @@ public class ManagerClosingData {
         this.vaultCashOfBranch = vaultCashOfBranch;
     }
 
-    public static ManagerClosingData of(List<ClosingData> closingDataList){
+    public static ManagerClosingData of(List<ClosingData> closingDataList, BigDecimal branchClosingVaultCash){
         return ManagerClosingData.builder()
                 .closingDataList(closingDataList)
                 .prevCashBalanceOfBranch(closingDataList.stream().map(ClosingData::getPrevCashBalance).reduce(BigDecimal.ZERO, BigDecimal::add) )
                 .totalDepositOfBranch(closingDataList.stream().map(ClosingData::getTotalDeposit).reduce(BigDecimal.ZERO, BigDecimal::add))
                 .totalWithdrawalOfBranch(closingDataList.stream().map(ClosingData::getTotalWithdrawal).reduce(BigDecimal.ZERO, BigDecimal::add))
-                .vaultCashOfBranch(closingDataList.stream().map(ClosingData::getVaultCash).reduce(BigDecimal.ZERO, BigDecimal::add))
+                .vaultCashOfBranch(branchClosingVaultCash)
                 .build();
     }
 }

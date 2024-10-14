@@ -1,0 +1,140 @@
+#register-result-toggle-btn {
+    display: flex;
+    height: 55px;
+    border: 1px solid #D4D4D5;
+    margin-bottom: 16px;
+}
+
+/*등록, 결과확인 toggle css*/
+.active-toggle-btn {
+    width: 50%;
+    border: 0;
+    background-color: #093378;
+    color: white;
+    border-radius: 5px;
+    font-weight: bolder;
+}
+.off-toggle-btn {
+    width: 50%;
+    border: 0;
+    background-color: white;
+    border-radius: 5px;
+    font-weight: bolder;
+}
+.active-toggle-btn:hover, .off-toggle-btn:hover{
+    opacity: 0.8;
+    background-color: rgba(0, 0, 0, 0.6); /* hover 시 배경색 어둡게 */
+}
+
+
+    /*등록, 결과확인 container toggle*/
+.display-container-on {
+    display: block;
+}
+
+.display-container-off {
+    display: none;
+}
+
+/* 공통 css */
+section h4 {
+    font-weight: bold;
+}
+
+.common-table input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+    max-width: 60%;
+}
+
+.table-top-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #F5F5F5;
+    color: #5F5F5F;
+    height: 48px;
+}
+
+.table-top-btns > div:nth-child(2) {
+    display: flex;
+    gap: 5px;
+    box-sizing: border-box;
+    height: 145%;
+}
+
+.result-content{
+    justify-content: center;
+    display: flex;
+    /*justify-content: space-around;*/
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 1.0rem;
+    color: white;
+    background-color: #093378;
+    padding: 30px 0px;
+}
+.result-content > div {
+    padding: 0px 188px 0px 23px;
+    border-right: 1px solid white; /* 아래 경계선 추가 */
+}
+.result-content > div:last-child {
+    border-right: none; /* 마지막 div는 경계선 제거 */
+}
+
+.warning-writer{
+    font-size: smaller;
+    font-weight: bold;
+
+    padding-left: 17px;
+    padding-top: 10px;
+    line-height: 18px;
+}
+
+.submit-btns{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.submit-btns > input[type="button"]{
+    width: 200px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+/* 등록 페이지 css */
+#select-account-form {
+    border: 2px solid black;
+    border-radius: 10px;
+    overflow: hidden;
+
+    margin-bottom: 30px;
+}
+
+.account-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 40px;
+}
+
+.account-balance {
+    background-color: #F5F5F5;
+    padding: 20px 40px;
+}
+
+input[type="button"][value="계좌조회 >"] {
+    border: none;
+    background-color: white;
+}
+
+input[placeholder="10자 이내  입력"] {
+    margin-top: 12px;
+}
+
+#bulk-transfer-info td, #bulk-transfer-info th {
+    text-align: center;
+}
+
+/* 결과확인 페이지 css */

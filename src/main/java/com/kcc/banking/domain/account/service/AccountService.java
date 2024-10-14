@@ -149,6 +149,32 @@ public class AccountService {
         int accountSeq = accountMapper.getAccountSeq();
         String accountId = generateAccountNumber(accountOpen.getBranchId(), accountSeq);
 
+        String EncodePassword = passwordEncoder.encode(accountOpen.getPassword());
+
+        if (accountOpen.getBalance() == null || accountOpen.getBalance().compareTo(BigDecimal.ZERO) == 0) {
+            throw new BadRequestException(ErrorCode.NOT_INSERT_BALANCE);
+        }
+
+        if (accountOpen.getProductId() == null || accountOpen.getProductId() == 0){
+            throw new BadRequestException(ErrorCode.NOT_INSERT_PRODUCT);
+        }
+
+        if (accountOpen.getPassword() == null || accountOpen.getPassword().isEmpty()){
+            throw new BadRequestException(ErrorCode.NOT_INSERT_PASSWORD);
+        }
+
+        if (accountId.isEmpty()){
+            throw new BadRequestException(ErrorCode.NOT_INSERT_ACCOUNT_ID);
+        }
+
+        if (accountOpen.getPreferentialInterestRate() == null || accountOpen.getPreferentialInterestRate().compareTo(BigDecimal.ZERO) == 0){
+            throw new BadRequestException(ErrorCode.NOT_INSERT_PREFERENTIAL_INTEREST_RATE);
+        }
+
+        if (accountOpen.getCustomerId() == null ||  accountOpen.getCustomerId()  == 0){
+            throw new BadRequestException(ErrorCode.NOT_INSERT_CUSTOMER_ID);
+        }
+
         AccountCreate accountCreate = AccountCreate.builder()
                 .id(accountId)
                 .openDate(currentData.getCurrentBusinessDate())
@@ -159,7 +185,7 @@ public class AccountService {
                 .productId(accountOpen.getProductId())
                 .customerId(accountOpen.getCustomerId())
                 .preferentialInterestRate(accountOpen.getPreferentialInterestRate())
-                .password(passwordEncoder.encode(accountOpen.getPassword()))
+                .password(EncodePassword)
                 .status("OPN")
                 .tradeNumber(tradeNumber)
                 .build();

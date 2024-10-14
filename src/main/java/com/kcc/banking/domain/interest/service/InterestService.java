@@ -87,4 +87,12 @@ public class InterestService {
 
         return interestMapper.updateByCloseCancel(paymentStatusRollback);
     }
+
+    public void deleteInterest(CurrentData currentData, String prevBusinessDate) {
+        BusinessDateAndBranchId businessDateAndBranchId = BusinessDateAndBranchId.builder()
+                .branchId(String.valueOf(currentData.getBranchId()))
+                .businessDate(prevBusinessDate).build();
+
+        interestMapper.deleteInterest(businessDateAndBranchId);
+    }
 }
