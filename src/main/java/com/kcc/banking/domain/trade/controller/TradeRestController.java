@@ -1,6 +1,8 @@
 package com.kcc.banking.domain.trade.controller;
 
 import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
+import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResult;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.trade.dto.request.TradeCancelRequest;
 import com.kcc.banking.domain.trade.dto.request.CashTradeCreate;
@@ -114,4 +116,10 @@ public class TradeRestController {
         return ResponseEntity.ok().body(accountTradeFacade.rollbackAccountCancel(accountIdWithExpireDate.getAccountId()));
     }
 
+    // 대량 이체 상세 내역 조회
+    @GetMapping("/bulk-transfer-trade")
+    public ResponseEntity<List<TradeByBulkTransfer>> getBulkTransferTradeList(@RequestParam Long bulkTransferId) {
+        List<TradeByBulkTransfer> tradeByBulkTransferList = tradeService.getTradeListByBulkTransfer(bulkTransferId);
+        return ResponseEntity.ok().body(tradeByBulkTransferList);
+    }
 }

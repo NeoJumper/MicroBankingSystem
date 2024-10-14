@@ -8,9 +8,11 @@ headerMap.set("header-account-management", {
         "account-close-cancel",
         "account-transfer",
         "cash-trade",
-        "trade-list"
+        "trade-list",
+        "bulk-transfer"
     ],
     sub: {
+        "bulk-transfer" : ["bulk-transfer-result"],
         "trade-list": ["account-transfer-cancel"] // trade-list 내의 하위 URL을 관리
     }
 });
@@ -138,6 +140,7 @@ function createAccountManagementSidebar(selectedSidebarMenu) {
             icon: 'bi bi-arrow-right-circle',
             submenu: [
                 { name: '즉시 이체', url: '/page/employee/account-transfer' },
+                { name: '대량 계좌 이체', url: '/page/employee/bulk-transfer' },
                 { name: '거래 내역', url: '/page/employee/trade-list' },
                 { name: '현금 입출금', url: '/page/employee/cash-trade' },
             ]

@@ -26,4 +26,8 @@ public class BulkTransferService {
         return bulkTransferMapper.findBulkTransferList(bulkTransferSearch);
 
     }
+
+    public BulkTransferDetail getBulkTransfer(Long bulkTransferId) {
+        return bulkTransferMapper.findBulkTransfer(bulkTransferId);
+    }
 }

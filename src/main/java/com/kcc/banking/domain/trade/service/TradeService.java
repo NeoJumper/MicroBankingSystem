@@ -275,6 +275,10 @@ public class TradeService {
     public int updateTradeStatusToCancel(Long tradeNumber) {
         return tradeMapper.updateTradeStatusToCancel(tradeNumber);
     }
+
+    public List<TradeByBulkTransfer> getTradeListByBulkTransfer(Long bulkTransferId) {
+        return tradeMapper.findTradeListByBulkTransfer(bulkTransferId);
+    }
 }
 
 

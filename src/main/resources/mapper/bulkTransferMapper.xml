@@ -52,6 +52,27 @@
     </select>
 
 
+    <select id="findBulkTransfer" parameterType="java.lang.Long">
+
+        SELECT
+        ROWNUM rn,
+        bt.acc_id,
+        bt.id,
+        bt.registration_date,
+        e.name as registrant_name,
+        bt.amount,
+        bt.status,
+        bt.success_cnt,
+        bt.failure_cnt,
+        bt.success_cnt + bt.failure_cnt as total_cnt,
+        description
+        FROM Bulk_Transfer bt
+        JOIN EMPLOYEE e ON bt.registrant_id = e.id
+        WHERE bt.id = #{bulkTransferId}
+
+    </select>
+
+
     <insert id="insertBulkTransfer" parameterType="BulkTransferCreate">
         INSERT INTO Bulk_Transfer
         (
