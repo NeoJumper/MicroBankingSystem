@@ -331,7 +331,7 @@
                         <div class="d-flex col-12 justify-content-center align-items-center p-4" style="background-color: #E6EFFA">
 
                             <div>
-                                <p class ="text-color-gray1" style="font-size: 15px">employees-upload.xlsx</p>
+                                <p class ="text-color-gray1" style="font-size: 15px; margin: 0px;">employees-upload.xlsx</p>
                             </div>
                             <button type="button" class="d-flex ms-2 btn btn-light border border-2 align-items-center" style="height: 27px;">
                                 <a class ="text-color-gray1" style="font-size: 15px;" href="/api/employee/bulk-transfer/file-download">다운로드</a><br>

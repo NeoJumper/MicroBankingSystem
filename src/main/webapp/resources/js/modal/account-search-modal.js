@@ -4,6 +4,7 @@ $(document).ready(function() {
     $('#modal-check-account-btn').click(function () {
         let status = '';
         const currentUrl = extractUrl(window.location.href);
+        console.log(currentUrl,"currentUrl=======!!!!")
         switch (currentUrl) {
             case 'account-close':
                 status = 'OPN';
@@ -12,6 +13,10 @@ $(document).ready(function() {
             case 'account-close-cancel':
                 status = 'CLS';
                 break;
+
+            // case 'bulk-transfer':
+            //
+            //     break;
 
             case '':
 

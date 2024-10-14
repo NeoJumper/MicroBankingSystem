@@ -46,7 +46,8 @@ public class TradeController {
     }
 
     @GetMapping("/bulk-transfer-result")
-    public String getBulkTransferResultPage() {
+    public String getBulkTransferResultPage(@RequestParam String accId, Model model) {
+        model.addAttribute("accId", accId);
         return "trade/bulk-transfer-result";
     }
 }

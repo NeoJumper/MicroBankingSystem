@@ -29,7 +29,6 @@
     background-color: rgba(121, 121, 121, 0.47); /* hover 시 배경색 어둡게 */
 }
 
-
 /*등록, 결과확인 container toggle*/
 .display-container-on {
     display: block;
@@ -44,10 +43,11 @@ span {
     font-weight: bold;
     color: #073082;
 }
-a {
+
+a, a:visited, a:active {
     display: block;
     color: inherit;
-    text-decoration: none;
+    text-decoration-line: none;
 }
 
 section h4 {
@@ -144,7 +144,7 @@ input[type="button"][value="계좌조회 >"] {
     background-color: white;
 }
 
-input[placeholder="10자 이내  입력"] {
+#description {
     margin-top: 12px;
 }
 
