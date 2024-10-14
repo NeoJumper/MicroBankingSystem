@@ -95,7 +95,7 @@
             <tbody>
             <tr>
                 <th><label for="transfer-account-password">출금계좌 비밀번호</label></th>
-                <td><input id="transfer-account-password" type="password"><button class="search-btn" id="account-transfer-validate">비밀번호 인증</button></td>
+                <td><input id="transfer-account-password" type="password"><button class="basic-btn" id="account-transfer-validate">비밀번호 인증</button></td>
             </tr>
             </tbody>
         </table>
