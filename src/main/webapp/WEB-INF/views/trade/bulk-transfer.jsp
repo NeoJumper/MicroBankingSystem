@@ -22,7 +22,6 @@
         <h5>계좌관리 > </h5>
         <h5>&nbsp 계좌이체 > </h5>
         <h5>&nbsp&nbsp;대량이체</h5>
-
     </div>
     <div>
         <h3>대량이체</h3>
@@ -32,13 +31,13 @@
         <%--  등록 버튼 클릭시 registration-page 열림 --%>
         <button  class="active-toggle-btn">등록</button>
         <%--  결과확인 버튼 클릭시 result-confirmation-page 열림 --%>
-        <button class="off-toggle-btn">결과확인</button>
+        <button class="off-toggle-btn"><a href="/page/employee/bulk-transfer-result">결과확인</a></button>
     </div>
     <%--  registration-page  --%>
     <container id="registration-page">
         <%--  계좌선택 섹션  --%>
         <section>
-            <h4>대량이체출금정보</h4>
+            <h4>대량이체 출금정보</h4>
             <hr>
             <%--계좌선택--%>
             <div id="select-account-form">
@@ -86,7 +85,7 @@
             <hr>
             <div class="table-top-btns">
                 <div>
-                    <input type="button" value="파일등록">
+                    <input id="uploadEmployeeBtn" type="button" value="파일등록">
                     <input type="button" value="개별추가">
                 </div>
                 <div>
@@ -110,7 +109,7 @@
                     <th><label>받는분 통장표시</label></th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="employeeTablePreviewBody">
                 <%--  동적으로 직원계좌정보 생성됨 --%>
                 </tbody>
             </table>
@@ -118,19 +117,19 @@
             <div class="result-content">
                 <div>
                     총 등록건수(건) <br>
-                    <span>302</span>(건)
+                    <span id="total-registrations"></span>(건)
                 </div>
                 <div>
                     받는분 정상(건) <br>
-                    <span>300</span>(건)
+                    <span id="valid-recipients">300</span>(건)
                 </div>
                 <div>
                     받는분 불일치(건) <br>
-                    <span>1</span>(건)
+                    <span id="mismatch-recipients">1</span>(건)
                 </div>
                 <div>
                     받는분 오류(건) <br>
-                    <span>1</span>(건)
+                    <span id="error-recipients">1</span>(건)
                 </div>
             </div>
             <ul class="warning-writer">
@@ -143,11 +142,60 @@
             <input class="update-btn" type="button" value="이체실행">
         </section>
     </container>
+</div>
 
-    <%--  result-confirmation-page  --%>
-    <container id="result-confirmation-page">result</container>
+
+<!-- 직원업로드 모달 -->
+<div class="modal fade" id="uploadEmployeeModal" tabindex="-1">
+    <div class="modal-dialog" style="margin-top:200px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5 fw-bold">엑셀을 이용해 직원을 추가해보세요</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
+
+                <div class="d-flex mb-3">
+                    <div class="d-flex align-items-center"><p style="margin-bottom: 0; padding-bottom: 2px;">
+                        <p>
+                            직원 일괄추가 템플릿을 다운로드한 후,
+                            <br>
+                            템플릿 형식에 맞춰 직원정보를 입력한 뒤 업로드해주세요
+                        </p>
+
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="d-flex col-12 justify-content-center align-items-center p-4" style="background-color: #E6EFFA">
+
+                        <div>
+                            <p class ="text-color-gray1" style="font-size: 15px">employees-upload.xlsx</p>
+                        </div>
+                        <button type="button" class="d-flex ms-2 btn btn-light border border-2 align-items-center" style="height: 27px;">
+                            <a class ="text-color-gray1" style="font-size: 15px;" href="/api/employee/bulk-transfer/file-download">다운로드</a><br>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex mt-4">
+                    <div class="d-flex col-12 justify-content-center align-items-center p-4" style="background-color: #E6EFFA">
+
+                        <div>
+                            <input id="excelInput" type="file" style="width: 250px;" >
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn border border-black btn-black bg-white" style="border-radius: 2px;"><p>닫기</p></button>
+                <button id="uploadEmployeePreviewBtnOfTable" type="button" data-bs-dismiss="modal"  class="btn btn-primary">파일등록</button>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="/resources/js/footer.js"></script>
+<script src="/resources/js/page/bulk-transfer.js" ></script>
 </body>
 
 </html>
