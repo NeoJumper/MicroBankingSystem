@@ -87,7 +87,7 @@
             <tbody>
             <tr>
                 <th><label for="cash-trade-password">비밀번호</label></th>
-                <td><input id="cash-trade-password" type="password"> <button class="search-btn" id="cash-trade-validate">비밀번호 인증</button></td>
+                <td><input id="cash-trade-password" type="password"> <button class="basic-btn" id="cash-trade-validate">비밀번호 인증</button></td>
             </tr>
             </tbody>
         </table>

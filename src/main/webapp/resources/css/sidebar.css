@@ -1,3 +1,5 @@
+@import "styles.css";
+
 /* sidebar.css */
 #leftSidebar-wrapper {
   position: fixed;
@@ -28,7 +30,7 @@
   height: 20%;
   width: 40px;
   color: black;
-  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1); /* 버튼 그림자 추가 */
+  box-shadow: 5px 5px 3px var(--light-gray); /* 버튼 그림자 추가 */
   background-color: #f7f7f7;
 }
 
@@ -70,12 +72,12 @@
 }
 
 .submenu li a:hover {
-  background-color: #0079D4;
+  background-color: var(--basic-color);
   color:white;
 }
 
 .list-unstyled .active > a {
-  color: #0079D4;
+  color: var(--basic-color);
 
 }
 

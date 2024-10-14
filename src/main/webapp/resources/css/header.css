@@ -1,3 +1,5 @@
+@import "styles.css";
+
 /*------------------------------------------------------------*/
 @font-face {
   font-family: 'TheJamsil5Bold';
@@ -77,9 +79,8 @@
 }
 
 #user-roles{
-
   padding : 2px 5px;
-  color: #0079D4;
+  color: var(--basic-color);
 
 }
 
@@ -94,8 +95,8 @@
   font-size: inherit; /* 폰트 크기를 상속받음 */
 }
 #logoutButton:hover {
-  color: #000; /* 마우스 오버 시 텍스트 색상 변경 */
-  background-color: #ccc; /* 배경색 변경 */
+  color: black; /* 마우스 오버 시 텍스트 색상 변경 */
+  background-color: var(--light-gray); /* 배경색 변경 */
 }
 
 #business-day-header{
@@ -121,15 +122,15 @@
 }
 #business-day-status > span{
   padding:0 10px;
-  border: 2px solid #0079D4;
-  color: #0079D4;
+  border: 2px solid var(--basic-color);
+  color: var(--basic-color);
   font-weight:bold;
 }
 
 
 /* ------------- 메뉴 바 헤더 ------------- */
 #navbar {
-  border-bottom: 2px solid #0079D4;
+  border-bottom: 2px solid var(--basic-color);
   flex-grow: 1;
   padding: 5px;
 }
@@ -164,6 +165,6 @@
 
 #navbar-globalMenu a:hover{
   background-color:white;
-  color :#0079D4;
+  color :var(--basic-color);
   font-weight: bold;
 }

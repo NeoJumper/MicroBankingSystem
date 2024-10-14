@@ -22,7 +22,7 @@
         <hr>
         <div class="d-flex align-items-center">
             <input style="width:30%;" type="text" id="customer-id-text" placeholder="사원 번호를 입력하세요">
-            <button id="employee-search-btn" type="button" class="search-btn" style="display: flex; align-items: center; justify-content: center">
+            <button id="employee-search-btn" type="button" class="basic-btn" style="display: flex; align-items: center; justify-content: center">
                 <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
             </button>
         </div>

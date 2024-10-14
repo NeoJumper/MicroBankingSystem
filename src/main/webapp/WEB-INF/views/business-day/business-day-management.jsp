@@ -67,7 +67,7 @@
 
                 <div class="d-flex justify-content-center mt-3">
                     <div >
-                        <button id="business-day-reset-modal-reset-btn" class ="update-btn">
+                        <button id="business-day-reset-modal-reset-btn" class ="basic-btn">
                             영업일 되돌리기
                         </button>
                     </div>

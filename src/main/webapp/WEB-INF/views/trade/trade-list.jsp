@@ -33,7 +33,7 @@
             <th><label for="acc-id-input">계좌번호</label></th>
             <td class="acc-id-input">
                 <input disabled type="text" id="acc-id-input">
-                <button type="button"  data-bs-toggle="modal" data-bs-target="#search-modal-account" class="search-btn" id="search-account-btn">계좌검색</button>
+                <button type="button"  data-bs-toggle="modal" data-bs-target="#search-modal-account" class="basic-btn" id="search-account-btn">계좌검색</button>
             </td>
         </tr>
         </tbody>
