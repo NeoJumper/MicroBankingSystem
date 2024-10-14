@@ -54,7 +54,11 @@
                         </div>
                         <div>
                             <div>비고 <span>${bulkTransfer.description}</span></div>
-                            <div>등록건수 <span>${bulkTransfer.totalCnt}</span>건</div>
+                            <div>
+                                등록건수 <span>${bulkTransfer.totalCnt}</span>건
+                                &nbsp &nbsp 성공건수 <span>${bulkTransfer.successCnt}</span>건
+                                &nbsp &nbsp 실패건수 <span class="text-color-point-red">${bulkTransfer.failureCnt}</span>건
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,6 +97,7 @@
                     <th><label>이체금액(원)</label></th>
                     <th><label>받는분</label></th>
                     <th><label>받는분 통장표시</label></th>
+                    <th><label>비고</label></th>
                 </tr>
                 </thead>
                 <tbody id="bulk-transfer-info-list-body">

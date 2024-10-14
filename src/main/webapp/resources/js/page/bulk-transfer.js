@@ -236,8 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
             url: "/api/employee/bulk-transfer",
             contentType: 'application/json',
             data: JSON.stringify(employeeDataForUpload),
-            success: function (data) {
-                console.log(data);
+            success: function (bulkTransferId) {
                 console.log("성공");
                 // 리턴값으로 bulkTransferId 주면 파라미터로 담아서 보냄
                 var url = '/page/employee/bulk-transfer-result?bulkTransferId=' + encodeURIComponent(bulkTransferId);

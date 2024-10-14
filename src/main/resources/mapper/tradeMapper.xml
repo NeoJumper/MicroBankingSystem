@@ -170,7 +170,7 @@
         from trade t
         join account a on t.target_acc_id = a.id
         join employee e on a.registrant_id = e.id
-        where bulk_transfer_id = #{bulkTransferId}
+        where bulk_transfer_id = #{bulkTransferId} and t.trade_type = 'WITHDRAWAL'
 
     </select>
 

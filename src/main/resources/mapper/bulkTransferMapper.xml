@@ -93,7 +93,7 @@
         )
         VALUES
         (
-            bulk_transfer_seq.nextval,
+            #{id},
             #{registrantId},
             #{accId},
             #{branchId},

@@ -90,9 +90,9 @@ public class BulkTransferRestController {
 
     // 대량 이체
     @PostMapping("/api/employee/bulk-transfer")
-    public ResponseEntity<Void> processBulkTransfer(@RequestBody List<TransferTradeCreate> transferTradeCreateList) {
-        accountTradeFacade.processBulkTransfer(transferTradeCreateList);
-        return null;
+    public ResponseEntity<Long> processBulkTransfer(@RequestBody List<TransferTradeCreate> transferTradeCreateList) {
+        Long bulkTransferId = accountTradeFacade.processBulkTransfer(transferTradeCreateList);
+        return ResponseEntity.ok(bulkTransferId);
     }
 
     // 대량 이체 조회

@@ -40,15 +40,4 @@ public class TradeController {
         return "trade/account-transfer-cancel";
     }
 
-    @GetMapping("/bulk-transfer")
-    public String getBulkTransferPage() {
-        return "trade/bulk-transfer";
-    }
-
-    @GetMapping("/bulk-transfer-result")
-    public String getBulkTransferResultPage(@RequestParam String accId, Model model) {
-        model.addAttribute("accId", accId);
-        return "trade/bulk-transfer-result";
-    }
-
 }
