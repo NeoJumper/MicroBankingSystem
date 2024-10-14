@@ -427,7 +427,7 @@ public class AccountTradeFacade {
         return tradeDetail;
     }
 
-    public void processBulkTransfer(List<TransferTradeCreate> transferTradeCreateList) {
+    public Long processBulkTransfer(List<TransferTradeCreate> transferTradeCreateList) {
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
         CurrentData currentData = commonService.getCurrentData();
         // OPEN 상태가 아니라면
@@ -469,7 +469,7 @@ public class AccountTradeFacade {
 
 
         bulkTransferService.createBulkTransfer(bulkTransferCreate);
-
+        return bulkTransferId;
     }
 
     public void processFailTransfer(TransferTradeCreate transferTradeCreate) {

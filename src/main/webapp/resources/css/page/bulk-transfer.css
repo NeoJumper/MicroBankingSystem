@@ -165,7 +165,7 @@ p {
 }
 .account-result-contents{
     display: flex;
-    gap:50%;
+    gap:40%;
 }
 .account-result-contents > div > div:nth-child(1){
     padding-bottom: 10px;

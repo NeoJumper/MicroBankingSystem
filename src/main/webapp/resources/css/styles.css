@@ -135,3 +135,7 @@ td.text-center {
 .nav-link {
   color: var(--basic-color);
 }
+.text-color-point-red
+{
+  color: var(--point-red);
+}
