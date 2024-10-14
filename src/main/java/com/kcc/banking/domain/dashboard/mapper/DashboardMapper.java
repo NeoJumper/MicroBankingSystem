@@ -22,6 +22,15 @@ public interface DashboardMapper {
     List<MonthlyTransactionVolumeChart> findMonthlyTransactionVolume(String branchId, String today);
 
     List<EmployeeTransactionVolumeChart> findEmployeeTransactionByBranchId(Long branchId);
+
+    /**
+     * 직원별 거래 유형 및 거래량을 조회
+     *
+     * @param branchId 지점 ID
+     * @return 직원별 거래 유형 및 거래량 리스트
+     */
+    List<EmployeeTransactionVolumeChart> findEmployeeTransactionTypes(Long branchId);
+
 }
 
 

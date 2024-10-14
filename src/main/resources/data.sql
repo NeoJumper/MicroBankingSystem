@@ -1568,3 +1568,257 @@ WHERE id = '004-0000060-6060';
 
 -- 추후 등록일 / 등록자 / 수정일 / 수정자 각 INSERT 와 UPDATE 문에 맞춰서 작성 예정
 
+
+
+-- 통계용 더미
+
+-- 61번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '김태희', '010-8080-9090', 'FEMALE', '881010-1234567', '서울특별시 강남구 삼성동 101-1', '1988-10-10', 2);
+
+-- 62번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '이민호', '010-8181-9191', 'MALE', '891011-2345678', '서울특별시 강남구 역삼동 202-2', '1989-10-11', 3);
+
+-- 63번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '박보검', '010-8282-9292', 'MALE', '901012-3456789', '서울특별시 강남구 논현동 303-3', '1990-10-12', 4);
+
+-- 64번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '최지우', '010-8383-9393', 'FEMALE', '911013-4567890', '서울특별시 강남구 선릉동 404-4', '1991-10-13', 5);
+
+-- 65번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '정해인', '010-8484-9494', 'MALE', '921014-5678901', '서울특별시 강남구 청담동 505-5', '1992-10-14', 6);
+
+-- 66번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '송중기', '010-8585-9595', 'MALE', '931015-6789012', '서울특별시 강남구 신사동 606-6', '1993-10-15', 2);
+
+-- 67번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '전지현', '010-8686-9696', 'FEMALE', '941016-7890123', '서울특별시 강남구 압구정동 707-7', '1994-10-16', 3);
+
+-- 68번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '강동원', '010-8787-9797', 'MALE', '951017-8901234', '서울특별시 강남구 역삼동 808-8', '1995-10-17', 4);
+
+-- 69번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '손예진', '010-8888-9898', 'FEMALE', '961018-9012345', '서울특별시 강남구 삼성동 909-9', '1996-10-18', 5);
+
+-- 70번 고객
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '이준기', '010-8989-9999', 'MALE', '971019-0123456', '서울특별시 강남구 논현동 1010-10', '1997-10-19', 6);
+
+
+-- [계좌 생성: 고객 61번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000061-6161', 1, 61, 3, 2, TO_TIMESTAMP('2024-02-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.5, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1000000, TO_TIMESTAMP('2024-02-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- [계좌 생성: 고객 62번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000062-6262', 1, 62, 2, 3, TO_TIMESTAMP('2024-02-01 09:05:00', 'YYYY-MM-DD HH24:MI:SS'), 0.3, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, TO_TIMESTAMP('2024-02-01 09:05:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- [계좌 생성: 고객 63번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000063-6363', 1, 63, 4, 4, TO_TIMESTAMP('2024-02-01 09:10:00', 'YYYY-MM-DD HH24:MI:SS'), 0.6, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 2000000, TO_TIMESTAMP('2024-02-01 09:10:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- [계좌 생성: 고객 64번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000064-6464', 1, 64, 1, 5, TO_TIMESTAMP('2024-02-01 09:15:00', 'YYYY-MM-DD HH24:MI:SS'), 0.2, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 500000, TO_TIMESTAMP('2024-02-01 09:15:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- [계좌 생성: 고객 65번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000065-6565', 1, 65, 5, 6, TO_TIMESTAMP('2024-02-01 09:20:00', 'YYYY-MM-DD HH24:MI:SS'), 0.8, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 2500000, TO_TIMESTAMP('2024-02-01 09:20:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- [계좌 생성: 고객 66번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000066-6666', 1, 66, 2, 2, TO_TIMESTAMP('2024-02-01 09:25:00', 'YYYY-MM-DD HH24:MI:SS'), 0.4, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1800000, TO_TIMESTAMP('2024-02-01 09:25:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- [계좌 생성: 고객 67번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000067-6767', 1, 67, 1, 5, TO_TIMESTAMP('2024-02-01 09:30:00', 'YYYY-MM-DD HH24:MI:SS'), 0.1, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, TO_TIMESTAMP('2024-02-01 09:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- [계좌 생성: 고객 68번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000068-6868', 1, 68, 3, 4, TO_TIMESTAMP('2024-02-01 09:35:00', 'YYYY-MM-DD HH24:MI:SS'), 0.7, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1200000, TO_TIMESTAMP('2024-02-01 09:35:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- [계좌 생성: 고객 69번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000069-6969', 1, 69, 4, 5, TO_TIMESTAMP('2024-02-01 09:40:00', 'YYYY-MM-DD HH24:MI:SS'), 0.6, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1700000, TO_TIMESTAMP('2024-02-01 09:40:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- [계좌 생성: 고객 70번]
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000070-7070', 1, 70, 5, 6, TO_TIMESTAMP('2024-02-01 09:45:00', 'YYYY-MM-DD HH24:MI:SS'), 0.5, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 2200000, TO_TIMESTAMP('2024-02-01 09:45:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- 61번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000061-6161', 2, 1, TO_TIMESTAMP('2024-02-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 1000000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 61번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000061-6161', 2, 1, TO_TIMESTAMP('2024-02-01 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 500000, 1500000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 61번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000061-6161', 2, 1, TO_TIMESTAMP('2024-02-01 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), 300000, 1200000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 62번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000062-6262', 3, 1, TO_TIMESTAMP('2024-02-01 09:05:00', 'YYYY-MM-DD HH24:MI:SS'), 1500000, 1500000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 62번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000062-6262', 3, 1, TO_TIMESTAMP('2024-02-01 10:05:00', 'YYYY-MM-DD HH24:MI:SS'), 700000, 2200000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 62번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000062-6262', 3, 1, TO_TIMESTAMP('2024-02-01 11:05:00', 'YYYY-MM-DD HH24:MI:SS'), 400000, 1800000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 63번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000063-6363', 4, 1, TO_TIMESTAMP('2024-02-01 09:10:00', 'YYYY-MM-DD HH24:MI:SS'), 2000000, 2000000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 63번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000063-6363', 4, 1, TO_TIMESTAMP('2024-02-01 10:10:00', 'YYYY-MM-DD HH24:MI:SS'), 800000, 2800000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 63번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000063-6363', 4, 1, TO_TIMESTAMP('2024-02-01 11:10:00', 'YYYY-MM-DD HH24:MI:SS'), 500000, 2300000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 64번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000064-6464', 5, 1, TO_TIMESTAMP('2024-02-01 09:15:00', 'YYYY-MM-DD HH24:MI:SS'), 500000, 500000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 64번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000064-6464', 5, 1, TO_TIMESTAMP('2024-02-01 10:15:00', 'YYYY-MM-DD HH24:MI:SS'), 200000, 700000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 64번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000064-6464', 5, 1, TO_TIMESTAMP('2024-02-01 11:15:00', 'YYYY-MM-DD HH24:MI:SS'), 100000, 600000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 65번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000065-6565', 6, 1, TO_TIMESTAMP('2024-02-01 09:20:00', 'YYYY-MM-DD HH24:MI:SS'), 2500000, 2500000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 65번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000065-6565', 6, 1, TO_TIMESTAMP('2024-02-01 10:20:00', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 3500000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 65번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000065-6565', 6, 1, TO_TIMESTAMP('2024-02-01 11:20:00', 'YYYY-MM-DD HH24:MI:SS'), 500000, 3000000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 66번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000066-6666', 2, 1, TO_TIMESTAMP('2024-02-01 09:25:00', 'YYYY-MM-DD HH24:MI:SS'), 1800000, 1800000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 66번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000066-6666', 2, 1, TO_TIMESTAMP('2024-02-01 10:25:00', 'YYYY-MM-DD HH24:MI:SS'), 400000, 2200000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 66번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000066-6666', 2, 1, TO_TIMESTAMP('2024-02-01 11:25:00', 'YYYY-MM-DD HH24:MI:SS'), 200000, 2000000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 67번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000067-6767', 5, 1, TO_TIMESTAMP('2024-02-01 09:30:00', 'YYYY-MM-DD HH24:MI:SS'), 300000, 300000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 67번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000067-6767', 5, 1, TO_TIMESTAMP('2024-02-01 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 150000, 450000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 67번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000067-6767', 5, 1, TO_TIMESTAMP('2024-02-01 11:30:00', 'YYYY-MM-DD HH24:MI:SS'), 50000, 400000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 68번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000068-6868', 4, 1, TO_TIMESTAMP('2024-02-01 09:35:00', 'YYYY-MM-DD HH24:MI:SS'), 1200000, 1200000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 68번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000068-6868', 4, 1, TO_TIMESTAMP('2024-02-01 10:35:00', 'YYYY-MM-DD HH24:MI:SS'), 300000, 1500000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 68번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000068-6868', 4, 1, TO_TIMESTAMP('2024-02-01 11:35:00', 'YYYY-MM-DD HH24:MI:SS'), 500000, 1000000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 69번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000069-6969', 5, 1, TO_TIMESTAMP('2024-02-01 09:40:00', 'YYYY-MM-DD HH24:MI:SS'), 1700000, 1700000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 69번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000069-6969', 5, 1, TO_TIMESTAMP('2024-02-01 10:40:00', 'YYYY-MM-DD HH24:MI:SS'), 800000, 2500000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 69번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000069-6969', 5, 1, TO_TIMESTAMP('2024-02-01 11:40:00', 'YYYY-MM-DD HH24:MI:SS'), 700000, 1800000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 70번 고객 계좌 등록 (OPEN)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000070-7070', 6, 1, TO_TIMESTAMP('2024-02-01 09:45:00', 'YYYY-MM-DD HH24:MI:SS'), 2200000, 2200000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 70번 고객 계좌 입금 (DEPOSIT)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000070-7070', 6, 1, TO_TIMESTAMP('2024-02-01 10:45:00', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 3200000, 'DEPOSIT', 'NOR', 'TRUE', '현금 입금', trade_num_seq.NEXTVAL);
+
+-- 70번 고객 계좌 출금 (WITHDRAWAL)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000070-7070', 6, 1, TO_TIMESTAMP('2024-02-01 11:45:00', 'YYYY-MM-DD HH24:MI:SS'), 500000, 2700000, 'WITHDRAWAL', 'NOR', 'TRUE', '현금 출금', trade_num_seq.NEXTVAL);
+
+-- 61번 고객 계좌 (001-0000061-6161)의 최종 잔액 1,200,000으로 업데이트
+UPDATE Account
+SET balance = 1200000
+WHERE id = '001-0000061-6161';
+
+-- 62번 고객 계좌 (001-0000062-6262)의 최종 잔액 1,800,000으로 업데이트
+UPDATE Account
+SET balance = 1800000
+WHERE id = '001-0000062-6262';
+
+-- 63번 고객 계좌 (001-0000063-6363)의 최종 잔액 2,300,000으로 업데이트
+UPDATE Account
+SET balance = 2300000
+WHERE id = '001-0000063-6363';
+
+-- 64번 고객 계좌 (001-0000064-6464)의 최종 잔액 600,000으로 업데이트
+UPDATE Account
+SET balance = 600000
+WHERE id = '001-0000064-6464';
+
+-- 65번 고객 계좌 (001-0000065-6565)의 최종 잔액 3,000,000으로 업데이트
+UPDATE Account
+SET balance = 3000000
+WHERE id = '001-0000065-6565';
+
+-- 66번 고객 계좌 (001-0000066-6666)의 최종 잔액 2,000,000으로 업데이트
+UPDATE Account
+SET balance = 2000000
+WHERE id = '001-0000066-6666';
+
+-- 67번 고객 계좌 (001-0000067-6767)의 최종 잔액 400,000으로 업데이트
+UPDATE Account
+SET balance = 400000
+WHERE id = '001-0000067-6767';
+
+-- 68번 고객 계좌 (001-0000068-6868)의 최종 잔액 1,000,000으로 업데이트
+UPDATE Account
+SET balance = 1000000
+WHERE id = '001-0000068-6868';
+
+-- 69번 고객 계좌 (001-0000069-6969)의 최종 잔액 1,800,000으로 업데이트
+UPDATE Account
+SET balance = 1800000
+WHERE id = '001-0000069-6969';
+
+-- 70번 고객 계좌 (001-0000070-7070)의 최종 잔액 2,700,000으로 업데이트
+UPDATE Account
+SET balance = 2700000
+WHERE id = '001-0000070-7070';

@@ -60,5 +60,9 @@ public class DashboardService {
     public List<EmployeeTransactionVolumeChart> getEmployeeTransactionByBranchId(Long branchId) {
         return dashboardMapper.findEmployeeTransactionByBranchId(branchId);
     }
+
+    public List<EmployeeTransactionVolumeChart> getEmployeeTransactionTypes(Long branchId) {
+        return dashboardMapper.findEmployeeTransactionTypes(branchId);
+    }
 }
 
