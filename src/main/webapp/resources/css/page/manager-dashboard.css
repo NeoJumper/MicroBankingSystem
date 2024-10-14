@@ -1,0 +1,16 @@
+@import "../styles.css";
+
+/* Canvas 크기 제한 */
+canvas {
+    min-width: 400px;
+    min-height: 200px;
+}
+
+.tab-title {
+    margin: 10px;
+    color: var(--dark-gray);
+}
+
+#transactionTab {
+    margin: 10px;
+}

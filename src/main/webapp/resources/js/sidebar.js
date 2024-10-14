@@ -37,6 +37,11 @@ headerMap.set("header-employee-management", {
     sub: {}
 });
 
+headerMap.set("header-dashboard", {
+    sidebar: ["dashboard"],
+    sub: {}
+});
+
 
 $(document).ready(function () {
 
@@ -62,16 +67,13 @@ function handleHeaderAndSidebar(roles) {
     // 사이드바 내용을 처리하고 완료 후 추가 작업 수행
     handleSidebarContent(selectedHeaderMenu , selectedSidebarMenu, roles)
         .then(() => {
-            // 추가 작업 수행
-            $('#' + selectedHeaderMenu  + ' > a').css({
-                'background-color': 'white',
-                'color': '#152D6B',
-            });
+            // selectedHeaderMenu에 클래스 추가
+            $('#' + selectedHeaderMenu  + ' > a').addClass('active-header');
+
             console.log(selectedSidebarMenu);
-            $('#sidebar-' + selectedSidebarMenu + ' > a').css({
-                'background-color' : '#152D6B',
-                'color' : 'white',
-            });
+
+            // selectedSidebarMenu에 클래스 추가
+            $('#sidebar-' + selectedSidebarMenu + ' > a').addClass('active-sidebar');
 
         })
         .catch((error) => {
@@ -104,9 +106,11 @@ function  handleSidebarContent(selectedHeaderMenu, selectedSidebarMenu, roles){
             createBusinessDayManagementSidebar(selectedSidebarMenu);
             break;
         case 'header-branch-management':
-            //console.log('지점 관리 선택됨');
+            console.log('지점 관리 선택됨');
             createBranchManagementSidebar(selectedSidebarMenu);
             break;
+        case 'header-dashboard':
+            createDashboardSidebar(selectedSidebarMenu);
         default:
             //console.log('알 수 없는 항목 선택됨');
             break;
@@ -221,6 +225,8 @@ function createBusinessDayCloseManagementSidebar(selectedSidebarMenu, roles){
     createSidebar(menuData);
 }
 
+
+
 function createBranchManagementSidebar() {
     var menuData = [
         {
@@ -233,7 +239,22 @@ function createBranchManagementSidebar() {
         }
     ];
 
-    //console.log("지점 관리 사이드바 생성");
+    console.log("지점 관리 사이드바 생성");
+    createSidebar(menuData);
+}
+
+
+function createDashboardSidebar() {
+    var menuData = [
+        {
+            title: '지점 관리',
+            icon: 'bi bi-house',
+            submenu: [
+                { name: '지점 운영', url: '/page/manager/dashboard' },
+            ]
+        }
+    ];
+
     createSidebar(menuData);
 }
 
@@ -282,6 +303,8 @@ function findHeader(value) {
     return null; // 해당 값에 속하는 헤더가 없을 경우
 }
 function findSidebar(value) {
+    console.log("value",value);
+    console.log("headerMap",headerMap)
     for (const { sidebar, sub } of headerMap.values()) {
         // sidebar에서 직접 값 찾기
         if (sidebar.includes(value)) {
