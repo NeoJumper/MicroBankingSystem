@@ -141,7 +141,7 @@
 
 
     <div class="row justify-content-center mb-5">
-        <button class="col-1 update-btn" id="trade-list-search-btn">조회하기</button>
+        <button class="col-1 basic-btn" id="trade-list-search-btn">조회하기</button>
     </div>
     <div>
         <h3 class="mt-3">총 입출금 금액</h3>

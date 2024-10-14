@@ -34,10 +34,10 @@ function handleCurrentBusinessDay(){
             if(response.status === "OPEN")
             {
 
-                $("#business-day-update-modal-btn").removeClass("update-btn").addClass("closed-btn");
+                $("#business-day-update-modal-btn").removeClass("basic-btn").addClass("closed-btn");
                 $("#business-day-update-modal-btn").prop("disabled", true);
 
-                $("#business-day-update-modal-update-btn").removeClass("update-btn").addClass("closed-btn");
+                $("#business-day-update-modal-update-btn").removeClass("basic-btn").addClass("closed-btn");
                 $("#business-day-update-modal-update-btn").prop("disabled", true);
 
             }
