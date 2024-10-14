@@ -1,9 +1,11 @@
 package com.kcc.banking.domain.bulk_transfer.controller;
 
+import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferValidation;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferPreview;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferSearch;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResult;
+import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferValidationResult;
 import com.kcc.banking.domain.bulk_transfer.service.BulkTransferService;
 import com.kcc.banking.domain.trade.dto.request.TransferTradeCreate;
 import com.kcc.banking.domain.trade.dto.response.PageDTO;
@@ -86,6 +88,12 @@ public class BulkTransferRestController {
 
         }
         return bulkTransferPreviewList;
+    }
+    // 대량 이체 계좌 유효성 검증
+    @PostMapping("/api/employee/bulk-transfer/validation")
+    public ResponseEntity<List<BulkTransferValidationResult>> validateBulkTransfer(@RequestBody List<BulkTransferValidation> bulkTransferValidationList) {
+        List<BulkTransferValidationResult> bulkTransferValidationResultList = accountTradeFacade.validateBulkTransfer(bulkTransferValidationList);
+        return ResponseEntity.ok(bulkTransferValidationResultList);
     }
 
     // 대량 이체
