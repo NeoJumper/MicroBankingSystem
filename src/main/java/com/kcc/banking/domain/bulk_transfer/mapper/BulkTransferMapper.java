@@ -15,4 +15,6 @@ public interface BulkTransferMapper {
     int insertBulkTransfer(BulkTransferCreate bulkTransferCreate);
 
     List<BulkTransferDetail> findBulkTransferList(BulkTransferSearch bulkTransferSearch);
+
+    BulkTransferDetail findBulkTransfer(Long bulkTransferId);
 }

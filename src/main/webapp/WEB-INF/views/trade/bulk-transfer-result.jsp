@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -21,7 +22,8 @@
     <div>
         <h5>계좌관리 > </h5>
         <h5>&nbsp 계좌이체 > </h5>
-        <h5>&nbsp&nbsp;대량이체</h5>
+        <h5>&nbsp&nbsp;대량이체 > </h5>
+        <h5>&nbsp&nbsp;결과확인</h5>
 
     </div>
     <div>
@@ -43,22 +45,22 @@
             <%--계좌선택--%>
             <div id="select-account-form">
                 <div class="account-info-result">
-                    <div><span>업무계좌</span> <br> <span>0001-000xxxxxx-xxx</span></div>
+                    <div><span>업무계좌</span> <br> <span>${bulkTransfer.accId}</span></div>
                     <hr>
                     <div class="account-result-contents">
                         <div>
-                            <div>등록금액 <span>50,000,000</span>원</div>
-                            <div>등록자 <span>김00(ABCD)</span></div>
+                            <div>등록금액 <span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span>원</div>
+                            <div>등록자 <span>${bulkTransfer.registrantName}</span></div>
                         </div>
                         <div>
-                            <div>비고 <span>상여금</span></div>
-                            <div>등록건수 <span>3</span>건</div>
+                            <div>비고 <span>${bulkTransfer.description}</span></div>
+                            <div>등록건수 <span>${bulkTransfer.totalCnt}</span>건</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="account-balance">
-                    등록일시 <span id="register-date">2024.10.10 15:30:00</span>
+                    등록일시 <span id="register-date">${bulkTransfer.registrationDate}</span>
                 </div>
             </div>
         </section>
@@ -84,8 +86,8 @@
             <table id="bulk-transfer-info" class="common-table">
                 <thead>
                 <tr>
-                    <th><label>NO.</label></th>
                     <th><label><input type="checkbox"></label></th>
+                    <th><label>NO.</label></th>
                     <th><label>처리결과</label></th>
                     <th><label>입금계좌번호</label></th>
                     <th><label>이체금액(원)</label></th>
@@ -93,16 +95,16 @@
                     <th><label>받는분 통장표시</label></th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="bulk-transfer-info-list-body">
                 <%--  동적으로 직원계좌정보 생성됨 --%>
                 </tbody>
             </table>
             <div class="table-top-btns">
                 <div>
-                   총 <span>3</span> 건
+                   총 <span>${bulkTransfer.totalCnt}</span> 건
                 </div>
                 <div>
-                    총 이체금액 <span>10000</span> 원
+                    총 이체금액 <span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원
                 </div>
             </div>
 
@@ -116,6 +118,7 @@
     </container>
 </div>
 <script src="/resources/js/footer.js"></script>
+<script src="/resources/js/page/bulk-transfer-result.js" ></script>
 </body>
 
 </html>

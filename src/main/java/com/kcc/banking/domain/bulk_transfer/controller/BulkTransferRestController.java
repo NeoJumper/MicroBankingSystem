@@ -1,6 +1,6 @@
 package com.kcc.banking.domain.bulk_transfer.controller;
 
-import com.kcc.banking.domain.BulkTransferPreview;
+import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferPreview;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferSearch;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResult;
@@ -102,4 +102,5 @@ public class BulkTransferRestController {
         PageDTO pageDTO = new PageDTO(bulkTransferSearch.getCriteria(), bulkTransferList.size());
         return ResponseEntity.ok().body(BulkTransferSearchResult.of(bulkTransferList, pageDTO));
     }
+
 }
