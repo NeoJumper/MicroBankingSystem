@@ -11,6 +11,47 @@
     </select>
 
 
+    <select id="findBulkTransferList" parameterType="BulkTransferSearch">
+        SELECT *
+        FROM (
+            SELECT ROWNUM rn, id, registration_date, amount, status, success_cnt, failure_cnt, total_cnt, description
+            FROM (
+                SELECT
+                    id,
+                    registration_date,
+                    amount,
+                    status,
+                    success_cnt,
+                    failure_cnt,
+                    success_cnt + failure_cnt as total_cnt,
+                    description
+                FROM Bulk_Transfer
+                <where>
+                    <!-- 계좌번호 조회 -->
+                    <if test="accId != null and accId != ''">
+                        acc_id LIKE #{accId} || '%'
+                    </if>
+                    <!-- 날짜 직접 입력 검색 -->
+                    <if test="startDate != null and endDate != null">
+                        AND trade_date BETWEEN #{startDate} AND #{endDate}
+                    </if>
+                </where>
+                <!-- 정렬 기준 -->
+                <choose>
+                    <when test="sortOrder == 'latest'">
+                        ORDER BY trade_date DESC
+                    </when>
+                    <when test="sortOrder == 'oldest'">
+                        ORDER BY trade_date ASC
+                    </when>
+                </choose>
+            )
+        )
+        WHERE rn BETWEEN #{criteria.amount} * (#{criteria.pageNum} - 1) + 1 AND #{criteria.amount} * #{criteria.pageNum}
+
+    </select>
+
+
     <insert id="insertBulkTransfer" parameterType="BulkTransferCreate">
         INSERT INTO Bulk_Transfer
         (

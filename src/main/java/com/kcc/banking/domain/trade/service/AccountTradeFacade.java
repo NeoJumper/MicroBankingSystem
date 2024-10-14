@@ -41,7 +41,6 @@ public class AccountTradeFacade {
     private final BulkTransferService bulkTransferService;
     private final CommonService commonService;
 
-
     /**
      *   @Description - 계좌 개설
      *
@@ -274,6 +273,7 @@ public class AccountTradeFacade {
         // 상대 계좌 조회 -> 입금 계좌 잔액 조회
         BigDecimal depositAccountBalance = accountService.getAccountDetail(transferTradeCreate.getTargetAccId()).getBalance();
 
+
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
@@ -409,6 +409,17 @@ public class AccountTradeFacade {
 
         // 잔액 업데이트
         accountService.updateByCashTrade(cashTradeAccount, currentData, tradeDetail.getBalance());
+
+
+        /**
+         * 현금 마감 업데이트
+         * 변동될 금액 : cashTradeCreate.getAmount()
+         * 거래 유형 : cashTradeCreate.getTradeType()
+         * 1. DEPOSIT 이면 마감에는  + getAmount()
+         * 2. WITHDRAWAL 이면 마감에는 -getAmount()
+         */
+
+//        businessDayCloseService.updateTotalCash(cashTradeCreate.getTradeType(), cashTradeCreate.getAmount());
 
         // 행원 마감 입출금액 변경
         businessDayCloseService.updateTradeAmount(cashTradeCreate.getAmount(), currentData, cashTradeCreate.getTradeType());

@@ -39,10 +39,12 @@
 
             <div class="d-flex justify-content-end mt-4 mx-0">
                 <div >
-                    <button id="business-day-reset-modal-btn" class="update-btn" type="button" data-bs-toggle="modal" data-bs-target="#business-day-reset-modal">영업일 되돌리기</button>
+
+                    <button id="business-day-reset-modal-btn" class="basic-btn" type="button" data-bs-toggle="modal" data-bs-target="#business-day-reset-modal">영업일 되돌리기</button>
                 </div>
                 <div >
-                    <button id="business-day-update-modal-btn" class="update-btn" type="button" data-bs-toggle="modal" data-bs-target="#business-day-update-modal">영업일 변경</button>
+                    <button id="business-day-update-modal-btn" class="basic-btn" type="button" data-bs-toggle="modal" data-bs-target="#business-day-update-modal">영업일 변경</button>
+
                 </div>
             </div>
         </div>
@@ -65,7 +67,7 @@
 
                 <div class="d-flex justify-content-center mt-3">
                     <div >
-                        <button id="business-day-reset-modal-reset-btn" class ="update-btn">
+                        <button id="business-day-reset-modal-reset-btn" class ="basic-btn">
                             영업일 되돌리기
                         </button>
                     </div>

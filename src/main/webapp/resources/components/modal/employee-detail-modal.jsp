@@ -55,7 +55,7 @@
                 </table>
                 <div class="d-flex justify-content-center mt-5">
                     <div >
-                        <button id="detail-modal-emp-update-btn" class ="update-btn">
+                        <button id="detail-modal-emp-update-btn" class ="basic-btn">
                             수정하기
                         </button>
                     </div>

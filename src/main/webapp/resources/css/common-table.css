@@ -1,6 +1,8 @@
+@import "styles.css";
+
 #page-title {
     font-weight: bold;
-    color: #5F5F5F;
+    color: var(--dark-gray);
 }
 
 .common-table {
@@ -14,13 +16,13 @@
 .common-table th, .common-table td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--light-gray);
     font-size: 1.0rem;
 }
 
 .common-table th {
-    background-color: #F5F5F5;
-    color: #5F5F5F;
+    background-color: var(--table-header);
+    color: var(--dark-gray);
 }
 
 .table th {
@@ -28,9 +30,9 @@
 }
 
 .common-table select, input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
-    width: 90%;
+    width: 60%;
     padding: 8px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--light-gray);
     box-sizing: border-box;
 }
 
@@ -39,17 +41,13 @@
     border-bottom: none;
 }
 
-#employee-add-list{
-    border-bottom: 1px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 .table th, .table td {
     padding: 12px 15px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--light-gray);
     font-size: 1.0rem;
     text-align: center;
 }
 
 input[disabled] {
-    background-color: #F5F5F5;
+    background-color: var(--table-header);
 }

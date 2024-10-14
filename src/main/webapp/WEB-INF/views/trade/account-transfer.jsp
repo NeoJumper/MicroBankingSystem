@@ -31,7 +31,7 @@
             <tr>
                 <th><label for="withdrawal-account-number">출금계좌번호</label></th>
                 <td><input disabled type="text" id="withdrawal-account-number">
-                    <button id="check-withdrawal-account-btn" class="update-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
+                    <button id="check-withdrawal-account-btn" class="basic-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
                 </td>
             </tr>
             <tr>
@@ -78,7 +78,7 @@
             <tr>
                 <th><label for="deposit-account-number">입금계좌번호</label></th>
                 <td><input disabled type="text" id="deposit-account-number">
-                    <button id="check-deposit-account-btn" class="update-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
+                    <button id="check-deposit-account-btn" class="basic-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
                 </td>
             </tr>
             <tr>
@@ -95,12 +95,12 @@
             <tbody>
             <tr>
                 <th><label for="transfer-account-password">출금계좌 비밀번호</label></th>
-                <td><input id="transfer-account-password" type="password"><button class="search-btn" id="account-transfer-validate">비밀번호 인증</button></td>
+                <td><input id="transfer-account-password" type="password"><button class="basic-btn" id="account-transfer-validate">비밀번호 인증</button></td>
             </tr>
             </tbody>
         </table>
     <div class="row justify-content-center mb-5">
-        <button disabled id="account-transfer-submit" class="col-1 update-btn">이체하기</button>
+        <button disabled id="account-transfer-submit" class="col-1 basic-btn">이체하기</button>
     </div>
     </div>
 

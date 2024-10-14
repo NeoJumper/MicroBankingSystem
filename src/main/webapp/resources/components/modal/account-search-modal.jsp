@@ -27,7 +27,7 @@
                 </div>
                 <hr>
                 <div id="search-modal-center-box">
-                    <button id="modal-check-account-btn" class="update-btn" type="button">계좌 검색</button>
+                    <button id="modal-check-account-btn" class="basic-btn" type="button">계좌 검색</button>
                     <button id="modal-check-account-reset-btn" class="reset-btn" type="button">초기화</button>
                 </div>
 
@@ -47,7 +47,7 @@
                     </tbody>
                 </table>
                 <div id="search-modal-select-button">
-                    <button id="search-modal-select-account-btn" class="update-btn">계좌 선택</button>
+                    <button id="search-modal-select-account-btn" class="basic-btn">계좌 선택</button>
                 </div>
             </div>
         </div>

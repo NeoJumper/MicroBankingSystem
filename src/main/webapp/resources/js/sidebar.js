@@ -26,10 +26,12 @@ headerMap.set("header-branch-management", {
     sidebar: ["branch-management", "branch"],
     sub: {}
 });
+
 headerMap.set("header-customer-management", {
     sidebar: [],
     sub: {}
 });
+
 headerMap.set("header-employee-management", {
     sidebar: ["employee-save", "employee-list", "employee-update"],
     sub: {}
@@ -63,11 +65,11 @@ function handleHeaderAndSidebar(roles) {
             // 추가 작업 수행
             $('#' + selectedHeaderMenu  + ' > a').css({
                 'background-color': 'white',
-                'color': '#0079D4',
+                'color': '#152D6B',
             });
             console.log(selectedSidebarMenu);
             $('#sidebar-' + selectedSidebarMenu + ' > a').css({
-                'background-color' : '#0079D4',
+                'background-color' : '#152D6B',
                 'color' : 'white',
             });
 

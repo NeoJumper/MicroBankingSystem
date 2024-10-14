@@ -33,7 +33,7 @@
             <th><label for="acc-id-input">계좌번호</label></th>
             <td class="acc-id-input">
                 <input disabled type="text" id="acc-id-input">
-                <button type="button"  data-bs-toggle="modal" data-bs-target="#search-modal-account" class="search-btn" id="search-account-btn">계좌검색</button>
+                <button type="button"  data-bs-toggle="modal" data-bs-target="#search-modal-account" class="basic-btn" id="search-account-btn">계좌검색</button>
             </td>
         </tr>
         </tbody>
@@ -45,6 +45,17 @@
     </div>
     <table class="common-table">
         <tr>
+            <th>대분류</th>
+            <td>
+                <div id = "major-category-button-group" class="button-group">
+                    <input type="radio" id="common-transfer" value="common" name="major-category" checked>
+                    <label for="common-transfer">계좌 이체</label>
+                    <input type="radio" id="bulk-transfer" value="bulk" name="major-category">
+                    <label for="bulk-transfer">대량 이체</label>
+                </div>
+            </td>
+        </tr>
+        <tr id="trade-type-row">
             <th>조건별조회</th>
             <td>
                 <div class="button-group" id ="trade-type-div">
@@ -141,47 +152,76 @@
 
 
     <div class="row justify-content-center mb-5">
-        <button class="col-1 update-btn" id="trade-list-search-btn">조회하기</button>
+        <button class="col-1 basic-btn" id="trade-list-search-btn">조회하기</button>
     </div>
-    <div>
-        <h3 class="mt-3">총 입출금 금액</h3>
-        <hr>
-        <div id="trade-total-balance">
-            <label for="total-deposit-input" >입금액</label>
-            <input type="text" id="total-deposit-input" disabled>
 
-            <label for="total-withdraw-input">출금액</label>
-            <input type="text" id="total-withdraw-input" disabled>
+    <!--  이체 조회 결과 -->
+    <div id="common-transfer-select-result" style="display: none;">
+        <div>
+            <h3 class="mt-3">총 입출금 금액</h3>
+            <hr>
+            <div id="trade-total-balance">
+                <label for="total-deposit-input" >입금액</label>
+                <input type="text" id="total-deposit-input" disabled>
+
+                <label for="total-withdraw-input">출금액</label>
+                <input type="text" id="total-withdraw-input" disabled>
+
+            </div>
+        </div>
+        <div>
+            <h3 class="mt-3">총 거래 내역</h3>
+            <hr>
+            <table class="common-table">
+                <thead>
+
+                <th>순번</th>
+                <th><label id="trade-date">거래일시</label></th>
+                <th><label id="acc-id">대상계좌</label></th>
+                <th><label id="target-acc-id">상대계좌</label></th>
+                <th><label id="amount">거래액</label></th>
+                <th><label id="balance">잔액</label></th>
+                <th><label id="cash-indicator">현금여부</label></th>
+                <th><label id="trade-type">거래유형</label></th>
+                <th><label id="status">상태</label></th>
+                </thead>
+                <tbody id="trade-result-tbody">
+
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+        <div id="pagination">
+
 
         </div>
     </div>
-    <div>
-        <h3 class="mt-3">총 거래 내역</h3>
-        <hr>
-        <table class="common-table">
-            <thead>
 
-            <th>순번</th>
-            <th><label id="trade-date">거래일시</label></th>
-            <th><label id="acc-id">대상계좌</label></th>
-            <th><label id="target-acc-id">상대계좌</label></th>
-            <th><label id="amount">거래액</label></th>
-            <th><label id="balance">잔액</label></th>
-            <th><label id="cash-indicator">현금여부</label></th>
-            <th><label id="trade-type">거래유형</label></th>
-            <th><label id="status">상태</label></th>
-            </thead>
-            <tbody id="trade-result-tbody">
+    <!--  대량이체 조회 결과 -->
+    <div id="bulk-transfer-select-result" style="display: none;">
+        <div>
+            <h3 class="mt-3">총 거래 내역</h3>
+            <hr>
+            <table class="common-table">
+                <thead>
 
-            </tbody>
-        </table>
+                <th>순번</th>
+                <th><label id="bulk-transfer-trade-date">거래일시</label></th>
+                <th><label id="bulk-transfer-acc-id">비고</label></th>
+                <th><label id="bulk-transfer-total-amount">총 이체금액</label></th>
+                <th><label id="bulk-transfer-failure-cnt">실패건수</label></th>
+                <th><label id="bulk-transfer-success-cnt">성공건수</label></th>
+                <th><label id="bulk-transfer-total-cnt">총건수</label></th>
+                <th><label id="bulk-transfer-status">상태</label></th>
+                </thead>
+                <tbody id="bulk-transfer-result-tbody">
+
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <hr>
-    <div id="pagination">
-
-
-    </div>
 
     <input type="hidden" id="businessDay" value="${businessDay}">
 </div>

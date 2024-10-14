@@ -57,7 +57,7 @@
                     <th><label for="withdrawal-account-number">계좌비밀번호</label></th>
                     <td>
                         <input placeholder="비밀번호 입력" type="password" id="withdrawal-account-number">
-                        <button id="check-withdrawal-account-btn" class="update-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">확인</button>
+                        <button id="check-withdrawal-account-btn" class="basic-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">확인</button>
                     </td>
                 </tr>
                 <tr>
@@ -138,8 +138,8 @@
             </ul>
         </section>
         <section class="submit-btns">
-            <input class="update-btn" type="button" value="초기화" style="background-color: white; color: black; border: 1px solid #D5D5D5">
-            <input class="update-btn" type="button" value="이체실행">
+            <input class="basic-btn" type="button" value="초기화" style="background-color: white; color: black; border: 1px solid #D5D5D5">
+            <input class="basic-btn" type="button" value="이체실행">
         </section>
     </container>
 </div>

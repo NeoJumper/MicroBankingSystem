@@ -22,7 +22,7 @@
     <div>
         <div class="d-flex align-items-center">
             <h3 class="mb-0">마감일 관리(행원)</h3>
-            <h4 id="employee-close-page-user-branch-name"  style="background-color :blue; color: white; font-size: 1.2rem; padding: 7px 10px; margin: 0 10px;"></h4>
+            <h4 id="employee-close-page-user-branch-name" ></h4>
             <h5 id="employee-close-page-user-name" class="mb-0">2024-09-24</h5>
         </div>
         <hr>
@@ -77,14 +77,14 @@
         </div>
         <div class="col-3 d-flex justify-content-end">
             <div >
-                <button id="trade-list-detail-btn" class ="update-btn">
+                <button id="trade-list-detail-btn" class ="basic-btn">
                     내역 상세보기
                 </button>
             </div>
             <div >
                 <button
                     id="employee-business-day-close-btn"
-                    class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'update-btn'}"
+                    class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'basic-btn'}"
                     <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>
                 >
                         <c:choose>
