@@ -5,8 +5,9 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.css");
 
 :root {
-  --basic-color: #152D6B;
-  --basic-hover-color: #2A49A1;
+  --basic-color: #0079D4;
+  --basic-hover-color: #4AA5F4;
+  --basic-hover-dark-color: #2A49A1;
   --point-red: #D40000;
   --hover-red: #CC0000;
   --point-yellow: #FFD80D;
@@ -56,6 +57,7 @@ body {
 #main-area > div:first-child h5:last-child {
   font-weight: bold;
 }
+
 #main-area > div > h3 {
   color: initial; /* 마지막 h3는 기본 스타일로 설정 */
   font-weight: bold;
@@ -71,7 +73,7 @@ body {
 }
 
 .basic-btn:hover {
-  background: var(--basic-hover-color);
+  background: var(--basic-hover-dark-color);
 }
 
 .basic-btn:disabled {
@@ -128,4 +130,8 @@ body {
 /*------------------------- 추가 -------------------------*/
 td.text-center {
   text-align: center;
+}
+
+.nav-link {
+  color: var(--basic-color);
 }

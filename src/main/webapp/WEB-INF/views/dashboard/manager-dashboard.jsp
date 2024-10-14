@@ -5,8 +5,9 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>매니저 대시보드</title>
+    <title>지점 관리 > 지점 운영</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/manager-dashboard.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -15,7 +16,17 @@
 <%@ include file="/resources/components/sidebar.jsp" %>
 
 <div id="main-area">
-    <h1>매니저 대시보드</h1>
+    <div>
+        <h5>지점 관리 ></h5>
+        <h5>&nbsp지점 운영</h5>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <h3>직원별 거래량 비교</h3>
+            <canvas id="employeeTransactionChart" width="400" height="200"></canvas>
+        </div>
+    </div>
 
     <!-- 탭 구성: 일별, 주간별, 월별 거래량 -->
     <ul class="nav nav-tabs" id="transactionTab" role="tablist">
@@ -39,8 +50,8 @@
     <!-- 탭 내용 -->
     <div class="tab-content" id="transactionTabContent">
         <!-- 일별 거래량 탭 -->
-        <div class="tab-pane fade show active" id="daily" role="tabpanel" aria-labelledby="daily-tab">
-            <h3>일별 거래량</h3>
+        <div class="tab-pane show active" id="daily" role="tabpanel" aria-labelledby="daily-tab">
+            <h3 class="tab-title">일별 거래량</h3>
             <div class="row">
                 <div class="col-6">
                     <canvas id="dailyTransactionVolumeChart" width="400" height="200"></canvas>
@@ -52,30 +63,23 @@
         </div>
 
         <!-- 주간별 거래량 탭 -->
-        <div class="tab-pane fade" id="weekly" role="tabpanel" aria-labelledby="weekly-tab">
+        <div class="tab-pane" id="weekly" role="tabpanel" aria-labelledby="weekly-tab">
             <div class="row">
                 <div class="col-6">
-                    <h3>주간별 거래량</h3>
+                    <h3 class="tab-title">주간별 거래량</h3>
                     <canvas id="weeklyTransactionVolumeChart" width="400" height="200"></canvas>
                 </div>
             </div>
         </div>
 
         <!-- 월별 거래량 탭 -->
-        <div class="tab-pane fade" id="monthly" role="tabpanel" aria-labelledby="monthly-tab">
+        <div class="tab-pane" id="monthly" role="tabpanel" aria-labelledby="monthly-tab">
             <div class="row">
                 <div class="col-6">
-                    <h3>월별 거래량</h3>
+                    <h3 class="tab-title">월별 거래량</h3>
                     <canvas id="monthlyTransactionVolumeChart" width="400" height="200"></canvas>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-6">
-            <h3>직원별 거래량 비교</h3>
-            <canvas id="employeeTransactionChart" width="400" height="200"></canvas>
         </div>
     </div>
 

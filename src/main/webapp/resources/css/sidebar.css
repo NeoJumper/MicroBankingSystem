@@ -1,5 +1,12 @@
 @import "styles.css";
 
+@font-face {
+  font-family: 'TheJamsil5Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
 /* sidebar.css */
 #leftSidebar-wrapper {
   position: fixed;
@@ -10,6 +17,16 @@
   height: 100%;
   transition: width 0.3s ease-in-out;
   z-index: 5;
+}
+
+/* 헤더 메뉴에서 활성화된 상태를 위한 클래스 */
+.active-header {
+  font-weight: bold;
+}
+
+/* 사이드바 메뉴에서 활성화된 상태를 위한 클래스 */
+.active-sidebar {
+  border-bottom: 2px solid var(--basic-color);
 }
 
 /*#leftSidebar-wrapper.open {
@@ -55,18 +72,21 @@
   list-style-type: none;
 }
 
+.menu > a:first-child {
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: black;
+}
 
-.list-unstyled li a {
-  font-size: 1.4rem;
+.list-unstyled .active > a {
+  color: var(--basic-color);
+}
+
+.submenu li a {
   color: black;
   text-decoration: none;
   display: block;
   transition: background-color 0.3s, color 0.3s;
-}
-
-.submenu li a {
-  font-size: 1rem;
-  font-weight: normal;
   margin-left:5px;
   padding : 5px;
 }
@@ -74,11 +94,6 @@
 .submenu li a:hover {
   background-color: var(--basic-color);
   color:white;
-}
-
-.list-unstyled .active > a {
-  color: var(--basic-color);
-
 }
 
 .sidebarHr{
