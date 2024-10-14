@@ -1,9 +1,13 @@
 package com.kcc.banking.domain.bulk_transfer.service;
 
+import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
+import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferSearch;
 import com.kcc.banking.domain.bulk_transfer.mapper.BulkTransferMapper;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,5 +20,10 @@ public class BulkTransferService {
 
     public void createBulkTransfer(BulkTransferCreate bulkTransferCreate) {
         bulkTransferMapper.insertBulkTransfer(bulkTransferCreate);
+    }
+
+    public List<BulkTransferDetail> getBulkTransferList(BulkTransferSearch bulkTransferSearch) {
+        return bulkTransferMapper.findBulkTransferList(bulkTransferSearch);
+
     }
 }
