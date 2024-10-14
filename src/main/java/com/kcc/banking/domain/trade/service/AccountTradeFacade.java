@@ -8,6 +8,8 @@ import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
+import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferValidation;
+import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferValidationResult;
 import com.kcc.banking.domain.bulk_transfer.service.BulkTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -482,5 +485,40 @@ public class AccountTradeFacade {
 
         tradeService.createTransferFailureTrade(transferTradeCreate, currentData, withdrawalAccountBalance, tradeNumber, "WITHDRAWAL");
 
+    }
+
+    public List<BulkTransferValidationResult> validateBulkTransfer(List<BulkTransferValidation> bulkTransferValidationList) {
+
+        List<BulkTransferValidationResult> bulkTransferValidationResultList = new ArrayList<>();
+
+        for(BulkTransferValidation bulkTransferValidation: bulkTransferValidationList){
+            AccountDetail depositAccount = accountService.getAccountDetail(bulkTransferValidation.getTargetAccId());
+            String customerName = depositAccount.getCustomerName();
+
+            BulkTransferValidationResult bulkTransferValidationResult = BulkTransferValidationResult.builder()
+                    .targetAccId(bulkTransferValidation.getTargetAccId())
+                    .depositor(bulkTransferValidation.getDepositor())
+                    .krw(bulkTransferValidation.getKrw())
+                    .transferAmount(bulkTransferValidation.getTransferAmount())
+                    .description(bulkTransferValidation.getDescription())
+                    .build();
+
+
+            String status = "";
+            // 입금 계좌 오류
+            if(depositAccount == null || depositAccount.getStatus().equals("CLS")){
+                status = "계좌 오류";
+            }
+            else if (customerName.equals(bulkTransferValidation.getDepositor())){
+                status = "예금주 불일치";
+
+            }
+            bulkTransferValidationResult.setStatus(status);
+            bulkTransferValidationResult.setValidDepositor(customerName);
+
+            bulkTransferValidationResultList.add(bulkTransferValidationResult);
+        }
+
+        return bulkTransferValidationResultList;
     }
 }
