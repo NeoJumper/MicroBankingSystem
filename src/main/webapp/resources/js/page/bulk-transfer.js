@@ -230,7 +230,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // 이체하기 
     $('input[value="이체실행"]').click(transferExecution);
     function transferExecution(){
-        var accountNumber = $('#account-number').text();
         console.log(employeeDataForUpload,"employeeDataForUpload======!!");
         $.ajax({
             type: "POST",
@@ -240,7 +239,8 @@ document.addEventListener("DOMContentLoaded", function () {
             success: function (data) {
                 console.log(data);
                 console.log("성공");
-                var url = '/page/employee/bulk-transfer-result?accId=' + encodeURIComponent(accountNumber);
+                // 리턴값으로 bulkTransferId 주면 파라미터로 담아서 보냄
+                var url = '/page/employee/bulk-transfer-result?bulkTransferId=' + encodeURIComponent(bulkTransferId);
                 window.location.href = url;
             },
             error: function(data){
