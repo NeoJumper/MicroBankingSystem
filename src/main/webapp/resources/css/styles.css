@@ -8,7 +8,8 @@
   --basic-color: #0079D4;
   --basic-gradient-color: #2c86c9;
   --basic-hover-color: #4AA5F4;
-  --basic-hover-dark-color: #2A49A1;
+  --basic-hover-dark-color: #3f5ba9;
+  --light-blue-input-background: #f6f9fc;
   --point-red: #D40000;
   --hover-red: #CC0000;
   --point-yellow: #FFCE56;
@@ -18,6 +19,7 @@
   --little-dark-gray: #C8C8C8;
   --basic-gray: #ECECEC;
   --light-gray: #F7F7F7;
+  --body-background: #FBFBFB;
   --point-green: #3AB764;
 
 }
@@ -31,6 +33,7 @@
 body {
   font-family: 'Pretendard-Regular', sans-serif;
   font-size: 1.2rem;
+  background: var(--body-background);
 }
 
 .modal {
@@ -59,12 +62,14 @@ body{
 }
 
 #main-area > div:first-child h5 {
-  color: var(--dark-gray);
+  opacity: 0.5;
+  color: var(--deep-dark-gray);
   margin-bottom: 0;
 }
 
 #main-area > div:first-child h5:last-child {
-  font-weight: bold;
+  opacity: 1;
+  font-size: 1.5rem;
 }
 
 #main-area > div > h3 {

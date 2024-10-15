@@ -19,7 +19,7 @@
     </div>
     <div>
         <h3>행원 검색</h3>
-        <hr>
+
         <div class="d-flex align-items-center">
             <input style="width:30%;" type="text" id="customer-id-text" placeholder="사원 번호를 입력하세요">
             <button id="employee-search-btn" type="button" class="basic-btn" style="display: flex; align-items: center; justify-content: center">
@@ -31,7 +31,7 @@
     </div>
     <div class="mt-4">
         <h3>행원 정보</h3>
-        <hr>
+
     </div>
     <table class="common-table">
         <tr>
