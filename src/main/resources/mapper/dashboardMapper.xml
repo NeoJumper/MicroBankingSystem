@@ -91,17 +91,20 @@
 
 
     <!-- 주간별 거래량 조회 (오늘이 포함된 주 + 12주) -->
+    <!-- 주간별 거래량 조회 (오늘이 포함된 주 + 이전 11주) -->
     <select id="findWeeklyTransactionVolume" parameterType="map" resultType="WeeklyTransactionVolumeChart">
         WITH weeks AS (
             SELECT
-                TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'IW') - (LEVEL - 1) * 7 AS week_start,
-                TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'IW') - (LEVEL - 1) * 7 + 6 AS week_end,
+                TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD')) - (LEVEL - 1) * 7 AS week_start,
+                TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD')) - (LEVEL - 1) * 7 + 6 AS week_end,
                 LEVEL AS week_number
             FROM dual
         CONNECT BY LEVEL &lt;= 12
             )
         SELECT
             weeks.week_number AS weekNumber,
+            TO_CHAR(weeks.week_start, 'YYYY-MM-DD') AS weekStart,
+            TO_CHAR(weeks.week_end, 'YYYY-MM-DD') AS weekEnd,
             COUNT(trade.id) AS transactionCount
         FROM
             weeks
@@ -111,10 +114,14 @@
                 trade.branch_id = #{branchId}
                     AND trade.trade_date BETWEEN weeks.week_start AND weeks.week_end
         GROUP BY
-            weeks.week_number
+            weeks.week_number,
+            weeks.week_start,
+            weeks.week_end
         ORDER BY
             weeks.week_number
     </select>
+
+
 
 
     <!-- 월별 거래량 조회 (1월부터 12월까지) -->

@@ -15,6 +15,7 @@ $(document).ready(function () {
     loadMonthlyTransactionVolumeChart();
     // 행원 거래량 비교 차트
     loadEmployeeTransactionByBranch(1); // 예시로 branchId 1로 호출
+    // 행원별 거래유형 차트
     loadEmployeeTransactionTypesChart(1);
 
     const today = new Date('2024-02-01');
@@ -27,10 +28,13 @@ $(document).ready(function () {
         console.log("활성화된 탭:", activeTab); // 탭 확인을 위해 로그 출력
 
         if (activeTab === 'daily-tab') {
-            if (dailyTransactionVolumeChartInstance) {
+            if (dailyTransactionVolumeChartInstance ) {
                 dailyTransactionVolumeChartInstance.destroy();
+            } else if(dailyTransactionChartInstance){
+                dailyTransactionChartInstance.destroy();
             }
             loadDailyTransactionVolumeChart();
+            loadTransactionData(formattedToday);
         } else if (activeTab === 'weekly-tab') {
             if (weeklyTransactionVolumeChartInstance) {
                 weeklyTransactionVolumeChartInstance.destroy();
@@ -76,8 +80,8 @@ function renderDailyTransactionVolumeChart(data) {
         datasets: [{
             label: '일별 거래량',
             data: transactionCounts,
-            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            borderColor: 'rgba(153, 102, 255, 1)',
+            backgroundColor: getColor(5).background,
+            borderColor: getColor(5).border,
             borderWidth: 1
         }]
     };
@@ -107,6 +111,9 @@ function loadTransactionData(date) {
         dataType: 'json',
         success: function (response) {
             renderDailyTransactionChart(response);
+
+            // 테이블에 데이터를 넣는 함수 호출
+            updateTransactionTable(response);
         },
         error: function (xhr, status, error) {
             console.error("데이터를 가져오는 데 실패했습니다:", error);
@@ -121,6 +128,9 @@ function renderDailyTransactionChart(data) {
         const transactionData = data.find(item => item.transactionType === type);
         return transactionData ? transactionData.transactionCount : 0;
     });
+    // getColor 함수를 사용하여 색상을 동적으로 설정
+    const backgroundColors = transactionTypes.map((_, index) => getColor(index).background);
+    const borderColors = transactionTypes.map((_, index) => getColor(index).border);
 
     const chartData = {
         labels: transactionTypes,
@@ -128,21 +138,9 @@ function renderDailyTransactionChart(data) {
             type: 'doughnut',
             label: '거래 유형별 거래 수',
             data: transactionCounts,
-            backgroundColor: [
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(75, 192, 192, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
+            backgroundColor: backgroundColors,
+            borderColor: borderColors,
+            borderWidth: 1,
         }]
     };
 
@@ -153,10 +151,40 @@ function renderDailyTransactionChart(data) {
     dailyTransactionChartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: chartData,
+        options: {
+            maintainAspectRatio: true, // 차트의 비율 유지
+            responsive: true, // 창 크기에 따라 반응형으로 크기 조정
+            legend: {
+                display: true, // 레전드 표시
+                position: 'right', // 레전드를 오른쪽에 세로로 표시
+                labels: {
+                    boxWidth: 20, // 각 항목 앞의 색상 상자 크기
+                    padding: 15,  // 레전드 아이템 간의 간격
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'right', // 오른쪽에 세로로 배치
+                }
+            }
+        }
     });
 }
 
-// ---------------------------------------------------------------------
+// 2-2. 테이블에 데이터를 업데이트하는 함수
+function updateTransactionTable(data) {
+    const transactionTypes = ['입금', '출금', '송금', '가입', '해지'];
+
+    transactionTypes.forEach(type => {
+        const transactionData = data.find(item => item.transactionType === type);
+        const count = transactionData ? transactionData.transactionCount : 0;
+
+        // 해당하는 테이블의 행을 찾아서 값을 업데이트
+        $(`#daily-transaction-table th:contains(${type})`).next('td').text(count);
+    });
+}
+
+
 // ---------------------------------------------------------------------
 // 3. 주간별 거래량 차트 불러오기 함수
 function loadWeeklyTransactionVolumeChart() {
@@ -176,12 +204,8 @@ function loadWeeklyTransactionVolumeChart() {
 
 // 3-1. 주간별 거래량 차트 렌더링
 function renderWeeklyTransactionVolumeChart(data) {
-    const allWeeks = generateWeekLabels(); // ['1주차', '2주차', ..., '12주차']
-    const transactionCounts = allWeeks.map((weekLabel, index) => {
-        const weekNumber = index + 1; // weekNumber는 1부터 12까지
-        const foundData = data.find(item => item.weekNumber === weekNumber);
-        return foundData ? foundData.transactionCount : 0; // 해당 주차에 데이터가 없으면 0
-    });
+    const allWeeks = generateWeekLabels(data).reverse(); // weekStart ~ weekEnd
+    const transactionCounts = data.map(item => item.transactionCount).reverse();
 
     console.log("주 라벨:", allWeeks);
     console.log("주 거래량:", transactionCounts);
@@ -191,8 +215,8 @@ function renderWeeklyTransactionVolumeChart(data) {
         datasets: [{
             label: '주간별 거래량',
             data: transactionCounts,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: getColor(2).background,
+            borderColor: getColor(2).border,
             borderWidth: 1
         }]
     };
@@ -242,6 +266,7 @@ function renderWeeklyTransactionVolumeChart(data) {
     });
 }
 
+
 // ---------------------------------------------------------------------
 // 4. 월별 거래량 차트 불러오기 함수
 function loadMonthlyTransactionVolumeChart() {
@@ -271,8 +296,8 @@ function renderMonthlyTransactionVolumeChart(data) {
         datasets: [{
             label: '월별 거래량',
             data: transactionCounts,
-            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            borderColor: 'rgba(153, 102, 255, 1)',
+            backgroundColor: getColor(3).background,
+            borderColor: getColor(3).border,
             borderWidth: 1
         }]
     };
@@ -312,8 +337,8 @@ function renderEmployeeTransactionChart(data) {
         datasets: [{
             label: '직원별 거래량',
             data: transactionCounts,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: getColor(4).background,
+            borderColor: getColor(4).border,
             borderWidth: 1
         }]
     };
@@ -422,13 +447,13 @@ function renderEmployeeTransactionTypesChart(data) {
 
 // ---------------------------------------------------------------------
 // +) 라벨용 함수들
-// 주 라벨을 생성하는 함수 (1주차 ~ 12주차)
-function generateWeekLabels() {
-    const weeks = [];
-    for (let i = 1; i <= 12; i++) {
-        weeks.push(`${i}주차`);
-    }
-    return weeks;
+// 주 라벨을 생성하는 함수 (MM월 N주차)
+function generateWeekLabels(data) {
+    return data.map(item => {
+        const weekStart = item.weekStart;
+        const weekEnd = item.weekEnd;
+        return `${weekStart} ~ ${weekEnd}`;
+    });
 }
 
 // 월 라벨을 생성하는 함수 (YYYY-MM 형식으로)
@@ -445,12 +470,12 @@ function getWeekNumber(date) {
 // 색상 할당 함수
 function getColor(index) {
     const colors = [
-        { background: '#FF638433', border: '#FF6384FF' },
-        { background: '#36A2EB33', border: '#36A2EBFF' },
-        { background: '#FFCE5633', border: '#FFCE56FF' },
-        { background: '#4BC0C033', border: '#4BC0C0FF' },
-        { background: '#9966FF33', border: '#9966FFFF' },
-        { background: '#FF9F4033', border: '#FF9F40FF' }
+        { background: '#EA0B0B66', border: '#c10000' },
+        { background: '#ffce9a', border: '#ff9020' },
+        { background: '#FFC10766', border: '#ffc637' },
+        { background: '#8BC34A66', border: '#77c63e' },
+        { background: '#42A5F566', border: '#1E90FF' },
+        { background: '#B299FF', border: '#9966FFFF' }
         // 필요에 따라 색상을 추가하세요.
     ];
     return colors[index % colors.length];
