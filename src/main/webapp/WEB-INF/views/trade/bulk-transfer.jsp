@@ -26,16 +26,33 @@
     </div>
     <div>
         <h3>대량이체</h3>
-        <hr>
     </div>
-    <div id="register-result-toggle-btn">
-        <%--  등록 버튼 클릭시 registration-page 열림 --%>
-        <button  class="active-toggle-btn">등록</button>
-        <%--  결과확인 버튼 클릭시 result-confirmation-page 열림 --%>
-        <button class="off-toggle-btn"><a style="text-decoration-line: none;" href="/page/employee/bulk-transfer-result">결과확인</a></button>
+
+    <div class="progress-container">
+        <div class="step active">
+            <div class="circle active">
+                <div class="inner-circle active">1</div>
+            </div>
+            <p>이체정보 입력</p>
+        </div>
+        <div class="line"></div>
+        <div class="step">
+            <div class="circle">
+                <div class="inner-circle">2</div>
+            </div>
+            <p>이체정보 확인</p>
+        </div>
+        <div class="line"></div>
+        <div class="step">
+            <div class="circle">
+                <div class="inner-circle">3</div>
+            </div>
+            <p>이체결과 확인</p>
+        </div>
     </div>
+
     <%--  registration-page  --%>
-    <container id="registration-page">
+    <container  id="registration-page">
         <%--  계좌선택 섹션  --%>
         <section>
             <h4>대량이체 출금정보</h4>
@@ -43,7 +60,7 @@
             <%--계좌선택--%>
             <div id="select-account-form">
                 <div class="account-info">
-                    <div><span>업무계좌</span> <br> <span id="account-number">001-0000017-7734</span></div>
+                    <div><span>업무계좌</span> <br> <span id="account-number">계좌를 선택해주세요.</span></div>
                     <div>
                         <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
                                 data-account-type="withdrawal" data-bs-toggle="modal"
@@ -53,7 +70,7 @@
                     </div>
                 </div>
                 <div class="account-balance">
-                    계좌잔액 <span id="account-balance"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp</span> 원 | 이체가능금액 <span id="transferable-amount"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp </span> 원
+                    계좌잔액 <span id="account-balance"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원 | 이체가능금액 <span id="transferable-amount"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원
                 </div>
             </div>
             <%--계좌비밀번호 table--%>
@@ -110,7 +127,8 @@
                     <th><label>입금계좌번호</label></th>
                     <th><label>이체금액(원)</label></th>
                     <th><label>한글금액표시(원)</label></th>
-                    <th><label>받는분</label></th>
+                    <th><label>등록된 예금주</label></th>
+                    <th><label>조회된 예금주</label></th>
                     <th><label>받는분 통장표시</label></th>
                 </tr>
                 </thead>
@@ -119,32 +137,36 @@
                 </tbody>
             </table>
 
-            <div class="result-content">
-                <div>
-                    총 등록건수(건) <br>
-                    <span id="total-registrations"></span>(건)
+            <div id="result-content-div" style="display: none">
+                <div class="result-content">
+                    <div>
+                        총 등록건수(건) <br>
+                        <span id="total-registrations"></span>(건)
+                    </div>
+                    <div>
+                        받는분 정상(건) <br>
+                        <span id="valid-recipients">300</span>(건)
+                    </div>
+                    <div>
+                        받는분 불일치(건) <br>
+                        <span id="mismatch-recipients">1</span>(건)
+                    </div>
+                    <div>
+                        받는분 오류(건) <br>
+                        <span id="error-recipients">1</span>(건)
+                    </div>
                 </div>
-                <div>
-                    받는분 정상(건) <br>
-                    <span id="valid-recipients">300</span>(건)
-                </div>
-                <div>
-                    받는분 불일치(건) <br>
-                    <span id="mismatch-recipients">1</span>(건)
-                </div>
-                <div>
-                    받는분 오류(건) <br>
-                    <span id="error-recipients">1</span>(건)
-                </div>
+                <ul class="warning-writer">
+                    <li>입력하신 받는분 정보가 조회 결과와 일치하는지 꼭 확인하세요.</li>
+                    <li>받는분 조회 결과에 ‘오류’ 건이 있는 경우, 잘못 입력한 내용이 없는지 다시 한번 계좌정보를 확인해 주세요.</li>
+                </ul>
             </div>
-            <ul class="warning-writer">
-                <li>입력하신 받는분 정보가 조회 결과와 일치하는지 꼭 확인하세요.</li>
-                <li>받는분 조회 결과에 ‘오류’ 건이 있는 경우, 잘못 입력한 내용이 없는지 다시 한번 계좌정보를 확인해 주세요.</li>
-            </ul>
+
         </section>
         <section class="submit-btns">
-            <input class="basic-btn" type="button" value="초기화" style="background-color: white; color: black; border: 1px solid #D5D5D5">
-            <input class="basic-btn" type="button" value="이체실행">
+            <input class="basic-btn" type="button" value="예금주 확인">
+            <input class="basic-btn" type="button" value="초기화" style="background-color: white; color: black; border: 1px solid #D5D5D5; display: none">
+            <input class="basic-btn" type="button" value="이체실행" style="display: none">
         </section>
     </container>
 </div>
