@@ -32,7 +32,7 @@
 
     <div>
         <h3>계좌 정보</h3>
-        <hr>
+
     </div>
 
     <table class="common-table">
@@ -66,7 +66,7 @@
 
     <div>
         <h3>금액</h3>
-        <hr>
+
     </div>
 
     <table class="common-table">

@@ -24,7 +24,7 @@
 
     <div>
         <h3 class="mt-3">거래내역조회</h3>
-        <hr>
+
     </div>
     <table class="common-table">
         <tbody>
@@ -41,7 +41,7 @@
 
     <div>
         <h3 class="mt-3">상세조건입력</h3>
-        <hr>
+
     </div>
     <table class="common-table">
         <tr>

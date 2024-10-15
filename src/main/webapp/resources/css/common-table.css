@@ -12,6 +12,10 @@
     border-collapse: collapse;
 }
 
+.common-table thead {
+    border: 1px solid var(--little-dark-gray);
+}
+
 .common-table tbody {
     border: 1px solid var(--little-dark-gray);
 }

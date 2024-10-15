@@ -20,7 +20,6 @@
             </div>
             <div class="modal-body">
                 <h5>계좌정보 입력</h5>
-                <hr>
                 <div id="search-modal-input-box">
                     <label style="margin-right: 10px">계좌번호</label>
                     <input id="modal-input-account" type="text">
