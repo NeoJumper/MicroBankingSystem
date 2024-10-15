@@ -15,6 +15,7 @@ $(document).ready(function () {
     loadMonthlyTransactionVolumeChart();
     // 행원 거래량 비교 차트
     loadEmployeeTransactionByBranch(1); // 예시로 branchId 1로 호출
+    // 행원별 거래유형 차트
     loadEmployeeTransactionTypesChart(1);
 
     const today = new Date('2024-02-01');
@@ -27,10 +28,13 @@ $(document).ready(function () {
         console.log("활성화된 탭:", activeTab); // 탭 확인을 위해 로그 출력
 
         if (activeTab === 'daily-tab') {
-            if (dailyTransactionVolumeChartInstance) {
+            if (dailyTransactionVolumeChartInstance ) {
                 dailyTransactionVolumeChartInstance.destroy();
+            } else if(dailyTransactionChartInstance){
+                dailyTransactionChartInstance.destroy();
             }
             loadDailyTransactionVolumeChart();
+            loadTransactionData(formattedToday);
         } else if (activeTab === 'weekly-tab') {
             if (weeklyTransactionVolumeChartInstance) {
                 weeklyTransactionVolumeChartInstance.destroy();
@@ -176,7 +180,7 @@ function updateTransactionTable(data) {
         const count = transactionData ? transactionData.transactionCount : 0;
 
         // 해당하는 테이블의 행을 찾아서 값을 업데이트
-        $(`#dailyTransactionTable th:contains(${type})`).next('td').text(count);
+        $(`#daily-transaction-table th:contains(${type})`).next('td').text(count);
     });
 }
 
@@ -466,7 +470,7 @@ function getWeekNumber(date) {
 // 색상 할당 함수
 function getColor(index) {
     const colors = [
-        { background: '#D5000066', border: '#c10000' },
+        { background: '#EA0B0B66', border: '#c10000' },
         { background: '#ffce9a', border: '#ff9020' },
         { background: '#FFC10766', border: '#ffc637' },
         { background: '#8BC34A66', border: '#77c63e' },

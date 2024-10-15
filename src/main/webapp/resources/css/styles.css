@@ -34,7 +34,7 @@
 body {
   font-family: 'Pretendard-Regular', sans-serif;
   font-size: 1.2rem;
-  background: #FBFBFB;
+  background: var(--body-background);
 }
 
 .modal {

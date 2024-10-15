@@ -22,32 +22,35 @@
         <h5>&nbsp지점 운영</h5>
     </div>
 
-    <input type="date" style="border-radius: 5px; color: var(--dark-gray)">
+    <div style="display: flex; align-items: center">
+        <input type="date" style="border-radius: 5px; color: var(--dark-gray); width: 300px; margin-left: 10px">
+        <button class="basic-btn">
+            조회
+        </button>
+    </div>
 
-    <div class="row" id="cash-transfer-amount">
-        <div class="rounded-boxes">
-            <div class="rounded-box yellow">
-                <span>내용 1</span>
-            </div>
-            <div class="rounded-box red">
-                <span>내용 2</span>
-            </div>
-            <div class="rounded-box blue">
-                <span>내용 3</span>
-            </div>
-            <div class="rounded-box green">
-                <span>내용 4</span>
-            </div>
+    <div id="cash-transfer-amount" class="rounded-boxes">
+        <div class="rounded-box red">
+            현금 입금: <span>54,368,000,000</span>원
+        </div>
+        <div class="rounded-box yellow">
+            현금 출금: <span>345,609,000</span>원
+        </div>
+        <div class="rounded-box green">
+            현금 잔액: <span>913,133,000,000</span>원
+        </div>
+        <div class="rounded-box blue">
+            현재 거래량: <span>3,131,132</span> 건
         </div>
     </div>
 
 
     <div class="row">
-        <div class="col-6">
+        <div class="col-5 chart-container">
             <h3 class="tab-title">직원별 거래량 비교</h3>
             <canvas id="employeeTransactionChart"></canvas>
         </div>
-        <div class="col-6">
+        <div class="col-5 chart-container">
             <h3 class="tab-title">사원별 거래 유형 및 거래량</h3>
             <canvas id="employeeTransactionTypeChart"></canvas>
         </div>
@@ -77,47 +80,50 @@
         <!-- 일별 거래량 탭 -->
         <div class="tab-pane show active" id="daily" role="tabpanel" aria-labelledby="daily-tab">
             <div class="row">
-                <div class="col-6">
+                <div class="col-5 chart-container">
                     <h3 class="tab-title">일별 거래량</h3>
                     <canvas id="dailyTransactionVolumeChart"></canvas>
                 </div>
-                <div class="col-3">
-                    <h3 class="tab-title">일별 거래 유형</h3>
-                    <canvas id="dailyTransactionChart"></canvas>
+                <div class="col-5 chart-container chart-table-combo">
+                    <div>
+                        <h3 class="tab-title">일별 거래 유형</h3>
+                        <canvas id="dailyTransactionChart"></canvas>
+                    </div>
+                    <div>
+                        <table id="daily-transaction-table" class="common-table">
+                            <tbody>
+                            <tr>
+                                <th>입금</th>
+                                <td>test</td>
+                            </tr>
+                            <tr>
+                                <th>출금</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>송금</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>가입</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>해지</th>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col-3">
-                    <table id="dailyTransactionTable" class="common-table">
-                        <tbody>
-                        <tr>
-                            <th>입금</th>
-                            <td>test</td>
-                        </tr>
-                        <tr>
-                            <th>출금</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>송금</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>가입</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>해지</th>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+
             </div>
         </div>
 
         <!-- 주간별 거래량 탭 -->
         <div class="tab-pane" id="weekly" role="tabpanel" aria-labelledby="weekly-tab">
             <div class="row">
-                <div class="col-6">
+                <div class="col-5 chart-container">
                     <h3 class="tab-title">주간별 거래량</h3>
                     <canvas id="weeklyTransactionVolumeChart"></canvas>
                 </div>
@@ -127,7 +133,7 @@
         <!-- 월별 거래량 탭 -->
         <div class="tab-pane" id="monthly" role="tabpanel" aria-labelledby="monthly-tab">
             <div class="row">
-                <div class="col-6">
+                <div class="col-5 chart-container">
                     <h3 class="tab-title">월별 거래량</h3>
                     <canvas id="monthlyTransactionVolumeChart" width="400" height="200"></canvas>
                 </div>
