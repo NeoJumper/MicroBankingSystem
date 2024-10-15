@@ -28,13 +28,30 @@
     </div>
     <div>
         <h3>대량이체</h3>
-        <hr>
+
     </div>
-    <div id="register-result-toggle-btn">
-        <%--  등록 버튼 클릭시 registration-page 열림 --%>
-        <button class="off-toggle-btn"><a style="text-decoration-line: none;" href="/page/employee/bulk-transfer">등록</a></button>
-        <%--  결과확인 버튼 클릭시 result-confirmation-page 열림 --%>
-        <button class="active-toggle-btn">결과확인</button>
+    <div class="progress-container">
+        <div class="step">
+            <div class="circle active">
+                <div class="inner-circle"><i class="bi bi-check"></i></div>
+
+            </div>
+            <p>1. 이체정보 입력</p>
+        </div>
+        <div class="line"></div>
+        <div class="step">
+            <div class="circle active">
+                <div class="inner-circle"><i class="bi bi-check"></i></div>
+            </div>
+            <p>2. 이체정보 확인</p>
+        </div>
+        <div class="line"></div>
+        <div class="step active">
+            <div class="circle active">
+                <div class="inner-circle active"></div>
+            </div>
+            <p>3. 이체결과 확인</p>
+        </div>
     </div>
     <%--  result-confirmation-page  --%>
     <container id="result-confirmation-page">

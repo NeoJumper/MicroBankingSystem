@@ -409,7 +409,15 @@ function renderOfBulkTransferSearchResults(transferList){
             .append($('<td>').text(transfer.failureCnt)) // 실패건수
             .append($('<td>').text(transfer.successCnt)) // 성공건수
             .append($('<td>').text(transfer.totalCnt)) // 총건수
-            .append($('<td>').text(transfer.status)); // 상태
+            .append($('<td>').text(transfer.status)) // 상태
+            .append($('<td>').append($('<a>')
+                .text('상세보기')
+                .attr('href', '/page/employee/bulk-transfer-result?bulkTransferId=' + transfer.id) // 여기에 실제 링크를 넣으세요
+                .addClass('basic-btn')
+                .css({'text-decoration': 'none'})// Bootstrap 클래스 추가
+            )); // 상태
+
+
 
         bulkTransferResultTbody.append(row); // 생성된 행을 tbody에 추가
     });

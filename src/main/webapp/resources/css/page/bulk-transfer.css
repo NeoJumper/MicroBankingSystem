@@ -173,7 +173,7 @@ p {
 
 /* 프로그레스 바 컨테이너 */
 .progress-container {
-    width: 600px;
+    width: 650px;
     min-height: 100px;
     margin: 0 auto;
     position: relative;
@@ -193,8 +193,8 @@ p {
 
 /* 원형 모양 */
 .circle {
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
     border-radius: 60px;
     border: 3px solid #9CA3AF;
     background-color: #F4F7FF;
@@ -206,14 +206,23 @@ p {
 
 /* 활성화된 원형 */
 .circle.active {
-    border-color: #4318ff;
+    border-color: var(--basic-hover-dark-color);
 }
 
 .inner-circle{
-    width: auto;
-    height: auto;
+
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.inner-circle.active{
+    width: 20px;
+    height: 20px;
+    border-radius: 60px;
+    background-color: var(--basic-hover-dark-color);
 
 }
+
 .inner-circle.active{
 }
 
@@ -235,7 +244,7 @@ p {
     width: 150px;
     height: 3px;
     background-color: #d0d5dd;
-    margin-top: 48px;
+    margin-top: 35px;
     float: left;
 }
 

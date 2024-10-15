@@ -31,23 +31,23 @@
     <div class="progress-container">
         <div class="step active">
             <div class="circle active">
-                <div class="inner-circle active">1</div>
+                <div class="inner-circle active"></div>
             </div>
-            <p>이체정보 입력</p>
+            <p>1. 이체정보 입력</p>
         </div>
         <div class="line"></div>
         <div class="step">
             <div class="circle">
-                <div class="inner-circle">2</div>
+                <div class="inner-circle"></div>
             </div>
-            <p>이체정보 확인</p>
+            <p>2. 이체정보 확인</p>
         </div>
         <div class="line"></div>
         <div class="step">
             <div class="circle">
-                <div class="inner-circle">3</div>
+                <div class="inner-circle"></div>
             </div>
-            <p>이체결과 확인</p>
+            <p>3. 이체결과 확인</p>
         </div>
     </div>
 

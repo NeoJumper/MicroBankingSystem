@@ -305,6 +305,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 $('input[value="초기화"]').show();
                 $('input[value="이체실행"]').show();
 
+                $('.progress-container .step:nth-of-type(1)').removeClass('active');
+                $('.progress-container .step:nth-of-type(1) .inner-circle').append('<i class="bi bi-check"></i>');
+                $('.progress-container .step:nth-of-type(1) .inner-circle').removeClass('active');
+
+
+                $('.progress-container .step:nth-of-type(3)').addClass('active');
+                $('.progress-container .step:nth-of-type(3) .circle').addClass('active');
+                $('.progress-container .step:nth-of-type(3) .inner-circle').addClass('active');
             },
             error: function(data){
                 console.log("실패");
@@ -326,5 +334,9 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#result-content-div').hide();
         $('input[value="초기화"]').hide();
         $('input[value="이체실행"]').hide();
+
+        $('.progress-container .step:nth-of-type(3)').removeClass('active');
+        $('.progress-container .step:nth-of-type(3) .circle').removeClass('active');
+        $('.progress-container .step:nth-of-type(3) .inner-circle').removeClass('active');
     }
 })
