@@ -46,4 +46,9 @@ public class AccountController {
 
         return "account/account-close-cancel";
     }
+
+    @GetMapping("/page/employee/savings-account-close")
+    public String getSavingsAccountClosePage() {
+        return "account/savings-account-close";
+    }
 }

@@ -24,11 +24,6 @@ headerMap.set("header-business-day-close-management", {
     sidebar: ["business-day-close"],
     sub: {}
 });
-headerMap.set("header-branch-management", {
-    sidebar: ["branch-management", "branch"],
-    sub: {}
-});
-
 headerMap.set("header-customer-management", {
     sidebar: [],
     sub: {}
@@ -69,6 +64,7 @@ function handleHeaderAndSidebar(roles) {
     // 사이드바 내용을 처리하고 완료 후 추가 작업 수행
     handleSidebarContent(selectedHeaderMenu , selectedSidebarMenu, roles)
         .then(() => {
+            console.log(selectedHeaderMenu);
             // selectedHeaderMenu에 클래스 추가
             $('#' + selectedHeaderMenu  + ' > a').addClass('active-header');
 
@@ -107,12 +103,9 @@ function  handleSidebarContent(selectedHeaderMenu, selectedSidebarMenu, roles){
             //console.log('영업일 관리 선택됨');
             createBusinessDayManagementSidebar(selectedSidebarMenu);
             break;
-        case 'header-branch-management':
-            console.log('지점 관리 선택됨');
-            createBranchManagementSidebar(selectedSidebarMenu);
-            break;
         case 'header-dashboard':
-            createDashboardSidebar(selectedSidebarMenu);
+            createDashboardSidebar(selectedSidebarMenu, roles);
+            break;
         default:
             //console.log('알 수 없는 항목 선택됨');
             break;
@@ -247,16 +240,31 @@ function createBranchManagementSidebar() {
 }
 
 
-function createDashboardSidebar() {
-    var menuData = [
-        {
-            title: '지점 관리',
-            icon: 'bi bi-house',
-            submenu: [
-                { name: '지점 운영', url: '/page/manager/dashboard' },
-            ]
-        }
-    ];
+function createDashboardSidebar(selectedSidebarMenu, roles) {
+    var menuData;
+    console.log(roles);
+    if(roles === "행원")
+    {
+        menuData = [
+            {
+                title: '실적 관리',
+                icon: 'bi bi-house',
+                submenu: [
+                    { name: '실적 관리', url: '/page/employee/dashboard' },
+                ]
+            }
+        ];
+    }else{
+        menuData = [
+            {
+                title: '지점 관리',
+                icon: 'bi bi-house',
+                submenu: [
+                    { name: '지점 운영', url: '/page/manager/dashboard' },
+                ]
+            }
+        ];
+    }
 
     createSidebar(menuData);
 }

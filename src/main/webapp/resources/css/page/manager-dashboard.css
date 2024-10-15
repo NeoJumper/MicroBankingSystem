@@ -2,59 +2,94 @@
 
 /* Canvas 크기 제한 */
 canvas {
-    min-width: 400px;
+    min-width: 300px;
     min-height: 200px;
 }
 
 .tab-title {
     margin: 10px;
-    color: var(--dark-gray);
+    color: var(--deep-dark-gray);
+}
+
+.nav-tabs .nav-link.active {
+    background: linear-gradient(to bottom, white, var(--body-background));
 }
 
 #transactionTab {
-    margin: 10px;
+    margin: 30px 10px 30px 10px;
+}
+
+#daily-transaction-table{
+    margin-top: 65px;
+}
+
+
+.chart-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* 얕은 박스 쉐도우 */
+    margin: 20px;
+}
+
+.chart-table-combo{
+    display: flex;
+    padding: 0px 25px !important;
+
+}
+
+#daily-transaction-table {
+    min-width: 200px;
 }
 
 /* 라운드된 네모들의 컨테이너 */
 .rounded-boxes {
     display: flex;
     justify-content: space-between;
-    margin: 20px 0;
+    margin: 20px 0px;
+    width: 80%;
 }
 
 /* 각 네모의 기본 스타일 */
 .rounded-box {
     flex: 1;
     margin: 0 10px;
-    padding: 20px;
-    border-radius: 5px;
+    padding: 5px;
+    border-radius: 10px;
     text-align: center;
 }
 
 /* 내용물 스타일 */
 .rounded-box span {
     font-size: 18px;
+    margin: 0px 5px;
     font-weight: bold;
 }
 
 /* 노란색 박스 */
 .rounded-box.yellow {
-    background-color: var(--light-yellow);
-    border:1px solid var(--point-yellow);
+    background: linear-gradient(#FFC20993, #ffc637);
+    border:1px solid #cf9400;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 
 }
 
 /* 빨간색 박스 */
 .rounded-box.red {
-    background: linear-gradient(to bottom, var(--point-red), #AA0000);
+    background: linear-gradient(#FD5A5AA0, #EC2626B5);
+    border:1px solid #a80000;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* 파란색 박스 */
 .rounded-box.blue {
-    background: linear-gradient(to bottom, var(--basic-color), #0061AA);
+    background: linear-gradient(#298EE1BA, #1E90FF);
+    border:1px solid #0568c8;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* 초록색 박스 */
 .rounded-box.green {
-    background: linear-gradient(to bottom, var(--point-green), #2E9250);
+    background: linear-gradient(#8AD62ABB, #77c63e);
+    border:1px solid #419C00FF;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
