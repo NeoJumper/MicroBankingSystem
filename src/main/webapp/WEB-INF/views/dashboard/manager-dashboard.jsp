@@ -22,6 +22,8 @@
         <h5>&nbsp지점 운영</h5>
     </div>
 
+    <input type="date" style="border-radius: 5px; color: var(--dark-gray)">
+
     <div class="row" id="cash-transfer-amount">
         <div class="rounded-boxes">
             <div class="rounded-box yellow">
@@ -38,6 +40,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="row">
         <div class="col-6">

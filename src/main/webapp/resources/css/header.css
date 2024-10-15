@@ -18,6 +18,7 @@
   z-index: 10;
   min-height: 108.594px;
   background: var(--light-gray);
+
 }
 /*------- informationHeader : 정보 전달 헤더 css -----------*/
 #informationHeader {
@@ -26,6 +27,7 @@
   flex-grow: 1;
   padding: 0px 10px;
   background: white;
+  opacity: 0.7;
 }
 /*------- 회사 로고 / 이미지 css -----------*/
 #imgContainer {
@@ -88,6 +90,7 @@
   background: linear-gradient(var(--dark-gray), var(--deep-dark-gray));
   color: white;
   padding : 2px 5px;
+  border-radius: 5px;
 }
 #logoutButton > a{
   text-decoration: none; /* 밑줄 제거 */
