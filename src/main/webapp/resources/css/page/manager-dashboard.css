@@ -2,7 +2,7 @@
 
 /* Canvas 크기 제한 */
 canvas {
-    min-width: 400px;
+    min-width: 300px;
     min-height: 200px;
 }
 
@@ -12,7 +12,11 @@ canvas {
 }
 
 #transactionTab {
-    margin: 10px;
+    margin: 30px 10px 10px 10px;
+}
+
+#dailyTransactionTable{
+    margin-top: 65px;
 }
 
 /* 라운드된 네모들의 컨테이너 */

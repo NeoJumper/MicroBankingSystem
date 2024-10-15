@@ -33,7 +33,7 @@
 body {
   font-family: 'Pretendard-Regular', sans-serif;
   font-size: 1.2rem;
-  background: var(--body-background);
+  background: #FBFBFB;
 }
 
 .modal {

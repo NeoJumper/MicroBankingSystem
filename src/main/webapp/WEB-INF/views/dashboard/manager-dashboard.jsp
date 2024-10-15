@@ -7,6 +7,7 @@
     <meta charset="UTF-8"/>
     <title>지점 관리 > 지점 운영</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/page/manager-dashboard.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -40,12 +41,12 @@
 
     <div class="row">
         <div class="col-6">
-            <h3>직원별 거래량 비교</h3>
-            <canvas id="employeeTransactionChart" width="400" height="200"></canvas>
+            <h3 class="tab-title">직원별 거래량 비교</h3>
+            <canvas id="employeeTransactionChart"></canvas>
         </div>
         <div class="col-6">
             <h3 class="tab-title">사원별 거래 유형 및 거래량</h3>
-            <canvas id="employeeTransactionTypeChart" width="800" height="400"></canvas>
+            <canvas id="employeeTransactionTypeChart"></canvas>
         </div>
     </div>
 
@@ -75,11 +76,37 @@
             <div class="row">
                 <div class="col-6">
                     <h3 class="tab-title">일별 거래량</h3>
-                    <canvas id="dailyTransactionVolumeChart" width="400" height="200"></canvas>
+                    <canvas id="dailyTransactionVolumeChart"></canvas>
                 </div>
-                <div class="col-6">
+                <div class="col-3">
                     <h3 class="tab-title">일별 거래 유형</h3>
-                    <canvas id="dailyTransactionChart" width="400" height="200"></canvas>
+                    <canvas id="dailyTransactionChart"></canvas>
+                </div>
+                <div class="col-3">
+                    <table id="dailyTransactionTable" class="common-table">
+                        <tbody>
+                        <tr>
+                            <th>입금</th>
+                            <td>test</td>
+                        </tr>
+                        <tr>
+                            <th>출금</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>송금</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>가입</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>해지</th>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -89,7 +116,7 @@
             <div class="row">
                 <div class="col-6">
                     <h3 class="tab-title">주간별 거래량</h3>
-                    <canvas id="weeklyTransactionVolumeChart" width="400" height="200"></canvas>
+                    <canvas id="weeklyTransactionVolumeChart"></canvas>
                 </div>
             </div>
         </div>
