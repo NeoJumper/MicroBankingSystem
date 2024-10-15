@@ -22,7 +22,7 @@
     <div>
         <div>
             <h3>계좌 해지 신청</h3>
-            <hr>
+
             <table id="search-content" class="common-table">
                 <tbody>
                 <tr>
@@ -41,7 +41,7 @@
             </table>
 
             <h3>계좌 정보</h3>
-            <hr>
+
             <table class="common-table">
                 <tbody>
                 <tr>
@@ -59,7 +59,7 @@
                 </tbody>
             </table>
             <h4>예금 예상 이자 및 총 금액</h4>
-            <hr>
+
             <table id="table-content" class="common-table">
                 <tbody>
                 <thead>
@@ -74,7 +74,7 @@
                 </tbody>
             </table>
             <h4>계좌 비밀번호</h4>
-            <hr>
+
             <table class="common-table">
                 <tbody>
                 <tr>

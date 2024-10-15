@@ -24,7 +24,7 @@
 
         <div>
             <h3>계좌 해지 취소 신청</h3>
-            <hr>
+;
             <table id="search-content" class="common-table">
                 <tbody>
                 <tr>
@@ -42,7 +42,7 @@
                 </tr>
             </table>
             <h4>계좌 정보</h4>
-            <hr>
+
 
             <table class="common-table">
                 <tbody>
@@ -66,7 +66,6 @@
             </table>
 
             <h4>계좌 비밀번호</h4>
-            <hr>
 
             <table class="common-table">
                 <tbody>
