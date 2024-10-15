@@ -19,7 +19,7 @@
             <img  src="/resources/assets/neobank-logo.png" alt="Logo" id="header-logo-img"  />
         </div>
         <div>
-            <h2>네오 뱅크</h2>
+            <h2>네오 은행</h2>
         </div>
     </div>
 </div>

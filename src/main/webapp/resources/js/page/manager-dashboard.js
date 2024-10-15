@@ -445,12 +445,12 @@ function getWeekNumber(date) {
 // 색상 할당 함수
 function getColor(index) {
     const colors = [
-        { background: 'rgba(255, 99, 132, 0.2)', border: 'rgba(255, 99, 132, 1)' },
-        { background: 'rgba(54, 162, 235, 0.2)', border: 'rgba(54, 162, 235, 1)' },
-        { background: 'rgba(255, 206, 86, 0.2)', border: 'rgba(255, 206, 86, 1)' },
-        { background: 'rgba(75, 192, 192, 0.2)', border: 'rgba(75, 192, 192, 1)' },
-        { background: 'rgba(153, 102, 255, 0.2)', border: 'rgba(153, 102, 255, 1)' },
-        { background: 'rgba(255, 159, 64, 0.2)', border: 'rgba(255, 159, 64, 1)' }
+        { background: '#FF638433', border: '#FF6384FF' },
+        { background: '#36A2EB33', border: '#36A2EBFF' },
+        { background: '#FFCE5633', border: '#FFCE56FF' },
+        { background: '#4BC0C033', border: '#4BC0C0FF' },
+        { background: '#9966FF33', border: '#9966FFFF' },
+        { background: '#FF9F4033', border: '#FF9F40FF' }
         // 필요에 따라 색상을 추가하세요.
     ];
     return colors[index % colors.length];
