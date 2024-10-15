@@ -24,7 +24,7 @@
 
         <div>
             <h3>계좌 해지 취소 신청</h3>
-;
+
             <table id="search-content" class="common-table">
                 <tbody>
                 <tr>

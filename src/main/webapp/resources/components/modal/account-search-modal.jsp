@@ -24,14 +24,12 @@
                     <label style="margin-right: 10px">계좌번호</label>
                     <input id="modal-input-account" type="text">
                 </div>
-                <hr>
                 <div id="search-modal-center-box">
                     <button id="modal-check-account-btn" class="basic-btn" type="button">계좌 검색</button>
                     <button id="modal-check-account-reset-btn" class="reset-btn" type="button">초기화</button>
                 </div>
 
                 <h5>계좌정보</h5>
-                <hr>
                 <table id="search-modal-common-table" class="common-table">
                     <thead>
                         <th><label>선택</label></th>

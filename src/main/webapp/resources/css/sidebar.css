@@ -13,15 +13,17 @@
   left: 0;
   top: 0;
   padding-top: 100px;
-  width: 250px;
+  width: 220px;
   height: 100%;
   transition: width 0.3s ease-in-out;
   z-index: 5;
+  background: white;
+  border-right: 1px solid var(--little-dark-gray);
 }
 
 /* 헤더 메뉴에서 활성화된 상태를 위한 클래스 */
 .active-header {
-  font-weight: bold;
+
   background: linear-gradient(#003c95, #357ac1); /* 그라데이션 방향 반전 */
   box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1); /* 내부 그림자 */
 }
@@ -65,7 +67,8 @@
 }
 
 #menubar {
- margin: 50px 20px 20px 20px;
+ margin: 50px 0px 0px 0px;
+  height: inherit;
 }
 
 .list-unstyled {
@@ -81,6 +84,12 @@
 
 .list-unstyled .active > a {
   color: var(--basic-color);
+}
+
+.submenu li {
+  margin: 10px 0px;
+  padding-left: 10px;
+
 }
 
 .submenu li a {
@@ -101,14 +110,8 @@
 }
 
 .menu{
-  margin: 10px;
+  margin: 10px 0px 10px 20px;
   padding-bottom: 10px;
-
-}
-
-.menu li {
-  margin: 10px;
-  padding-left: 10px;
 
 }
 

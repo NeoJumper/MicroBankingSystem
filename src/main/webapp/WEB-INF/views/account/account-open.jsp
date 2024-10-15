@@ -21,13 +21,12 @@
 
 <div id="main-area">
     <div>
-        <h5>예금 관리 > </h5>
-        <h5>&nbsp 계좌 개설 </h5>
+        <h5>예금 관리 ></h5>
+        <h5>&nbsp계좌 개설 </h5>
     </div>
 
     <div>
         <h3>계좌 개설 정보 입력</h3>
-        <hr>
     </div>
     <table class="common-table">
         <tr>
