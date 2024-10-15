@@ -13,6 +13,11 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    @GetMapping("/page/employee/savings-account-open")
+    public String getSavingsAccountCreatePage(){
+        return "account/savings-account-open";
+    }
+
     @GetMapping("/page/employee/account-open")
     public String getAccountCreatePage(Model model){
 

@@ -13,4 +13,6 @@ public class AuthenticationUtils {
     public static Long getLoginMemberId(){
         return Long.valueOf(SecurityContextHolder.getContext().getAuthentication().getName());
     }
+
+
 }

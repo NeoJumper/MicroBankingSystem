@@ -3,6 +3,7 @@ package com.kcc.banking.domain.account.mapper;
 import com.kcc.banking.domain.account.dto.request.AccountUpdate;
 import com.kcc.banking.domain.account.dto.request.SearchAccountOfModal;
 import com.kcc.banking.domain.account.dto.request.AccountCreate;
+import com.kcc.banking.domain.account.dto.request.SearchProductOfModal;
 import com.kcc.banking.domain.account.dto.response.*;
 import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import org.apache.ibatis.annotations.Mapper;
@@ -41,5 +42,12 @@ public interface AccountMapper {
 
     // 계좌 잔액 업데이트
     int partialUpdateAccount(AccountUpdate accountUpdate);
+
+
+    // 한 고객의 입출금 계좌 전체 조회
+    List<AccountOfModal> findAllAccountOfOneCustomer(String customerId);
+
+    // 예적금 상품 찾기 모달 조건별 조회
+    List<ProductOfModal> findAccountProductList(SearchProductOfModal searchProductOfModal);
 
 }
