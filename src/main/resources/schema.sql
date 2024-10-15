@@ -10,6 +10,7 @@ drop sequence interest_seq;
 drop sequence product_seq;
 drop sequence customer_seq;
 drop sequence account_seq;
+drop sequence auto_transfer_seq;
 
 -- 테이블 삭제
 DROP TABLE BRANCH_CLOSING CASCADE CONSTRAINTS PURGE;
@@ -22,6 +23,7 @@ DROP TABLE BUSINESS_DAY CASCADE CONSTRAINTS PURGE;
 DROP TABLE INTEREST CASCADE CONSTRAINTS PURGE;
 DROP TABLE CUSTOMER CASCADE CONSTRAINTS PURGE;
 DROP TABLE ACCOUNT CASCADE CONSTRAINTS PURGE;
+DROP TABLE AUTO_TRANSFER CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Employee (
                           id NUMBER NOT NULL,
@@ -76,6 +78,23 @@ CREATE TABLE Customer (
                           modification_date TIMESTAMP NULL,
                           modifier_id NUMBER NULL,
                           version NUMBER NULL
+);
+
+CREATE TABLE Auto_transfer (
+                         id NUMBER NOT NULL,
+                         acc_id  VARCHAR(20) NOT NULL,
+                         target_acc_id  VARCHAR(20) NOT NULL,
+                         amount NUMBER NOT NULL,
+                         auto_transfer_start_date TIMESTAMP NULL,
+                         auto_transfer_date TIMESTAMP NULL,
+                         auto_transfer_end_date TIMESTAMP NULL,
+                         auto_transfer_period NUMBER NULL,
+                         create_date TIMESTAMP NULL,
+                         registration_date TIMESTAMP NULL,
+                         registrant_id NUMBER NULL,
+                         modification_date TIMESTAMP NULL,
+                         modifier_id NUMBER NULL,
+                         version NUMBER NULL
 );
 
 CREATE TABLE Account (
@@ -328,6 +347,24 @@ ALTER TABLE BRANCH
     ADD CONSTRAINT FK_BC_MOD_ID
         FOREIGN KEY (modifier_id) REFERENCES EMPLOYEE(id);
 
+
+-- 자동이체 테이블 생성
+ALTER TABLE Auto_transfer
+    ADD CONSTRAINT FK_AUTO_TRANSFER_ACC_ID
+        FOREIGN KEY (acc_id) REFERENCES Account(id);
+
+ALTER TABLE Auto_transfer
+    ADD CONSTRAINT FK_AUTO_TRANSFER_TARG_ID
+        FOREIGN KEY (target_acc_id) REFERENCES Account(id);
+
+ALTER TABLE Auto_transfer
+    ADD CONSTRAINT FK_AUTO_TRANSFER_MOD_ID
+        FOREIGN KEY (modifier_id) REFERENCES Employee(id);
+
+ALTER TABLE Auto_transfer
+    ADD CONSTRAINT FK_AUTO_TRANSFER_REG_ID
+        FOREIGN KEY (registrant_id) REFERENCES EMPLOYEE(id);
+
 -- 시퀀스 생성
 create sequence branch_cls_seq;
 create sequence emp_cls_seq;
@@ -340,3 +377,4 @@ create sequence interest_seq;
 create sequence product_seq;
 create sequence customer_seq;
 create sequence account_seq;
+create sequence auto_transfer_seq;

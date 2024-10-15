@@ -179,22 +179,40 @@ VALUES (customer_seq.NEXTVAL, 4, '이현정', '010-2345-6789', 'FEMALE', '880305
 /*
     지점번호: 순차적
     id 1~5: 보통예금
+    id 6~10 : 정기적금
  */
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 1, '청년안심보통예금', 2.5, SYSDATE, '12개월', 0.15, 1);
+VALUES (product_seq.NEXTVAL, 1, '청년안심보통예금', 2.5, SYSDATE, '00', 0.15, 1);
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 2, '청년미래보통예금', 2.5, SYSDATE, '12개월', 0.15, 1);
+VALUES (product_seq.NEXTVAL, 2, '청년미래보통예금', 2.5, SYSDATE, '00', 0.15, 1);
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 3, '노후든든보통예금', 2.5, SYSDATE, '12개월', 0.15, 1);
+VALUES (product_seq.NEXTVAL, 3, '노후든든보통예금', 2.5, SYSDATE, '00', 0.15, 1);
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 4, '노후건강보통예금', 2.5, SYSDATE, '12개월', 0.15, 1);
+VALUES (product_seq.NEXTVAL, 4, '노후건강보통예금', 2.5, SYSDATE, '00', 0.15, 1);
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 5, '더편한보통예금', 2.5, SYSDATE, '12개월', 0.15, 1);
+VALUES (product_seq.NEXTVAL, 5, '더편한보통예금', 2.5, SYSDATE, '00', 0.15, 1);
+
+--적금 상품 6 - 10번
+
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
+VALUES (product_seq.NEXTVAL, 1, '6개월만기정기적금', 2.5, SYSDATE, '06', 0.15, 1);
+
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
+VALUES (product_seq.NEXTVAL, 1, '1년만기정기적금', 3, SYSDATE, '12', 0.15, 1);
+
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
+VALUES (product_seq.NEXTVAL, 1, '2년만기정기적금', 3.5, SYSDATE, '24', 0.15, 1);
+
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
+VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.15, 1);
+
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
+VALUES (product_seq.NEXTVAL, 1, '1년만기자유적금', 3.5, TO_TIMESTAMP('2024-02-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), '12', 0.15, 1);
 
 
 ---------- 계좌 생성 ----------
@@ -217,6 +235,26 @@ VALUES ('001-0000005-5678', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlr
 --거래내역 해지 전용
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
 VALUES ('001-0000006-6789', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, SYSDATE, 'OPN', 1);
+
+-- 적금계좌 개설 전용(1번 고객 통일)
+
+-- 이미 가입된 적금 (2024/3월가입)
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000007-0726', 1, 1, 10, 2, TO_TIMESTAMP('2024-03-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- 입출금 보통예금 통장
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000008-7678', 1, 1, 5, 2, TO_TIMESTAMP('2024-04-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 3000000, TO_TIMESTAMP('2024-04-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000009-8751', 1, 1, 1, 2, TO_TIMESTAMP('2024-05-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.5, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 5000000, TO_TIMESTAMP('2024-05-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000010-9345', 1, 1, 2, 2, TO_TIMESTAMP('2024-06-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.7, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 2000000, TO_TIMESTAMP('2024-06-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, open_date, status, version)
+VALUES ('001-0000011-1056', 1, 1, 3, 2, TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
 
 -- 계좌 가입 내역
 
