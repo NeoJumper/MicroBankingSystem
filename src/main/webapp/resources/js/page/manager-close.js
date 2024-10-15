@@ -109,11 +109,15 @@ function calculateVaultCash(){
     // 전일자 현금 잔액
     const prevCashBalance = parseFloat($('#manager-close-prev-cash-balance').val()) || 0;
     // 현금 입금액
-    const cashDeposit = parseFloat($('#manager-close-cash-deposit').val()) || 0;
+    const cashDeposit = parseFloat($('#manager-close-total-deposit').val()) || 0;
     // 현금 출금액
-    const cashWithdrawal = parseFloat($('#manager-close-cash-withdrawal').val()) || 0;
+    const cashWithdrawal = parseFloat($('#manager-close-total-withdrawal').val()) || 0;
 
     // 금일 마감 금액 계산
+    console.log(prevCashBalance);
+    console.log(cashDeposit);
+    console.log(cashWithdrawal);
+    console.log(prevCashBalance - (cashDeposit + cashWithdrawal));
     return prevCashBalance - (cashDeposit + cashWithdrawal);
 }
 

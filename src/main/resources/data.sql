@@ -396,7 +396,7 @@ INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, pr
 VALUES('2024-08-02 00:00:00', 2, 1, 'OPEN',  11110000, 0, 590000, null,trade_num_seq.NEXTVAL, 1);
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number, version)
-VALUES('2024-08-02 00:00:00', 3, 1, 'OPEN', 10000000, 0, 0, 10000000,trade_num_seq.CURRVAL, 1);
+VALUES('2024-08-02 00:00:00', 3, 1, 'OPEN', 10000000, 0, 0, null,trade_num_seq.CURRVAL, 1);
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number,version)
 VALUES('2024-08-02 00:00:00', 4, 1, 'CLOSED',  10000000, 0, 0, 10000000,trade_num_seq.CURRVAL,1);

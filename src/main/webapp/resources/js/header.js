@@ -56,7 +56,7 @@ function createHeader(roles){
           <li id="header-account-management"><a href="/page/employee/account-open">계좌 관리</a></li>
           <li id="header-customer-management"><a href="/page/common/account-open">고객 관리</a></li>
           <li id="header-business-day-close-management"><a href="/page/employee/business-day-close">마감 관리</a></li>
-          <li id="header-dashboard-management"><a href="/page/employee/dashboard">실적 관리 </a></li>
+          <li id="header-dashboard"><a href="/page/employee/dashboard">실적 관리 </a></li>
         </ul>
       `);
     }
@@ -68,7 +68,7 @@ function createHeader(roles){
                 <li id="header-customer-management"><a href="/page/common/account-open">고객 관리</a></li>
                 <li id="header-business-day-management"><a href="/page/manager/business-day-management">영업일 관리</a></li>
                 <li id="header-business-day-close-management"><a href="/page/manager/business-day-close">마감 관리</a></li>
-                <li id="header-branch-management"><a href="/page/manager/dashboard">지점 관리</a></li>
+                <li id="header-dashboard"><a href="/page/manager/dashboard">지점 관리</a></li>
             </ul>
           `);
     }

@@ -61,7 +61,7 @@
                 <div class="mt-4 mb-4 d-flex flex-column justify-content-center align-items-center">
                     <h3 >영업일을 되돌리시겠습까?</h3>
                     <h5 style="color: #cc0000">* 현재의  데이터는 유지되지않습니다. </h5>
-                    <h5 style="color: #6C757D"> 이전 영업일 - 2024-08-01 </h5>
+                    <h5 style="color: #6C757D"> 이전 영업일 - 2024-08-02 </h5>
                 </div>
                 <hr>
 
