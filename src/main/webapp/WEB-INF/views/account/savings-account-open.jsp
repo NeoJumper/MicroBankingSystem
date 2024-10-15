@@ -38,13 +38,13 @@
             <td style="display: flex; align-items: center;">
                 <input type="text" id="customer-id-input" readonly>
                 <button data-bs-toggle="modal" data-bs-target="#search-customer-modal" type="button"
-                        id="customer-id-search-btn" class="btn btn-primary search-button">
+                        id="customer-id-search-btn" class="btn basic-btn">
                     <span class="bi bi-search search-icon-margin"></span> 찾기
                 </button>
             </td>
             <th>고객인증</th>
             <td>
-                <button>고객인증</button>
+                <button class="basic-btn">고객인증</button>
             </td>
 
         </tr>
@@ -71,7 +71,7 @@
             <td>
                 <input type="text" id="product-id-input" disabled>
                 <button data-bs-toggle="modal" data-bs-target="#search-modal-product" type="button"
-                        id="search-modal-product-btn" class="btn btn-primary search-button">
+                        id="search-modal-product-btn" class="btn basic-btn">
                     <span class="bi bi-search search-icon-margin"></span> 계좌조회
                 </button>
             </td>
@@ -116,7 +116,15 @@
 
     <table class="common-table">
         <tr>
-            <th>적금금액</th>
+            <th>우대이율</th>
+            <td><input type="text" id="preferred-interest-input"> %</td>
+        </tr>
+        <tr>
+            <th>총 이자율</th>
+            <td><input type="text" id="total-interest-input" disabled> %</td>
+        </tr>
+        <tr>
+            <th>원금</th>
             <td>
 
                 <input type="text" id="auto-transfer-amount-input">
@@ -133,17 +141,12 @@
 
             </td>
         </tr>
-        <tr>
-            <th>우대이율</th>
-            <td><input type="text" id="preferred-interest-input"> %</td>
-        </tr>
-        <tr>
-            <th>총 이자율</th>
-            <td><input type="text" id="total-interest-input" disabled> %</td>
-        </tr>
+
         <tr>
             <th>만기예상약정이자</th>
-            <td><input type="text" id="expected-maturity-interest-input" disabled></td>
+            <td><input type="text" id="expected-maturity-interest-input" disabled>
+                [ 단리식 / 월단위 ] 원금x연이율x월수/12
+            </td>
 
         </tr>
         <tr>
@@ -253,7 +256,7 @@
                 <th><label for="auto-transfer-account-number">출금계좌번호</label></th>
                 <td><input disabled type="text" id="auto-transfer-account-number">
                     <button data-bs-toggle="modal" data-bs-target="#search-modal-transfer-account" type="button"
-                            id="search-transfer-account-modal-btn" class="btn btn-primary search-button">
+                            id="search-transfer-account-modal-btn" class="btn basic-btn">
                         <span class="bi bi-search search-icon-margin"></span> 찾기
                     </button>
 
@@ -263,7 +266,7 @@
                 <th><label for="auto-transfer-account-password">출금계좌 비밀번호</label></th>
                 <td>
                     <input type="text" id="auto-transfer-account-password">
-                    <button type="button" class="btn btn-primary search-button"  id="check-transfer-account-btn"> 인증</button>
+                    <button type="button" class="btn basic-btn"  id="check-transfer-account-btn"> 인증</button>
 
                 </td>
             </tr>
@@ -307,7 +310,7 @@
         </div>
     </div>
     <div style="text-align:center;">
-        <button class="btn btn-primary" id="savings-account-create-btn" >계좌 개설</button>
+        <button class="btn basic-btn" id="savings-account-create-btn" >계좌 개설</button>
 
     </div>
 

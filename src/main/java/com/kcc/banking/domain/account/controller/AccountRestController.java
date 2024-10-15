@@ -60,11 +60,12 @@ public class AccountRestController {
 
     }
 
+
     /**
      * @Description
-     * - 계좌 개설 완료 시 개설된 계좌의 상세정보 조회
+     * -  보통예금 계좌 개설 완료 시 개설된 계좌의 상세정보 조회
      */
-    // 계좌 정보 조회 API
+    // 보통예금 계좌 정보 조회 API
     @GetMapping("/api/employee/account/open/{accountId}")
     public ResponseEntity<AccountOpenResultOfModal> getAccountInfo(@PathVariable String accountId) {
         AccountOpenResultOfModal accountInfo = accountService.getAccountOpenResultOfModal(accountId);
@@ -74,6 +75,27 @@ public class AccountRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 계좌 정보가 없는 경우 404 처리
         }
     }
+
+    // 적금 계좌 개설
+    @Transactional
+    @PostMapping("/api/employee/savings-account/open")
+    public ResponseEntity<String> savingsOpenAccount(@RequestBody AccountOpen accountOpen) {
+
+        String accId = accountTradeFacade.openAccount(accountOpen);
+        return ResponseEntity.ok(accId);
+
+    }
+
+    // 정기적금 계좌 정보 조회 API
+//    @GetMapping("/api/employee/savings-account/open/{accountId}")
+//    public ResponseEntity<SavingAccountOpenResultOfModal> getAccountInfo(@PathVariable String accountId) {
+//        AccountOpenResultOfModal accountInfo = accountService.getAccountOpenResultOfModal(accountId);
+//        if (accountInfo != null) {
+//            return ResponseEntity.ok(accountInfo);  // 조회된 계좌 정보를 반환
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 계좌 정보가 없는 경우 404 처리
+//        }
+//    }
 
     // 해지 페이지에 필요한 Customer DETAIL 데이터
     @GetMapping("/api/employee/account-close-details/{accountId}")

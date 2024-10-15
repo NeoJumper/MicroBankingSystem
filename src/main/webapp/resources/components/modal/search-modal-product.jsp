@@ -36,7 +36,7 @@
                 </div>
                 <hr>
                 <div id="search-modal-center-box">
-                    <button id="modal-check-product-btn" class="btn update-btn" type="button">상품 검색</button> <!-- Added "btn" class -->
+                    <button id="modal-check-product-btn" class="btn basic-btn" type="button">상품 검색</button> <!-- Added "btn" class -->
                     <button id="modal-check-product-reset-btn" class="btn reset-btn" type="button">초기화</button> <!-- Added "btn" class -->
                 </div>
 
@@ -57,7 +57,7 @@
                     </tbody>
                 </table>
                 <div id="search-modal-product-select-button">
-                    <button id="search-modal-product-select-btn" class="btn update-btn">상품 선택</button>
+                    <button id="search-modal-product-select-btn" class="btn basic-btn">상품 선택</button>
                 </div>
             </div>
         </div>
