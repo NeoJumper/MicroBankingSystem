@@ -156,9 +156,9 @@
         SELECT
             e.name AS employeeName,
             CASE
+                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
                 WHEN t.trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN t.trade_type = 'DEPOSIT' THEN '입금'
-                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
                 WHEN t.trade_type = 'OPEN' THEN '가입'
                 WHEN t.trade_type = 'CLOSE' THEN '해지'
                 ELSE t.trade_type
@@ -173,9 +173,9 @@
         GROUP BY
             e.name,
             CASE
+                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
                 WHEN t.trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN t.trade_type = 'DEPOSIT' THEN '입금'
-                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
                 WHEN t.trade_type = 'OPEN' THEN '가입'
                 WHEN t.trade_type = 'CLOSE' THEN '해지'
                 ELSE t.trade_type

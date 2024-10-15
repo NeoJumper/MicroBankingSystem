@@ -159,8 +159,6 @@ CREATE TABLE Business_day (
                               modification_date TIMESTAMP NULL,
                               modifier_id NUMBER,
                               version NUMBER NULL
-
-
 );
 
 CREATE TABLE Product (
