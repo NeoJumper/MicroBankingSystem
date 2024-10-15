@@ -25,7 +25,7 @@
         </div>
         <div>
             <h3>출금계좌정보</h3>
-            <hr>
+
         </div>
         <table class="common-table">
             <tr>
@@ -71,7 +71,7 @@
         </table>
         <div>
             <h3 class="mt-3">입금계좌정보</h3>
-            <hr>
+
         </div>
         <table class="common-table">
             <tbody>
@@ -89,7 +89,7 @@
         </table>
         <div>
             <h3 class="mt-3">출금계좌 비밀번호</h3>
-            <hr>
+
         </div>
         <table class="common-table">
             <tbody>

@@ -16,9 +16,8 @@
   flex-direction: column;
   width: 100%;
   z-index: 10;
-  background-color: white;
-  opacity: 0.9;
   min-height: 108.594px;
+  background: var(--light-gray);
 }
 /*------- informationHeader : 정보 전달 헤더 css -----------*/
 #informationHeader {
@@ -85,7 +84,8 @@
 }
 
 #logoutButton{
-  background-color: var(--light-gray);
+  background: linear-gradient(var(--dark-gray), var(--deep-dark-gray));
+  color: white;
   padding : 2px 5px;
 }
 #logoutButton > a{
@@ -95,8 +95,7 @@
   font-size: inherit; /* 폰트 크기를 상속받음 */
 }
 #logoutButton:hover {
-  color: black; /* 마우스 오버 시 텍스트 색상 변경 */
-  background-color: var(--light-gray); /* 배경색 변경 */
+  background: var(--deep-dark-gray); /* 배경색 변경 */
 }
 
 #business-day-header{
@@ -130,9 +129,10 @@
 
 /* ------------- 메뉴 바 헤더 ------------- */
 #navbar {
-  border-bottom: 2px solid var(--basic-color);
+  background: linear-gradient(var(--basic-color), var(--basic-hover-dark-color));
+  border-top: 1px solid var(--little-dark-gray);
+  border-bottom: 1px solid var(--little-dark-gray);
   flex-grow: 1;
-  padding: 5px;
 }
 
 #navbar-globalMenu {
@@ -153,16 +153,16 @@
 
 #navbar-globalMenu a {
   text-decoration: none;
-  height: 100%;
+  height: 45px;
   display: flex;
   align-items: center;
   padding-left : 40px;
   padding-right : 40px;
-  color: var(--basic-color);
+  color: white;
 }
 
 #navbar-globalMenu a:hover{
-  background-color:white;
-  color :var(--basic-hover-dark-color);
+  background: linear-gradient(#003c95, #357ac1); /* 그라데이션 방향 반전 */
+  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1); /* 내부 그림자 */
   font-weight: bold;
 }

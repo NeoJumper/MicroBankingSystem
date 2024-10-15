@@ -6,15 +6,20 @@
 
 :root {
   --basic-color: #0079D4;
+  --basic-gradient-color: #2c86c9;
   --basic-hover-color: #4AA5F4;
   --basic-hover-dark-color: #2A49A1;
   --point-red: #D40000;
   --hover-red: #CC0000;
-  --point-yellow: #FFD80D;
+  --point-yellow: #FFCE56;
+  --light-yellow: #FFCE5633;
   --deep-dark-gray: #5a6268;
-  --dark-gray: #646464;
-  --light-gray: #C8C8C8;
-  --table-header: #F5F5F5;
+  --dark-gray: #9a9a9a;
+  --little-dark-gray: #C8C8C8;
+  --basic-gray: #ECECEC;
+  --light-gray: #F7F7F7;
+  --point-green: #3AB764;
+
 }
 
 @font-face {
@@ -43,6 +48,10 @@ body {
   transition: padding-left 0.3s ease-in-out; /* 패딩 애니메이션 추가 */
 }
 
+body{
+  background: var(#FBFBFB);
+}
+
 #main-area > div:first-child{
   display: flex;
   align-items: center;
@@ -63,11 +72,10 @@ body {
   font-weight: bold;
 }
 .basic-btn {
-  background: var(--basic-color);
+  background: linear-gradient(to bottom, var(--basic-color), var(--basic-hover-dark-color));
   color: #F5F5F5;
-  font-weight: bold;
   font-size: 1.0rem;
-  padding: 10px 10px;
+  padding: 8px 8px;
   margin: 0 6px;
   border: none;
 }
@@ -77,12 +85,12 @@ body {
 }
 
 .basic-btn:disabled {
-  background-color: var(--light-gray);
+  background: var(--little-dark-gray) !important;
   color: black;
 }
 
 .basic-btn:disabled:hover {
-  background-color: var(--light-gray);
+  background: var(--little-dark-gray);
   color: black;
 }
 
@@ -118,8 +126,8 @@ body {
 }
 
 .closed-btn{
-  background-color: #d3d3d3; /* 흐린 회색으로 버튼 배경 */
-  color: #a9a9a9; /* 흐린 텍스트 색상 */
+  background-color: var(--little-dark-gray); /* 흐린 회색으로 버튼 배경 */
+  color: var(--dark-gray);
   font-weight: bold;
   font-size: 1.0rem;
   padding: 10px 10px;

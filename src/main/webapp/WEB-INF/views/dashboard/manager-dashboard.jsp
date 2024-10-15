@@ -21,6 +21,23 @@
         <h5>&nbsp지점 운영</h5>
     </div>
 
+    <div class="row" id="cash-transfer-amount">
+        <div class="rounded-boxes">
+            <div class="rounded-box yellow">
+                <span>내용 1</span>
+            </div>
+            <div class="rounded-box red">
+                <span>내용 2</span>
+            </div>
+            <div class="rounded-box blue">
+                <span>내용 3</span>
+            </div>
+            <div class="rounded-box green">
+                <span>내용 4</span>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-6">
             <h3>직원별 거래량 비교</h3>

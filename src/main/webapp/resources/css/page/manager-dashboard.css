@@ -14,3 +14,47 @@ canvas {
 #transactionTab {
     margin: 10px;
 }
+
+/* 라운드된 네모들의 컨테이너 */
+.rounded-boxes {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+/* 각 네모의 기본 스타일 */
+.rounded-box {
+    flex: 1;
+    margin: 0 10px;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* 내용물 스타일 */
+.rounded-box span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 노란색 박스 */
+.rounded-box.yellow {
+    background-color: var(--light-yellow);
+    border:1px solid var(--point-yellow);
+
+}
+
+/* 빨간색 박스 */
+.rounded-box.red {
+    background: linear-gradient(to bottom, var(--point-red), #AA0000);
+}
+
+/* 파란색 박스 */
+.rounded-box.blue {
+    background: linear-gradient(to bottom, var(--basic-color), #0061AA);
+}
+
+/* 초록색 박스 */
+.rounded-box.green {
+    background: linear-gradient(to bottom, var(--point-green), #2E9250);
+}

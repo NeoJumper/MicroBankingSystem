@@ -19,7 +19,6 @@
     </div>
     <div>
         <h3>행원 추가</h3>
-        <hr>
     </div>
     <table class="common-table">
         <tr>
