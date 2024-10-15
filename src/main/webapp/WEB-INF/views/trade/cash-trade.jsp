@@ -32,14 +32,14 @@
 
     <div>
         <h3>계좌 정보</h3>
-        <hr>
+
     </div>
 
     <table class="common-table">
         <tr>
             <th><label for="cash-trade-account-number">계좌번호</label></th>
             <td><input disabled type="text" id="cash-trade-account-number">
-                <button id="check-cash-trade-account-btn" class="update-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
+                <button id="check-cash-trade-account-btn" class="basic-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
             </td>
         </tr>
 
@@ -66,7 +66,7 @@
 
     <div>
         <h3>금액</h3>
-        <hr>
+
     </div>
 
     <table class="common-table">
@@ -87,14 +87,14 @@
             <tbody>
             <tr>
                 <th><label for="cash-trade-password">비밀번호</label></th>
-                <td><input id="cash-trade-password" type="password"> <button class="search-btn" id="cash-trade-validate">비밀번호 인증</button></td>
+                <td><input id="cash-trade-password" type="password"> <button class="basic-btn" id="cash-trade-validate">비밀번호 인증</button></td>
             </tr>
             </tbody>
         </table>
     </div>
 
     <div class="row justify-content-center mb-5">
-        <button disabled id="cash-trade-submit" class="col-1 update-btn">현금 거래 승인</button>
+        <button disabled id="cash-trade-submit" class="col-1 basic-btn">현금 거래 승인</button>
     </div>
 </div>
 

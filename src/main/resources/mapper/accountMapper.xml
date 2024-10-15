@@ -205,7 +205,8 @@
         ac.branch_id,
         ac.product_id,
         ac.registrant_id,
-        ac.preferential_interest_rate + p.interest_rate as interest_rate,
+        ac.preferential_interest_rate as preferential_interest_rate,
+        p.interest_rate as interest_rate,
         ac.balance
         FROM account ac
         JOIN product p ON ac.product_id = p.id

@@ -19,7 +19,6 @@
     </div>
     <div>
         <h3>행원 추가</h3>
-        <hr>
     </div>
     <table class="common-table">
         <tr>
@@ -55,7 +54,7 @@
         </tr>
     </table>
     <div class="d-flex justify-content-end mt-4 mb-4">
-        <button class="update-btn" id="emp-save-btn">추가하기</button>
+        <button class="basic-btn" id="emp-save-btn">추가하기</button>
     </div>
 
 </div>

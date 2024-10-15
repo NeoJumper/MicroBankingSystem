@@ -5,6 +5,25 @@
 /* Bootstrap Icons CSS */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.css");
 
+:root {
+  --basic-color: #0079D4;
+  --basic-gradient-color: #2c86c9;
+  --basic-hover-color: #4AA5F4;
+  --basic-hover-dark-color: #3f5ba9;
+  --light-blue-input-background: #f6f9fc;
+  --point-red: #D40000;
+  --hover-red: #CC0000;
+  --point-yellow: #FFCE56;
+  --light-yellow: #FFCE5633;
+  --deep-dark-gray: #5a6268;
+  --dark-gray: #9a9a9a;
+  --little-dark-gray: #C8C8C8;
+  --basic-gray: #ECECEC;
+  --light-gray: #F7F7F7;
+  --body-background: #FBFBFB;
+  --point-green: #3AB764;
+
+}
 
 @font-face {
   font-family: 'Pretendard-Regular';
@@ -15,6 +34,7 @@
 body {
   font-family: 'Pretendard-Regular', sans-serif;
   font-size: 1.2rem;
+  background: var(--body-background);
 }
 
 .modal {
@@ -32,51 +52,56 @@ body {
   transition: padding-left 0.3s ease-in-out; /* 패딩 애니메이션 추가 */
 }
 
+body{
+  background: var(#FBFBFB);
+}
+
 #main-area > div:first-child{
   display: flex;
   align-items: center;
   margin-bottom: 30px;
 }
 #main-area > div:first-child h5 {
-  color: rgb(100, 100, 100);
+  opacity: 0.5;
+  color: var(--deep-dark-gray);
   margin-bottom: 0;
 }
 
 #main-area > div:first-child h5:last-child {
-  font-weight: bold;
+  opacity: 1;
+  font-size: 1.5rem;
 }
 #main-area > div > h3 {
   color: initial; /* 마지막 h3는 기본 스타일로 설정 */
   font-weight: bold;
 }
-.update-btn {
-  background: #0079D4;
+.basic-btn {
+  background: linear-gradient(to bottom, var(--basic-color), var(--basic-hover-dark-color));
   color: #F5F5F5;
-  font-weight: bold;
   font-size: 1.0rem;
-  padding: 10px 10px;
+  padding: 8px 8px;
   margin: 0 6px;
   border: none;
   border-radius: 5px;
 }
 
-.update-btn:hover {
-  background: #0062A8;
+.basic-btn:hover {
+  background: var(--basic-hover-dark-color);
 }
 
-.update-btn:disabled {
-  background-color: #ccc;
+.basic-btn:disabled {
+  background: var(--little-dark-gray) !important;
   color: black;
 }
 
-.update-btn:disabled:hover {
-  background-color: #ccc;
+.basic-btn:disabled:hover {
+  background: var(--little-dark-gray);
   color: black;
 }
 
 
 .cancel-btn {
-  background: #FF0000;
+  background: var(--point-red);
   color: #F5F5F5;
   font-weight: bold;
   font-size: 1.0rem;
@@ -86,12 +111,12 @@ body {
 }
 
 .cancel-btn:hover {
-  background: #cc0000;
+  background: var(--hover-red);
 }
 
 
 .reset-btn{
-  background: #6C757D;
+  background: var(--dark-gray);
   color: white;
   font-weight: bold;
   font-size: 1.0rem;
@@ -102,44 +127,12 @@ body {
 
 
 .reset-btn:hover {
-  background: #5a6268;
+  background: var(--deep-dark-gray);
 }
 
-.search-btn {
-  margin-left: 10px;
-  padding: 10px 10px;
-  width:auto;
-  height:46px;
-  background-color : #0079D4;
-  color : white;
-  border :none;
-
-}
-
-.search-btn:hover {
-  background: #0062A8;
-
-}
-
-.detail-search-btn:hover {
-  background: #ececec;
-}
-
-.detail-search-btn{
-  background: white;
-  color: #6C757D;
-  font-weight: bold;
-  font-size: 1.0rem;
-
-  padding: 6px 6px;
-  margin: 0 6px;
-  border-color: #dadada;
-  box-shadow: none;
-
-}
 .closed-btn{
-  background-color: #d3d3d3; /* 흐린 회색으로 버튼 배경 */
-  color: #a9a9a9; /* 흐린 텍스트 색상 */
+  background-color: var(--little-dark-gray); /* 흐린 회색으로 버튼 배경 */
+  color: var(--dark-gray);
   font-weight: bold;
   font-size: 1.0rem;
   padding: 10px 10px;
@@ -150,4 +143,12 @@ body {
 /*------------------------- 추가 -------------------------*/
 td.text-center {
   text-align: center;
+}
+
+.nav-link {
+  color: var(--basic-color);
+}
+.text-color-point-red
+{
+  color: var(--point-red);
 }

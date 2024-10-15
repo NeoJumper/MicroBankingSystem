@@ -40,7 +40,7 @@ public class BusinessDayService {
         String loginMemberId = String.valueOf(AuthenticationUtils.getLoginMemberId());
 
         int updateResult1 = finishCurrentBusinessDay(currentBusinessDay.getBusinessDate(), loginMemberId);
-        int updateResult2 = openNextBusinessDay(nextBusinessDay.getBusinessDate(), loginMemberId);
+        int updateResult2 = openBusinessDay(nextBusinessDay.getBusinessDate(), loginMemberId);
 
         // 2
         if(updateResult1 == 1 && updateResult2 == 1) {
@@ -48,6 +48,10 @@ public class BusinessDayService {
         }
     }
 
+    /**
+     * @Description
+     * 영업일 변경 -> 현재 영업일 상태를 FALSE처리
+     */
     public int finishCurrentBusinessDay(String targetDate, String modifierId) {
         return businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)
@@ -57,7 +61,26 @@ public class BusinessDayService {
         );
 
     }
-    public int openNextBusinessDay(String targetDate, String modifierId) {
+
+    /**
+     * @Description
+     * 현재 영업일을 영업 전으로 돌린다.
+     */
+    public int resetBusinessDay(String targetDate, String modifierId) {
+        return businessDayMapper.update(BusinessDayUpdate.builder()
+                .targetDate(targetDate)
+                .status("SCHEDULED")
+                .isCurrentBusinessDay("FALSE")
+                .modifierId(modifierId)
+                .build()
+        );
+
+    }
+    /**
+     * @Description
+     * 영업일 변경 시 사용
+     */
+    public int openBusinessDay(String targetDate, String modifierId) {
         return businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)
                 .status("OPEN")

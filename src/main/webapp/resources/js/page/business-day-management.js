@@ -4,8 +4,18 @@ let currentBusinessDay = '';
 $(document).ready(function() {
     handleCurrentBusinessDay();
     handleNextBusinessDay();
+    registerClickEventOfBusinessDayResetBtnOfModal();
 });
 
+function registerClickEventOfBusinessDayResetBtnOfModal() {
+
+
+    $('#business-day-reset-modal-reset-btn').on('click', function () {
+        $('#business-day-reset-modal').modal('hide');
+        resetBusinessDay();
+    });
+
+}
 
 /**
  * @Description
@@ -24,10 +34,10 @@ function handleCurrentBusinessDay(){
             if(response.status === "OPEN")
             {
 
-                $("#business-day-update-modal-btn").removeClass("update-btn").addClass("closed-btn");
+                $("#business-day-update-modal-btn").removeClass("basic-btn").addClass("closed-btn");
                 $("#business-day-update-modal-btn").prop("disabled", true);
 
-                $("#business-day-update-modal-update-btn").removeClass("update-btn").addClass("closed-btn");
+                $("#business-day-update-modal-update-btn").removeClass("basic-btn").addClass("closed-btn");
                 $("#business-day-update-modal-update-btn").prop("disabled", true);
 
             }
@@ -57,3 +67,37 @@ function handleNextBusinessDay(){
         }
     });
 }
+
+
+function resetBusinessDay(){
+
+
+    $.ajax({
+        url: '/api/manager/business-day-reset',
+        type: 'PATCH',
+        success: function(response) {
+            swal({
+                title: "영업 시작",
+                text: "영업일 되돌리기 작업이 성공적으로 완료되었습니다.",
+                icon: "success",
+                button: "닫기",
+            }).then(() => {
+                // swal 경고창이 닫힌 후에 리다이렉트
+                window.location.href = '/page/manager/business-day-management';
+            });
+        },
+        error: function(xhr, status, error) {
+            swal({
+                title: "변경 실패",
+                text: xhr.responseText,
+                icon: "error",
+                button: "닫기",
+            })
+            console.error('Error updating business day:', error);
+        }
+    });
+
+    // 결과 JSON 데이터 출력 (또는 전송)
+    console.log(businessDayUpdate);
+}
+

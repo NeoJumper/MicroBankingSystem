@@ -11,6 +11,7 @@ drop sequence product_seq;
 drop sequence customer_seq;
 drop sequence account_seq;
 drop sequence auto_transfer_seq;
+drop sequence bulk_transfer_seq;
 
 -- 테이블 삭제
 DROP TABLE BRANCH_CLOSING CASCADE CONSTRAINTS PURGE;
@@ -24,6 +25,7 @@ DROP TABLE INTEREST CASCADE CONSTRAINTS PURGE;
 DROP TABLE CUSTOMER CASCADE CONSTRAINTS PURGE;
 DROP TABLE ACCOUNT CASCADE CONSTRAINTS PURGE;
 DROP TABLE AUTO_TRANSFER CASCADE CONSTRAINTS PURGE;
+DROP TABLE BULK_TRANSFER CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Employee (
                           id NUMBER NOT NULL,
@@ -54,6 +56,7 @@ CREATE TABLE Trade (
                        trade_type VARCHAR(255) NULL,
                        status VARCHAR(10) NULL,
                        cash_indicator VARCHAR(10) NULL,
+                       failure_reason VARCHAR(100) NULL,
                        description VARCHAR(1000) NULL,
                        trade_number NUMBER NOT NULL,
                        registration_date TIMESTAMP NULL,
@@ -61,6 +64,24 @@ CREATE TABLE Trade (
                        modifier_id NUMBER NULL,
                        version NUMBER NULL
 );
+
+CREATE TABLE Bulk_transfer (
+                       id NUMBER NOT NULL,
+                       acc_id VARCHAR(20) NOT NULL,
+                       branch_id NUMBER NOT NULL,
+                       trade_date TIMESTAMP NULL,
+                       amount NUMBER NULL,
+                       status VARCHAR(10) NULL,
+                       description VARCHAR(1000) NULL,
+                       success_cnt NUMBER NOT NULL ,
+                       failure_cnt NUMBER NOT NULL ,
+                       registrant_id NUMBER NOT NULL,
+                       registration_date TIMESTAMP NULL,
+                       modification_date TIMESTAMP NULL,
+                       modifier_id NUMBER NULL,
+                       version NUMBER NULL
+);
+
 
 
 CREATE TABLE Customer (
@@ -124,6 +145,7 @@ CREATE TABLE Interest (
                           registrant_id NUMBER NOT NULL,
                           branch_id NUMBER NOT NULL,
                           payment_date TIMESTAMP NULL,
+                          creation_date TIMESTAMP NULL,
                           amount DECIMAL NULL,
                           interest_rate NUMBER NULL,
                           payment_status VARCHAR(1) NULL,
@@ -155,8 +177,6 @@ CREATE TABLE Business_day (
                               modification_date TIMESTAMP NULL,
                               modifier_id NUMBER,
                               version NUMBER NULL
-
-
 );
 
 CREATE TABLE Product (
@@ -207,6 +227,7 @@ CREATE TABLE Employee_closing (
 -- Primary Keys
 ALTER TABLE Employee ADD CONSTRAINT PK_EMPLOYEE PRIMARY KEY (id);
 ALTER TABLE trade ADD CONSTRAINT PK_TRADE PRIMARY KEY (id);
+ALTER TABLE bulk_transfer ADD CONSTRAINT PK_BULK_TRANSFER PRIMARY KEY (id);
 ALTER TABLE Customer ADD CONSTRAINT PK_CUSTOMER PRIMARY KEY (id);
 ALTER TABLE Account ADD CONSTRAINT PK_ACCOUNT PRIMARY KEY (id);
 ALTER TABLE Interest ADD CONSTRAINT PK_INTEREST PRIMARY KEY (id);
@@ -250,6 +271,7 @@ ALTER TABLE Trade
 ALTER TABLE Trade
     ADD CONSTRAINT FK_TRADE_BRANCH_ID
         FOREIGN KEY (branch_id) REFERENCES Branch(id);
+
 
 --3. account
 ALTER TABLE ACCOUNT
@@ -347,6 +369,23 @@ ALTER TABLE BRANCH
     ADD CONSTRAINT FK_BC_MOD_ID
         FOREIGN KEY (modifier_id) REFERENCES EMPLOYEE(id);
 
+--10. Bulk_Transfer
+ALTER TABLE Bulk_transfer
+    ADD CONSTRAINT FK_BT_REG_ID
+        FOREIGN KEY (registrant_id) REFERENCES Employee(id);
+
+ALTER TABLE Bulk_transfer
+    ADD CONSTRAINT FK_BT_MOD_ID
+        FOREIGN KEY (modifier_id) REFERENCES Employee(id);
+
+ALTER TABLE Bulk_transfer
+    ADD CONSTRAINT FK_BT_ACC_ID
+        FOREIGN KEY (acc_id) REFERENCES Account(id);
+
+ALTER TABLE Bulk_transfer
+    ADD CONSTRAINT FK_BT_BRANCH_ID
+        FOREIGN KEY (branch_id) REFERENCES Branch(id);
+
 
 -- 자동이체 테이블 생성
 ALTER TABLE Auto_transfer
@@ -378,3 +417,4 @@ create sequence product_seq;
 create sequence customer_seq;
 create sequence account_seq;
 create sequence auto_transfer_seq;
+create sequence bulk_transfer_seq;

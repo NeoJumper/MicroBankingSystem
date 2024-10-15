@@ -1,0 +1,78 @@
+#organization-btn-group button:last-child{
+    border-radius: 2px;
+    background-color: #073082;
+}
+
+.modal-footer button:last-child{
+    border-radius: 2px;
+    background-color: #073082;
+}
+
+p {
+  margin: 0;
+    font-weight: bold;
+}
+
+.s-table-container {
+    padding: 20px;
+    padding-top: 0px;
+    max-height:65vh;
+    height: 65vh;
+    /* 컨테이너의 최대 높이 설정 */
+    overflow-y: auto;
+    /* 세로 스크롤 자동 추가 */
+    overflow-x: hidden;
+    /* x축 스크롤 숨기기 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.s-table-container th,
+.s-table-container td{
+    padding : 20px 20px 20px 20px;
+}
+
+.checkbox-img > img{
+    width: 25px;
+}.text-color-gray1 {
+     color: rgb(100, 100, 100);
+     font-weight: bold;
+ }
+
+.text-color-gray2 {
+    color: rgb(140, 140, 140);
+    margin-top: 4px;
+}
+
+.s-excel-table-container {
+    padding: 20px;
+    padding-top: 0px;
+    max-height: 60vh;
+    height: 60vh;
+    /* 컨테이너의 최대 높이 설정 */
+    overflow-y: auto;
+    /* 세로 스크롤 자동 추가 */
+    overflow-x: hidden;
+    /* x축 스크롤 숨기기 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.s-excel-table-container th,
+.s-excel-table-container td{
+    padding : 18px 18px 18px 18px;
+    font-size: 12px;
+    border: 1px solid #BFBFBF; /* 모든 셀에 테두리 적용 */
+    text-align: left; /* 텍스트 정렬 */
+}
+
+.s-excel-table-container th{
+    background-color: #EFEFEF;
+}
+.s-excel-table-container td:nth-child(1){
+    background-color: #EFEFEF;
+}
+.s-excel-table-container > table{
+    border-collapse: collapse;
+}
+
+#deleteEmployeeBtnOfModal{
+    border-radius: 2px;
+    background-color: #FF4040;
+}

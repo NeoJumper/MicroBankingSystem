@@ -1,14 +1,22 @@
 /* header.css */
-#customHeader {
+/*------------------------------------------------------------*/
+@font-face {
+  font-family: 'TheJamsil5Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
 
+
+#customHeader {
   display: flex;
+  font-family: "TheJamsil5Bold";
   align-items: center;
   height: 52.22px;
   left: 0;
   right: 0;
   z-index: 2000;
   font-weight: bold;
-  font-style: italic;
   padding: 0.5rem;
   margin: 1.0rem;
   margin-bottom: 30px;
@@ -46,14 +54,6 @@
   color: white;
   font-weight: bold;
 
-}
-
-.btn-color-blue {
-  background-color: rgb(76, 165, 255);
-}
-
-.login-img>img {
-  width: 25px;
 }
 
 .google-login-img>img {

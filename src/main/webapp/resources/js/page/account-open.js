@@ -71,7 +71,8 @@ function accountOpen() {
                 productId: productId,
                 preferentialInterestRate: preferentialInterestRate,
                 password: password,
-                balance: balance
+                balance: balance,
+                tradeType: "OPEN"
             }),
             success: function (accountId) {
                 swal({

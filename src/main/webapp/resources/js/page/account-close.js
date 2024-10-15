@@ -2,7 +2,6 @@ let accountData = {};
 
 $(document).ready(function () {
     $('#search-modal-account').on('hidden.bs.modal', function () {
-        console.log("모달 닫힘");
         getAccountDetail();
     });
 

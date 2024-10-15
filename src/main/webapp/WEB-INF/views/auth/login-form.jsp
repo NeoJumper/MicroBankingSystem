@@ -16,10 +16,10 @@
     <div id="imgContainer" class= "d-flex">
 
         <div class ="me-2">
-            <img  src="/resources/assets/kcc-logo.png" alt="Logo" id="header-logo-img"  />
+            <img  src="/resources/assets/neobank-logo.png" alt="Logo" id="header-logo-img"  />
         </div>
         <div>
-            <h2>Micro Banking System</h2>
+            <h2>네오 은행</h2>
         </div>
     </div>
 </div>
@@ -47,15 +47,14 @@
                         ${exception}
                 </div>
             </c:if>
-            <hr>
 
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"><br/>
-            <button class="col-12 d-flex justify-content-center btn border text-color-white" style="background-color:#3391FF;" type="submit">
-                <div class ="d-flex  login-img">
-                    <p style="margin:0px;"> 로그인 </p>
-                </div>
+            <div class="row justify-content-center">
+            <button class="justify-content-center basic-btn " type="submit">
+                    로그인
             </button>
+            </div>
         </form>
 
 

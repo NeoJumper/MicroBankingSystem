@@ -36,4 +36,6 @@ public interface TradeMapper {
 
     // 거래 내역 추가
     int insertTrade(TradeCreate withdrawalTrade);
+
+    List<TradeByBulkTransfer> findTradeListByBulkTransfer(Long bulkTransferId);
 }

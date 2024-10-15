@@ -34,7 +34,7 @@
                         <input type="text" id="search-modal-input" placeholder="사원 번호를 입력하세요">
                     </div>
                     <div id="search-modal-btn-div">
-                        <button type="button" class="search-btn" id="search-modal-search-btn">검색</button>
+                        <button type="button" class="basic-btn" id="search-modal-search-btn">검색</button>
                     </div>
 
                 </div>

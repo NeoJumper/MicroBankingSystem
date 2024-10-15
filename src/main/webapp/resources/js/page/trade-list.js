@@ -5,9 +5,9 @@ $(document).ready(function () {
     tradeStatusSelectDisplay();
     tradePeriodSelectDisplay();
     accIdOfSearchAccountModal();
-    searchResultOfTradeList();
     calculateOfPeriodDate();
     calculateOfMonthDate();
+    majorCategoryDisplay();
 
 
     // 검색 버튼 클릭 시 거래내역 조회
@@ -29,6 +29,36 @@ $(document).ready(function () {
 //         });
 //     });
 // }
+
+// 대분류 설정 함수
+function majorCategoryDisplay() {
+
+    $('input[name="major-category"]').on('change', function() {
+        toggleButtonStyles();
+        toggleTradeTypeDisplay();
+    });
+
+    function toggleButtonStyles() {
+        // 모든 라벨에서 active 클래스를 제거
+        $('#major-category-button-group label').removeClass('active');
+
+        // 선택된 라디오 버튼에 해당하는 라벨에 active 클래스 추가
+        $('input[name="major-category"]:checked').next('label').addClass('active');
+    }
+    function toggleTradeTypeDisplay() {
+        const selectedValue = $('input[name="major-category"]:checked').val();
+
+        // 조건별 조회 버튼 보이기/숨기기
+        if (selectedValue === 'common') {
+            // 계좌 이체 선택 시
+            $('#trade-type-row').show(); // 조건별조회 버튼 보여주기
+        } else if (selectedValue === 'bulk') {
+            // 대량 이체 선택 시
+            $('#trade-type-row').hide();
+            // 추가적인 로직이 필요하면 여기에 작성
+        }
+    }
+}
 
 
 //직접입력 display 설정 함수
@@ -61,6 +91,7 @@ function searchPeriodTypeDisplay() {
 
         // 선택된 라디오 버튼에 따라 해당 tr 보이기
         radios.forEach(radio => {
+            console.log(radio);
             if (radio.checked) {
                 const targetRow = document.getElementById(`search-${radio.value}-tr`);
                 if (targetRow) {
@@ -167,6 +198,7 @@ function calculationResultOfDateType() {
 // 거래내역 조회 api
 function searchResultOfTradeList(pageNum = 1) {
 
+    const majorCategoryValue = $('input[name="major-category"]:checked').val();
     const constAccId = $('#acc-id-input').val();
     const tradeTypeButtonValue = $('.trade-status-search-btn.active').val();
     const selectSort = $('input[name="search-sort"]:checked').val();
@@ -187,25 +219,55 @@ function searchResultOfTradeList(pageNum = 1) {
     const amount = 10; // 페이지당 항목 수
 
 
-    $.ajax({
-        url: '/api/employee/trade/search/result',
-        method: 'GET',
-        data: {
-            accId: constAccId,
-            tradeType: tradeTypeButtonValue,
-            startDate: searchStartDate,
-            endDate: searchEndDate,
-            sortOrder: selectSort,
-            'criteria.pageNum': pageNum, // Criteria의 pageNum
-            'criteria.amount': amount
-        },
-        success: function (data) {
-            renderOfSearchResults(data);
-            updatePagination(data.pageDTO);
-        }, error: function (error) {
-            alert('검색 요청에 실패했습니다: ' + error);
-        }
-    })
+    if (majorCategoryValue === 'common'){
+        $.ajax({
+            url: '/api/employee/trade/search/result',
+            method: 'GET',
+            data: {
+                accId: constAccId,
+                tradeType: tradeTypeButtonValue,
+                startDate: searchStartDate,
+                endDate: searchEndDate,
+                sortOrder: selectSort,
+                'criteria.pageNum': pageNum, // Criteria의 pageNum
+                'criteria.amount': amount
+            },
+            success: function (data) {
+                renderOfTradeSearchResults(data);
+                updatePagination(data.pageDTO);
+                $('#common-transfer-select-result').show(); // 계좌 이체 결과 보여주기
+                $('#bulk-transfer-select-result').hide(); // 대량 이체 결과 숨기기
+            }, error: function (error) {
+                alert('검색 요청에 실패했습니다: ' + error);
+            }
+        })
+    }
+    else{
+        console.log("대량조회");
+
+        $.ajax({
+            url: '/api/employee/bulk-transfer',
+            method: 'GET',
+            data: {
+                accId: constAccId,
+                tradeType: tradeTypeButtonValue,
+                startDate: searchStartDate,
+                endDate: searchEndDate,
+                sortOrder: selectSort,
+                'criteria.pageNum': pageNum, // Criteria의 pageNum
+                'criteria.amount': amount
+            },
+            success: function (data) {
+                renderOfBulkTransferSearchResults(data.bulkTransferDetailList);
+                updatePagination(data.pageDTO);
+                $('#common-transfer-select-result').hide(); // 계좌 이체 결과 보여주기
+                $('#bulk-transfer-select-result').show(); // 대량 이체 결과 숨기기
+            }, error: function (error) {
+                alert('검색 요청에 실패했습니다: ' + error);
+            }
+        })
+    }
+
 }
 
 // paging 버튼 동적 생성 및 버튼 클릭시 동작
@@ -254,7 +316,7 @@ function getTradeTypeInfo(tradeType) {
 }
 
 // 거래내역 동적 테이블 생성 : 검색결과 뿌리기
-function renderOfSearchResults(data) {
+function renderOfTradeSearchResults(data) {
     const tradeResultsTableBody = $('#trade-result-tbody');
     tradeResultsTableBody.empty();
 
@@ -327,7 +389,39 @@ function renderOfSearchResults(data) {
         tradeResultsTableBody.append(row);
     })
 }
+function renderOfBulkTransferSearchResults(transferList){
+    console.log(transferList);
+    const bulkTransferResultTbody = $('#bulk-transfer-result-tbody');
+    bulkTransferResultTbody.empty(); // 기존 내용을 비움
 
+    $.each(transferList, function (index, transfer) {
+        console.log(transfer);
+        // 거래 날짜 포맷
+        const transferDate = new Date(transfer.registrationDate); // ISO 8601 포맷 사용
+        const formattedTransferDate = `${transferDate.toLocaleString('ko-KR')}`; // 한국 시간 포맷
+
+        // 행 생성
+        var row = $('<tr>')
+            .append($('<td>').text(transfer.rn)) // 순번
+            .append($('<td>').text(formattedTransferDate)) // 거래일시
+            .append($('<td>').text(transfer.accId)) // 비고 (여기선 계좌 ID)
+            .append($('<td>').text(transfer.amount + ' 원' )) // 총 이체금액
+            .append($('<td>').text(transfer.failureCnt)) // 실패건수
+            .append($('<td>').text(transfer.successCnt)) // 성공건수
+            .append($('<td>').text(transfer.totalCnt)) // 총건수
+            .append($('<td>').text(transfer.status)) // 상태
+            .append($('<td>').append($('<a>')
+                .text('상세보기')
+                .attr('href', '/page/employee/bulk-transfer-result?bulkTransferId=' + transfer.id) // 여기에 실제 링크를 넣으세요
+                .addClass('basic-btn')
+                .css({'text-decoration': 'none'})// Bootstrap 클래스 추가
+            )); // 상태
+
+
+
+        bulkTransferResultTbody.append(row); // 생성된 행을 tbody에 추가
+    });
+}
 
 function calculateOfMonthDate() {
 

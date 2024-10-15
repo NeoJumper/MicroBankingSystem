@@ -20,19 +20,16 @@
             </div>
             <div class="modal-body">
                 <h5>계좌정보 입력</h5>
-                <hr>
                 <div id="search-modal-input-box">
                     <label style="margin-right: 10px">계좌번호</label>
                     <input id="modal-input-account" type="text">
                 </div>
-                <hr>
                 <div id="search-modal-center-box">
-                    <button id="modal-check-account-btn" class="update-btn" type="button">계좌 검색</button>
+                    <button id="modal-check-account-btn" class="basic-btn" type="button">계좌 검색</button>
                     <button id="modal-check-account-reset-btn" class="reset-btn" type="button">초기화</button>
                 </div>
 
                 <h5>계좌정보</h5>
-                <hr>
                 <table id="search-modal-common-table" class="common-table">
                     <thead>
                         <th><label>선택</label></th>
@@ -47,7 +44,7 @@
                     </tbody>
                 </table>
                 <div id="search-modal-select-button">
-                    <button id="search-modal-select-account-btn" class="update-btn">계좌 선택</button>
+                    <button id="search-modal-select-account-btn" class="basic-btn">계좌 선택</button>
                 </div>
             </div>
         </div>

@@ -17,25 +17,27 @@ public class InterestCreate {
     private Long id; // sequence
     private String accId; // 대상계좌
     private BigDecimal amount; // 금액
-    private float interestRate; // 이율(우대 + 기본)
+    private BigDecimal interestRate; // 기본이율
+    private BigDecimal preferentialInterestRate; // 우대이율
     private String paymentStatus; // 지금상태
     private String tradeNumber; // 생성 거래 번호
     private String branchId; // 생성 지점
     private Long registrantId; // 생성한 사람
-    private String registrationDate; // 생성일
+    private String creationDate; // 생성일
     private Long version;
 
     @Builder
-    public InterestCreate(Long id, String accId, BigDecimal amount, float interestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, String registrationDate, Long version) {
+    public InterestCreate(Long id, String accId, BigDecimal amount, BigDecimal interestRate, BigDecimal preferentialInterestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, String creationDate, Long version) {
         this.id = id;
         this.accId = accId;
         this.amount = amount;
         this.interestRate = interestRate;
+        this.preferentialInterestRate = preferentialInterestRate;
         this.paymentStatus = paymentStatus;
         this.tradeNumber = tradeNumber;
         this.branchId = branchId;
         this.registrantId = registrantId;
-        this.registrationDate = registrationDate;
+        this.creationDate = creationDate;
         this.version = version;
     }
 
@@ -51,11 +53,11 @@ public class InterestCreate {
      */
     public static InterestCreate of (AccountDetailForInterest accountDetail, Long loginMemberId, BusinessDateAndBranchId businessDateAndBranchId, String tradeNumber){
         BigDecimal balance = accountDetail.getBalance();  // 잔액 (BigDecimal)
-        BigDecimal interestRate = BigDecimal.valueOf(accountDetail.getInterestRate());  // 연 이자율 (float을 BigDecimal로 변환)
+        BigDecimal interestRateSum = accountDetail.getInterestRate().add(accountDetail.getPreferentialInterestRate());
 
         // 연 이자율을 백분율로 변환하고 1일치로 나누기 (365일 기준)
         BigDecimal dailyInterest = balance
-                .multiply(interestRate.divide(BigDecimal.valueOf(100)))  // 이자율을 백분율로 나누기
+                .multiply(interestRateSum.divide(BigDecimal.valueOf(100)))  // 이자율을 백분율로 나누기
                 .multiply(BigDecimal.valueOf(1.0 / 365));  // 1일치 비율 적용 (365일 기준)
 
 
@@ -63,11 +65,12 @@ public class InterestCreate {
                 .accId(accountDetail.getAccId())
                 .amount(dailyInterest)
                 .interestRate(accountDetail.getInterestRate())
+                .preferentialInterestRate(accountDetail.getPreferentialInterestRate())
                 .paymentStatus("N")
                 .tradeNumber(tradeNumber)
                 .branchId(businessDateAndBranchId.getBranchId())
                 .registrantId(loginMemberId)
-                .registrationDate(businessDateAndBranchId.getBusinessDate())
+                .creationDate(businessDateAndBranchId.getBusinessDate())
                 .version(1L)
                 .build();
     }

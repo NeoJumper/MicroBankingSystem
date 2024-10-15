@@ -16,58 +16,71 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
-    <div style="margin-bottom: 17px;">
+    <div>
         <h5>예금 관리 >&nbsp</h5>
         <h5>계좌 해지 취소 완료</h5>
     </div>
-    <hr class="m-0 border border-dark border-2">
     <div>
 
-        <div style="margin : 0 100px;">
+        <div>
             <h3>계좌 해지 취소 신청</h3>
-            <div id="search-content">
-                <div><input style="height: 100%;" placeholder="계좌번호 조회" id="search-input" disabled="TRUE"></div>
-                <button id="check-withdrawal-account-btn" class="update-btn" type="button"
-                        data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">
-                    계좌조회
-                </button>
-            </div>
-            <h4 style="margin-top: 10px">계좌 정보</h4>
-            <hr class="m-0 border border-dark border-2">
-            <div class="d-flex">
-                <div class="col-3 text-center py-3" style="background-color: #F5F5F5">고객 이름</div>
-                <div class="col-6 d-flex align-items-center ms-5">
-                    <input id="customer-name" style="direction: rtl; display:block; width:100%" disabled="">
-                </div>
-            </div>
-            <hr class="m-0 border border-dark border-1">
-            <div class="d-flex">
-                <div class="col-3 text-center py-3" style="background-color: #F5F5F5">계좌번호</div>
-                <div class="col-6 d-flex align-items-center ms-5">
-                    <input id="account-number" style="direction: rtl; display:block; width:100%" disabled="">
-                </div>
-            </div>
-            <hr class="m-0 border border-dark border-1">
-            <div class="d-flex">
-                <div class="col-3 text-center py-3" style="background-color: #F5F5F5">상품이름</div>
-                <div class="col-6 d-flex align-items-center ms-5">
-                    <input id="product-name" style="direction: rtl; display:block; width:100%" disabled="">
-                </div>
-            </div>
-            <hr class="m-0 border border-dark border-2">
+
+            <table id="search-content" class="common-table">
+                <tbody>
+                <tr>
+                    <th>계좌번호 조회</th>
+                    <td>
+                        <input placeholder="계좌번호 조회" id="search-input" type="text" disabled>
+                        <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
+                                data-account-type="withdrawal" data-bs-toggle="modal"
+                                data-bs-target="#search-modal-account">
+                            계좌조회
+                        </button>
+                    </td>
+                </tbody>
+
+                </tr>
+            </table>
+            <h4>계좌 정보</h4>
+
+
+            <table class="common-table">
+                <tbody>
+                <tr>
+                    <th>
+                        고객 이름
+                    </th>
+                    <td>
+                        <input id="customer-name" type="text" disabled="">
+                    </td>
+                </tr>
+                <tr>
+                    <th>계좌번호</th>
+                    <td> <input id="account-number" type="text" disabled></td>
+                </tr>
+                <tr>
+                    <th>상품 이름</th>
+                    <td><input id="product-name" type="text" disabled></td>
+                </tr>
+                </tbody>
+            </table>
 
             <h4>계좌 비밀번호</h4>
-            <hr class="m-0 border border-dark border-2">
-            <div class="d-flex">
-                <div class="col-3 text-center py-3" style="background-color: #F5F5F5; margin-right: 10px;">계좌 비밀번호</div>
-                <div id="account-pw-container">
-                    <input type="password" id="account-pw-input" style=" display:block; width:100%; padding: 2px;">
-                    <input id="input-confirm" type="submit" value="확인">
-                </div>
-            </div>
-            <hr class="m-0 border border-dark border-2">
-            <div id="submit">
-                <input style="background-color: gray; opacity: 0.5;" id="cancel-submit-btn" type="submit" value="취소 신청" disabled>
+
+            <table class="common-table">
+                <tbody>
+                    <tr>
+                        <th>계좌 비밀번호</th>
+                        <td>
+                            <input type="password" id="account-pw-input">
+                            <input id="input-confirm" class="basic-btn" type="submit" value="확인">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="submit" class="row justify-content-center mb-5">
+                <input id="cancel-submit-btn" class="basic-btn col-1" type="submit" value="취소 신청" disabled>
             </div>
         </div>
     </div>

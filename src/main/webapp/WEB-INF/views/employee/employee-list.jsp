@@ -22,7 +22,6 @@
     </div>
     <div>
         <h3>행원 목록</h3>
-        <hr>
     </div>
     <div class="d-flex justify-content-end mb-3">
         <div style="width: 10%; margin-left: 15px;">

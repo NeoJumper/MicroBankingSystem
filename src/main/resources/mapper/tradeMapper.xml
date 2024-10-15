@@ -164,6 +164,16 @@
         WHERE t.trade_number = #{tradeNumber}
     </select>
 
+    <select id="findTradeListByBulkTransfer" parameterType="java.lang.Long">
+
+        select t.id, t.target_acc_id, t.status, t.amount, e.name as target_name, description, t.failure_reason
+        from trade t
+        join account a on t.target_acc_id = a.id
+        join employee e on a.registrant_id = e.id
+        where bulk_transfer_id = #{bulkTransferId} and t.trade_type = 'WITHDRAWAL'
+
+    </select>
+
 
     <update id="updateTradeStatusToCancel" parameterType="java.lang.Long">
         UPDATE Trade
@@ -175,46 +185,59 @@
     <insert id="insertTrade" parameterType="TradeCreate">
         INSERT INTO Trade
         (
-        id,
-        registrant_id,
-        acc_id,
-        <if test="targetAccId != null and targetAccId != ''">
-        target_acc_id,
-        </if>
-        branch_id,
-        trade_date,
-        amount,
-        balance,
-        trade_type,
-        status,
-        cash_indicator,
-        <if test="description != null and description != ''">
-        description,
-        </if>
-        trade_number,
-        registration_date,
-        version
+            id,
+            registrant_id,
+            acc_id,
+            <if test="targetAccId != null and targetAccId != ''">
+            target_acc_id,
+            </if>
+            <if test="bulkTransferId != null and bulkTransferId != ''">
+            bulk_transfer_id,
+            </if>
+            branch_id,
+            trade_date,
+            amount,
+            balance,
+            trade_type,
+            status,
+            cash_indicator,
+            <if test="description != null and description != ''">
+            description,
+            </if>
+            <if test="failureReason != null and failureReason != ''">
+            failure_reason,
+            </if>
+            trade_number,
+            registration_date,
+            version
         )
-        VALUES (
-        trade_seq.nextval,
-        #{registrantId},
-        #{accId},
-        <if test="targetAccId != null and targetAccId != ''">
-        #{targetAccId},
-        </if>
-        #{branchId},
-        #{tradeDate},
-        #{amount},
-        #{balance},
-        #{tradeType},
-        #{status},
-        #{cashIndicator},
-        <if test="description != null and description != ''">
+        VALUES
+        (
+            trade_seq.nextval,
+            #{registrantId},
+            #{accId},
+            <if test="targetAccId != null and targetAccId != ''">
+            #{targetAccId},
+            </if>
+            <if test="bulkTransferId != null and bulkTransferId != ''">
+            #{bulkTransferId},
+            </if>
+            #{branchId},
+            #{tradeDate},
+            #{amount},
+            #{balance},
+            #{tradeType},
+            #{status},
+            #{cashIndicator},
+            <if test="description != null and description != ''">
             #{description},
-        </if>
-        #{tradeNumber},
-        SYSTIMESTAMP,
-        1
+            </if>
+            <if test="failureReason != null and failureReason != ''">
+            #{failureReason},
+            </if>
+            #{tradeNumber},
+            SYSTIMESTAMP,
+            1
         )
     </insert>
 </mapper>

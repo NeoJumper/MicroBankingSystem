@@ -126,7 +126,7 @@ function changeBusinessDay(){
     }
 
     $.ajax({
-        url: '/api/manager/business-day',
+        url: '/api/manager/business-day-change',
         type: 'PATCH',
         contentType: 'application/json',
         data: JSON.stringify(businessDayUpdate), // JSON.stringify를 사용하여 객체를 JSON 문자열로 변환
