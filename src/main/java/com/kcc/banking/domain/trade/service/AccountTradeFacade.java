@@ -487,38 +487,38 @@ public class AccountTradeFacade {
 
     }
 
-    public List<BulkTransferValidationResult> validateBulkTransfer(List<BulkTransferValidation> bulkTransferValidationList) {
+    public BulkTransferValidationResult validateBulkTransfer(List<BulkTransferValidation> bulkTransferValidationList) {
 
-        List<BulkTransferValidationResult> bulkTransferValidationResultList = new ArrayList<>();
+        int inconsistencyCnt = 0;
+        int errorCnt = 0;
 
         for(BulkTransferValidation bulkTransferValidation: bulkTransferValidationList){
             AccountDetail depositAccount = accountService.getAccountDetail(bulkTransferValidation.getTargetAccId());
             String customerName = depositAccount.getCustomerName();
-
-            BulkTransferValidationResult bulkTransferValidationResult = BulkTransferValidationResult.builder()
-                    .targetAccId(bulkTransferValidation.getTargetAccId())
-                    .depositor(bulkTransferValidation.getDepositor())
-                    .krw(bulkTransferValidation.getKrw())
-                    .transferAmount(bulkTransferValidation.getTransferAmount())
-                    .description(bulkTransferValidation.getDescription())
-                    .build();
 
 
             String status = "";
             // 입금 계좌 오류
             if(depositAccount == null || depositAccount.getStatus().equals("CLS")){
                 status = "계좌 오류";
+                errorCnt++;
             }
-            else if (customerName.equals(bulkTransferValidation.getDepositor())){
+            else if (!customerName.equals(bulkTransferValidation.getDepositor())){
                 status = "예금주 불일치";
-
+                inconsistencyCnt++;
             }
-            bulkTransferValidationResult.setStatus(status);
-            bulkTransferValidationResult.setValidDepositor(customerName);
-
-            bulkTransferValidationResultList.add(bulkTransferValidationResult);
+            bulkTransferValidation.setStatus(status);
+            bulkTransferValidation.setValidDepositor(customerName);
         }
 
-        return bulkTransferValidationResultList;
+        BulkTransferValidationResult result = BulkTransferValidationResult.builder()
+                .bulkTransferValidationList(bulkTransferValidationList)
+                .totalCnt(bulkTransferValidationList.size())
+                .inconsistencyCnt(inconsistencyCnt)
+                .errorCnt(errorCnt)
+                .normalCnt(bulkTransferValidationList.size() - inconsistencyCnt - errorCnt)
+                .build();
+
+        return result;
     }
 }

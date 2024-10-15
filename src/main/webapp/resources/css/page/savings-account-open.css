@@ -1,0 +1,83 @@
+.search-button {
+    margin-left: 10px;
+    padding: 5px;
+    width: 80px;
+    height: 40px;
+}
+
+.search-icon-margin {
+    margin-right: 5px;
+}
+.button-group {
+    background-color: #ffffff; /* 버튼 그룹의 배경을 흰색으로 설정 */
+    padding: 10px; /* 여백 추가 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    display: flex; /* 버튼을 가로로 나열 */
+    gap: 10px; /* 버튼 간의 간격 */
+}
+
+.amount-btn {
+    background-color: #007bff; /* 버튼의 배경을 파란색으로 설정 */
+    color: white; /* 버튼의 글자 색상 */
+    border: none; /* 기본 테두리 제거 */
+    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    padding: 10px 15px; /* 버튼 내부 여백 */
+    cursor: pointer; /* 마우스 커서 변경 */
+    font-size: 16px; /* 글자 크기 */
+    transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+.amount-btn:hover {
+    background-color: #0056b3; /* 호버 시 다소 어두운 파란색 */
+}
+
+.amount-btn:focus {
+    outline: none; /* 포커스 시 테두리 제거 */
+}
+
+#savings-account-create-btn.disabled {
+    background-color: #6c757d; /* 비활성화된 배경색 (회색) */
+    color: #adb5bd; /* 비활성화된 텍스트 색상 (연한 회색) */
+    cursor: not-allowed; /* 비활성화 시 커서 스타일 변경 */
+}
+
+.auto-transfer-radio-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0; /* Margin around the container */
+}
+
+.auto-transfer-radio-container input[type="radio"] {
+    display: none; /* Hide the default radio button */
+}
+
+.auto-transfer-radio-container label {
+    position: relative;
+    padding-left: 30px; /* Space to the left for the custom radio */
+    margin-right: 20px; /* Space between the labels */
+    cursor: pointer; /* Pointer cursor for labels */
+    font-size: 16px; /* Font size for labels */
+    color: #333; /* Text color */
+}
+
+.auto-transfer-radio-container label::before {
+    content: '';
+    position: absolute;
+    left: 0; /* Align to the left */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    width: 18px; /* Width of the custom radio */
+    height: 18px; /* Height of the custom radio */
+    border: 2px solid #007bff; /* Border color for the radio */
+    border-radius: 50%; /* Make it a circle */
+    background: #fff; /* Background color for the unselected radio */
+    transition: background 0.3s; /* Transition effect for background color */
+}
+
+.auto-transfer-radio-container input[type="radio"]:checked + label::before {
+    background: #007bff; /* Background color when selected */
+}
+
+.auto-transfer-radio-container input[type="radio"]:checked + label {
+    color: #007bff; /* Change label text color when selected */
+}

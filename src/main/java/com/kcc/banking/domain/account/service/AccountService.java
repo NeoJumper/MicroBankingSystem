@@ -193,4 +193,15 @@ public class AccountService {
         accountMapper.openAccount(accountCreate);
         accountOpen.setId(accountId);
     }
+
+    public List<AccountOfModal> getAllAccountOfOneCustomer(String customerId) {
+        return accountMapper.findAllAccountOfOneCustomer(customerId);
+    }
+
+
+    // 예적금별 상품 찾기
+    public List<ProductOfModal> getAllProductList(SearchProductOfModal searchProductOfModal){
+        return accountMapper.findAccountProductList(searchProductOfModal);
+    }
+
 }

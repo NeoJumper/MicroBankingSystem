@@ -1,12 +1,9 @@
 package com.kcc.banking.domain.account.controller;
 
 import com.kcc.banking.domain.account.dto.request.*;
-import com.kcc.banking.domain.account.dto.response.AccountOfModal;
-import com.kcc.banking.domain.account.dto.response.AccountOpenResultOfModal;
-import com.kcc.banking.domain.account.dto.response.AccountProductInfo;
+import com.kcc.banking.domain.account.dto.response.*;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
-import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.trade.service.AccountTradeFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -85,6 +82,20 @@ public class AccountRestController {
         return ResponseEntity.status(HttpStatus.OK).body(cat);
     }
 
+    // 한고객의 개설상태의 입출금 통장 조회
+    @GetMapping("/api/employee/transfer-accounts/{customerId}")
+    public ResponseEntity<List<AccountOfModal>> getAllAccountOfOneCustomer(@PathVariable String customerId){
+        System.out.println("getAllAccountOfOneCustomer >>>>> customerId" + customerId);
+        List<AccountOfModal> accountsOfPerPerson = accountService.getAllAccountOfOneCustomer(customerId);
+        return ResponseEntity.ok(accountsOfPerPerson);
+    }
 
+    // 예금/ 적금별 상품 전체 조회
+    @GetMapping("/api/employee/products")
+    public ResponseEntity<List<ProductOfModal>> getAllProductByAccountType(@ModelAttribute SearchProductOfModal searchProductOfModal){
+        System.out.println("예금/ 적금별 상품 전체 조회 getAllProductByAccountType >>>>>>>>>>");
+        List<ProductOfModal> allProductList = accountService.getAllProductList(searchProductOfModal);
+        return ResponseEntity.ok(allProductList);
+    }
 }
 

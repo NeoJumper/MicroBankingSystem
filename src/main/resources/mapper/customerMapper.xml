@@ -20,10 +20,10 @@
                 name LIKE '%' || #{customerName} || '%'
             </if>
             <if test="customerId != null and customerId != ''">
-                AND id = #{customerId}
+                id = #{customerId}
             </if>
             <if test="customerPhone != null and customerPhone != ''">
-                AND phone_number LIKE '%' || #{customerPhone} || '%'
+                phone_number LIKE '%' || #{customerPhone} || '%'
             </if>
         </where>
     </select>

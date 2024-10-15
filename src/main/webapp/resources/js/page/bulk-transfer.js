@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
         myModal.show();
     }
 
-    // 파일등록 유효성 검증
+    // 엑셀 업로드
     $('#uploadEmployeePreviewBtnOfTable').click(uploadEmployeePreviewBtnOfTableClickHandler);
 
     function uploadEmployeePreviewBtnOfTableClickHandler() {
@@ -189,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     row.append($('<td>').text(employee.transferAmount));
                     row.append($('<td>').text(employee.krw));
                     row.append($('<td>').text(employee.depositor));
+                    row.append($('<td>').text(''));
                     row.append($('<td>').text(employee.description));
 
                     tbody.append(row);
@@ -250,5 +251,92 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     }
+    // 계좌 유효성 검증
+    $('input[value="예금주 확인"]').click(validationExecution);
+    function validationExecution(){
+        console.log("예금주 확인");
+        $.ajax({
+            type: "POST",
+            url: "/api/employee/bulk-transfer/validation",
+            contentType: 'application/json',
+            data: JSON.stringify(employeeDataForUpload),
+            success: function (data) {
 
+                //console.log(data);
+                var tbody = $('#employeeTablePreviewBody');
+                tbody.empty(); // 기존 내용을 비웁니다.
+
+                // 서버에서 받은 데이터를 기반으로 테이블 생성
+                $.each(data.bulkTransferValidationList, function (index, employee) {
+
+                    var row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+
+                    row.append($('<td>').text(++index));
+                    row.append($('<td>').text(employee.targetAccId));
+                    row.append($('<td>').text(employee.transferAmount));
+                    row.append($('<td>').text(employee.krw));
+                    row.append($('<td>').text(employee.depositor));
+                    row.append($('<td>').text(employee.validDepositor));
+                    row.append($('<td>').text(employee.description));
+
+                    tbody.append(row);
+
+
+                    employeeDataForUpload.push(
+                        {
+                            accId: "001-0000019-1834",
+                            accountPassword: "1234",
+                            targetAccId: employee.targetAccId,
+                            transferAmount: employee.transferAmount,
+                            krw: employee.krw,
+                            depositor: employee.depositor,
+                            description: employee.description,
+                        }
+                    );
+
+                });
+
+                $('#total-registrations').text(data.totalCnt);
+                $('#valid-recipients').text(data.normalCnt);
+                $('#mismatch-recipients').text(data.inconsistencyCnt);
+                $('#error-recipients').text(data.errorCnt);
+
+                $('#result-content-div').show();
+                $('input[value="초기화"]').show();
+                $('input[value="이체실행"]').show();
+
+                $('.progress-container .step:nth-of-type(1)').removeClass('active');
+                $('.progress-container .step:nth-of-type(1) .inner-circle').append('<i class="bi bi-check"></i>');
+                $('.progress-container .step:nth-of-type(1) .inner-circle').removeClass('active');
+
+
+                $('.progress-container .step:nth-of-type(3)').addClass('active');
+                $('.progress-container .step:nth-of-type(3) .circle').addClass('active');
+                $('.progress-container .step:nth-of-type(3) .inner-circle').addClass('active');
+            },
+            error: function(data){
+                console.log("실패");
+
+            }
+        });
+
+
+    }
+    // 초기화
+    $('input[value="초기화"]').click(initExecution);
+    function initExecution(){
+        console.log("초기화");
+
+        var tbody = $('#employeeTablePreviewBody');
+        tbody.empty(); // 기존 내용을 비웁니다.
+        employeeDataForUpload = [];
+
+        $('#result-content-div').hide();
+        $('input[value="초기화"]').hide();
+        $('input[value="이체실행"]').hide();
+
+        $('.progress-container .step:nth-of-type(3)').removeClass('active');
+        $('.progress-container .step:nth-of-type(3) .circle').removeClass('active');
+        $('.progress-container .step:nth-of-type(3) .inner-circle').removeClass('active');
+    }
 })

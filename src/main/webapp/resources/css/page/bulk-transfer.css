@@ -170,3 +170,87 @@ p {
 .account-result-contents > div > div:nth-child(1){
     padding-bottom: 10px;
 }
+
+/* 프로그레스 바 컨테이너 */
+.progress-container {
+    width: 650px;
+    min-height: 100px;
+    margin: 0 auto;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 60px;
+}
+
+/* 각 단계 */
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    gap: 0;
+    float: left;
+}
+
+/* 원형 모양 */
+.circle {
+    width: 75px;
+    height: 75px;
+    border-radius: 60px;
+    border: 3px solid #9CA3AF;
+    background-color: #F4F7FF;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 활성화된 원형 */
+.circle.active {
+    border-color: var(--basic-hover-dark-color);
+}
+
+.inner-circle{
+
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.inner-circle.active{
+    width: 20px;
+    height: 20px;
+    border-radius: 60px;
+    background-color: var(--basic-hover-dark-color);
+
+}
+
+.inner-circle.active{
+}
+
+/* 각 단계의 텍스트 */
+.step p {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* 활성화된 텍스트 */
+.step.active p {
+    color: black;
+    font-weight: 600;
+}
+
+.line {
+    width: 150px;
+    height: 3px;
+    background-color: #d0d5dd;
+    margin-top: 35px;
+    float: left;
+}
+
+
+/* 첫 번째와 마지막 단계에 라인 표시 안함 */
+.step:first-child .line,
+.step:last-child .line {
+    display: none;
+}

@@ -214,6 +214,7 @@
                 <th><label id="bulk-transfer-success-cnt">성공건수</label></th>
                 <th><label id="bulk-transfer-total-cnt">총건수</label></th>
                 <th><label id="bulk-transfer-status">상태</label></th>
+                <th><label id="bulk-transfer-detail"></label></th>
                 </thead>
                 <tbody id="bulk-transfer-result-tbody">
 
