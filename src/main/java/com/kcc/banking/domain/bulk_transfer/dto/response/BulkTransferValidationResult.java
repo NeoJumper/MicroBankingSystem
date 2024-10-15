@@ -1,36 +1,32 @@
 package com.kcc.banking.domain.bulk_transfer.dto.response;
 
 
+import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferValidation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
 public class BulkTransferValidationResult {
 
-
-
-    private String targetAccId;
-    private BigDecimal transferAmount; // 이체금액
-    private String krw; // 한글 금액 표기
-    private String depositor; // 예금주
-    private String validDepositor;
-    private String description; // 비고
-    private String status;
+    private List<BulkTransferValidation> bulkTransferValidationList;
+    private Integer totalCnt;
+    private Integer normalCnt;
+    private Integer inconsistencyCnt;
+    private Integer errorCnt;
 
     @Builder
-    public BulkTransferValidationResult(String targetAccId, BigDecimal transferAmount, String krw, String depositor, String validDepositor, String description, String status) {
-        this.targetAccId = targetAccId;
-        this.transferAmount = transferAmount;
-        this.krw = krw;
-        this.depositor = depositor;
-        this.validDepositor = validDepositor;
-        this.description = description;
-        this.status = status;
+    public BulkTransferValidationResult(List<BulkTransferValidation> bulkTransferValidationList, Integer totalCnt,Integer normalCnt, Integer inconsistencyCnt, Integer errorCnt) {
+        this.bulkTransferValidationList = bulkTransferValidationList;
+        this.totalCnt = totalCnt;
+        this.normalCnt = normalCnt;
+        this.inconsistencyCnt = inconsistencyCnt;
+        this.errorCnt = errorCnt;
     }
 }

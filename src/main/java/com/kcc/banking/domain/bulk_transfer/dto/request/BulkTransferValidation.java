@@ -18,6 +18,8 @@ public class BulkTransferValidation {
     private String krw; // 한글 금액 표기
     private String depositor; // 예금주
     private String description; // 비고
+    private String validDepositor;
+    private String status;
 
     @Builder
     public BulkTransferValidation(String targetAccId, BigDecimal transferAmount, String krw, String depositor, String description) {

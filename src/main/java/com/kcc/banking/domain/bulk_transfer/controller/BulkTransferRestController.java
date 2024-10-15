@@ -91,9 +91,9 @@ public class BulkTransferRestController {
     }
     // 대량 이체 계좌 유효성 검증
     @PostMapping("/api/employee/bulk-transfer/validation")
-    public ResponseEntity<List<BulkTransferValidationResult>> validateBulkTransfer(@RequestBody List<BulkTransferValidation> bulkTransferValidationList) {
-        List<BulkTransferValidationResult> bulkTransferValidationResultList = accountTradeFacade.validateBulkTransfer(bulkTransferValidationList);
-        return ResponseEntity.ok(bulkTransferValidationResultList);
+    public ResponseEntity<BulkTransferValidationResult> validateBulkTransfer(@RequestBody List<BulkTransferValidation> bulkTransferValidationList) {
+        BulkTransferValidationResult bulkTransferValidationResult = accountTradeFacade.validateBulkTransfer(bulkTransferValidationList);
+        return ResponseEntity.ok(bulkTransferValidationResult);
     }
 
     // 대량 이체
