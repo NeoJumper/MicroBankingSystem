@@ -49,6 +49,7 @@ CREATE TABLE Trade (
                        registrant_id NUMBER NOT NULL,
                        acc_id VARCHAR(20) NOT NULL,
                        target_acc_id VARCHAR(20) NULL,
+                       bulk_transfer_id VARCHAR(20) NULL,
                        branch_id NUMBER NOT NULL,
                        trade_date TIMESTAMP NULL,
                        amount NUMBER NULL,

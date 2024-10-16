@@ -149,10 +149,17 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     }
 
-    // 파일 등록버튼
+    // 파일등록 버튼
     $('#uploadEmployeeBtn').click(uploadEmployeeBtnClickHandler);
     function uploadEmployeeBtnClickHandler() {
         var myModal = new bootstrap.Modal(document.getElementById('uploadEmployeeModal'));
+        myModal.show();
+    }
+
+    // 개별추가 버튼
+    $('#uploadIndividualEmployeeBtn').click(uploadIndividualEmployeeBtnClickHandler);
+    function uploadIndividualEmployeeBtnClickHandler() {
+        var myModal = new bootstrap.Modal(document.getElementById('uploadIndividualEmployeeModal'));
         myModal.show();
     }
 
@@ -272,8 +279,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // 서버에서 받은 데이터를 기반으로 테이블 생성
                 $.each(data.bulkTransferValidationList, function (index, employee) {
-
-                    var row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+                    let backgroundColor = "red";
+                    if(employee.depositor == employee.validDepositor){
+                        console.log("employee.depositor == employee.validDepositor");
+                        backgroundColor = "green";
+                    }
+                    var row = backgroundColor == "red" ? $('<tr>').addClass('employee-element failure').attr('data-emp-id', employee.id):$('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
 
                     row.append($('<td>').text(++index));
                     row.append($('<td>').text(employee.targetAccId));

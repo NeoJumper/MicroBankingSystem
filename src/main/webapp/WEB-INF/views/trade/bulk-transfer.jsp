@@ -108,14 +108,13 @@
             <div class="table-top-btns">
                 <div>
                     <input id="uploadEmployeeBtn" type="button" value="파일등록">
-                    <input type="button" value="개별추가">
+                    <input id="uploadIndividualEmployeeBtn" type="button" value="개별추가">
                 </div>
                 <div>
                     <select>
                         <option value="" disabled selected>검색조건</option>
-                        <option value="조건1">조건 1</option>
-                        <option value="조건2">조건 2</option>
-                        <option value="조건3">조건 3</option>
+                        <option value="입금계좌번호">입금계좌번호</option>
+                        <option value="등록된 예금주">등록된 예금주</option>
                     </select>
                     <input type="text" placeholder="검색어 입력">
                 </div>
@@ -141,19 +140,19 @@
                 <div class="result-content">
                     <div>
                         총 등록건수(건) <br>
-                        <span id="total-registrations"></span>(건)
+                        <span id="total-registrations">0</span>(건)
                     </div>
                     <div>
                         받는분 정상(건) <br>
-                        <span id="valid-recipients">300</span>(건)
+                        <span id="valid-recipients">0</span>(건)
                     </div>
                     <div>
                         받는분 불일치(건) <br>
-                        <span id="mismatch-recipients">1</span>(건)
+                        <span id="mismatch-recipients">0</span>(건)
                     </div>
                     <div>
                         받는분 오류(건) <br>
-                        <span id="error-recipients">1</span>(건)
+                        <span id="error-recipients">0</span>(건)
                     </div>
                 </div>
                 <ul class="warning-writer">
@@ -216,6 +215,55 @@
             <div class="modal-footer">
                 <button type="button" data-bs-dismiss="modal" class="btn border border-black btn-black bg-white" style="border-radius: 2px;"><p style="margin: 0px;">닫기</p></button>
                 <button id="uploadEmployeePreviewBtnOfTable" type="button" data-bs-dismiss="modal"  class="btn btn-primary">파일등록</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 개별추가 모달 -->
+<div class="modal fade" id="uploadIndividualEmployeeModal" tabindex="-1">
+    <div class="modal-dialog" style="margin-top:200px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5 fw-bold">엑셀을 이용해 직원을 추가해보세요</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
+
+                <div class="d-flex mb-3">
+                    <div class="d-flex align-items-center"><p style="margin-bottom: 0; padding-bottom: 2px;">
+                        <p>
+                            직원 일괄추가 템플릿을 다운로드한 후,
+                            <br>
+                            템플릿 형식에 맞춰 직원정보를 입력한 뒤 업로드해주세요
+                        </p>
+
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="d-flex col-12 justify-content-center align-items-center p-4" style="background-color: #E6EFFA">
+
+                        <div>
+                            <p class ="text-color-gray1" style="font-size: 15px; margin: 0px;">employees-upload.xlsx</p>
+                        </div>
+                        <button type="button" class="d-flex ms-2 btn btn-light border border-2 align-items-center" style="height: 27px;">
+                            <a class ="text-color-gray1" style="font-size: 15px; text-decoration-line: none;" href="/api/employee/bulk-transfer/file-download">다운로드</a><br>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex mt-4">
+                    <div class="d-flex col-12 justify-content-center align-items-center p-4" style="background-color: #E6EFFA">
+
+                        <div>
+                            <input id="excelInput1" type="file" style="width: 250px;" >
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn border border-black btn-black bg-white" style="border-radius: 2px;"><p style="margin: 0px;">닫기</p></button>
+                <button id="uploadEmployeePreviewBtnOfTabl1" type="button" data-bs-dismiss="modal"  class="btn btn-primary">파일등록</button>
             </div>
         </div>
     </div>
