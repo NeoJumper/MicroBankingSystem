@@ -1,5 +1,27 @@
 
 $(document).ready(function() {
+    // enter 키
+    $('#modal-input-account').keypress(function(event) {
+        if (event.key === 'Enter') {
+            let status = '';
+            const currentUrl = extractUrl(window.location.href);
+            console.log(currentUrl,"currentUrl=======!!!!")
+            switch (currentUrl) {
+                case 'account-close':
+                    status = 'OPN';
+                    break;
+
+                case 'account-close-cancel':
+                    status = 'CLS';
+                    break;
+
+                case '':
+                    break;
+            }
+
+            checkAccount(status);  // 계좌 조회 함수 호출
+        }
+    });
 
     $('#modal-check-account-btn').click(function () {
         let status = '';
