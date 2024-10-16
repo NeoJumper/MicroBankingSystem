@@ -39,6 +39,10 @@
 }
 
 /* 공통 css */
+.failure {
+    color: #F27474; /* 글씨 색을 흰색으로 설정 , */
+}
+
 span {
     font-weight: bold;
     color: #073082;
@@ -149,6 +153,7 @@ input[type="button"][value="계좌조회 >"] {
 }
 
 #bulk-transfer-info td, #bulk-transfer-info th {
+    font-weight: bold;
     text-align: center;
 }
 
