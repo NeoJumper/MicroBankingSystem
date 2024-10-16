@@ -267,6 +267,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 var tbody = $('#employeeTablePreviewBody');
                 tbody.empty(); // 기존 내용을 비웁니다.
 
+                // 비워줌
+                employeeDataForUpload = [];
+
                 // 서버에서 받은 데이터를 기반으로 테이블 생성
                 $.each(data.bulkTransferValidationList, function (index, employee) {
 
@@ -281,7 +284,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     row.append($('<td>').text(employee.description));
 
                     tbody.append(row);
-
 
                     employeeDataForUpload.push(
                         {
