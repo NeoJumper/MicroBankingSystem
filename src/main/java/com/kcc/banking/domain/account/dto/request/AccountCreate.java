@@ -37,7 +37,7 @@ public class AccountCreate {
         this.customerId = customerId;
         this.productId = productId;
         this.registrantId = registrantId;
-        this.startDate = startDate;
+        this.startDate = startDate; // 영업일 / 이자시작일 / 적금은 null
         this.preferentialInterestRate = preferentialInterestRate;
         this.password = password;
         this.balance = balance;

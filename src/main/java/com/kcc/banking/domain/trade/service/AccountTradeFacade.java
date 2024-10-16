@@ -7,6 +7,8 @@ import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
+import com.kcc.banking.domain.auto_transfer.dto.request.AutoTransferCreate;
+import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferValidation;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferValidationResult;
@@ -43,13 +45,15 @@ public class AccountTradeFacade {
     private final BusinessDayCloseService businessDayCloseService;
     private final BulkTransferService bulkTransferService;
     private final CommonService commonService;
+    private final AutoTransferService autoTransferService;
 
     /**
-     *   @Description - 계좌 개설
+     *   @Description - 보통 예금계좌 개설
      *
-     *   1. 계좌 해지 거래 내역 생성
-     *   2. 계좌 잔액 및 상태 변경
-     *   3. 이자 지급일 및 상태 변경
+     *   1. 계좌 개설 거래 내역 생성
+     *   2. 마감 입금액 상태 변경
+     *   3. 계좌 생성
+     *   
      */
     public String openAccount(AccountOpen accountOpen) {
         CurrentData currentData = commonService.getCurrentData();
@@ -69,8 +73,22 @@ public class AccountTradeFacade {
 
         // 행원 마감 입금액 변경
         businessDayCloseService.updateTradeAmount(accountOpen.getBalance(), currentData, accountOpen.getTradeType());
+
         return accountOpen.getId();
     }
+
+
+    /**
+     *   @Description - 정기적금 예금계좌 개설
+     *      1. 계좌 개설 거래 내역 생성
+     *      2. 마감 입금액 상태 변경
+     *      3. 계좌 생성
+     *      4. 자동이체 여부 및 자동이체 정보 생성
+     *      5. 자동이체 즉시 출금
+     *      6. 성공 여부
+     */
+
+
 
     /**
      *   @Description - 계좌 해지

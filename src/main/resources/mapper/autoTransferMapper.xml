@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kcc.banking.domain.auto_transfer.mapper.AutoTransferMapper">
+
+    <insert id="insertAutoTransfer" parameterType="AutoTransferCreate">
+        INSERT INTO Auto_transfer (
+            id,
+            acc_id,
+            target_acc_id,
+            amount,
+            auto_transfer_start_date,
+            auto_transfer_date,
+            auto_transfer_end_date,
+            auto_transfer_period,
+            create_date,
+            registration_date,
+            registrant_id,
+            modification_date,
+            modifier_id,
+            version
+        ) VALUES (
+                     auto_transfer_seq.NEXTVAL,
+                     #{acc_id},
+                     #{target_acc_id},
+                     #{amount},
+                     #{auto_transfer_start_date},
+                     #{auto_transfer_date},
+                     #{auto_transfer_end_date},
+                     #{auto_transfer_period},
+                     #{create_date},  -- create_date
+                     SYSTIMESTAMP,  -- registration_date
+                     #{registrant_id},
+                     NULL,  -- modification_date
+                     NULL,  -- modifier_id
+                     1      -- version
+                 )
+    </insert>
+
+</mapper>
