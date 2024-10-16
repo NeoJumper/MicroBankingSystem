@@ -96,7 +96,7 @@
                             <label><input type="radio" name="salaryType" value="월급여"> 월급여 &nbsp &nbsp</label>
                             <label><input type="radio" name="salaryType" value="상여금"> 상여금</label>
                         </div>
-                        <input placeholder="10자 이내  입력" type="text" id="description">
+                        <input placeholder="10자 이내  입력" type="text" id="description" maxlength="10">
                     </td>
                 </tr>
             </table>
@@ -111,12 +111,12 @@
                     <input id="uploadIndividualEmployeeBtn" type="button" value="개별추가">
                 </div>
                 <div>
-                    <select>
+                    <select id="searchCondition">
                         <option value="" disabled selected>검색조건</option>
-                        <option value="입금계좌번호">입금계좌번호</option>
-                        <option value="등록된 예금주">등록된 예금주</option>
+                        <option value="targetAccId">입금계좌번호</option>
+                        <option value="depositor">등록된 예금주</option>
                     </select>
-                    <input type="text" placeholder="검색어 입력">
+                    <input type="text" id="searchInput" placeholder="검색어 입력">
                 </div>
             </div>
             <table id="bulk-transfer-info" class="common-table">

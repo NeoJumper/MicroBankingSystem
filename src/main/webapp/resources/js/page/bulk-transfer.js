@@ -304,6 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             transferAmount: employee.transferAmount,
                             krw: employee.krw,
                             depositor: employee.depositor,
+                            validDepositor: employee.validDepositor,
                             description: employee.description,
                         }
                     );
@@ -333,9 +334,94 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
         });
-
-
     }
+
+
+    // $.each(data.bulkTransferValidationList, function (index, employee) {
+    //     let backgroundColor = "red";
+    //     if(employee.depositor == employee.validDepositor){
+    //         console.log("employee.depositor == employee.validDepositor");
+    //         backgroundColor = "green";
+    //     }
+    //     var row = backgroundColor == "red" ? $('<tr>').addClass('employee-element failure').attr('data-emp-id', employee.id):$('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+    //
+    //     row.append($('<td>').text(++index));
+    //     row.append($('<td>').text(employee.targetAccId));
+    //     row.append($('<td>').text(employee.transferAmount));
+    //     row.append($('<td>').text(employee.krw));
+    //     row.append($('<td>').text(employee.depositor));
+    //     row.append($('<td>').text(employee.validDepositor));
+    //     row.append($('<td>').text(employee.description));
+    //
+    //     tbody.append(row);});
+
+    // 검색어로 조회하기
+    $('#searchInput').on('input', function() {
+        var searchValue = $(this).val(); // 입력된 검색어
+        var searchCondition = $('#searchCondition').val(); // 선택된 검색 조건
+        var tbody = $('#employeeTablePreviewBody');
+
+        // 기존 내용 비우기
+        tbody.empty();
+
+        // 검색 로직 (예시)
+        if (searchValue === "" || searchCondition === "") {
+            // 검색어가 없거나 조건이 없을 경우 모든 데이터 표시
+            $.each(employeeDataForUpload, function(index, employee) {
+                let backgroundColor = "red";
+                if (employee.depositor === employee.validDepositor) {
+                    backgroundColor = "green";
+                }
+                var row = $('<tr>').addClass('employee-element')
+                    .attr('data-emp-id', employee.id)
+                    .addClass(backgroundColor === "red" ? 'failure' : '');
+
+                row.append($('<td>').text(++index));
+                row.append($('<td>').text(employee.targetAccId));
+                row.append($('<td>').text(employee.transferAmount));
+                row.append($('<td>').text(employee.krw));
+                row.append($('<td>').text(employee.depositor));
+                row.append($('<td>').text(employee.validDepositor));
+                row.append($('<td>').text(employee.description));
+
+                tbody.append(row);
+            });
+        } else {
+            // 검색어와 조건이 있을 경우 필터링
+            let filteredEmployees;
+            if (searchCondition === "targetAccId") {
+                filteredEmployees = employeeDataForUpload.filter((item) => {
+                    return item.targetAccId.includes(searchValue); // 검색어로 필터링
+                });
+            } else if (searchCondition === "depositor") {
+                filteredEmployees = employeeDataForUpload.filter((item) => {
+                    return item.depositor.includes(searchValue); // 검색어로 필터링
+                });
+            }
+
+            // 필터링된 데이터 표시
+            $.each(filteredEmployees, function(index, employee) {
+                let backgroundColor = "red";
+                if (employee.depositor === employee.validDepositor) {
+                    backgroundColor = "green";
+                }
+                var row = $('<tr>').addClass('employee-element')
+                    .attr('data-emp-id', employee.id)
+                    .addClass(backgroundColor === "red" ? 'failure' : '');
+
+                row.append($('<td>').text(++index));
+                row.append($('<td>').text(employee.targetAccId));
+                row.append($('<td>').text(employee.transferAmount));
+                row.append($('<td>').text(employee.krw));
+                row.append($('<td>').text(employee.depositor));
+                row.append($('<td>').text(employee.validDepositor));
+                row.append($('<td>').text(employee.description));
+
+                tbody.append(row);
+            });
+        }
+    });
+
     // 초기화
     $('input[value="초기화"]').click(initExecution);
     function initExecution(){
