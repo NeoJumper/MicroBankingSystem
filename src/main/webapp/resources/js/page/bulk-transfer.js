@@ -251,6 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     }
+
     // 계좌 유효성 검증
     $('input[value="예금주 확인"]').click(validationExecution);
     function validationExecution(){
