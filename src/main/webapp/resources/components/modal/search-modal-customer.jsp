@@ -63,7 +63,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" id="search-modal-select-btn" class="btn btn-primary" data-bs-dismiss="modal">선택</button>
+                <button type="button" id="search-modal-select-btn" class="btn basic-btn" data-bs-dismiss="modal">선택</button>
                 <button type="button" id="search-modal-close-btn" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>

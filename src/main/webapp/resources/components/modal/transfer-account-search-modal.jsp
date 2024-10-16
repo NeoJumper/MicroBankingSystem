@@ -47,7 +47,7 @@
                     </tbody>
                 </table>
                 <div id="search-modal-select-button">
-                    <button id="search-modal-select-transfer-account-btn" class="btn update-btn">계좌 선택</button> <!-- Added "btn" class -->
+                    <button id="search-modal-select-transfer-account-btn" class="btn basic-btn">계좌 선택</button> <!-- Added "btn" class -->
                 </div>
             </div>
         </div>

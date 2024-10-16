@@ -9,7 +9,7 @@ $(document).ready(function () {
     searchAutoTransferAccountData();
 
 
-    $('#search-modal-product-select-btn').click(function() {
+    $('#search-modal-product-select-btn').click(function () {
         selectProduct();  // 선택된 상품 정보 입력 함수 호출
         getSavingsAccountEndDate(); // 만기일자 구하는 함수 (기간 + 현재영업일)
     });
@@ -28,27 +28,48 @@ $(document).ready(function () {
         updateTransferAmount(); // 값 업데이트 함수 호출
         checkBalance();
     });
-    
+
     // 출금금액 변경될 때 정기적금 금액 변경
-    $('#auto-transfer-amount').on('input', function(){
+    $('#auto-transfer-amount').on('input', function () {
         updateSavingsAmount();
         checkBalance();
     });
-    
+
     // 정기적금 금액 초기값 설정
     updateTransferAmount();
 
+    // 예상 만기이자 함수
+    $('#total-interest-input').on('input', function () {
+        // 총 이자 입력 필드에 값이 있는지 확인
+        if ($(this).val().trim() !== '') {
+            calculateExpectedInterest();
+        } else {
+            // 만약 값이 비어있다면 결과 필드도 비워줌
+            $('#expected-maturity-interest-input').val('');
+
+        }
+    });
+
+    // 예상 만기이자 함수
+    $('#auto-transfer-amount-input, #product-period-input').on('input', function () {
+        // 각 필드에 값이 있을 때마다 이자 계산
+        if ($('#total-interest-input').val().trim() !== '') {
+            calculateExpectedInterest();
+        }
+    });
+
 
     // 적금 자동이체 출금계좌 선택시 필드 입력 함수
-    $('#search-modal-select-transfer-account-btn').click(function(){
+    $('#search-modal-select-transfer-account-btn').click(function () {
         selectTransferAccount();
     });
 
 
     // 출금계좌 인증하기
-    $('#check-transfer-account-btn').click(function(){
+    $('#check-transfer-account-btn').click(function () {
         checkTransferPassword();
     });
+
 
     // 계좌 잔액이 변경될 때마다도 확인
     $('#account-balance').on('input', function () {
@@ -56,8 +77,18 @@ $(document).ready(function () {
     });
 
     // 계좌 생성
-    $('#account-')
+    $('#savings-account-create-btn').click(function () {
+        createSavingAccount();
+    });
 });
+
+
+
+// 적금 자동이체 생성 함수
+function createAutoTransferInfo() {
+
+
+}
 
 // 잔액 부족 알림 띄우기
 function checkBalance() {
@@ -74,6 +105,7 @@ function checkBalance() {
         $('#savings-account-create-btn').removeClass('disabled'); // 비활성화 클래스 제거
     }
 }
+
 // 적금금액 입력시 이체 금액에 자동입력 기능 함수
 function updateTransferAmount() {
     const amountInput = $('#auto-transfer-amount-input'); // 입력 필드 선택
@@ -98,10 +130,10 @@ function updateSavingsAmount() {
 }
 
 // 적금 금액 버튼 클릭시 이벤트 함수
-function clickAmountBtn(){
+function clickAmountBtn() {
     // 버튼 클릭 시 입력 필드에 금액을 입력하는 함수
     document.querySelectorAll('.amount-btn').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const amount = this.getAttribute('data-amount'); // 버튼의 data-amount 속성에서 금액 가져오기
             document.getElementById('auto-transfer-amount-input').value = amount; // 입력 필드에 금액 설정
             document.getElementById('auto-transfer-amount').value = amount; // 입력 필드에 금액 설정
@@ -118,15 +150,57 @@ function calculateTotalInterest() {
     const totalInterest = productInterest + preferredInterest;
     $('#total-interest-input').val(totalInterest.toFixed(2)); // 소수점 2자리까지 출력
 }
+// 적금 계좌 개설 함수
+function createSavingAccount() {
+
+    swal({
+        title: " 계좌 생성 성공",
+        text: "계좌가 성공적으로 개설되었습니다.",
+        icon: "success",
+        button: "닫기",
+    });
+}
+
+// 만기 예상 이자 계산 함수
+function calculateExpectedInterest() {
+    const principal = parseFloat($('#auto-transfer-amount-input').val());
+    const annualRate = parseFloat($('#total-interest-input').val());
+    const months = parseInt($('#product-period-input').val().replace('월', '').trim(), 10); // '월' 제거
 
 
+    // 만기 계산
+    const {interest, totalAmount} = calculateMaturity(principal, annualRate, months);
 
-function setCurrentData(){
+    // 이자와 총 금액 설정
+    $('#expected-maturity-interest-input').val(interest.toFixed(2)).css('color', 'green'); // 이자 입력
+    // 입력값 검증
+    // if (isNaN(principal) || isNaN(annualRate) || isNaN(months)) {
+    //     alert('모든 입력값이 숫자여야 합니다.');
+    //     return; // 잘못된 입력 시 함수 종료
+    // }
+
+
+}
+
+// 만기 시 이자를 계산하고 총 금액을 반환하는 함수
+function calculateMaturity(principal, annualRate, months) {
+    // 월 단위 이자 계산: 원금 x 연이율 x 월수 / 12
+    const interest = (principal * (annualRate / 100) * months) / 12;
+    const totalAmount = principal + interest;
+
+    return {
+        interest: interest,      // 만기 시 주는 이자
+        totalAmount: totalAmount // 총 금액(원금 + 이자)
+    };
+}
+
+
+function setCurrentData() {
 
     $.ajax({
         url: "/api/common/current-data",
         type: "GET",
-        success: function(data) {
+        success: function (data) {
             $('#emp-name-input').val(data.employeeName);
             $('#emp-id-hidden').val(data.employeeId);
 
@@ -137,30 +211,57 @@ function setCurrentData(){
             $('#savings-account-start-date-input').val(formattedDate);
 
 
-        }, error: function(data) {
+        }, error: function (data) {
             console.log(data);
         }
     });
 }
 
 
-function checkAutoTransfer(){
+function checkAutoTransfer() {
 
     const yesRadio = document.getElementById("yes-automatic-transfer");
     const noRadio = document.getElementById("no-automatic-transfer");
     const additionalInfo = document.getElementById("automatic-transfer-info-div");
-
-    yesRadio.addEventListener("change", checkAutoTransfer);
-    noRadio.addEventListener("change", checkAutoTransfer);
+    const createAccBtn = document.getElementById("savings-account-create-btn");
 
     // 추가 정보 표시/숨기기 함수
     function checkAutoTransfer() {
         additionalInfo.style.display = yesRadio.checked ? "block" : "none";
     }
 
+    // 계좌 생성 활성화 버튼
+    function activeOfCreatAccBtn() {
+        if (yesRadio.checked) {
+            createAccBtn.classList.add('disabled'); // 'disabled' 클래스 제거 (활성화)
+        } else {
+            createAccBtn.classList.remove('disabled'); // 'disabled' 클래스 추가 (비활성화)
+        }
+    }
+
+
+    yesRadio.addEventListener("change", checkAutoTransfer);
+    noRadio.addEventListener("change", checkAutoTransfer);
+
+
+    // 라디오 버튼에 이벤트 리스너 추가
+    yesRadio.addEventListener("change", function () {
+        checkAutoTransfer();
+        activeOfCreatAccBtn(); // 버튼 활성화/비활성화
+    });
+
+    noRadio.addEventListener("change", function () {
+        checkAutoTransfer();
+        activeOfCreatAccBtn(); // 버튼 활성화/비활성화
+    });
+
+    checkAutoTransfer();
+    activeOfCreatAccBtn();
+
+
 }
 
-function selectProduct(){
+function selectProduct() {
 
     const selectedProduct = $('input[name="selected-product-id"]:checked');
 
@@ -189,7 +290,7 @@ function selectProduct(){
     $('#search-modal-product').modal('hide');
 }
 
-function getSavingsAccountEndDate(){
+function getSavingsAccountEndDate() {
     var selectedMonths = parseInt($('#product-period-input').val());  // 선택한 개월 수를 숫자로 변환
 
     // 기존 시작 날짜 가져오기 (YYYY-MM-DD 형식)
@@ -218,7 +319,7 @@ function formatDateToString(date) {
     return `${year}-${month}-${day}`;
 }
 
-function selectTransferAccount(){
+function selectTransferAccount() {
 
     const selectedTransferAccount = $('input[name="selected-transfer-account-id"]:checked');
 
@@ -252,7 +353,7 @@ function checkTransferPassword() {
     var accountNumber = $('#auto-transfer-account-number').val();
     var accountPassword = $('#auto-transfer-account-password').val();
 
-    $.ajax( {
+    $.ajax({
         url: '/api/employee/account-validate',
         contentType: "application/x-www-form-urlencoded",
         type: "POST",
@@ -270,8 +371,7 @@ function checkTransferPassword() {
             AddInfoOfAutoTransferAccount(true);
 
 
-
-        }, error: function (error){
+        }, error: function (error) {
             swal({
                 title: "검증 실패",
                 text: error.responseText,
@@ -291,8 +391,7 @@ function checkTransferPassword() {
 }
 
 
-
-function AddInfoOfAutoTransferAccount(result){
+function AddInfoOfAutoTransferAccount(result) {
     const addTransferAccountInfo = document.getElementById("checked-transfer-account-div");
 
     addTransferAccountInfo.style.display = result ? "block" : "none";
