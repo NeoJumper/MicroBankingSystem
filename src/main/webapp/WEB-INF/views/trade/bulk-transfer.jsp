@@ -165,7 +165,7 @@
         </section>
         <section class="submit-btns">
             <input class="basic-btn" type="button" value="예금주 확인">
-            <input class="basic-btn" type="button" value="초기화" style="background-color: white; color: black; border: 1px solid #D5D5D5; display: none">
+            <input class="basic-btn" type="button" value="초기화" style="display: none">
             <input class="basic-btn" type="button" value="이체실행" style="display: none">
         </section>
     </container>
