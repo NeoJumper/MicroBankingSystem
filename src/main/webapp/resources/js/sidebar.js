@@ -9,7 +9,9 @@ headerMap.set("header-account-management", {
         "account-transfer",
         "cash-trade",
         "trade-list",
-        "bulk-transfer"
+        "bulk-transfer",
+        "savings-account-open",
+        "savings-account-close"
     ],
     sub: {
         "bulk-transfer" : ["bulk-transfer-result"],
@@ -125,7 +127,14 @@ function createAccountManagementSidebar(selectedSidebarMenu) {
             submenu: [
                 { name: '계좌 개설', url: '/page/employee/account-open' },
                 { name: '계좌 해지', url: '/page/employee/account-close' },
-                { name: '계좌 해지 취소', url: '/page/employee/account-close-cancel' },
+            ]
+        },
+        {
+            title: '적금 관리',
+            icon: 'bi bi-bank',
+            submenu: [
+                { name: '계좌 개설', url: '/page/employee/savings-account-open' },
+                { name: '계좌 해지', url: '/page/employee/savings-account-close' },
             ]
         },
         {
