@@ -12,7 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
         var selectedAccountId = selectedRow.find('td:eq(1)').text();  // 해당 행의 2번째 열(계좌번호 열)에서 값 추출
 
         if (!selectedAccountId) {
-            alert("계좌를 선택해 주세요.");
+            swal({
+                title: "계좌를 선택해 주세요.",
+                // text: "비밀번호 인증 성공",
+                icon: "warning",
+            });
             return;
         }
         // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
@@ -256,7 +260,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-
     }
 
     // 계좌 유효성 검증
@@ -284,14 +287,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.log("employee.depositor == employee.validDepositor");
                         backgroundColor = "green";
                     }
-                    var row = backgroundColor == "red" ? $('<tr>').addClass('employee-element failure').attr('data-emp-id', employee.id):$('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+                    var row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
 
                     row.append($('<td>').text(++index));
                     row.append($('<td>').text(employee.targetAccId));
                     row.append($('<td>').text(employee.transferAmount));
                     row.append($('<td>').text(employee.krw));
-                    row.append($('<td>').text(employee.depositor));
-                    row.append($('<td>').text(employee.validDepositor));
+                    if(backgroundColor == "red"){
+                        row.append($('<td>').text(employee.depositor).css('color', '#D40000'));
+                        row.append($('<td>').text(employee.validDepositor).css('color', '#D40000'));
+                    } else {
+                        row.append($('<td>').text(employee.depositor));
+                        row.append($('<td>').text(employee.validDepositor));
+                    }
                     row.append($('<td>').text(employee.description));
 
                     tbody.append(row);
@@ -308,7 +316,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             description: employee.description,
                         }
                     );
-
                 });
 
                 $('#total-registrations').text(data.totalCnt);
@@ -321,13 +328,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 $('input[value="이체실행"]').show();
 
                 $('.progress-container .step:nth-of-type(1)').removeClass('active');
-                $('.progress-container .step:nth-of-type(1) .inner-circle').append('<i class="bi bi-check"></i>');
+
+                if ($('.progress-container .step:nth-of-type(1) .inner-circle').is(':empty')) {
+                    $('.progress-container .step:nth-of-type(1) .inner-circle').append('<i class="bi bi-check"></i>');
+                }
+
                 $('.progress-container .step:nth-of-type(1) .inner-circle').removeClass('active');
 
 
                 $('.progress-container .step:nth-of-type(3)').addClass('active');
                 $('.progress-container .step:nth-of-type(3) .circle').addClass('active');
                 $('.progress-container .step:nth-of-type(3) .inner-circle').addClass('active');
+
+                // 조회완료 alert
+                if(data.bulkTransferValidationList.length){
+                    console.log("data1212", data);
+                    swal({
+                        title: "예금주 확인",
+                        text: "예금주 확인 완료",
+                        icon: "success",
+                    })
+
+                    $('input[value="이체실행"]').removeAttr('disabled');
+                }
+
             },
             error: function(data){
                 console.log("실패");
@@ -335,25 +359,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
-
-    // $.each(data.bulkTransferValidationList, function (index, employee) {
-    //     let backgroundColor = "red";
-    //     if(employee.depositor == employee.validDepositor){
-    //         console.log("employee.depositor == employee.validDepositor");
-    //         backgroundColor = "green";
-    //     }
-    //     var row = backgroundColor == "red" ? $('<tr>').addClass('employee-element failure').attr('data-emp-id', employee.id):$('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
-    //
-    //     row.append($('<td>').text(++index));
-    //     row.append($('<td>').text(employee.targetAccId));
-    //     row.append($('<td>').text(employee.transferAmount));
-    //     row.append($('<td>').text(employee.krw));
-    //     row.append($('<td>').text(employee.depositor));
-    //     row.append($('<td>').text(employee.validDepositor));
-    //     row.append($('<td>').text(employee.description));
-    //
-    //     tbody.append(row);});
 
     // 검색어로 조회하기
     $('#searchInput').on('input', function() {
