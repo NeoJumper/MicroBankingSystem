@@ -81,12 +81,12 @@ function checkAccount(status) {
                 var openDateOnly = account.openDate.split(' ')[0];
 
                 var row = "<tr>" +
-                    "<td><input type='radio' name='select-account' value='" + account.accId + "' class='select-account-radio'></td>" +
-                    "<td>" + account.accId + "</td>" +
-                    "<td>" + openDateOnly + "</td>" +
-                    "<td>" + account.customerName + " 님</td>" +
-                    "<td>" + account.productName + "</td>" +
-                    "<td>" + account.balance.toLocaleString('ko-KR') + " 원</td>" +
+                    "<td style='width: 5%;'><input type='radio' name='select-account' value='" + account.accId + "' class='select-account-radio'></td>" +
+                    "<td style='width: 20%;'>" + account.accId + "</td>" +
+                    "<td style='width: 15%;'>" + openDateOnly + "</td>" +
+                    "<td style='width: 20%;'>" + account.customerName + " 님</td>" +
+                    "<td style='width: 15%;'>" + account.productName + "</td>" +
+                    "<td style='width: 25%'>" + account.balance.toLocaleString('ko-KR') + " 원</td>" +
                     "</tr>";
                 accountTableBody.append(row);
             });

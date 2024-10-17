@@ -131,14 +131,19 @@ body{
 }
 
 .closed-btn{
-  background-color: var(--little-dark-gray); /* 흐린 회색으로 버튼 배경 */
-  color: var(--dark-gray);
-  font-weight: bold;
+  background: linear-gradient(var(--dark-gray), var(--deep-dark-gray));
+  color: white;
   font-size: 1.0rem;
-  padding: 10px 10px;
+  padding: 8px 8px;
   margin: 0 6px;
   border: none;
+  border-radius: 5px;
 }
+
+.closed-btn:hover {
+  background: var(--deep-dark-gray);
+}
+
 
 /*------------------------- 추가 -------------------------*/
 td.text-center {
