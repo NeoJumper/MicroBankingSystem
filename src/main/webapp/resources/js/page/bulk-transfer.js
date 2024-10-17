@@ -284,7 +284,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.log("employee.depositor == employee.validDepositor");
                         backgroundColor = "green";
                     }
-                    var row = backgroundColor == "red" ? $('<tr>').addClass('employee-element failure').attr('data-emp-id', employee.id):$('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+                    var row = backgroundColor == "red" ?
+                        $('<tr>').addClass('employee-element failure').attr('data-emp-id', employee.id)
+                        : $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
 
                     row.append($('<td>').text(++index));
                     row.append($('<td>').text(employee.targetAccId));
@@ -308,7 +310,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             description: employee.description,
                         }
                     );
-
                 });
 
                 $('#total-registrations').text(data.totalCnt);
@@ -328,6 +329,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 $('.progress-container .step:nth-of-type(3)').addClass('active');
                 $('.progress-container .step:nth-of-type(3) .circle').addClass('active');
                 $('.progress-container .step:nth-of-type(3) .inner-circle').addClass('active');
+
+                // 조회완료 alert
+                if(data.bulkTransferValidationList.length){
+                    console.log("data1212",data.bulkTransferValidationList.length)
+                    swal({
+                        title: "예금주 확인",
+                        text: "예금주 확인 완료",
+                        icon: "success",
+                    })
+                }
+
             },
             error: function(data){
                 console.log("실패");
