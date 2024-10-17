@@ -7,6 +7,7 @@
     <meta charset="UTF-8" />
     <title>실적 관리 > 행원 실적 관리</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/employee-dashboard.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Canvas 크기 제한 */
@@ -26,11 +27,11 @@
         <h5>&nbsp 행원 실적 관리 </h5>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-5 chart-container">
             <span>작년 대비 올해 나의 거래량 비교</span>
             <canvas id="myYearlyTransactionComparisonChart"></canvas>
         </div>
-        <div class="col-6">
+        <div class="col-5 chart-container">
             <span>전체 계좌 대비 나의 개설 거래 수</span>
             <canvas id="myAccountOpenRatioChart"></canvas>
         </div>
