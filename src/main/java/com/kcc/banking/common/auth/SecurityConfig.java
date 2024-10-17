@@ -163,9 +163,9 @@ public class SecurityConfig {
 
             // 사용자의 권한에 따라 리다이렉트 URL 설정
             if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_EMPLOYEE"))) {
-                redirectUrl = "/page/employee/account-open";
+                redirectUrl = "/page/employee/dashboard";
             } else if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_MANAGER"))) {
-                redirectUrl = "/page/manager/employee-save";
+                redirectUrl = "/page/manager/dashboard";
             }
 
             response.sendRedirect(redirectUrl);
