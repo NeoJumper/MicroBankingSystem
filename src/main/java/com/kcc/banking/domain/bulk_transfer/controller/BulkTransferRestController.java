@@ -37,6 +37,7 @@ public class BulkTransferRestController {
     private final BulkTransferService bulkTransferService;
     private final AccountTradeFacade accountTradeFacade;
 
+    // 엑셀양식 다운로드
     @GetMapping("/api/employee/bulk-transfer/file-download")
     public void fileDownload(HttpServletResponse response) throws IOException {
         File f = new File("src/main/resources/bulk-transfer-upload.xlsx");

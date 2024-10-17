@@ -132,8 +132,7 @@
 
         </section>
         <section class="submit-btns">
-            <input class="basic-btn" type="button" value="오류건재전송"
-                   style="background-color: white; color: black; border: 1px solid #D5D5D5">
+            <input class="basic-btn" type="button" value="오류건재전송">
             <input class="basic-btn" type="button" value="이체확인증">
             <input class="basic-btn" type="button" value="이체확인증(일괄)">
         </section>
