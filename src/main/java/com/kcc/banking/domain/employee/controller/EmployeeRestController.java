@@ -37,10 +37,7 @@ public class EmployeeRestController {
 
     @GetMapping("/api/manager/employee")
     public List<EmployeeDataOfList> getEmployeeList(@ModelAttribute EmployeeSearch employeeSearch) {
-        if(true)
-            throw new ForbiddenException(ErrorCode.FORBIDDEN_CREATE);
          return employeeService.getEmployeeListByOption(employeeSearch);
-
     }
 
     @GetMapping("/api/common/auth-data")

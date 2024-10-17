@@ -54,6 +54,8 @@ function searchEmployee(){
                                 <td style="width: 10%;">${employee.roles}</td>
                             </tr>
                         `;
+
+                console.log("new",newRow)
                 $('#search-modal-employee-information').append(newRow); // 새 데이터 추가
             });
 
