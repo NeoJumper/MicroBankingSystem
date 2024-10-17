@@ -42,7 +42,6 @@
                 <div id="search-modal-search-result">
 
                     <h5>고객정보</h5>
-                    <hr>
                     <table class="table">
                         <thead>
                             <th style="width: 6%;"><label>선택</label></th>

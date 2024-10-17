@@ -27,11 +27,6 @@
     text-align: center;
 }
 
-#search-modal-account .modal-body label {
-    font-weight: bold;
-}
-
-
 #search-modal-account .modal-body table {
     width: 100%;
 }
@@ -64,4 +59,8 @@
 
 .no-margin{
     margin: 0;
+}
+
+#search-modal-common-table {
+    text-align: center;
 }

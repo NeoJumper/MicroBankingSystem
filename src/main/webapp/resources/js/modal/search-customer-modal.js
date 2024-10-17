@@ -50,12 +50,12 @@ function customerSearchModalEvent() {
 
                 $.each(response, function(index, customer){
                     var row = $('<tr>')
-                        .append($('<td>').append($('<input class="form-check-input row-radio" type="radio" name="selected-customer">')))
-                        .append($('<td>').text(customer.customerId))
-                        .append($('<td>').text(customer.customerName))
-                        .append($('<td>').text(customer.formattedBirthDate)) //getformattedBirthDate()함수호출
-                        .append($('<td>').text(customer.phoneNumber))
-                        .append($('<td>').text(customer.branchId));
+                        .append($('<td style="width: 10%">').append($('<input class="form-check-input row-radio" type="radio" name="selected-customer">')))
+                        .append($('<td style="width: 15%">').text(customer.customerId))
+                        .append($('<td style="width: 20%">').text(customer.customerName))
+                        .append($('<td style="width: 20%">').text(customer.formattedBirthDate)) //getformattedBirthDate()함수호출
+                        .append($('<td style="width: 20%">').text(customer.phoneNumber))
+                        .append($('<td style="width: 15%">').text(customer.branchId));
 
                     customerTableBody.append(row);
                 })
