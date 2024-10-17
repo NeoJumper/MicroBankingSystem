@@ -116,40 +116,40 @@ th{
 
 .cash-text {
     padding: 10px;
-    color: #4f9504;
+    color: var(--point-green);
     font-weight: bold;
 }
 
 .transfer-text {
     padding: 10px;
-    color: #3a6ea5;
+    color: var(--basic-color);
     font-weight: bold;
 }
 .open-text {
     padding: 10px;
-    color: #333333E0;
-    background-color: #c9e4ff;
+    color: white;
+    background-color: var(--basic-color);
     font-weight: bold;
 }
 
 .close-text {
     padding: 10px;
-    color: #333333E0;
-    background-color: #f6a1a1;
+    color: white;
+    background-color: var(--point-red);
     font-weight: bold;
 }
 
 .withdrawal-text {
     padding: 10px;
-    color: #333333E0;
-    background-color: #f9e79f;
+    color: black;
+    background-color: var(--point-yellow);
     font-weight: bold;
 }
 
 .deposit-text {
     padding: 10px;
-    color: #333333E0;
-    background-color: #b8e1b3;
+    color: black;
+    background-color: var(--point-green);
     font-weight: bold;
 }
 #pagination {
@@ -162,58 +162,54 @@ th{
 }
 
 .pagination-btn {
-    display: inline-block; /* 가로로 배치 */
-    margin: 0 5px;         /* 버튼 간 간격 */
-    padding: 10px 15px;    /* 버튼 내부 여백 */
+    display: inline-block;
+    margin: 0 5px;
+    padding: 10px 15px;
     text-decoration: none; /* 밑줄 제거 */
-    border: 1px solid #f9f9f9; /* 테두리 */
-    background-color: #d1e7f6; /* 버튼 배경색 */
+    background: var(--basic-color);
     color: #333;           /* 글자색 */
     font-size: 14px;       /* 글자 크기 */
     border-radius: 5px;    /* 모서리 둥글게 */
 }
 
 .pagination-btn:hover {
-    background-color: #007bff; /* 마우스 오버 시 배경색 */
+    background-color: var(--basic-hover-dark-color); /* 마우스 오버 시 배경색 */
 }
 
 .pagination-btn.active {
-    background-color: #007bff;
+    background: linear-gradient(var(--basic-color), var(--basic-hover-dark-color));
     color: white;
-    border-color: #007bff;
 }
 
 /* 진한 파란색 버튼 스타일 2 */
 .status-nor {
-    padding: 12px 24px;
-    background-color: #79b8f2; /* 색상 2 */
-    color: #001543;
-    border: 2px solid #79b8f2;
-    border-radius: 5px; /* 모서리 둥글게 */
-
+    background: linear-gradient(to bottom, var(--basic-color), var(--basic-hover-dark-color));
+    color: #F5F5F5;
+    font-size: 1.0rem;
+    padding: 8px 8px;
+    margin: 0 6px;
+    border: none;
+    border-radius: 5px;
 }
 
 
 .status-nor:hover {
-    background-color: #64a1e0; /* 호버 시 색상 */
-    color: white; /* 호버 시 텍스트 색상 변경 */
-    border-color: #64a1e0; /* 호버 시 테두리 색상 변경 */
+    background-color: var(--basic-hover-dark-color); /* 마우스 오버 시 배경색 */
 }
 
 .status-nor:active {
-    background-color: #5289ce; /* 클릭 시 색상 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 클릭 시 그림자 효과 변경 */
+    background-color: var(--basic-color);
 }
 .status-can {
     padding: 10px 15px;
-    background-color: #f8ef8c;
+    background-color: var(--point-yellow);
     font-weight: bold;
     display: inline-block; /* 버튼처럼 보이도록 설정 */
 }
 
 .status-rvk {
     padding: 10px 15px;
-    background-color: #d9534f;
+    background-color: var(--point-red);
     font-weight: bold;
     display: inline-block;
 }
