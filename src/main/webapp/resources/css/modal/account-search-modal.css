@@ -15,11 +15,6 @@
     margin: 0;
 }
 
-#search-modal-account .modal-body #search-modal-input-box {
-    background-color: #F5F5F5;
-    padding: 10px;
-}
-
 #search-modal-center-box {
     display: flex;
     align-items: center;
@@ -51,7 +46,22 @@
 }
 
 #search-modal-select-button {
+    margin-top: 20px;
     display: flex;
     justify-content: right;
     align-items: center;
+}
+
+#scrollable-table-container {
+    position: relative;
+}
+
+#scrollable-tbody-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    display: block;
+}
+
+.no-margin{
+    margin: 0;
 }
