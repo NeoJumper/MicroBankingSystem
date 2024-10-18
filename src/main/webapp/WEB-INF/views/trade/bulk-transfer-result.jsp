@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/page/bulk-transfer.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 
 <body>

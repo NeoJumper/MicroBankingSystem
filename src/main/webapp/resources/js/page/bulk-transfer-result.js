@@ -1,4 +1,5 @@
 let employeeDataForUpload = [];
+let checkedData = [];
 
 document.addEventListener("DOMContentLoaded", function () {
     const url = window.location.href;
@@ -28,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 // 검색어가 없거나 조건이 없을 경우 모든 데이터 표시
                 $.each(employeeDataForUpload, function (index, bulkTransferInfo) {
 
-                    console.log(bulkTransferInfo);
                     var row = $('<tr>').addClass('bulk-transfer-info-element').attr('data-trade-id', bulkTransferInfo.id);
 
                     row.append($('<td><label><input type="checkbox"/></label></td>'));
@@ -63,7 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 // 필터링된 데이터 표시
                 $.each(filteredEmployees, function (index, bulkTransferInfo) {
 
-                    console.log(bulkTransferInfo);
                     var row = $('<tr>').addClass('bulk-transfer-info-element').attr('data-trade-id', bulkTransferInfo.id);
 
                     row.append($('<td><label><input type="checkbox"/></label></td>'));
@@ -85,7 +84,30 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
+    // 파일등록 클릭
+    $('input[value="파일등록"]').click(function () {
+
+
+        // 엑셀 컬럼명 변경
+        var formattedData = checkedData.map(item => ({
+            '입금계좌번호': item.targetAccId,
+            '처리결과': item.status,
+            '이체금액(원)': item.amount,
+            '받는분': item.targetName,
+            '받는분 통장표시': item.description,
+            '비고': item.failureReason,
+        }));
+
+        // JSON 데이터를 워크북으로 변환
+        var worksheet = XLSX.utils.json_to_sheet(formattedData);
+        var workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "입금계좌정보");
+
+        // 엑셀 파일 다운로드
+        XLSX.writeFile(workbook, "입금계좌정보.xlsx");
     });
+    
+    }); // DOMContentLoaded 이벤트 끝
 
     // table 채우는 메서드
     function fillBulkTransferInfoListBody(bulkTransferId){
@@ -94,14 +116,13 @@ document.addEventListener("DOMContentLoaded", function () {
             type: 'GET',
             success: function (bulkTransferInfoList) {
                 employeeDataForUpload = bulkTransferInfoList;
-
+                console.log("this is bulkTransferInfoList: ", employeeDataForUpload);
                 var tbody = $('#bulk-transfer-info-list-body');
                 tbody.empty(); // 기존 내용을 비웁니다.
 
                 // 서버에서 받은 데이터를 기반으로 테이블 생성
                 $.each(bulkTransferInfoList, function (index, bulkTransferInfo) {
 
-                    console.log(bulkTransferInfo);
                     var row = $('<tr>').addClass('bulk-transfer-info-element').attr('data-trade-id', bulkTransferInfo.id);
 
                     row.append($('<td><label><input type="checkbox"/></label></td>'));

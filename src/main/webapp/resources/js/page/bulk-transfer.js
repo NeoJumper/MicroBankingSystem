@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
     $('#search-modal-select-account-btn').click(function () {
         selectAccount();
     })
-
     function selectAccount() {
 
         var selectedRow = $('input[name="select-account"]:checked').closest('tr');  // 선택된 라디오 버튼이 속한 행을 가져옴
@@ -27,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
             data: {accId: selectedAccountId, productName: null},
             type: "GET",
             success: function (data) {
-                console.log(data, "data====!");
                 $('#account-number').text(data[0].accId);
                 $('#account-balance').text(data[0].balance);
                 $('#transferable-amount').text(data[0].balance);
@@ -43,10 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //계좌 조회
     $('#search-modal-account').on('hidden.bs.modal', function () {
-        console.log("모달 닫힘");
         getAccountDetail();
     });
-
     function getAccountDetail() {
         var accountNumber = $('#account-number').val();
 
@@ -67,15 +63,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                     } else {
                         accountData = data;
-                        console.log(data)
 
                         const textAfterInter = Number(data.amountSum) * (1 - Number(data.productTaxRate));
                         const totalPayment = data.accountBal + textAfterInter;
                         accountData.textAfterInter = textAfterInter;
                         accountData.totalPayment = totalPayment;
-                        console.log("=========================accountDataTotalPaymemt");
-                        console.log(accountData.totalPayment, "==============총 지급 금액")
-                        console.log(data.accountId);
+
                         $('#table-content tbody').append(
                             '<tr>' +
                             '<td style="width: 5%;">' + data.accountBal + '원' + '</td>' +
@@ -117,12 +110,10 @@ document.addEventListener("DOMContentLoaded", function () {
     $('#input-confirm').click(function () {
         checkAccountId();
     })
-
     function checkAccountId() {
         const pw = $('#account-pw-input').val();
         var accountNumber = $('#account-number').text();
-        console.log(accountNumber, "this is accountNumber");
-        console.log(pw, "this is inputId");
+
         $.ajax({
             url: '/api/employee/account-validate',
             contentType: "application/x-www-form-urlencoded",
@@ -160,7 +151,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 파일등록 버튼
     $('#uploadEmployeeBtn').click(uploadEmployeeBtnClickHandler);
-
     function uploadEmployeeBtnClickHandler() {
         var myModal = new bootstrap.Modal(document.getElementById('uploadEmployeeModal'));
         myModal.show();
@@ -168,7 +158,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 개별추가 버튼
     $('#uploadIndividualEmployeeBtn').click(uploadIndividualEmployeeBtnClickHandler);
-
     function uploadIndividualEmployeeBtnClickHandler() {
         var myModal = new bootstrap.Modal(document.getElementById('uploadIndividualEmployeeModal'));
         myModal.show();
@@ -176,7 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 개별추가 - 추가
     $('#uploadIndivisualEmployeePreviewBtn').click(uploadIndivisualEmployeePreviewBtnClickHandler);
-
     function uploadIndivisualEmployeePreviewBtnClickHandler() {
         var tbody = $('#employeeTablePreviewBody');
         tbody.empty();
@@ -242,7 +230,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 엑셀 업로드
     $('#uploadEmployeePreviewBtnOfTable').click(uploadEmployeePreviewBtnOfTableClickHandler);
-
     function uploadEmployeePreviewBtnOfTableClickHandler() {
         var fileInput = document.getElementById('excelInput');
         var file = fileInput.files[0];
@@ -259,7 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
             contentType: false, // Set content type to false to let the browser set the correct value
             success: function (employees) {
 
-                console.log(employees);
                 var tbody = $('#employeeTablePreviewBody');
                 tbody.empty(); // 기존 내용을 비웁니다.
 
@@ -315,9 +301,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 이체하기 
     $('input[value="이체실행"]').click(transferExecution);
-
     function transferExecution() {
-        console.log(employeeDataForUpload, "employeeDataForUpload======!!");
         $.ajax({
             type: "POST",
             url: "/api/employee/bulk-transfer",
@@ -339,9 +323,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 계좌 유효성 검증
     $('input[value="예금주 확인"]').click(validationExecution);
-
     function validationExecution() {
-        console.log("예금주 확인");
         $.ajax({
             type: "POST",
             url: "/api/employee/bulk-transfer/validation",
@@ -349,7 +331,6 @@ document.addEventListener("DOMContentLoaded", function () {
             data: JSON.stringify(employeeDataForUpload),
             success: function (data) {
 
-                //console.log(data);
                 var tbody = $('#employeeTablePreviewBody');
                 tbody.empty(); // 기존 내용을 비웁니다.
 
@@ -360,7 +341,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 $.each(data.bulkTransferValidationList, function (index, employee) {
                     let backgroundColor = "red";
                     if (employee.depositor == employee.validDepositor) {
-                        console.log("employee.depositor == employee.validDepositor");
                         backgroundColor = "green";
                     }
                     var row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
@@ -418,7 +398,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // 조회완료 alert
                 if (data.bulkTransferValidationList.length) {
-                    console.log("data1212", data);
                     swal({
                         title: "예금주 확인",
                         text: "예금주 확인 완료",
@@ -505,9 +484,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 초기화
     $('input[value="초기화"]').click(initExecution);
-
     function initExecution() {
-        console.log("초기화");
 
         var tbody = $('#employeeTablePreviewBody');
         tbody.empty(); // 기존 내용을 비웁니다.
