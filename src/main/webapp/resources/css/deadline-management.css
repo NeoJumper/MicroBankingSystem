@@ -1,18 +1,9 @@
-.amount-input {
-    width: 220px;
-    direction: rtl;
-    font-size: 1.1rem;
-}
-
-.amount-label1 {
-    width: 130px;
-    font-size: 1.1rem;
-}
-
+/*
 .amount-label2 {
     width: 160px;
     font-size: 1.1rem;
 }
+*/
 
 
 #employee-close-page-user-branch-name {
@@ -30,4 +21,14 @@
     font-size: 1.2rem;
     padding: 7px 10px;
     margin: 0 10px;
+}
+
+.no-margin{
+    margin: 0 !important;
+}
+
+#manager-close-page-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
