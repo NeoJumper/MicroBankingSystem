@@ -19,11 +19,9 @@ headerMap.set("header-account-management", {
     }
 });
 headerMap.set("header-business-day-management", {
-    sidebar: ["business-day-management"],
-    sub: {}
-});
-headerMap.set("header-business-day-close-management", {
-    sidebar: ["business-day-close"],
+    sidebar: [
+        "business-day-management",
+        "business-day-close"],
     sub: {}
 });
 headerMap.set("header-customer-management", {
@@ -93,17 +91,13 @@ function  handleSidebarContent(selectedHeaderMenu, selectedSidebarMenu, roles){
             //console.log('고객 관리 선택됨');
             createCustomerManagementSidebar(selectedSidebarMenu);
             break;
-        case 'header-business-day-close-management':
-            //console.log('마감 관리 선택됨');
-            createBusinessDayCloseManagementSidebar(selectedSidebarMenu, roles);
-            break;
         case 'header-employee-management':
             //console.log('행원 관리 선택됨');
             createEmployeeManagementSidebar(selectedSidebarMenu);
             break;
         case 'header-business-day-management':
             //console.log('영업일 관리 선택됨');
-            createBusinessDayManagementSidebar(selectedSidebarMenu);
+            createBusinessDayManagementSidebar(selectedHeaderMenu, selectedSidebarMenu, roles);
             break;
         case 'header-dashboard':
             createDashboardSidebar(selectedSidebarMenu, roles);
@@ -187,23 +181,9 @@ function createEmployeeManagementSidebar() {
     createSidebar(menuData);
 }
 
-function createBusinessDayManagementSidebar() {
-    var menuData = [
-        {
-            title: '영업일 관리',
-            icon: 'bi bi-calendar',
-            submenu: [
-                { name: '영업일 변경', url: '/page/manager/business-day-management' }
-            ]
-        }
-    ];
-
-    //console.log("영업일 관리 사이드바 생성");
-    createSidebar(menuData);
-}
-
-function createBusinessDayCloseManagementSidebar(selectedSidebarMenu, roles){
+function createBusinessDayManagementSidebar(selectedHeaderMenu, selectedSidebarMenu, roles) {
     var menuData;
+
     if(roles === "행원")
     {
         menuData = [{
@@ -214,22 +194,29 @@ function createBusinessDayCloseManagementSidebar(selectedSidebarMenu, roles){
             ]
         }];
     }else{
-        menuData = [{
+        menuData = [
+            {
+                title: '영업일 관리',
+                icon: 'bi bi-calendar',
+                submenu: [
+                    { name: '영업일 변경', url: '/page/manager/business-day-management' }
+                ]
+            },
+            {
             title: '마감 관리',
             icon: 'bi bi-file-earmark-check',
             submenu: [
                 { name: '마감 상태 관리', url: '/page/manager/business-day-close' }
             ]
-        }];
+            }
+
+        ];
     }
-
-
 
 
     //console.log("영업일 관리 사이드바 생성");
     createSidebar(menuData);
 }
-
 
 
 function createBranchManagementSidebar() {
