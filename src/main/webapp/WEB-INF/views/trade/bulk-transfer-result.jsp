@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/page/bulk-transfer.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 
 <body>
@@ -34,7 +35,6 @@
         <div class="step">
             <div class="circle active">
                 <div class="inner-circle"><i class="bi bi-check"></i></div>
-
             </div>
             <p>1. 이체정보 입력</p>
         </div>
@@ -56,7 +56,7 @@
     <%--  result-confirmation-page  --%>
     <container id="result-confirmation-page">
         <%--  계좌선택 섹션  --%>
-        <section>
+        <section id="sectionA">
             <h4>대량이체 결과확인</h4>
             <hr>
             <%--계좌선택--%>
@@ -86,7 +86,7 @@
             </div>
         </section>
         <%--    입금계좌정보 테이블    --%>
-        <section>
+        <section id="sectionB">
             <h4>입금계좌정보</h4>
             <hr>
             <div class="table-top-btns">
