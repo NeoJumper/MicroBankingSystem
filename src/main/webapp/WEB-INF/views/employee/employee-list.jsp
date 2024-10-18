@@ -41,7 +41,7 @@
     </div>
 
     <div>
-        <table class="table">
+        <table class="common-table" style="margin-bottom: 0px">
             <thead>
             <tr>
                 <th style="width: 10%;">사번</th>
@@ -55,7 +55,7 @@
         </table>
 
         <div style="overflow-y: auto; height: 350px;">
-            <table class="table table-hover">
+            <table class="common-table">
                 <tbody id="emp-table-body">
                 <c:forEach var="employee" items="${employeeList}">
                     <tr class="emp-element">
@@ -66,6 +66,7 @@
                         <td style="width: 20%;">${employee.email}</td>
                         <td style="width: 10%;">${employee.roles}</td>
                     </tr>
+
                 </c:forEach>
                 <!-- 추가 행들 -->
                 </tbody>

@@ -21,29 +21,31 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="search-modal-search-div">
-                    <div id="search-modal-option-div">
-                        <label for="search-modal-select"></label>
-                        <select style="height: 41px;" id="search-modal-select" name="search-modal-select">
-                            <option value="id">사원번호</option>
-                            <option value="name">이름</option>
-                            <option value="phoneNumber">전화번호</option>
-                        </select>
-                    </div>
-                    <div id="search-modal-input-div">
-                        <input type="text" id="search-modal-input" placeholder="사원 번호를 입력하세요">
-                    </div>
-                    <div id="search-modal-btn-div">
-                        <button type="button" class="basic-btn" id="search-modal-search-btn">검색</button>
-                    </div>
+                    <table class="common-table">
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <label for="search-modal-select"></label>
+                                    <select style="height: 41px;" id="search-modal-select" name="search-modal-select">
+                                        <option value="id">사원번호</option>
+                                        <option value="name">이름</option>
+                                        <option value="phone_number">전화번호</option>
+                                    </select>
+                                </th>
+                                <td>
+                                    <input type="text" id="search-modal-input" placeholder="사원 번호를 입력하세요">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
+                <div id="search-modal-center-box">
+                    <button type="button" class="basic-btn" id="search-modal-search-btn">검색</button>
+                    <button id="search-modal-reset-btn" class="reset-btn" type="button">초기화</button>
                 </div>
-                <br>
                 <div id="search-modal-search-result">
-
                     <h5>고객정보</h5>
-                    <hr>
-                    <table class="table">
+                    <table class="common-table" style="margin-bottom: 0px">
                         <thead>
                             <th style="width: 6%;"><label>선택</label></th>
                             <th style="width: 10%;"><label id="search-modal-employee-id">사원번호</label></th>
@@ -58,7 +60,7 @@
                     </table>
 
                     <div id="employee-add-list" style="overflow-y: auto; height: 250px;">
-                        <table class="table table-hover">
+                        <table class="common-table">
                             <tbody id="search-modal-employee-information">
 
                             </tbody>
@@ -68,8 +70,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" id="search-modal-select-btn" class="btn btn-primary" data-bs-dismiss="modal">선택</button>
-                <button type="button" id="search-modal-close-btn" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" id="search-modal-select-btn" class="basic-btn" data-bs-dismiss="modal">선택</button>
+                <button type="button" id="search-modal-close-btn" class="closed-btn" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>

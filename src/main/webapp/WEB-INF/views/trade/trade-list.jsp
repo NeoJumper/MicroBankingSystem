@@ -159,7 +159,7 @@
     <div id="common-transfer-select-result" style="display: none;">
         <div>
             <h3 class="mt-3">총 입출금 금액</h3>
-            <hr>
+
             <div id="trade-total-balance">
                 <label for="total-deposit-input" >입금액</label>
                 <input type="text" id="total-deposit-input" disabled>
@@ -171,7 +171,7 @@
         </div>
         <div>
             <h3 class="mt-3">총 거래 내역</h3>
-            <hr>
+
             <table class="common-table">
                 <thead>
 
@@ -191,7 +191,7 @@
             </table>
         </div>
 
-        <hr>
+
         <div id="pagination">
 
 
@@ -202,7 +202,7 @@
     <div id="bulk-transfer-select-result" style="display: none;">
         <div>
             <h3 class="mt-3">총 거래 내역</h3>
-            <hr>
+
             <table class="common-table">
                 <thead>
 

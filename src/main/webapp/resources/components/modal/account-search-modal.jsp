@@ -22,10 +22,10 @@
                 <h5>계좌정보 입력</h5>
                 <table class="common-table">
                     <tbody>
-                        <tr>
-                            <th><label style="margin-right: 10px">계좌번호</label></th>
-                            <td><input id="modal-input-account" type="text"></td>
-                        </tr>
+                    <tr>
+                        <th><label style="margin-right: 10px">계좌번호</label></th>
+                        <td><input id="modal-input-account" type="text"></td>
+                    </tr>
                     </tbody>
                 </table>
                 <div id="search-modal-center-box">
@@ -38,12 +38,12 @@
                     <table class="common-table no-margin">
                         <thead>
                         <tr>
-                            <th><label>선택</label></th>
-                            <th><label id="search-modal-account-id">계좌번호</label></th>
-                            <th><label id="search-modal-open-date">개설일</label></th>
-                            <th><label id="search-modal-customer-name">고객명</label></th>
-                            <th><label id="search-modal-product-name">상품 종류</label></th>
-                            <th><label id="search-modal-balance">현재 잔액</label></th>
+                            <th style="width: 5%;"><label>선택</label></th>
+                            <th style="width: 20%;"><label id="search-modal-account-id">계좌번호</label></th>
+                            <th style="width: 15%;"><label id="search-modal-open-date">개설일</label></th>
+                            <th style="width: 20%;"><label id="search-modal-customer-name">고객명</label></th>
+                            <th style="width: 15%;"><label id="search-modal-product-name">상품 종류</label></th>
+                            <th style="width: 25%"><label id="search-modal-balance">현재 잔액</label></th>
                         </tr>
                         </thead>
                     </table>

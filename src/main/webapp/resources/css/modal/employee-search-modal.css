@@ -2,22 +2,12 @@
     min-width: 65%;
 }
 
-#search-modal-search-div {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-}
 
 #search-modal-select {
     padding: 5px;
     height : 46px !important;
 }
 
-#search-modal-input
-{
-    width: 100%;
-}
 
 #search-modal-select-btn {
     flex: 0 1 auto;
@@ -31,4 +21,12 @@
 .modal-body
 {
     height: 500px;
+}
+
+#search-modal-center-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    gap: 10px;
 }
