@@ -56,7 +56,7 @@
     <%--  result-confirmation-page  --%>
     <container id="result-confirmation-page">
         <%--  계좌선택 섹션  --%>
-        <section>
+        <section id="sectionA">
             <h4>대량이체 결과확인</h4>
             <hr>
             <%--계좌선택--%>
@@ -86,7 +86,7 @@
             </div>
         </section>
         <%--    입금계좌정보 테이블    --%>
-        <section>
+        <section id="sectionB">
             <h4>입금계좌정보</h4>
             <hr>
             <div class="table-top-btns">

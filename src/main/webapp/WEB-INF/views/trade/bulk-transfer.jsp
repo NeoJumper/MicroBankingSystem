@@ -214,8 +214,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" data-bs-dismiss="modal" class="btn border border-black btn-black bg-white"

@@ -106,6 +106,35 @@ document.addEventListener("DOMContentLoaded", function () {
         // 엑셀 파일 다운로드
         XLSX.writeFile(workbook, "입금계좌정보.xlsx");
     });
+
+    // 인쇄하기
+    $('input[value="인쇄"]').click(function() {
+        $('input[value="인쇄"]').click(function() {
+            // 새로운 창을 열고 내용을 인쇄
+            var printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>인쇄</title>');
+
+            // CSS 파일 추가 (경로를 실제 CSS 파일 위치로 변경하세요)
+            printWindow.document.write('<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>'); // CSS 파일 링크
+            printWindow.document.write('<link rel="stylesheet" type="text/css" href="/resources/css/page/bulk-transfer.css"/>'); // 부트스트랩 CSS (선택적)
+            printWindow.document.write('<link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>'); // 부트스트랩 CSS (선택적)
+            printWindow.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">'); // 부트스트랩 CSS (선택적)
+
+            printWindow.document.write('</head><body style="padding: 15px;">');
+
+            // 테이블 내용을 가져와서 인쇄
+            var sectionA = $('#sectionA').clone();
+            var sectionB = $('#sectionB').clone();
+            //tableContent.find('input[type="checkbox"]').remove(); // 체크박스 제거 (선택적)
+
+            printWindow.document.write(sectionA.prop('outerHTML')); // HTML 내용을 작성
+            printWindow.document.write(sectionB.prop('outerHTML')); // HTML 내용을 작성
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        });
+
+    });
     
     }); // DOMContentLoaded 이벤트 끝
 
