@@ -34,7 +34,6 @@
         <div class="step">
             <div class="circle active">
                 <div class="inner-circle"><i class="bi bi-check"></i></div>
-
             </div>
             <p>1. 이체정보 입력</p>
         </div>
