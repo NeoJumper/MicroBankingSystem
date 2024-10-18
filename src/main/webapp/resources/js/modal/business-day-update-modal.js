@@ -1,18 +1,16 @@
 $(document).ready(function() {
-
-    registerClickEventOfEmpCheckBox();
     registerClickEventOfEmpAllCheckBox();
     registerClickEventOfBusinessDayUpdateBtn();
+    registerClickEventOfEmpCheckBox();
 
-
-    handleWorkers();
-
-
+    $('#business-day-update-modal').on('show.bs.modal', function(e) {
+        handleWorkers();
+    });
 });
 
 function registerClickEventOfEmpCheckBox(){
-    // businessday-element 클래스가 적용된 모든 행을 대상으로 클릭 이벤트
-    $('#business-day-modal-emp-add-list').on('click', '.business-day-element', function () {
+    // 이벤트 위임 사용
+    $('#business-day-modal-emp-list').on('click', '.business-day-element', function () {
 
         const icon = $(this).find('i');
 
@@ -30,7 +28,7 @@ function registerClickEventOfEmpAllCheckBox(){
         const allCheckBox = $(this).find('i');
         if (allCheckBox.hasClass('bi-square')) {
 
-            $('.modal-body i').each(function() {
+            $('#business-day-modal-emp-list i').each(function() {
                 const icon = $(this);
                 icon.removeClass('bi-square').addClass('bi-check-square');
             });
@@ -38,7 +36,7 @@ function registerClickEventOfEmpAllCheckBox(){
             allCheckBox.removeClass('bi-square').addClass('bi-check-square');
         }
         else{
-            $('.modal-body i').each(function() {
+            $('#business-day-modal-emp-list i').each(function() {
                 const icon = $(this);
                 icon.removeClass('bi-check-square').addClass('bi-square');
             });
@@ -65,15 +63,16 @@ function handleWorkers() {
 
             // 새로운 데이터를 tbody에 추가
             response.closingDataList.forEach(function (employee) {
+
                 let formattedCashBalance = employee.vaultCash.toLocaleString(); // 숫자를 3자리마다 쉼표로 포맷
 
                 let row = `
                     <tr class="business-day-element">
-                        <td><i class="bi bi-square"></i></td>
-                        <td style="width: 20%;">${employee.id}</td>
-                        <td style="width: 20%;">${employee.name}</td>
-                        <td style="width: 40%;">
-                            <input style="direction: rtl;" type="text" value="${formattedCashBalance}" disabled>
+                        <td style="width: 5%"><i class="bi bi-square"></i></td>
+                        <td style="width: 25%">${employee.id}</td>
+                        <td style="width: 30%">${employee.name}</td>
+                        <td style="width: 40%">
+                            <input type="text" value="${formattedCashBalance}" disabled>
                         </td>
                     </tr>
                 `;

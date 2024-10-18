@@ -1,32 +1,9 @@
-#business-day-update-modal .modal-dialog {
-    min-width: 45%;
+.no-margin {
+    margin: 0 !important;
 }
 
-#business-day-update-modal .modal-body {
-    padding: 5% 10%;
-}
-
-#business-day-update-modal .modal-body h5,
-#business-day-update-modal .modal-header h1 {
-    font-weight: bold;
-}
-
-#business-day-update-modal hr {
-    margin: 0;
-    border: 2px solid black;
-    margin-bottom: 30px;
-}
-
-
-#business-day-update-modal .modal-body label {
-    font-weight: bold;
-}
-
-
-#business-day-update-modal .modal-body table {
-    width: 100%;
-}
-
-#business-day-update-modal .modal-body th {
-    text-align: center;
+#scrollable-tbody-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    display: block;
 }

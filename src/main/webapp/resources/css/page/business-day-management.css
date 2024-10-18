@@ -1,0 +1,66 @@
+#calendar-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    gap: 10px;
+}
+
+.not-current-month {
+    color: var(--basic-gray);
+}
+
+.active {
+    background-color: var(--light-blue-input-background);
+}
+
+#next, #prev {
+    padding: 8px 15px;
+}
+
+#business-day-change-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 60px;
+}
+
+.calendar {
+    table-layout: fixed;
+}
+
+.calendar thead tr th {
+    text-align: center;
+}
+
+.calendar th,
+.calendar td {
+    width: calc(100% / 7);
+    height: 60px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    vertical-align: middle
+}
+
+.calendar td {
+    border: 1px solid var(--little-dark-gray);
+}
+
+.calendar td .badge {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    transform: translate(0, 0);
+    font-size: 0.8em; /* 필요에 따라 글꼴 크기 조정 */
+    padding: 3px 5px; /* 배지의 패딩 조정 */
+}
+
+.holiday{
+    color: var(--point-red);
+}
+
+.holiday.not-current-month{
+    color: #ffbfbf;
+}
