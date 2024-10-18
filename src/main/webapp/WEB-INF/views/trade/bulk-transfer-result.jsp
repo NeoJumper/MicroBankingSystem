@@ -95,13 +95,12 @@
                     <input type="button" value="인쇄">
                 </div>
                 <div>
-                    <select>
+                    <select id="searchCondition">
                         <option value="" disabled selected>검색조건</option>
-                        <option value="조건1">조건 1</option>
-                        <option value="조건2">조건 2</option>
-                        <option value="조건3">조건 3</option>
+                        <option value="targetAccId">입금계좌번호</option>
+                        <option value="depositor">받는분</option>
                     </select>
-                    <input type="text" placeholder="검색어 입력">
+                    <input type="text" id="searchInput" placeholder="검색어 입력">
                 </div>
             </div>
             <table id="bulk-transfer-info" class="common-table">
