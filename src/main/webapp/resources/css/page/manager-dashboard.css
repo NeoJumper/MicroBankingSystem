@@ -1,5 +1,3 @@
-@import "../styles.css";
-
 /* Canvas 크기 제한 */
 canvas {
     min-width: 300px;
