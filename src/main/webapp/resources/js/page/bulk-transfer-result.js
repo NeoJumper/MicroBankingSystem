@@ -87,9 +87,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // 파일등록 클릭
     $('input[value="파일등록"]').click(function () {
 
-
+        // TODO :: 체크된 row만 등록 되도록
         // 엑셀 컬럼명 변경
-        var formattedData = checkedData.map(item => ({
+        var formattedData = employeeDataForUpload.map(item => ({
             '입금계좌번호': item.targetAccId,
             '처리결과': item.status,
             '이체금액(원)': item.amount,
