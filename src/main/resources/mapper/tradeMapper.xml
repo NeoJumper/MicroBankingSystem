@@ -166,10 +166,10 @@
 
     <select id="findTradeListByBulkTransfer" parameterType="java.lang.Long">
 
-        select t.id, t.target_acc_id, t.status, t.amount, e.name as target_name, description, t.failure_reason
+        select t.id, t.target_acc_id, t.status, t.amount, c.name as target_name, description, t.failure_reason
         from trade t
         join account a on t.target_acc_id = a.id
-        join employee e on a.registrant_id = e.id
+        join customer c on a.customer_id = c.id
         where bulk_transfer_id = #{bulkTransferId} and t.trade_type = 'WITHDRAWAL'
 
     </select>
