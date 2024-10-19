@@ -8,6 +8,18 @@ $(document).ready(function () {
     // 계좌 개설 함수
     accountOpen();
 
+
+    // 입력 금액 포맷 변경
+    handleKRWFormat();
+
+    // 이체금액 text 변경
+    handleTransferLimitText();
+
+
+    $('input[name="major-category"]').change(function() {
+        // span의 내용을 변경합니다.
+        handleTransferLimitText();
+    });
 });
 
 // 상품이율, 상품번호 api
@@ -55,7 +67,7 @@ function accountOpen() {
         //const startDate = $('startDate').val();
         const preferentialInterestRate = $('#preferred-interest-input').val();
         const password = $('#password-input').val();
-        const balance = $('#balance-input').val();
+        const balance = $('#init-balance-input').val();
 
         const empId = $('#emp-id-hidden-input').val();
         const branchId = $('#branch-id-hidden-input').val();
@@ -146,6 +158,52 @@ function accountOpenResult(accountId) {
     });
 }
 
+function handleKRWFormat(){
+    $('.balance-input').on('input', function() {
+        // 현재 입력된 값을 가져옴
+        let value = $(this).val();
 
+        // 숫자 이외의 문자를 제거
+        value = value.replace(/[^0-9]/g, '');
 
+        // 숫자를 한국 원화 형식으로 변환
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
+        // 변환된 값을 다시 input에 설정
+        $(this).val(value);
+    });
+}
+
+function handleTransferLimitText() {
+    var selectedAccountType =  $('input[name="major-category"]:checked').val();
+    var selectedCustomerSecurityLevel = $('#customer-security-level-input').val();
+
+    console.log(selectedAccountType);
+    console.log(selectedCustomerSecurityLevel);
+    if(selectedAccountType === "PRIVATE")
+    {
+        if(selectedCustomerSecurityLevel === "1등급"){
+            $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1억 원');
+            $('#per-trade-limit-input').val('100,000,000');
+            $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5억 원');
+            $('#daily-limit-input').val('500,000,000');
+        }
+        else
+        {
+            $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5백만 원');
+            $('#per-trade-limit-input').val('5,000,000');
+            $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1억 원');
+            $('#daily-limit-input').val('100,000,000');
+        }
+
+    }
+    else if(selectedAccountType === "CORPORATION"){ // 법인 계좌
+        if(selectedCustomerSecurityLevel === "1등급"){
+            $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 10억 원');
+            $('#per-trade-limit-input').val('1,000,000,000');
+            $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 50억 원');
+            $('#daily-limit-input').val('5,000,000,000');
+
+        }
+    }
+}

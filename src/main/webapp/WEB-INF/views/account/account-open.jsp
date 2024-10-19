@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -20,50 +21,91 @@
 <%@ include file="/resources/components/sidebar.jsp" %>
 
 <div id="main-area">
+
     <div>
         <h5>예금 관리 ></h5>
         <h5>&nbsp계좌 개설 </h5>
     </div>
+
+    <div class="mb-3">
+        <div id = "account-type-button-group" class="button-group">
+            <input type="radio" id="private-account" value="PRIVATE" name="major-category" checked>
+            <label for="private-account">개인 계좌</label>
+            <input class="ms-3" type="radio" id="corporation-account" value="CORPORATION" name="major-category">
+            <label for="corporation-account">법인 계좌</label>
+        </div>
+    </div>
+    <div>
+        <h3>고객 정보</h3>
+    </div>
+    <table class="common-table">
+        <tr>
+            <th>고객번호</th>
+            <td>
+                <input type="text" id="customer-id-input" readonly >
+                <button data-bs-toggle="modal" data-bs-target="#search-customer-modal"  type="button" id="customer-id-search-btn" class="basic-btn">
+                    <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
+                </button>
+            </td>
+            <th>계좌 비밀번호</th>
+            <td><input type="password" id="password-input"></td>
+
+        </tr>
+        <tr>
+            <th>고객명</th>
+            <td><input type="text" id="customer-name-input" disabled></td>
+            <th>보안등급</th>
+            <td><input type="text" id="customer-security-level-input"value="1등급" disabled></td>
+        </tr>
+
+    </table>
+
 
     <div>
         <h3>계좌 개설 정보 입력</h3>
     </div>
     <table class="common-table">
         <tr>
-            <th>고객번호</th>
-            <td style="display: flex; align-items: center;">
-                <input type="text" id="customer-id-input" readonly >
-                <button data-bs-toggle="modal" data-bs-target="#search-customer-modal"  type="button" id="customer-id-search-btn" class="basic-btn" style="margin-left: 10px; padding: 5px; width:80px;height:40px">
+            <th>상품명</th>
+            <td>
+                <input type="text" id="product-name-input" readonly >
+                <button data-bs-toggle="modal" data-bs-target="#search-customer-modal"  type="button" id="product-search-btn" class="basic-btn">
                     <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
                 </button>
             </td>
-            <th>비밀번호</th>
-            <td><input type="text" id="password-input"></td>
-
+            <th>기준이율</th>
+            <td><input type="text" id="product-interest-input" disabled> %</td>
         </tr>
         <tr>
-            <th>고객명</th>
-            <td><input type="text" id="customer-name-input" disabled></td>
-            <th>이자시작일자</th>
-            <td><input type="text" id="start-date-input" value='${tradeDate}' disabled></td>
+            <th>우대이율</th>
+            <td><input type="text" id="preferred-interest-input"> %</td>
 
+            <th>총 이자율</th>
+            <td><input type="text" id="total-interest-input" disabled> %</td>
         </tr>
         <tr>
             <th>초기 예치금(KRW)</th>
-            <td><input type="text" id="balance-input"></td>
-            <td colspan="2"></td>
-        </tr>
-        <tr>
-            <th>기준이율</th>
-            <td><input type="text" id="product-interest-input" disabled> %</td>
+            <td><input type="text" id="init-balance-input" class="balance-input"></td>
 
-            <th>우대이율</th>
-            <td><input type="text" id="preferred-interest-input"> %</td>
+            <fmt:parseDate value="${tradeDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedTradeDate" />
+
+            <th>이자시작일자</th>
+            <td>
+                <input type="text" id="start-date-input" value="<fmt:formatDate value='${parsedTradeDate}' pattern='yyyy-MM-dd' />" disabled>
+            </td>
         </tr>
         <tr>
-            <th>총 이자율</th>
-            <td><input type="text" id="total-interest-input" disabled> %</td>
-            <td colspan="2"></td>
+            <th>1회 이체한도</th>
+            <td>
+                <input type="text" id="per-trade-limit-input" value="5,000,000" class="balance-input">&nbsp원<span style="color: #5F5F5F"> &nbsp&nbsp 최대 금액 : 5백만 원</span>
+
+            </td>
+
+
+            <th>1일 이체한도</th>
+            <td>
+                <input type="text" id="daily-limit-input" value="10,000,000" class="balance-input">&nbsp원<span style="color: #5F5F5F"> &nbsp&nbsp 최대 금액 : 1천만 원</span>
+            </td>
         </tr>
         <tr>
             <th>담당자</th>
