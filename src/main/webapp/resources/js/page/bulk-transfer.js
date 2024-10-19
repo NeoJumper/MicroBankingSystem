@@ -2,6 +2,32 @@ let selectedEmpId = null;
 let employeeDataForUpload = [];
 let validPassword = "";
 
+// 숫자를 한글로 변환
+function convertToKoreanNumber(num) {
+    var result = '';
+    var digits = ['영','일','이','삼','사','오','육','칠','팔','구'];
+    var units = ['', '십', '백', '천', '만', '십만', '백만', '천만', '억', '십억', '백억', '천억', '조', '십조', '백조', '천조'];
+
+    var numStr = num.toString(); // 문자열로 변환
+    var numLen = numStr.length; // 문자열의 길이
+
+    for(var i=0; i<numLen; i++) {
+        var digit = parseInt(numStr.charAt(i)); // i번째 자릿수 숫자
+        var unit = units[numLen-i-1]; // i번째 자릿수 단위
+
+        // 일의 자리인 경우에는 숫자를 그대로 한글로 변환
+        if(i === numLen-1 && digit === 1 && numLen !== 1) {
+            result += '일';
+        } else if(digit !== 0) { // 일의 자리가 아니거나 숫자가 0이 아닐 경우
+            result += digits[digit] + unit;
+        } else if(i === numLen-5) { // 십만 단위에서는 '만'을 붙이지 않습니다.
+            result += '만';
+        }
+    }
+
+    return result;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     // 모달 계좌선택 버튼
     $('#search-modal-select-account-btn').click(function () {
@@ -175,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
             $('#depositorModal').val() === "" ||
             $('#descriptionModal').val() === ""
         ) {
-            
             // 모달 초기화
             $('#targetAccIdModal').val("");
             $('#transferAmountModal').val("");
@@ -205,6 +230,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 description: $('#descriptionModal').val(),
             }
         );
+        
+        console.log(convertToKoreanNumber(parseFloat($('#transferAmountModal').val())));
+        console.log("한글 변환 메서드 확인");
 
         $.each(employeeDataForUpload, function (index, employee) {
             var row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
@@ -228,6 +256,19 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#descriptionModal').val("");
     }
 
+    // 개별추가 모달 금액입력(숫자) -> 한글로 채움
+    $('#transferAmountModal').on('input', function() {
+        // 입력 이벤트 발생 시 처리할 코드
+        const transferAmount = parseFloat($(this).val());
+        if (isNaN(transferAmount) || $(this).val() === "") {
+            // 입력값이 숫자가 아니거나 비어 있을 경우 krwModal 값을 비웁니다.
+            $('#krwModal').val('');
+            return;
+        }
+        const convertToKoreanNumberString = convertToKoreanNumber(transferAmount)+"원";
+        $('#krwModal').val(convertToKoreanNumberString);
+    });
+
     // 엑셀 업로드
     $('#uploadEmployeePreviewBtnOfTable').click(uploadEmployeePreviewBtnOfTableClickHandler);
     function uploadEmployeePreviewBtnOfTableClickHandler() {
@@ -239,11 +280,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Send AJAX request
         $.ajax({
-            url: '/api/employee/bulk-transfer/excel-upload', // API endpoint
+            url: '/api/employee/bulk-transfer/excel-upload',
             type: 'POST',
             data: formData,
-            processData: false, // Prevent jQuery from automatically transforming the data into a query string
-            contentType: false, // Set content type to false to let the browser set the correct value
+            processData: false,
+            contentType: false,
             success: function (employees) {
 
                 var tbody = $('#employeeTablePreviewBody');
@@ -499,3 +540,5 @@ document.addEventListener("DOMContentLoaded", function () {
         $('.progress-container .step:nth-of-type(3) .inner-circle').removeClass('active');
     }
 })
+
+
