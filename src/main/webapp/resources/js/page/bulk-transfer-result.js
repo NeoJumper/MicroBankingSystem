@@ -86,8 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 파일등록 클릭
     $('input[value="파일등록"]').click(function () {
-
         // TODO :: 체크된 row만 등록 되도록
+
         // 엑셀 컬럼명 변경
         var formattedData = employeeDataForUpload.map(item => ({
             '입금계좌번호': item.targetAccId,
@@ -98,13 +98,40 @@ document.addEventListener("DOMContentLoaded", function () {
             '비고': item.failureReason,
         }));
 
-        // JSON 데이터를 워크북으로 변환
-        var worksheet = XLSX.utils.json_to_sheet(formattedData);
-        var workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "입금계좌정보");
+        // 워크북 생성
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet("입금계좌정보");
 
-        // 엑셀 파일 다운로드
-        XLSX.writeFile(workbook, "입금계좌정보.xlsx");
+        // 헤더 추가
+        worksheet.columns = [
+            { header: '입금계좌번호', key: '입금계좌번호', width: 20 },
+            { header: '처리결과', key: '처리결과', width: 15 },
+            { header: '이체금액(원)', key: '이체금액(원)', width: 15 },
+            { header: '받는분', key: '받는분', width: 20 },
+            { header: '받는분 통장표시', key: '받는분 통장표시', width: 25 },
+            { header: '비고', key: '비고', width: 35 }
+        ];
+
+        // 데이터 추가
+        formattedData.forEach(item => {
+            worksheet.addRow(item);
+        });
+
+        // 비밀번호 설정 후 파일 다운로드
+        var password = "1234"; // 원하는 비밀번호
+        workbook.xlsx.writeBuffer().then(function(buffer) {
+            // Blob으로 변환
+            var blob = new Blob([buffer], { type: 'application/octet-stream' });
+            var url = URL.createObjectURL(blob);
+
+            // 다운로드 링크 생성
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = '입금계좌정보.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
     });
 
     // 인쇄하기
