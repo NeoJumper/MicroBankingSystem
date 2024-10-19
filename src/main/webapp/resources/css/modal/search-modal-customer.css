@@ -1,3 +1,7 @@
+#search-customer-modal .modal-dialog {
+    min-width: 65%;
+}
+
 .modal-body h5,
 .modal-header h1 {
     font-weight: bold;

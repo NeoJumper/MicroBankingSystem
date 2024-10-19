@@ -51,10 +51,11 @@
                             <thead>
                             <tr>
                                 <th style="width: 10%"><label>선택</label></th>
-                                <th style="width: 15%"><label id="search-modal-customer-id">고객번호</label></th>
-                                <th style="width: 20%"><label id="search-modal-customer-name">이름</label></th>
+                                <th style="width: 10%"><label id="search-modal-customer-id">고객번호</label></th>
+                                <th style="width: 10%"><label id="search-modal-customer-name">이름</label></th>
                                 <th style="width: 20%"><label id="search-modal-customer-birth">생년월일</label></th>
                                 <th style="width: 20%"><label id="search-modal-customer-phone">전화번호</label></th>
+                                <th style="width: 15%"><label id="search-modal-customer-security-level">보안등급</label></th>
                                 <th style="width: 15%"><label id="search-modal-branch-name">관리지점</label></th>
                             </tr>
                             </thead>

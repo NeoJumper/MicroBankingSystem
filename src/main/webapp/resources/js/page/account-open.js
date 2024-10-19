@@ -192,8 +192,8 @@ function handleTransferLimitText() {
         {
             $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5백만 원');
             $('#per-trade-limit-input').val('5,000,000');
-            $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1억 원');
-            $('#daily-limit-input').val('100,000,000');
+            $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1천만 원');
+            $('#daily-limit-input').val('10,000,000');
         }
 
     }
@@ -204,6 +204,13 @@ function handleTransferLimitText() {
             $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 50억 원');
             $('#daily-limit-input').val('5,000,000,000');
 
+        }
+        else
+        {
+            $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1억 원');
+            $('#per-trade-limit-input').val('100,000,000');
+            $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5억 원');
+            $('#daily-limit-input').val('500,000,000');
         }
     }
 }

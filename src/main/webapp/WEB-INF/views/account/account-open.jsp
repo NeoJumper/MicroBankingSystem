@@ -48,15 +48,15 @@
                     <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
                 </button>
             </td>
-            <th>계좌 비밀번호</th>
-            <td><input type="password" id="password-input"></td>
+            <th>보안등급</th>
+            <td><input type="text" id="customer-security-level-input"value="1등급" disabled></td>
 
         </tr>
         <tr>
             <th>고객명</th>
             <td><input type="text" id="customer-name-input" disabled></td>
-            <th>보안등급</th>
-            <td><input type="text" id="customer-security-level-input"value="1등급" disabled></td>
+            <td colspan="2"></td>
+
         </tr>
 
     </table>
@@ -69,8 +69,8 @@
         <tr>
             <th>상품명</th>
             <td>
-                <input type="text" id="product-name-input" readonly >
-                <button data-bs-toggle="modal" data-bs-target="#search-customer-modal"  type="button" id="product-search-btn" class="basic-btn">
+                <input type="text" id="deposit-product-name-input" readonly >
+                <button data-bs-toggle="modal" data-bs-target="#search-deposit-product-modal"  type="button" id="deposit-product-search-btn" class="basic-btn">
                     <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
                 </button>
             </td>
@@ -111,7 +111,8 @@
         <tr>
             <th>담당자</th>
             <td><input type="text" id="emp-name-input" value="${employeeName}" disabled></td>
-            <td colspan="2"></td>
+            <th>계좌 비밀번호</th>
+            <td><input type="password" id="password-input"></td>
         </tr>
         <input type="hidden" id="emp-id-hidden-input" value="${employeeId}" >
         <input type="hidden" id="branch-id-hidden-input" value="${branchId}" >
@@ -130,6 +131,7 @@
 </div>
 
 <%@ include file="/resources/components/modal/search-modal-customer.jsp" %>
+<%@ include file="/resources/components/modal/search-modal-deposit-product.jsp" %>
 <%@ include file="/resources/components/modal/result-modal-open-account.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/account-open.js"></script>

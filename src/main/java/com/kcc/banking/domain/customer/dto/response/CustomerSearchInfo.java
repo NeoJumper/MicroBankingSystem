@@ -16,21 +16,17 @@ public class CustomerSearchInfo {
     private String customerName;
     private Date birthDate;
     private String phoneNumber;
+    private String securityLevel;
     private int branchId;
 
 
-
-    public String getFormattedBirthDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(birthDate);  // YYYY-MM-DD 형식으로 반환
-    }
-
     @Builder
-    public CustomerSearchInfo(int customerId, String customerName, Date birthDate, String phoneNumber, int branchId) {
+    public CustomerSearchInfo(int customerId, String customerName, Date birthDate, String phoneNumber, String securityLevel, int branchId) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
+        this.securityLevel = securityLevel;
         this.branchId = branchId;
     }
 }
