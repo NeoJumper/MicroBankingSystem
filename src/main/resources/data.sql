@@ -182,37 +182,43 @@ VALUES (customer_seq.NEXTVAL, 4, '이현정', '010-2345-6789', 'FEMALE', '880305
     id 6~10 : 정기적금
  */
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 1, '청년안심보통예금', 2.5, SYSDATE, '00', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 1, '청년안심보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 2, '청년미래보통예금', 2.5, SYSDATE, '00', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 2, '청년미래보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 3, '노후든든보통예금', 2.5, SYSDATE, '00', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 3, '노후든든보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 4, '노후건강보통예금', 2.5, SYSDATE, '00', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 4, '노후건강보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 5, '더편한보통예금', 2.5, SYSDATE, '00', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 5, '더편한보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
+
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 1, '기업보통예금', 0.1, SYSDATE, '00', 0.15, 1, 'CORPORATION');
+
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 1, 'ONE 사업자 통장', 0.1, SYSDATE, '00', 0.15, 1, 'CORPORATION');
 
 --적금 상품 6 - 10번
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 1, '6개월만기정기적금', 2.5, SYSDATE, '06', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 1, '6개월만기정기적금', 2.5, SYSDATE, '06', 0.15, 1, 'PRIVATE');
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 1, '1년만기정기적금', 3, SYSDATE, '12', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 1, '1년만기정기적금', 3, SYSDATE, '12', 0.15, 1, 'PRIVATE');
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 1, '2년만기정기적금', 3.5, SYSDATE, '24', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 1, '2년만기정기적금', 3.5, SYSDATE, '24', 0.15, 1, 'PRIVATE');
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.15, 1, 'PRIVATE');
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id)
-VALUES (product_seq.NEXTVAL, 1, '1년만기자유적금', 3.5, TO_TIMESTAMP('2024-02-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), '12', 0.15, 1);
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
+VALUES (product_seq.NEXTVAL, 1, '1년만기자유적금', 3.5, TO_TIMESTAMP('2024-02-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), '12', 0.15, 1, 'PRIVATE');
 
 
 ---------- 계좌 생성 ----------

@@ -189,6 +189,7 @@ CREATE TABLE Product (
                          effective_date TIMESTAMP NULL,
                          period VARCHAR(10) NULL,
                          tax_rate NUMBER NULL,
+                         account_type VARCHAR(20) NULL,
                          registration_date TIMESTAMP NULL,
                          modification_date TIMESTAMP NULL,
                          modifier_id NUMBER NULL,
