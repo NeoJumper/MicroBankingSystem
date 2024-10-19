@@ -247,7 +247,7 @@
                         </tr>
                         <tr>
                             <th>한글금액표시(원)</th>
-                            <td><input id="krwModal" placeholder=" 예) 삼백만원"></td>
+                            <td><input id="krwModal" placeholder=" 예) 삼백만원" disabled></td>
                         </tr>
                         <tr>
                             <th>받는분</th>
