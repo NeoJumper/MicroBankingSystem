@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
             type: "GET",
             success: function (data) {
                 $('#account-number').text(data[0].accId);
-                $('#account-balance').text(data[0].balance);
-                $('#transferable-amount').text(data[0].balance);
+                $('#account-balance').text(data[0].balance.toLocaleString());
+                $('#transferable-amount').text(data[0].balance.toLocaleString());
 
                 // 모달 닫기
                 $('#search-modal-account').modal('hide');
