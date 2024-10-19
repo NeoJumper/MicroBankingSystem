@@ -16,23 +16,26 @@ public class ManagerClosingData {
     private BigDecimal totalDepositOfBranch;
     private BigDecimal totalWithdrawalOfBranch;
     private BigDecimal vaultCashOfBranch;
+    private String branchName;
 
     @Builder
-    public ManagerClosingData(List<ClosingData> closingDataList, BigDecimal prevCashBalanceOfBranch, BigDecimal totalDepositOfBranch, BigDecimal totalWithdrawalOfBranch, BigDecimal vaultCashOfBranch) {
+    public ManagerClosingData(List<ClosingData> closingDataList, BigDecimal prevCashBalanceOfBranch, BigDecimal totalDepositOfBranch, BigDecimal totalWithdrawalOfBranch, BigDecimal vaultCashOfBranch, String branchName) {
         this.closingDataList = closingDataList;
         this.prevCashBalanceOfBranch = prevCashBalanceOfBranch;
         this.totalDepositOfBranch = totalDepositOfBranch;
         this.totalWithdrawalOfBranch = totalWithdrawalOfBranch;
         this.vaultCashOfBranch = vaultCashOfBranch;
+        this.branchName = branchName;
     }
 
-    public static ManagerClosingData of(List<ClosingData> closingDataList, BigDecimal branchClosingVaultCash){
+    public static ManagerClosingData of(List<ClosingData> closingDataList, BigDecimal branchClosingVaultCash, String branchName){
         return ManagerClosingData.builder()
                 .closingDataList(closingDataList)
                 .prevCashBalanceOfBranch(closingDataList.stream().map(ClosingData::getPrevCashBalance).reduce(BigDecimal.ZERO, BigDecimal::add) )
                 .totalDepositOfBranch(closingDataList.stream().map(ClosingData::getTotalDeposit).reduce(BigDecimal.ZERO, BigDecimal::add))
                 .totalWithdrawalOfBranch(closingDataList.stream().map(ClosingData::getTotalWithdrawal).reduce(BigDecimal.ZERO, BigDecimal::add))
                 .vaultCashOfBranch(branchClosingVaultCash)
+                .branchName(branchName)
                 .build();
     }
 }
