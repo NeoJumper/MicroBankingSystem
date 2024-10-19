@@ -111,69 +111,69 @@ VALUES (employee_seq.NEXTVAL, '이경호', '1999-02-14','$2a$12$KEC0twTfMAlrbchL
 
 -- 1번 고객
 -- 남성
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '이준호', '010-1111-2222', 'MALE', '901125-1234567', '서울특별시 강남구 역삼동 123-45', '1990-11-25', 2);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '이준호', '010-1111-2222', 'MALE', '901125-1234567', '서울특별시 강남구 역삼동 123-45', '1990-11-25', '2등급', 2);
 
 -- 2번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '김태훈', '010-2222-3333', 'MALE', '850615-2345678', '부산광역시 해운대구 우동 456-78', '1985-06-15', 2);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '김태훈', '010-2222-3333', 'MALE', '850615-2345678', '부산광역시 해운대구 우동 456-78', '1985-06-15', '2등급',  2);
 
 -- 3번 고객
 -- 여성
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '박지연', '010-3333-4444', 'FEMALE', '920301-3456789', '대구광역시 수성구 범어동 234-56', '1992-03-01', 2);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '박지연', '010-3333-4444', 'FEMALE', '920301-3456789', '대구광역시 수성구 범어동 234-56', '1992-03-01', '2등급',  2);
 
 -- 4번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '정은주', '010-4444-5555', 'FEMALE', '971215-4567890', '인천광역시 남동구 구월동 567-89', '1997-12-15', 2);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '정은주', '010-4444-5555', 'FEMALE', '971215-4567890', '인천광역시 남동구 구월동 567-89', '1997-12-15', '2등급',  2);
 
 -- 5번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '최민아', '010-5555-6666', 'FEMALE', '880110-5678901', '경기도 성남시 분당구 정자동 789-12', '1988-01-10', 2);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '최민아', '010-5555-6666', 'FEMALE', '880110-5678901', '경기도 성남시 분당구 정자동 789-12', '1988-01-10', '2등급',  2);
 
 -- 6번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '김태민', '010-2345-6789', 'MALE', '890123-1234567', '서울특별시 강남구 논현동 123-45', '1989-01-23', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '김태민', '010-2345-6789', 'MALE', '890123-1234567', '서울특별시 강남구 논현동 123-45', '1989-01-23', '2등급',  8);
 
 -- 7번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '박지윤', '010-3456-7890', 'FEMALE', '760204-2345678', '서울특별시 송파구 가락동 678-90', '1976-02-04', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '박지윤', '010-3456-7890', 'FEMALE', '760204-2345678', '서울특별시 송파구 가락동 678-90', '1976-02-04', '2등급',  8);
 
 -- 8번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '이수민', '010-4567-8901', 'FEMALE', '950310-3456789', '서울특별시 서초구 반포동 345-67', '1995-03-10', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '이수민', '010-4567-8901', 'FEMALE', '950310-3456789', '서울특별시 서초구 반포동 345-67', '1995-03-10', '2등급',  8);
 
 -- 9번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '정하늘', '010-5678-9012', 'MALE', '880521-4567890', '서울특별시 동작구 상도동 890-12', '1988-05-21', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '정하늘', '010-5678-9012', 'MALE', '880521-4567890', '서울특별시 동작구 상도동 890-12', '1988-05-21', '2등급',  8);
 
 -- 10번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '최민호', '010-6789-0123', 'MALE', '720606-5678901', '서울특별시 마포구 상암동 123-45', '1972-06-06', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '최민호', '010-6789-0123', 'MALE', '720606-5678901', '서울특별시 마포구 상암동 123-45', '1972-06-06', '2등급',  10);
 
 -- 11번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '강영희', '010-7890-1234', 'FEMALE', '990417-6789012', '서울특별시 강북구 수유동 345-67', '1999-04-17', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '강영희', '010-7890-1234', 'FEMALE', '990417-6789012', '서울특별시 강북구 수유동 345-67', '1999-04-17', '2등급',  10);
 
 -- 12번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '김하늘', '010-8901-2345', 'FEMALE', '880724-7890123', '서울특별시 중구 명동 456-78', '1988-07-24', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '김하늘', '010-8901-2345', 'FEMALE', '880724-7890123', '서울특별시 중구 명동 456-78', '1988-07-24', '2등급',  10);
 
 -- 13번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '이동훈', '010-9012-3456', 'MALE', '930512-8901234', '서울특별시 영등포구 신길동 567-89', '1993-05-12', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '이동훈', '010-9012-3456', 'MALE', '930512-8901234', '서울특별시 영등포구 신길동 567-89', '1993-05-12', '2등급',  10);
 
 -- 14번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '박준호', '010-0123-4567', 'MALE', '860730-9012345', '서울특별시 관악구 봉천동 678-90', '1986-07-30', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '박준호', '010-0123-4567', 'MALE', '860730-9012345', '서울특별시 관악구 봉천동 678-90', '1986-07-30',  '2등급', 12);
 
 -- 15번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '정미래', '010-1234-5678', 'FEMALE', '950812-0123456', '서울특별시 용산구 이태원동 789-12', '1995-08-12', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '정미래', '010-1234-5678', 'FEMALE', '950812-0123456', '서울특별시 용산구 이태원동 789-12', '1995-08-12',  '2등급', 12);
 
 -- 16번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '이현정', '010-2345-6789', 'FEMALE', '880305-1234567', '서울특별시 서대문구 연희동 890-23', '1988-03-05', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '이현정', '010-2345-6789', 'FEMALE', '880305-1234567', '서울특별시 서대문구 연희동 890-23', '1988-03-05', '2등급',  12);
 
 ---------- 상품 생성 ----------
 /*
@@ -439,20 +439,20 @@ VALUES('2024-08-02 00:00:00', 2, 1, 'OPEN',   51110000,  null,trade_num_seq.CURR
 ---------- 법인 계좌 ----------
 
 -- 17번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '(주)DataSphere', '02-3456-7890', 'NONE', '000001-000001', '서울특별시 종로구 혜화동 901-34', '1982-06-20', 4);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '(주)DataSphere', '02-3456-7890', 'NONE', '000001-000001', '서울특별시 종로구 혜화동 901-34', '1982-06-20', '2등급',  4);
 
 -- 18번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, 'CodeWave Company', '02-4567-8901', 'NONE', '000001-000002', '서울특별시 종로구 무악동 012-45', '1979-08-11', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, 'CodeWave Company', '02-4567-8901', 'NONE', '000001-000002', '서울특별시 종로구 무악동 012-45', '1979-08-11', '2등급',  8);
 
 -- 19번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '(주)InnoSoft', '02-4568-8901', 'NONE', '000001-000003', '서울특별시 종로구 가회동 012-46', '1980-08-11', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '(주)InnoSoft', '02-4568-8901', 'NONE', '000001-000003', '서울특별시 종로구 가회동 012-46', '1980-08-11',  '2등급', 10);
 
 -- 20번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '(주)TechNova', '02-4569-8901', 'NONE', '000001-000004', '서울특별시 서대문구 연희동 012-46', '1980-08-11', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '(주)TechNova', '02-4569-8901', 'NONE', '000001-000004', '서울특별시 서대문구 연희동 012-46', '1980-08-11', '2등급',  12);
 
 
 
@@ -460,44 +460,44 @@ VALUES (customer_seq.NEXTVAL, 4, '(주)TechNova', '02-4569-8901', 'NONE', '00000
 
 
 -- 21번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '김민수', '010-6666-7777', 'MALE', '950101-1234567', '서울특별시 강남구 삼성동 101-1', '1995-01-01', 3);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '김민수', '010-6666-7777', 'MALE', '950101-1234567', '서울특별시 강남구 삼성동 101-1', '1995-01-01',  '2등급', 3);
 
 -- 22번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '이영희', '010-7777-8888', 'FEMALE', '930202-2345678', '서울특별시 서초구 서초동 202-2', '1993-02-02', 5);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '이영희', '010-7777-8888', 'FEMALE', '930202-2345678', '서울특별시 서초구 서초동 202-2', '1993-02-02',  '2등급', 5);
 
 -- 23번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '박준형', '010-8888-9999', 'MALE', '900303-3456789', '서울특별시 송파구 잠실동 303-3', '1990-03-03', 2);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '박준형', '010-8888-9999', 'MALE', '900303-3456789', '서울특별시 송파구 잠실동 303-3', '1990-03-03',  '2등급', 2);
 
 -- 24번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '최수진', '010-9999-0000', 'FEMALE', '960404-4567890', '서울특별시 강동구 천호동 404-4', '1996-04-04', 4);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '최수진', '010-9999-0000', 'FEMALE', '960404-4567890', '서울특별시 강동구 천호동 404-4', '1996-04-04', '2등급',  4);
 
 -- 25번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '홍길동', '010-0000-1111', 'MALE', '880505-5678901', '서울특별시 노원구 상계동 505-5', '1988-05-05', 6);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '홍길동', '010-0000-1111', 'MALE', '880505-5678901', '서울특별시 노원구 상계동 505-5', '1988-05-05', '2등급',  6);
 
 -- 26번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '신지훈', '010-1010-1111', 'MALE', '920606-6789012', '서울특별시 중랑구 면목동 606-6', '1992-06-06', 4);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '신지훈', '010-1010-1111', 'MALE', '920606-6789012', '서울특별시 중랑구 면목동 606-6', '1992-06-06',  '2등급', 4);
 
 -- 27번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '오수민', '010-1212-1313', 'FEMALE', '970707-7890123', '서울특별시 성북구 길음동 707-7', '1997-07-07', 5);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '오수민', '010-1212-1313', 'FEMALE', '970707-7890123', '서울특별시 성북구 길음동 707-7', '1997-07-07', '2등급',  5);
 
 -- 28번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '강민호', '010-1414-1515', 'MALE', '850808-8901234', '서울특별시 은평구 불광동 808-8', '1985-08-08', 2);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '강민호', '010-1414-1515', 'MALE', '850808-8901234', '서울특별시 은평구 불광동 808-8', '1985-08-08', '2등급',  2);
 
 -- 29번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '윤서연', '010-1616-1717', 'FEMALE', '940909-9012345', '서울특별시 마포구 합정동 909-9', '1994-09-09', 6);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '윤서연', '010-1616-1717', 'FEMALE', '940909-9012345', '서울특별시 마포구 합정동 909-9', '1994-09-09',  '2등급', 6);
 
 -- 30번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '정현우', '010-1818-1919', 'MALE', '910101-0123456', '서울특별시 동대문구 이문동 101-1', '1991-01-01', 3);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 1, '정현우', '010-1818-1919', 'MALE', '910101-0123456', '서울특별시 동대문구 이문동 101-1', '1991-01-01', '2등급',  3);
 
 
 
@@ -506,44 +506,44 @@ VALUES (customer_seq.NEXTVAL, 1, '정현우', '010-1818-1919', 'MALE', '910101-0
 
 
 -- 31번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '김지훈', '010-2121-2222', 'MALE', '970808-1234567', '서울특별시 강남구 도곡동 101-1', '1997-08-08', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '김지훈', '010-2121-2222', 'MALE', '970808-1234567', '서울특별시 강남구 도곡동 101-1', '1997-08-08', '2등급',  8);
 
 -- 32번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '박수민', '010-2323-2424', 'FEMALE', '850909-2345678', '서울특별시 서초구 방배동 202-2', '1985-09-09', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '박수민', '010-2323-2424', 'FEMALE', '850909-2345678', '서울특별시 서초구 방배동 202-2', '1985-09-09',  '2등급', 8);
 
 -- 33번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '이현우', '010-2525-2626', 'MALE', '900101-3456789', '서울특별시 송파구 문정동 303-3', '1990-01-01', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '이현우', '010-2525-2626', 'MALE', '900101-3456789', '서울특별시 송파구 문정동 303-3', '1990-01-01',  '2등급', 8);
 
 -- 34번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '정민서', '010-2727-2828', 'FEMALE', '940202-4567890', '서울특별시 강동구 둔촌동 404-4', '1994-02-02', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '정민서', '010-2727-2828', 'FEMALE', '940202-4567890', '서울특별시 강동구 둔촌동 404-4', '1994-02-02', '2등급',  8);
 
 -- 35번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '최민준', '010-2929-3030', 'MALE', '920303-5678901', '서울특별시 노원구 중계동 505-5', '1992-03-03', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '최민준', '010-2929-3030', 'MALE', '920303-5678901', '서울특별시 노원구 중계동 505-5', '1992-03-03', '2등급',  8);
 
 -- 36번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '김서연', '010-3131-3232', 'FEMALE', '870404-6789012', '서울특별시 중랑구 상봉동 606-6', '1987-04-04', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '김서연', '010-3131-3232', 'FEMALE', '870404-6789012', '서울특별시 중랑구 상봉동 606-6', '1987-04-04', '2등급',  8);
 
 -- 37번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '장동현', '010-3333-3434', 'MALE', '890505-7890123', '서울특별시 성북구 종암동 707-7', '1989-05-05', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '장동현', '010-3333-3434', 'MALE', '890505-7890123', '서울특별시 성북구 종암동 707-7', '1989-05-05', '2등급',  8);
 
 -- 38번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '한지민', '010-3535-3636', 'FEMALE', '950606-8901234', '서울특별시 은평구 응암동 808-8', '1995-06-06', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '한지민', '010-3535-3636', 'FEMALE', '950606-8901234', '서울특별시 은평구 응암동 808-8', '1995-06-06',  '2등급', 8);
 
 -- 39번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '서준혁', '010-3737-3838', 'MALE', '930707-9012345', '서울특별시 마포구 서교동 909-9', '1993-07-07', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '서준혁', '010-3737-3838', 'MALE', '930707-9012345', '서울특별시 마포구 서교동 909-9', '1993-07-07', '2등급',  8);
 
 -- 40번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '신예은', '010-3939-4040', 'FEMALE', '910808-0123456', '서울특별시 동대문구 회기동 101-1', '1991-08-08', 8);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 2, '신예은', '010-3939-4040', 'FEMALE', '910808-0123456', '서울특별시 동대문구 회기동 101-1', '1991-08-08', '2등급',  8);
 
 
 
@@ -552,44 +552,44 @@ VALUES (customer_seq.NEXTVAL, 2, '신예은', '010-3939-4040', 'FEMALE', '910808
 
 
 -- 41번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '김하늘', '010-4141-4242', 'FEMALE', '910101-1234567', '서울특별시 강남구 역삼동 101-1', '1991-01-01', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '김하늘', '010-4141-4242', 'FEMALE', '910101-1234567', '서울특별시 강남구 역삼동 101-1', '1991-01-01',  '2등급', 10);
 
 -- 42번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '박준호', '010-4343-4444', 'MALE', '920202-2345678', '서울특별시 서초구 반포동 202-2', '1992-02-02', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '박준호', '010-4343-4444', 'MALE', '920202-2345678', '서울특별시 서초구 반포동 202-2', '1992-02-02',  '2등급', 10);
 
 -- 43번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '이수민', '010-4545-4646', 'FEMALE', '930303-3456789', '서울특별시 송파구 가락동 303-3', '1993-03-03', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '이수민', '010-4545-4646', 'FEMALE', '930303-3456789', '서울특별시 송파구 가락동 303-3', '1993-03-03',  '2등급', 10);
 
 -- 44번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '정민준', '010-4747-4848', 'MALE', '940404-4567890', '서울특별시 강동구 명일동 404-4', '1994-04-04', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '정민준', '010-4747-4848', 'MALE', '940404-4567890', '서울특별시 강동구 명일동 404-4', '1994-04-04',  '2등급', 10);
 
 -- 45번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '최서연', '010-4949-5050', 'FEMALE', '950505-5678901', '서울특별시 노원구 공릉동 505-5', '1995-05-05', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '최서연', '010-4949-5050', 'FEMALE', '950505-5678901', '서울특별시 노원구 공릉동 505-5', '1995-05-05',  '2등급', 10);
 
 -- 46번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '김현우', '010-5151-5252', 'MALE', '960606-6789012', '서울특별시 중랑구 묵동 606-6', '1996-06-06', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '김현우', '010-5151-5252', 'MALE', '960606-6789012', '서울특별시 중랑구 묵동 606-6', '1996-06-06', '2등급',  10);
 
 -- 47번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '장예은', '010-5353-5454', 'FEMALE', '970707-7890123', '서울특별시 성북구 석관동 707-7', '1997-07-07', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '장예은', '010-5353-5454', 'FEMALE', '970707-7890123', '서울특별시 성북구 석관동 707-7', '1997-07-07',  '2등급', 10);
 
 -- 48번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '한지훈', '010-5555-5656', 'MALE', '980808-8901234', '서울특별시 은평구 신사동 808-8', '1998-08-08', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '한지훈', '010-5555-5656', 'MALE', '980808-8901234', '서울특별시 은평구 신사동 808-8', '1998-08-08', '2등급',  10);
 
 -- 49번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '서민지', '010-5757-5858', 'FEMALE', '990909-9012345', '서울특별시 마포구 연남동 909-9', '1999-09-09', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '서민지', '010-5757-5858', 'FEMALE', '990909-9012345', '서울특별시 마포구 연남동 909-9', '1999-09-09',  '2등급', 10);
 
 -- 50번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '신동현', '010-5959-6060', 'MALE', '000101-0123456', '서울특별시 동대문구 청량리동 101-1', '2000-01-01', 10);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 3, '신동현', '010-5959-6060', 'MALE', '000101-0123456', '서울특별시 동대문구 청량리동 101-1', '2000-01-01',  '2등급', 10);
 
 
 
@@ -599,44 +599,44 @@ VALUES (customer_seq.NEXTVAL, 3, '신동현', '010-5959-6060', 'MALE', '000101-0
 
 
 -- 51번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '김예준', '010-6161-6262', 'MALE', '910101-1234567', '서울특별시 강남구 청담동 101-1', '1991-01-01', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '김예준', '010-6161-6262', 'MALE', '910101-1234567', '서울특별시 강남구 청담동 101-1', '1991-01-01', '2등급',  12);
 
 -- 52번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '이서연', '010-6363-6464', 'FEMALE', '920202-2345678', '서울특별시 서초구 잠원동 202-2', '1992-02-02', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '이서연', '010-6363-6464', 'FEMALE', '920202-2345678', '서울특별시 서초구 잠원동 202-2', '1992-02-02',  '2등급', 12);
 
 -- 53번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '박민준', '010-6565-6666', 'MALE', '930303-3456789', '서울특별시 송파구 방이동 303-3', '1993-03-03', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '박민준', '010-6565-6666', 'MALE', '930303-3456789', '서울특별시 송파구 방이동 303-3', '1993-03-03',  '2등급', 12);
 
 -- 54번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '최지민', '010-6767-6868', 'FEMALE', '940404-4567890', '서울특별시 강동구 상일동 404-4', '1994-04-04', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '최지민', '010-6767-6868', 'FEMALE', '940404-4567890', '서울특별시 강동구 상일동 404-4', '1994-04-04',  '2등급', 12);
 
 -- 55번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '정현우', '010-6969-7070', 'MALE', '950505-5678901', '서울특별시 노원구 월계동 505-5', '1995-05-05', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '정현우', '010-6969-7070', 'MALE', '950505-5678901', '서울특별시 노원구 월계동 505-5', '1995-05-05',  '2등급', 12);
 
 -- 56번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '김수민', '010-7171-7272', 'FEMALE', '960606-6789012', '서울특별시 중랑구 면목동 606-6', '1996-06-06', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '김수민', '010-7171-7272', 'FEMALE', '960606-6789012', '서울특별시 중랑구 면목동 606-6', '1996-06-06',  '2등급', 12);
 
 -- 57번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '이준호', '010-7373-7474', 'MALE', '970707-7890123', '서울특별시 성북구 장위동 707-7', '1997-07-07', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '이준호', '010-7373-7474', 'MALE', '970707-7890123', '서울특별시 성북구 장위동 707-7', '1997-07-07',  '2등급', 12);
 
 -- 58번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '박서현', '010-7575-7676', 'FEMALE', '980808-8901234', '서울특별시 은평구 역촌동 808-8', '1998-08-08', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '박서현', '010-7575-7676', 'FEMALE', '980808-8901234', '서울특별시 은평구 역촌동 808-8', '1998-08-08',  '2등급', 12);
 
 -- 59번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '최민수', '010-7777-7878', 'MALE', '990909-9012345', '서울특별시 마포구 도화동 909-9', '1999-09-09', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '최민수', '010-7777-7878', 'MALE', '990909-9012345', '서울특별시 마포구 도화동 909-9', '1999-09-09', '2등급',  12);
 
 -- 60번 고객
-INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '정예은', '010-7979-8080', 'FEMALE', '000101-0123456', '서울특별시 동대문구 답십리동 101-1', '2000-01-01', 12);
+INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date, security_level, registrant_id)
+VALUES (customer_seq.NEXTVAL, 4, '정예은', '010-7979-8080', 'FEMALE', '000101-0123456', '서울특별시 동대문구 답십리동 101-1', '2000-01-01', '2등급',  12);
 
 
 /*
