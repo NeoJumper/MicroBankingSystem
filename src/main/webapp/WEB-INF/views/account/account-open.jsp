@@ -10,6 +10,7 @@
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/account-open.css"/>
 
     <!-- jquery 소스-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -38,7 +39,7 @@
     <div>
         <h3>고객 정보</h3>
     </div>
-    <table class="common-table">
+    <table class="common-table account-open-table">
         <tr>
             <th>고객번호</th>
             <td>
@@ -64,7 +65,7 @@
     <div>
         <h3>계좌 개설 정보 입력</h3>
     </div>
-    <table class="common-table">
+    <table class="common-table account-open-table">
         <tr>
             <th>상품명</th>
             <td>

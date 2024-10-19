@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
     $("#customer-id-search-btn").on("click", function () {
 
@@ -14,19 +12,14 @@ $(document).ready(function () {
 // 모달 내 고객 검색 버튼 클릭시 함수
 function customerSearchModalEvent() {
     // 셀렉트 요소 가져오기
-    
+    $('#search-modal-customer-information').empty();
+
     $('#search-modal-search-btn').on('click', function () {
         // 드롭다운에서 선택된 값
         const searchType = $('#search-modal-select').val();
         // 입력 필드의 값 가져오기
         const searchInput = $('#search-modal-input').val();
 
-
-        // 유효성 검사: 검색어가 비어 있는지 확인
-        if (!searchInput) {
-            alert("검색어를 입력해주세요.");
-            return;
-        }
 
         let queryParam = '';
         if (searchType === 'customer-id') {
@@ -117,7 +110,11 @@ function insertCustomerId() {
             $('#search-customer-modal').modal('hide');
 
         } else {
-            alert('고객을 선택해 주세요.');
+            swal({
+                title: "고객을 선택해 주세요.",
+                // text: "비밀번호 인증 성공",
+                icon: "warning",
+            });
         }
     });
 

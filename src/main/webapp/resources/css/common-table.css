@@ -36,9 +36,6 @@
 .common-table td{
     width: 30%;
 }
-.common-table input{
-    text-align: right; /* 텍스트를 오른쪽으로 정렬 */
-}
 
 .common-table select, input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
     width: 60%;
