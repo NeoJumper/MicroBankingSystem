@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     row.append($('<td>').text(++index));
                     row.append($('<td>').text(employee.targetAccId));
-                    row.append($('<td>').text(employee.transferAmount));
+                    row.append($('<td>').text(parseFloat(employee.transferAmount).toLocaleString()));
                     row.append($('<td>').text(employee.krw));
                     row.append($('<td>').text(employee.depositor));
                     row.append($('<td>').text(''));
