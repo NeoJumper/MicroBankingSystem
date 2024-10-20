@@ -2,12 +2,15 @@ package com.kcc.banking.domain.account.service;
 
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
+import com.kcc.banking.common.exception.custom_exception.NotFoundException;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.*;
 import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
@@ -63,7 +66,13 @@ public class AccountService {
     }
 
     public AccountOpenResultOfModal getAccountOpenResultOfModal(String accId) {
-        return accountMapper.findAccountOpenResultOfModal(accId);
+        AccountOpenResultOfModal accountInfo = accountMapper.findAccountOpenResultOfModal(accId);
+
+        if (accountInfo != null) {
+            return accountInfo;
+        } else {
+            throw new NotFoundException(ErrorCode.NOT_FOUND_ACCOUNT);
+        }
     }
 
     public List<AccountDetailForInterest> getAccountListByBranchId(Long branchId) {
@@ -177,12 +186,15 @@ public class AccountService {
                 .startDate(currentData.getCurrentBusinessDate())
                 .registrantId(currentData.getEmployeeId())
                 .balance(accountOpen.getBalance())
+                .perTradeLimit(accountOpen.getPerTradeLimit())
+                .dailyLimit(accountOpen.getDailyLimit())
                 .branchId(currentData.getBranchId())
                 .productId(accountOpen.getProductId())
                 .customerId(accountOpen.getCustomerId())
                 .preferentialInterestRate(accountOpen.getPreferentialInterestRate())
                 .password(EncodePassword)
                 .status("OPN")
+                .accountType(accountOpen.getAccountType())
                 .tradeNumber(tradeNumber)
                 .build();
 

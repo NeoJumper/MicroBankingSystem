@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.account.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,17 +19,21 @@ public class AccountOpenResultOfModal {
     private String phoneNumber;
 
     private String productName;
-    private Timestamp startDate;
+    private String startDate;
     private BigDecimal balance;
     private String branchName;
     private String registrantName;
+
+    private BigDecimal perTradeLimit;
+    private BigDecimal dailyLimit;
 
     private BigDecimal preferentialInterestRate;
     private BigDecimal interestRate;
     //총이율
     private BigDecimal totalInterestRate;
 
-    public AccountOpenResultOfModal(String accId, String password, String customerName, int customerId, String phoneNumber, String productName, Timestamp startDate, BigDecimal balance, String branchName, String registrantName,BigDecimal preferentialInterestRate, BigDecimal interestRate, BigDecimal totalInterestRate) {
+    @Builder
+    public AccountOpenResultOfModal(String accId, String password, String customerName, int customerId, String phoneNumber, String productName, String startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal perTradeLimit, BigDecimal dailyLimit, BigDecimal preferentialInterestRate, BigDecimal interestRate, BigDecimal totalInterestRate) {
         this.accId = accId;
         this.password = password;
         this.customerName = customerName;
@@ -39,8 +44,10 @@ public class AccountOpenResultOfModal {
         this.balance = balance;
         this.branchName = branchName;
         this.registrantName = registrantName;
-        this.totalInterestRate = totalInterestRate;
-        this.interestRate = interestRate;
+        this.perTradeLimit = perTradeLimit;
+        this.dailyLimit = dailyLimit;
         this.preferentialInterestRate = preferentialInterestRate;
+        this.interestRate = interestRate;
+        this.totalInterestRate = totalInterestRate;
     }
 }

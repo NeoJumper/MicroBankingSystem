@@ -45,18 +45,19 @@ function accountOpen() {
 
         const customerId = $('#customer-id-input').val();
         const productId = $('#product-id-hidden-input').val();
-
+        const dailyLimit = $('#daily-limit-input').val();
+        const perTradeLimit = $('#per-trade-limit-input').val();
         //const startDate = $('startDate').val();
         const preferentialInterestRate = $('#preferred-interest-input').val();
         const password = $('#password-input').val();
         const balance = $('#init-balance-input').val();
-
+        const accountType = $('input[name="major-category"]:checked').val();
         const empId = $('#emp-id-hidden-input').val();
         const branchId = $('#branch-id-hidden-input').val();
 
         $.ajax({
             type: 'POST',
-            url: '/api/employee/account/open',
+            url: '/api/employee/accounts',
             contentType: 'application/json',
             data: JSON.stringify({
                 branchId: branchId,
@@ -65,7 +66,10 @@ function accountOpen() {
                 productId: productId,
                 preferentialInterestRate: preferentialInterestRate,
                 password: password,
-                balance: balance,
+                dailyLimit: removeCommas(dailyLimit),
+                perTradeLimit: removeCommas(perTradeLimit),
+                balance: removeCommas(balance),
+                accountType: accountType,
                 tradeType: "OPEN"
             }),
             success: function (accountId) {
@@ -112,21 +116,29 @@ function clearCustomerSearchModal() {
 function accountOpenResult(accountId) {
 
     $.ajax({
-        url: '/api/employee/account/open/' + accountId,
+        url: '/api/employee/accounts/' + accountId,
         method: 'GET',
         success: function (data) {
-
+            console.log(data);
 
             $('#result-modal-account-id-input').val(data.accId);
             $('#result-modal-customer-name-input').val(data.customerName)
             $('#result-modal-customer-number-input').val(data.customerId);
             $('#result-modal-phone-number-input').val(data.phoneNumber);
             $('#result-modal-product-name-input').val(data.productName);
-            $('#result-modal-start-date-input').val(data.startDate);
 
-            $('#result-modal-balance-input').val(data.balance);
+            $('#result-modal-start-date-input').val(data.startDate.split(' ')[0]);
+
+
             $('#result-modal-branch-name-input').val(data.branchName);
             $('#result-modal-registrant-name-input').val(data.registrantName);
+
+            $('#result-modal-product-interest-input').val(data.interestRate);
+            $('#result-modal-preferred-interest-input').val(data.preferentialInterestRate);
+
+            $('#result-modal-balance-input').val(data.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+            $('#result-modal-per-trade-limit-input').val(data.perTradeLimit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+            $('#result-modal-daily-limit-input').val(data.dailyLimit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 
             $('#result-modal-total-interest-input').val(data.totalInterestRate);
 
@@ -160,8 +172,8 @@ function handleTransferLimitText() {
     var selectedAccountType =  $('input[name="major-category"]:checked').val();
     var selectedCustomerSecurityLevel = $('#customer-security-level-input').val();
 
-    console.log(selectedAccountType);
-    console.log(selectedCustomerSecurityLevel);
+    //console.log(selectedAccountType);
+    //console.log(selectedCustomerSecurityLevel);
     if(selectedAccountType === "PRIVATE")
     {
         if(selectedCustomerSecurityLevel === "1등급"){
@@ -195,4 +207,7 @@ function handleTransferLimitText() {
             $('#daily-limit-input').val('500,000,000');
         }
     }
+}
+function removeCommas(numberString) {
+    return numberString.replace(/,/g, '');
 }

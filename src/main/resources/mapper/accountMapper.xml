@@ -69,8 +69,11 @@
             preferential_interest_rate,
             password,
             balance,
+            per_trade_limit,
+            daily_limit,
             open_date,
             status,
+            account_type,
             registration_date,
             trade_number,
             version
@@ -86,8 +89,11 @@
              #{preferentialInterestRate},
              #{password},
              #{balance},
+             #{perTradeLimit},
+             #{dailyLimit},
              #{openDate},
              'OPN',
+             #{accountType},
              SYSTIMESTAMP,
              #{tradeNumber},
              1
@@ -152,6 +158,8 @@
             a.balance AS balance,
             b.name AS branch_name,
             e.name AS registrant_name,
+            a.per_trade_limit,
+            a.daily_limit,
             a.preferential_interest_rate AS preferential_interest_rate,
             p.interest_rate AS interest_rate,
             (a.preferential_interest_rate +p.interest_rate) AS total_interest_rate

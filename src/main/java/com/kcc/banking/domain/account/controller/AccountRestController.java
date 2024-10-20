@@ -42,7 +42,7 @@ public class AccountRestController {
      * - 계좌 개설
      */
     @Transactional
-    @PostMapping("/api/employee/account/open")
+    @PostMapping("/api/employee/accounts")
     public ResponseEntity<String> openAccount(@RequestBody AccountOpen accountOpen) {
 
         String accId = accountTradeFacade.openAccount(accountOpen);
@@ -56,14 +56,10 @@ public class AccountRestController {
      * -  보통예금 계좌 개설 완료 시 개설된 계좌의 상세정보 조회
      */
     // 보통예금 계좌 정보 조회 API
-    @GetMapping("/api/employee/account/open/{accountId}")
+    @GetMapping("/api/employee/accounts/{accountId}")
     public ResponseEntity<AccountOpenResultOfModal> getAccountInfo(@PathVariable String accountId) {
         AccountOpenResultOfModal accountInfo = accountService.getAccountOpenResultOfModal(accountId);
-        if (accountInfo != null) {
-            return ResponseEntity.ok(accountInfo);  // 조회된 계좌 정보를 반환
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 계좌 정보가 없는 경우 404 처리
-        }
+        return ResponseEntity.ok().body(accountInfo);
     }
 
     // 적금 계좌 개설
