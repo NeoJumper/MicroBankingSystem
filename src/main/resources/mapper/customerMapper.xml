@@ -14,7 +14,7 @@
     </resultMap>
 
     <select id="findCustomers" parameterType="CustomerSearchDTO" resultMap="CustomerSearchInfoMap">
-        SELECT id,name,birth_date,phone_number, branch_id FROM customer
+        SELECT id,name,birth_date,phone_number, branch_id, security_level FROM customer
         <where>
             <if test="customerName != null and customerName != ''">
                 name LIKE '%' || #{customerName} || '%'

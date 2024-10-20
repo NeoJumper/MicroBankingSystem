@@ -1,6 +1,5 @@
 $(document).ready(function () {
-    // 상품 정보 api 함수
-    accoutOpenProductInfo();
+
 
     // 총이율 입력 함수
     InputChangeOfTotalInterest();
@@ -22,23 +21,6 @@ $(document).ready(function () {
     });
 });
 
-// 상품이율, 상품번호 api
-function accoutOpenProductInfo() {
-    // 상품이율 구하기
-    $.ajax({
-        url: '/api/employee/account/product-interest',
-        method: 'GET',
-        success: function (data) {
-            $('#product-interest-input').val(data.interestRate);
-            $('#product-id-hidden-input').val(data.id)
-        },
-        error: function (error) {
-            console.error('Error fetching product interest:', error);
-            $('#preferred-interest-input').val('error');
-        }
-    });
-
-}
 
 // 기준이율 + 우대이율 = 총 이자율 계산
 function calculateTotalInterest() {
@@ -188,12 +170,12 @@ function handleTransferLimitText() {
             $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5억 원');
             $('#daily-limit-input').val('500,000,000');
         }
-        else
+        else if(selectedCustomerSecurityLevel === "2등급")
         {
             $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5백만 원');
             $('#per-trade-limit-input').val('5,000,000');
-            $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1억 원');
-            $('#daily-limit-input').val('100,000,000');
+            $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1천만 원');
+            $('#daily-limit-input').val('10,000,000');
         }
 
     }
@@ -204,6 +186,13 @@ function handleTransferLimitText() {
             $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 50억 원');
             $('#daily-limit-input').val('5,000,000,000');
 
+        }
+        else if(selectedCustomerSecurityLevel === "2등급")
+        {
+            $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1억 원');
+            $('#per-trade-limit-input').val('100,000,000');
+            $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5억 원');
+            $('#daily-limit-input').val('500,000,000');
         }
     }
 }

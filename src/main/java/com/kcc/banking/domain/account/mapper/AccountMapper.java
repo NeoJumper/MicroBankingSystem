@@ -26,9 +26,6 @@ public interface AccountMapper {
     // 계좌번호 개설 시 계좌시퀀스 조회
     int getAccountSeq();
 
-    // 계좌 개설 시 사용할 상품 정보(기본 이율 등) 가져오기
-    AccountProductInfo findAccountProductInfo();
-
     // 계좌 개설완료 정보 호출
     AccountOpenResultOfModal findAccountOpenResultOfModal(String accId);
 

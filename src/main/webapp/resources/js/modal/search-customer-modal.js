@@ -42,16 +42,26 @@ function customerSearchModalEvent() {
                 customerTableBody.empty();
 
                 $.each(response, function(index, customer){
-                    var row = $('<tr>')
+                    var row = $('<tr class="customer-element">')
                         .append($('<td style="width: 10%">').append($('<input class="form-check-input row-radio" type="radio" name="selected-customer">')))
-                        .append($('<td style="width: 15%">').text(customer.customerId))
-                        .append($('<td style="width: 20%">').text(customer.customerName))
-                        .append($('<td style="width: 20%">').text(customer.formattedBirthDate)) //getformattedBirthDate()함수호출
+                        .append($('<td style="width: 10%">').text(customer.customerId))
+                        .append($('<td style="width: 10%">').text(customer.customerName))
                         .append($('<td style="width: 20%">').text(customer.phoneNumber))
+                        .append($('<td style="width: 15%">').text(customer.securityLevel))
                         .append($('<td style="width: 15%">').text(customer.branchId));
 
                     customerTableBody.append(row);
                 })
+
+                $('.customer-element').on('click', function() {
+                    // 해당 tr 안의 라디오 버튼을 체크
+                    $(this).find('.row-radio').prop('checked', true);
+                });
+
+                // 라디오 버튼이 클릭되었을 때도 체크되도록 설정
+                $('.row-radio').on('click', function(e) {
+                    e.stopPropagation();  // 이벤트 전파 중단 (tr 클릭이 중복 처리되지 않도록)
+                });
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -89,9 +99,8 @@ function insertCustomerId() {
             const insertValueMappings = [
                 { selector: '#customer-id-input', columnIndex: 2 },
                 { selector: '#customer-name-input', columnIndex: 3 },
-                { selector: '#customer-birth-input', columnIndex: 4 },
-                { selector: '#customer-phone-input', columnIndex: 5 },
-                { selector: '#branch-name-input', columnIndex: 6 }
+                { selector: '#customer-phone-input', columnIndex: 4 },
+                { selector: '#customer-security-level-input', columnIndex: 5},
             ];
 
             const selectedRow = selectedCustomer.closest('tr');
@@ -108,6 +117,7 @@ function insertCustomerId() {
             });
 
             $('#search-customer-modal').modal('hide');
+            handleTransferLimitText();
 
         } else {
             swal({

@@ -52,11 +52,6 @@
         SELECT * FROM account
     </select>
 
-    <select id="findAccountProductInfo" resultMap="AccountProductInfoMap" >
-        select * from product
-        where id = 1
-    </select>
-
     <select id="getAccountSeq" resultType="int">
         SELECT account_seq.NEXTVAL
         FROM dual

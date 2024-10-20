@@ -39,16 +39,6 @@ public class AccountRestController {
 
     /**
      * @Description
-     * - 상품테이블 정보 및 기존이율 가져오기
-     */
-
-    @GetMapping("/api/employee/account/product-interest")
-    public AccountProductInfo getProductInterest() {
-        System.out.println("getAccountProductInfo" + accountService.getAccountProductInfo().getName());
-        return accountService.getAccountProductInfo();
-    }
-    /**
-     * @Description
      * - 계좌 개설
      */
     @Transactional
