@@ -42,22 +42,12 @@
             </table>
 
             <div id="employee-add-list" style="overflow-y: auto;">
-                <table class="table">
+                <table id="employee-list-table" class="common-table">
                     <tbody>
-                    <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-
-                    </tr>
                     <c:forEach var="closingData" items="${managerClosingData.closingDataList}">
                         <tr class="branch-close-employee-data">
-                            <td>${closingData.id}</td>
-                            <td>${closingData.name}</td>
+                            <td style="width: 5%">${closingData.id}</td>
+                            <td style="width: 10%">${closingData.name}</td>
                             <td>
                                 <input class="employee-prev-cash-balance" type="text"
                                        value="<c:out value='${closingData.prevCashBalance}' />" disabled>
