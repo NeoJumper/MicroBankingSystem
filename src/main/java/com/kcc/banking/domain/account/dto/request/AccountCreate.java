@@ -28,21 +28,23 @@ public class AccountCreate {
     private BigDecimal balance;
     private String openDate;
     private String status;
+    private String accountType;
     private Long tradeNumber;
 
     @Builder
-    public AccountCreate(String id, Long branchId, Long customerId, Long productId, Long registrantId, String startDate, BigDecimal preferentialInterestRate, String password, BigDecimal balance, String openDate, String status, Long tradeNumber) {
+    public AccountCreate(String id, Long branchId, Long customerId, Long productId, Long registrantId, String startDate, BigDecimal preferentialInterestRate, String password, BigDecimal balance, String openDate, String status, String accountType, Long tradeNumber) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;
         this.productId = productId;
         this.registrantId = registrantId;
-        this.startDate = startDate; // 영업일 / 이자시작일 / 적금은 null
+        this.startDate = startDate;
         this.preferentialInterestRate = preferentialInterestRate;
         this.password = password;
         this.balance = balance;
         this.openDate = openDate;
         this.status = status;
+        this.accountType = accountType;
         this.tradeNumber = tradeNumber;
     }
 }

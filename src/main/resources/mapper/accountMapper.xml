@@ -71,6 +71,7 @@
             balance,
             open_date,
             status,
+            account_type,
             registration_date,
             trade_number,
             version
@@ -88,6 +89,7 @@
              #{balance},
              #{openDate},
              'OPN',
+             #{accountType},
              SYSTIMESTAMP,
              #{tradeNumber},
              1

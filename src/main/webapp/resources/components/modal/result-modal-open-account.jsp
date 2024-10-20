@@ -6,7 +6,7 @@
     <title>Insert title here</title>
 
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
-
+    <link rel="stylesheet" type="text/css" href="/resources/css/modal/result-modal-open-account.css"/>
 </head>
 <body>
 
@@ -21,13 +21,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="common-table">
+                <table class="common-table account-open-result-modal-table">
                     <tr>
                         <th>계좌번호</th>
-                        <td style="display: flex; align-items: center;">
+                        <td>
                             <input type="text" id="result-modal-account-id-input" disabled >
-
                         </td>
+                        <td colspan="2"></td>
                     </tr>
                     <tr>
                         <th>고객명</th>
@@ -36,21 +36,23 @@
                         <td><input type="text" id="result-modal-customer-number-input" disabled></td>
                     </tr>
                     <tr>
-                        <th>전화번호</th>
-                        <td><input type="text" id="result-modal-phone-number-input" disabled></td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
                         <th>상품명</th>
                         <td><input type="text" id="result-modal-product-name-input" disabled></td>
                         <th>이자시작일</th>
                         <td><input type="text" id="result-modal-start-date-input" disabled></td>
                     </tr>
                     <tr>
+                        <th>기준이율</th>
+                        <td><input type="text" id="result-modal-product-interest-input" disabled> %</td>
+                        <th>우대이율</th>
+                        <td><input type="text" id="result-modal-preferred-interest-input"> %</td>
+                    </tr>
+
+                    <tr>
                         <th>총 이자율</th>
                         <td><input type="text" id="result-modal-total-interest-input" disabled> %</td>
                         <th>잔액</th>
-                        <td><input type="text" id="result-modal-balance-input" disabled> KRW</td>
+                        <td><input type="text" id="result-modal-balance-input" disabled> 원</td>
                     </tr>
                     <tr>
                         <th>관리지점명</th>

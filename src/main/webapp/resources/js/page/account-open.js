@@ -50,13 +50,13 @@ function accountOpen() {
         const preferentialInterestRate = $('#preferred-interest-input').val();
         const password = $('#password-input').val();
         const balance = $('#init-balance-input').val();
-
+        const accountType = $('input[name="major-category"]:checked').val();
         const empId = $('#emp-id-hidden-input').val();
         const branchId = $('#branch-id-hidden-input').val();
 
         $.ajax({
             type: 'POST',
-            url: '/api/employee/account/open',
+            url: '/api/employee/accounts',
             contentType: 'application/json',
             data: JSON.stringify({
                 branchId: branchId,
@@ -65,7 +65,8 @@ function accountOpen() {
                 productId: productId,
                 preferentialInterestRate: preferentialInterestRate,
                 password: password,
-                balance: balance,
+                balance: removeCommas(balance),
+                accountType: accountType,
                 tradeType: "OPEN"
             }),
             success: function (accountId) {
@@ -112,7 +113,7 @@ function clearCustomerSearchModal() {
 function accountOpenResult(accountId) {
 
     $.ajax({
-        url: '/api/employee/account/open/' + accountId,
+        url: '/api/employee/accounts/' + accountId,
         method: 'GET',
         success: function (data) {
 
@@ -122,11 +123,14 @@ function accountOpenResult(accountId) {
             $('#result-modal-customer-number-input').val(data.customerId);
             $('#result-modal-phone-number-input').val(data.phoneNumber);
             $('#result-modal-product-name-input').val(data.productName);
-            $('#result-modal-start-date-input').val(data.startDate);
+            $('#result-modal-start-date-input').val(data.startDate.split('T')[0]);
 
             $('#result-modal-balance-input').val(data.balance);
             $('#result-modal-branch-name-input').val(data.branchName);
             $('#result-modal-registrant-name-input').val(data.registrantName);
+
+            $('#result-modal-product-interest-input').val(data.interestRate);
+            $('#result-modal-preferred-interest-input').val(data.preferentialInterestRate);
 
             $('#result-modal-total-interest-input').val(data.totalInterestRate);
 
@@ -160,8 +164,8 @@ function handleTransferLimitText() {
     var selectedAccountType =  $('input[name="major-category"]:checked').val();
     var selectedCustomerSecurityLevel = $('#customer-security-level-input').val();
 
-    console.log(selectedAccountType);
-    console.log(selectedCustomerSecurityLevel);
+    //console.log(selectedAccountType);
+    //console.log(selectedCustomerSecurityLevel);
     if(selectedAccountType === "PRIVATE")
     {
         if(selectedCustomerSecurityLevel === "1등급"){
@@ -195,4 +199,7 @@ function handleTransferLimitText() {
             $('#daily-limit-input').val('500,000,000');
         }
     }
+}
+function removeCommas(numberString) {
+    return numberString.replace(/,/g, '');
 }
