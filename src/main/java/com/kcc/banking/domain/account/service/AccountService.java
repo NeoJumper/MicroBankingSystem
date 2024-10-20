@@ -36,10 +36,6 @@ public class AccountService {
         }
     }
 
-    public AccountProductInfo getAccountProductInfo() {
-        return accountMapper.findAccountProductInfo();
-    }
-
     /**
      * @Description
      * - 계좌 번호 생성 함수

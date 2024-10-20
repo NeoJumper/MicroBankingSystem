@@ -49,7 +49,7 @@
                 </button>
             </td>
             <th>보안등급</th>
-            <td><input type="text" id="customer-security-level-input"value="1등급" disabled></td>
+            <td><input type="text" id="customer-security-level-input" disabled></td>
 
         </tr>
         <tr>
@@ -98,14 +98,14 @@
         <tr>
             <th>1회 이체한도</th>
             <td>
-                <input type="text" id="per-trade-limit-input" value="5,000,000" class="balance-input">&nbsp원<span style="color: #5F5F5F"> &nbsp&nbsp 최대 금액 : 5백만 원</span>
+                <input type="text" id="per-trade-limit-input" value="0" class="balance-input">&nbsp원<span style="color: #5F5F5F"></span>
 
             </td>
 
 
             <th>1일 이체한도</th>
             <td>
-                <input type="text" id="daily-limit-input" value="10,000,000" class="balance-input">&nbsp원<span style="color: #5F5F5F"> &nbsp&nbsp 최대 금액 : 1천만 원</span>
+                <input type="text" id="daily-limit-input" value="0" class="balance-input">&nbsp원<span style="color: #5F5F5F"></span>
             </td>
         </tr>
         <tr>

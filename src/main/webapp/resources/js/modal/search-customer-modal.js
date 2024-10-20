@@ -46,7 +46,6 @@ function customerSearchModalEvent() {
                         .append($('<td style="width: 10%">').append($('<input class="form-check-input row-radio" type="radio" name="selected-customer">')))
                         .append($('<td style="width: 10%">').text(customer.customerId))
                         .append($('<td style="width: 10%">').text(customer.customerName))
-                        .append($('<td style="width: 20%">').text(customer.formattedBirthDate)) //getformattedBirthDate()함수호출
                         .append($('<td style="width: 20%">').text(customer.phoneNumber))
                         .append($('<td style="width: 15%">').text(customer.securityLevel))
                         .append($('<td style="width: 15%">').text(customer.branchId));
@@ -100,10 +99,8 @@ function insertCustomerId() {
             const insertValueMappings = [
                 { selector: '#customer-id-input', columnIndex: 2 },
                 { selector: '#customer-name-input', columnIndex: 3 },
-                { selector: '#customer-birth-input', columnIndex: 4 },
-                { selector: '#customer-phone-input', columnIndex: 5 },
-                { selector: '#customer-security-level-input', columnIndex: 6 },
-                { selector: '#branch-name-input', columnIndex: 7 }
+                { selector: '#customer-phone-input', columnIndex: 4 },
+                { selector: '#customer-security-level-input', columnIndex: 5},
             ];
 
             const selectedRow = selectedCustomer.closest('tr');
