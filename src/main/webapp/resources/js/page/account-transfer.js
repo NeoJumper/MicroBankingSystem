@@ -1,6 +1,19 @@
 $(document).ready(function () {
     accountType = "";
 
+    // 예약이체시에만 날짜/시간 선택가능
+
+    // 라디오 버튼이 변경될 때 이벤트 처리
+    $('input[name="scheduled-status"]').on('change', function() {
+        if ($('#scheduled-transfer-btn').is(':checked')) {
+            // 예약 이체가 체크됐을 때 reserve-time-select-div를 보여줌
+            $('#reserve-time-select-div').css('display', 'flex');
+        } else {
+            // 즉시 이체가 체크됐을 때 reserve-time-select-div를 숨김
+            $('#reserve-time-select-div').css('display', 'none');
+        }
+    });
+
     // 출금계좌 조회 버튼 클릭 시
     $('#check-withdrawal-account-btn').click(function () {
         accountType = $(this).data('account-type'); // "withdrawal" 저장
@@ -11,8 +24,6 @@ $(document).ready(function () {
         accountType = $(this).data('account-type'); // "deposit" 저장
     });
 
-    // 임시 오늘 날짜 지정
-    setNowDate();
 
     $('.amount-btn').click(function () {
         setAmount(this);
@@ -58,6 +69,9 @@ $(document).ready(function () {
     $('#account-transfer-validate').click(function(){
         validateAccountPassword();
     })
+
+
+
 });
 
 function comma(str) {
@@ -88,18 +102,6 @@ function disableDuplicateAccounts() {
     }
 }
 
-
-function setNowDate() {
-    // 오늘 날짜를 구하는 함수
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = ('0' + (today.getMonth() + 1)).slice(-2);  // 월은 0부터 시작하므로 1을 더함
-    var day = ('0' + today.getDate()).slice(-2);
-    var formattedDate = year + '-' + month + '-' + day;
-
-    // input[type="date"]에 오늘 날짜 설정
-    $('#execution-date').val(formattedDate);
-}
 
 function setAmount(button) {
     $('.amount-btn').removeClass('active');
@@ -134,11 +136,11 @@ function selectAccount() {
         success: function (data) {
             if (accountType === "withdrawal") {
                 // 출금계좌 처리
-                $('#withdrawal-account-number').val(data[0].accId);
-                $('#withdrawal-product-name').val(data[0].productName);
-                $('#withdrawal-customer-name').val(data[0].customerName);
+                $('#withdrawal-customer-name').text(data[0].customerName + '  |   ');
+                $('#withdrawal-product-name').text(data[0].productName);
+                $('#withdrawal-account-number').text(data[0].accId);
+
                 // 계좌 잔액 라벨을 표시하고 금액 업데이트
-                $('#account-balance-label').css('display', 'inline-block');
                 $('#account-balance').text(data[0].balance.toLocaleString('ko-KR'));
                 enableAmountButtons(data[0].balance); // 계좌 잔액을 넘겨줌
             } else if (accountType === "deposit") {
@@ -177,8 +179,9 @@ function enableAmountButtons(balance) {
 
 // 비밀번호 검증 클릭 시
 function validateAccountPassword() {
-    var accountNumber = $('#withdrawal-account-number').val();
+    var accountNumber = $('#withdrawal-account-number').text();
     var accountPassword = $('#transfer-account-password').val();
+
 
     $.ajax( {
         url: '/api/employee/account-validate',

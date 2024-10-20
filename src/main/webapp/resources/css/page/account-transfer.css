@@ -3,6 +3,10 @@ body, input, button {
     padding: 0;
     box-sizing: border-box;
 }
+span {
+    font-weight: bold;
+    color: #073082;
+}
 
 .common-table input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
     max-width: 60%;
@@ -41,11 +45,6 @@ body, input, button {
     padding: 8px;
 }
 
-#account-balance {
-    font-weight: bold;
-    color: #007bff;
-}
-
 #over-account-balance {
     font-weight: bold;
     color: #FF0000;
@@ -58,4 +57,78 @@ body, input, button {
 
 .amount-btn.active:hover {
     background: #0069d9;
+}
+
+
+/* 등록 페이지 css */
+#select-account-form {
+    border: 2px solid black;
+    border-radius: 10px;
+    overflow: hidden;
+
+    margin-bottom: 30px;
+}
+
+.account-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 40px;
+}
+
+.account-balance {
+    background-color: #F5F5F5;
+    padding: 20px 40px;
+}
+
+input[type="button"][value="계좌조회 >"] {
+    border: none;
+    background-color: white;
+}
+
+#description {
+    margin-top: 12px;
+}
+
+#bulk-transfer-info td, #bulk-transfer-info th {
+    font-weight: bold;
+    text-align: center;
+}
+
+p {
+    margin: 0;
+}
+
+#total-registrations, #valid-recipients, #mismatch-recipients, #error-recipients{
+    color: white;
+}
+#reserve-time-select-div{
+    max-width: 60%;
+}
+#time-search-btn {
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url('https://example.com/custom-icon.png') no-repeat right center;
+    background-size: 16px 16px; /* 아이콘 크기 조정 */
+    padding-right: 30px; /* 아이콘 공간을 위한 패딩 */
+}
+
+#time-search-container{
+    width: 300px;
+    height: 50px;
+    position: relative;
+    display: flex;
+}
+.search-icon {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 16px;
+    bottom: 5px;
+    right: 9px;
+    border-radius: 15px;
+    background-position: center;
 }
