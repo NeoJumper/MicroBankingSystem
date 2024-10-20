@@ -17,6 +17,8 @@ public class AccountOpen {
     private Long customerId;
     private Long productId;
     private BigDecimal preferentialInterestRate;
+    private BigDecimal perTradeLimit;
+    private BigDecimal dailyLimit;
     private String password;
     private BigDecimal balance;
     private String accountType;
@@ -24,12 +26,14 @@ public class AccountOpen {
 
 
     @Builder
-    public AccountOpen(String id, Long branchId, Long customerId, Long productId, BigDecimal preferentialInterestRate, String password, BigDecimal balance, String accountType, String tradeType) {
+    public AccountOpen(String id, Long branchId, Long customerId, Long productId, BigDecimal preferentialInterestRate, BigDecimal perTradeLimit, BigDecimal dailyLimit, String password, BigDecimal balance, String accountType, String tradeType) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;
         this.productId = productId;
         this.preferentialInterestRate = preferentialInterestRate;
+        this.perTradeLimit = perTradeLimit;
+        this.dailyLimit = dailyLimit;
         this.password = password;
         this.balance = balance;
         this.accountType = accountType;

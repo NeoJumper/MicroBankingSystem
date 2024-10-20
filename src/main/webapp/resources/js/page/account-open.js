@@ -45,7 +45,8 @@ function accountOpen() {
 
         const customerId = $('#customer-id-input').val();
         const productId = $('#product-id-hidden-input').val();
-
+        const dailyLimit = $('#daily-limit-input').val();
+        const perTradeLimit = $('#per-trade-limit-input').val();
         //const startDate = $('startDate').val();
         const preferentialInterestRate = $('#preferred-interest-input').val();
         const password = $('#password-input').val();
@@ -65,6 +66,8 @@ function accountOpen() {
                 productId: productId,
                 preferentialInterestRate: preferentialInterestRate,
                 password: password,
+                dailyLimit: removeCommas(dailyLimit),
+                perTradeLimit: removeCommas(perTradeLimit),
                 balance: removeCommas(balance),
                 accountType: accountType,
                 tradeType: "OPEN"
@@ -116,21 +119,26 @@ function accountOpenResult(accountId) {
         url: '/api/employee/accounts/' + accountId,
         method: 'GET',
         success: function (data) {
-
+            console.log(data);
 
             $('#result-modal-account-id-input').val(data.accId);
             $('#result-modal-customer-name-input').val(data.customerName)
             $('#result-modal-customer-number-input').val(data.customerId);
             $('#result-modal-phone-number-input').val(data.phoneNumber);
             $('#result-modal-product-name-input').val(data.productName);
-            $('#result-modal-start-date-input').val(data.startDate.split('T')[0]);
 
-            $('#result-modal-balance-input').val(data.balance);
+            $('#result-modal-start-date-input').val(data.startDate.split(' ')[0]);
+
+
             $('#result-modal-branch-name-input').val(data.branchName);
             $('#result-modal-registrant-name-input').val(data.registrantName);
 
             $('#result-modal-product-interest-input').val(data.interestRate);
             $('#result-modal-preferred-interest-input').val(data.preferentialInterestRate);
+
+            $('#result-modal-balance-input').val(data.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+            $('#result-modal-per-trade-limit-input').val(data.perTradeLimit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+            $('#result-modal-daily-limit-input').val(data.dailyLimit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 
             $('#result-modal-total-interest-input').val(data.totalInterestRate);
 

@@ -186,6 +186,8 @@ public class AccountService {
                 .startDate(currentData.getCurrentBusinessDate())
                 .registrantId(currentData.getEmployeeId())
                 .balance(accountOpen.getBalance())
+                .perTradeLimit(accountOpen.getPerTradeLimit())
+                .dailyLimit(accountOpen.getDailyLimit())
                 .branchId(currentData.getBranchId())
                 .productId(accountOpen.getProductId())
                 .customerId(accountOpen.getCustomerId())

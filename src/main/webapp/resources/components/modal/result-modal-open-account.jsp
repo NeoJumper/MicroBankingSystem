@@ -55,6 +55,12 @@
                         <td><input type="text" id="result-modal-balance-input" disabled> 원</td>
                     </tr>
                     <tr>
+                        <th>1회 이체한도</th>
+                        <td><input type="text" id="result-modal-per-trade-limit-input" disabled> 원</td>
+                        <th>1일 이체한도</th>
+                        <td><input type="text" id="result-modal-daily-limit-input" disabled> 원</td>
+                    </tr>
+                    <tr>
                         <th>관리지점명</th>
                         <td><input type="text" id="result-modal-branch-name-input" disabled></td>
                         <th>담당자</th>

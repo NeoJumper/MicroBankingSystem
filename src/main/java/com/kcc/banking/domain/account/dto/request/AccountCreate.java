@@ -24,6 +24,8 @@ public class AccountCreate {
     private Long registrantId;
     private String startDate;
     private BigDecimal preferentialInterestRate;
+    private BigDecimal perTradeLimit;
+    private BigDecimal dailyLimit;
     private String password;
     private BigDecimal balance;
     private String openDate;
@@ -32,7 +34,7 @@ public class AccountCreate {
     private Long tradeNumber;
 
     @Builder
-    public AccountCreate(String id, Long branchId, Long customerId, Long productId, Long registrantId, String startDate, BigDecimal preferentialInterestRate, String password, BigDecimal balance, String openDate, String status, String accountType, Long tradeNumber) {
+    public AccountCreate(String id, Long branchId, Long customerId, Long productId, Long registrantId, String startDate, BigDecimal preferentialInterestRate, BigDecimal perTradeLimit, BigDecimal dailyLimit, String password, BigDecimal balance, String openDate, String status, String accountType, Long tradeNumber) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;
@@ -40,6 +42,8 @@ public class AccountCreate {
         this.registrantId = registrantId;
         this.startDate = startDate;
         this.preferentialInterestRate = preferentialInterestRate;
+        this.perTradeLimit = perTradeLimit;
+        this.dailyLimit = dailyLimit;
         this.password = password;
         this.balance = balance;
         this.openDate = openDate;
