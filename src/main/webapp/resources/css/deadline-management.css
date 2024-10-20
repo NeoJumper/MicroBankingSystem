@@ -32,3 +32,11 @@
     align-items: center;
     margin-bottom: 20px;
 }
+
+#employee-list-table td {
+    width: max-content !important;
+}
+
+#employee-list-table td input {
+    min-width: 80%;
+}
