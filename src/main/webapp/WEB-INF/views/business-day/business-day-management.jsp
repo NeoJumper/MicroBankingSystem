@@ -16,7 +16,8 @@
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
     <div>
-        <h5>영업일 관리</h5>
+        <h5>영업일 관리 > </h5>
+        <h5> 영업일 변경</h5>
     </div>
     <div>
         <h3>영업일 달력</h3>

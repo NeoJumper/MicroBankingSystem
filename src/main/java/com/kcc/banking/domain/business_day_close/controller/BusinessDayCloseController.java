@@ -21,20 +21,15 @@ public class BusinessDayCloseController {
 
     @GetMapping("/page/employee/business-day-close")
     public String businessDayCloseOfEmployeePage(Model model){
-
         EmployeeClosingData employeeClosingData = businessDayManagementFacade.getEmployeeClosingData();
         model.addAttribute("employeeClosingData", employeeClosingData);
-
         return "business-day/employee-close";
     }
 
     @GetMapping("/page/manager/business-day-close")
-    public String businessDayCloseOfManagerPage(Model model)
-    {
+    public String businessDayCloseOfManagerPage(Model model) {
         ManagerClosingData managerClosingData = businessDayCloseService.getManagerClosingData();
         model.addAttribute("managerClosingData", managerClosingData);
-
         return "business-day/manager-close";
     }
-
 }
