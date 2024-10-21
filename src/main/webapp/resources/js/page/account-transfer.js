@@ -1,71 +1,24 @@
+
 $(document).ready(function () {
     accountType = "";
 
-    // 예약이체시에만 날짜/시간 선택가능
-    // 라디오 버튼이 변경될 때 이벤트 처리
-    // 초기 설정: 숨김 상태로 시작 (height를 0으로)
-    $('#reserve-time-select-div').css({
-        height: 0,
-        transition: 'height 0.5s ease'
-    });
+    clickReserveTransferBtn(); // 예약이체 버튼
 
-    // 라디오 버튼이 변경될 때 이벤트 처리
-    $('input[name="scheduled-status"]').on('change', function() {
-        if ($('#scheduled-transfer-btn').is(':checked')) {
-            // 예약 이체가 체크됐을 때 height를 자동으로 변경하여 자연스럽게 보여줌
-            $('#reserve-time-select-div').css({
-                height: $('#reserve-time-select-div')[0].scrollHeight + 'px'
-            });
-        } else {
-            // 즉시 이체가 체크됐을 때 height를 0으로 변경하여 숨김
-            $('#reserve-time-select-div').css({
-                height: 0
-            });
-        }
-    });
+    clickWithdrawalAccountCheckBtn(); // 출금 계좌 조회 버튼
 
+    clickDepositAccountCheckBtn(); // 입금 계좌 조회 버튼
 
+    clickAccountSelectBtn(); // 계좌 선택 버튼
 
+    clickTransferAmountBtn(); // 100, 50, 10, 5, 1, 전액 버튼
 
+    handleAmount(); // 입력 시 숫자 제외한 문자 모두 제거, 계좌 잔액 초과하는 입력 제거, 0 이상은 입력못함(00000 등)
 
-    // 출금계좌 조회 버튼 클릭 시
-    $('#check-withdrawal-account-btn').click(function () {
-        accountType = $(this).data('account-type'); // "withdrawal" 저장
-    });
+    removeErrorMessage();    // 입력 필드를 벗어났을 때 경고 메시지를 제거
 
-    // 입금계좌 조회 버튼 클릭 시
-    $('#check-deposit-account-btn').click(function () {
-        accountType = $(this).data('account-type'); // "deposit" 저장
-    });
+    clickTransferBtn();    // 이체하기 버튼 클릭 시
 
-
-    $('.amount-btn').click(function () {
-        setAmount(this);
-    });
-
-    $('#search-modal-select-account-btn').click(function () {
-        selectAccount();  // 선택된 계좌 처리 함수 호출
-    });
-
-    $(document).on('input', '#transfer-amount', function () {
-        $(this).val(comma(uncomma($(this).val())));
-
-        var inputAmount = parseFloat(uncomma($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
-        var accountBalance = parseFloat(uncomma($('#account-balance').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
-
-        if (inputAmount > accountBalance) {
-            $('#over-account-balance').text("계좌 잔액을 초과했습니다.");
-            $(this).val(comma(accountBalance));  // 입력된 값을 계좌 잔액으로 제한
-        } else {
-            $('#over-account-balance').text("");  // 경고 메시지 제거
-        }
-    });
-
-
-    // 입력 필드를 벗어났을 때 경고 메시지를 제거
-    $(document).on('blur', '#transfer-amount', function () {
-        $('#over-account-balance').text("");
-    });
+    clickValidatePasswordBtn();
 
     // 모달 내 계좌 검색 버튼 클릭 시 검색 처리 후 중복 계좌 비활성화
     $(document).on('ajaxSuccess', function (event, xhr, settings) {
@@ -74,18 +27,6 @@ $(document).ready(function () {
         }
     });
 
-
-    // 이체하기 버튼 클릭 시
-    $('#account-transfer-submit').click( function (){
-        transferSubmit();
-    })
-
-    $('#account-transfer-validate').click(function(){
-        validateAccountPassword();
-    })
-
-
-
 });
 
 function comma(str) {
@@ -93,9 +34,15 @@ function comma(str) {
     return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');  // 천 단위 쉼표 추가
 }
 
-function uncomma(str) {
-    str = String(str);
-    return str.replace(/[^\d]+/g, '');  // 쉼표 제거
+function convertNumber(str) {
+    str = String(str.replace(/[^\d]+/g, ''));  // 숫자를 제외한 모든 문자 제거
+
+
+    if (/^0{2,}/.test(str)) {
+        // 두 번 이상 연속된 0을 잘라내고 나머지 부분 반환
+        return str.replace(/^0{2,}/, '0');
+    }
+    return str;
 }
 
 
@@ -116,21 +63,6 @@ function disableDuplicateAccounts() {
     }
 }
 
-
-function setAmount(button) {
-    $('.amount-btn').removeClass('active');
-    $(button).addClass('active');
-
-    var amountText = $(button).text().replace(/[^0-9]/g, ''); // 숫자만 추출
-    var amount = parseInt(amountText) * 10000;  // 만 단위로 변환
-
-    // 만약 '전액' 버튼을 누르면 전체 잔액을 설정할 수 있음
-    if ($(button).text() === '전액') {
-        amount = parseInt($('#account-balance').text().replace(/[^0-9]/g, ''));
-    }
-
-    $('#transfer-amount').val(comma(amount));  // 쉼표가 포함된 값으로 설정
-}
 
 // 선택한 계좌 처리 함수
 function selectAccount() {
@@ -156,7 +88,8 @@ function selectAccount() {
 
                 // 계좌 잔액 라벨을 표시하고 금액 업데이트
                 $('#account-balance').text(data[0].balance.toLocaleString('ko-KR'));
-                enableAmountButtons(data[0].balance); // 계좌 잔액을 넘겨줌
+
+                enableAmountButtons(data[0].balance); // 금액 입력 버튼 활성화
             } else if (accountType === "deposit") {
                 // 입금계좌 처리
                 $('#deposit-account-number').val(data[0].accId);
@@ -236,7 +169,7 @@ function validateAccountPassword() {
 function transferSubmit() {
     var withdrawalAccountId = $('#withdrawal-account-number').val();
     var depositAccountId = $('#deposit-account-number').val();
-    var transferAmount = parseInt(uncomma($('#transfer-amount').val()));
+    var transferAmount = parseInt(convertNumber($('#transfer-amount').val()));
     var description = $('#description').val();
     var accountPassword = $('#transfer-account-password').val();
 
@@ -299,4 +232,109 @@ function showTransferResultModal(data) {
 
     // 모달 띄우기
     $('#transfer-result-modal').modal('show');
+}
+
+/**
+ *   @Description
+ *   예약이체시에만 날짜/시간 선택가능
+ *   라디오 버튼이 변경될 때 이벤트 처리
+ *   초기 설정: 숨김 상태로 시작 (height를 0으로)
+ */
+function clickReserveTransferBtn() {
+    $('#reserve-time-select-div').css({
+        height: 0,
+        transition: 'height 0.5s ease'
+    });
+
+    // 라디오 버튼이 변경될 때 이벤트 처리
+    $('input[name="scheduled-status"]').on('change', function() {
+        if ($('#scheduled-transfer-btn').is(':checked')) {
+            // 예약 이체가 체크됐을 때 height를 자동으로 변경하여 자연스럽게 보여줌
+            $('#reserve-time-select-div').css({
+                height: $('#reserve-time-select-div')[0].scrollHeight + 'px'
+            });
+        } else {
+            // 즉시 이체가 체크됐을 때 height를 0으로 변경하여 숨김
+            $('#reserve-time-select-div').css({
+                height: 0
+            });
+        }
+    });
+}
+
+function clickWithdrawalAccountCheckBtn() {
+    // 출금계좌 조회 버튼 클릭 시
+    $('#withdrawal-account-check-btn').click(function () {
+        accountType = $(this).data('account-type'); // "withdrawal" 저장
+    });
+}
+
+function clickDepositAccountCheckBtn() {
+
+    // 입금계좌 조회 버튼 클릭 시
+    $('#deposit-account-check-btn').click(function () {
+        accountType = $(this).data('account-type'); // "deposit" 저장
+    });
+}
+
+function clickTransferAmountBtn() {
+    $('.amount-btn').click(function () {
+        setAmount(this);
+    });
+}
+
+function setAmount(button) {
+    $('.amount-btn').removeClass('active');
+    $(button).addClass('active');
+
+    var amountText = $(button).text().replace(/[^0-9]/g, ''); // 숫자만 추출
+    var amount = parseInt(amountText) * 10000;  // 만 단위로 변환
+
+    // 만약 '전액' 버튼을 누르면 전체 잔액을 설정할 수 있음
+    if ($(button).text() === '전액') {
+        amount = parseInt($('#account-balance').text().replace(/[^0-9]/g, ''));
+    }
+
+    $('#transfer-amount').val(comma(amount));  // 쉼표가 포함된 값으로 설정
+}
+
+function clickAccountSelectBtn() {
+    $('#search-modal-select-account-btn').click(function () {
+        selectAccount();  // 선택된 계좌 처리 함수 호출
+    });
+}
+
+function handleAmount() {
+    $(document).on('input', '#transfer-amount', function () {
+        $(this).val(comma(convertNumber($(this).val())));
+
+        var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+        var accountBalance = parseFloat(convertNumber($('#account-balance').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
+
+        if (inputAmount > accountBalance) {
+            $('#over-account-balance').text("계좌 잔액을 초과했습니다.");
+            $(this).val(comma(accountBalance));  // 입력된 값을 계좌 잔액으로 제한
+        } else {
+            $('#over-account-balance').text("");  // 경고 메시지 제거
+        }
+    });
+}
+
+function removeErrorMessage() {
+    $(document).on('blur', '#transfer-amount', function () {
+        $('#over-account-balance').text("");
+    });
+}
+
+function clickTransferBtn() {
+    $('#account-transfer-submit').click( function (){
+        transferSubmit();
+    })
+
+}
+
+function clickValidatePasswordBtn() {
+    $('#account-transfer-validate').click(function(){
+        validateAccountPassword();
+    })
 }

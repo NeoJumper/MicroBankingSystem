@@ -41,7 +41,7 @@
                         <span id="withdrawal-account-number">계좌를 선택해주세요.</span>
                     </div>
                     <div>
-                        <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
+                        <button id="withdrawal-account-check-btn" class="basic-btn" type="button"
                                 data-account-type="withdrawal" data-bs-toggle="modal"
                                 data-bs-target="#search-modal-account">
                             계좌조회
@@ -128,7 +128,7 @@
             <tr>
                 <th><label for="deposit-account-number">입금계좌번호</label></th>
                 <td><input disabled type="text" id="deposit-account-number">
-                    <button id="check-deposit-account-btn" class="basic-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
+                    <button id="deposit-account-check-btn" class="basic-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
                 </td>
             </tr>
             <tr>
