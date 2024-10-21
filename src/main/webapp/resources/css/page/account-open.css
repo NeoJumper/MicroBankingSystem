@@ -1,3 +1,6 @@
 .account-open-table input{
     text-align: right; /* 텍스트를 오른쪽으로 정렬 */
 }
+.account-open-table th{
+    width: 15%;
+}

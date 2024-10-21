@@ -22,11 +22,11 @@
         <h5>&nbsp 계좌 입출금</h5>
     </div>
 
-    <div>
-        <%--@declare id="trade-type"--%><label for="trade-type">거래 유형 선택: </label>
+    <div id = "reserve-button-group" class="button-group mb-2">
+        <label>거래 유형 &nbsp;&nbsp;</label>
         <input type="radio" id="deposit" name="trade-type" value="deposit" checked>
         <label for="deposit">입금</label>
-        <input type="radio" id="withdrawal" name="trade-type" value="withdrawal">
+        <input class="ms-3" type="radio" id="withdrawal" name="trade-type" value="withdrawal">
         <label for="withdrawal">출금</label>
     </div>
 

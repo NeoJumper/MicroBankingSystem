@@ -89,11 +89,9 @@
             <td><input type="text" id="init-balance-input" class="balance-input"></td>
 
             <fmt:parseDate value="${tradeDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedTradeDate" />
+            <th>계좌 비밀번호</th>
+            <td><input type="password" id="password-input"></td>
 
-            <th>이자시작일자</th>
-            <td>
-                <input type="text" id="start-date-input" value="<fmt:formatDate value='${parsedTradeDate}' pattern='yyyy-MM-dd' />" disabled>
-            </td>
         </tr>
         <tr>
             <th>1회 이체한도</th>
@@ -111,8 +109,10 @@
         <tr>
             <th>담당자</th>
             <td><input type="text" id="emp-name-input" value="${employeeName}" disabled></td>
-            <th>계좌 비밀번호</th>
-            <td><input type="password" id="password-input"></td>
+            <th>등록일자</th>
+            <td>
+                <input type="text" id="start-date-input" value="<fmt:formatDate value='${parsedTradeDate}' pattern='yyyy-MM-dd' />" disabled>
+            </td>
         </tr>
         <input type="hidden" id="emp-id-hidden-input" value="${employeeId}" >
         <input type="hidden" id="branch-id-hidden-input" value="${branchId}" >

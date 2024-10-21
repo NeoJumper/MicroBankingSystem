@@ -4,15 +4,33 @@ $(document).ready(function () {
     // 예약이체시에만 날짜/시간 선택가능
 
     // 라디오 버튼이 변경될 때 이벤트 처리
+
+// 초기 설정: 숨김 상태로 시작
+// 초기 설정: 숨김 상태로 시작 (height를 0으로)
+// 초기 설정: 숨김 상태로 시작 (height를 0으로)
+    $('#reserve-time-select-div').css({
+        height: 0,
+        transition: 'height 0.5s ease'
+    });
+
+// 라디오 버튼이 변경될 때 이벤트 처리
     $('input[name="scheduled-status"]').on('change', function() {
         if ($('#scheduled-transfer-btn').is(':checked')) {
-            // 예약 이체가 체크됐을 때 reserve-time-select-div를 보여줌
-            $('#reserve-time-select-div').css('display', 'flex');
+            // 예약 이체가 체크됐을 때 height를 자동으로 변경하여 자연스럽게 보여줌
+            $('#reserve-time-select-div').css({
+                height: $('#reserve-time-select-div')[0].scrollHeight + 'px'
+            });
         } else {
-            // 즉시 이체가 체크됐을 때 reserve-time-select-div를 숨김
-            $('#reserve-time-select-div').css('display', 'none');
+            // 즉시 이체가 체크됐을 때 height를 0으로 변경하여 숨김
+            $('#reserve-time-select-div').css({
+                height: 0
+            });
         }
     });
+
+
+
+
 
     // 출금계좌 조회 버튼 클릭 시
     $('#check-withdrawal-account-btn').click(function () {
