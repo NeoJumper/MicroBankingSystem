@@ -11,9 +11,6 @@
     font-weight: bold;
 }
 
-.no-margin {
-    margin: 0;
-}
 
 #search-modal-center-box {
     display: flex;
@@ -48,9 +45,6 @@
     display: block;
 }
 
-.no-margin{
-    margin: 0;
-}
 
 #search-modal-customer-information tr td {
     text-align: center;
