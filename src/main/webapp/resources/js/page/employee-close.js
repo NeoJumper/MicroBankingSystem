@@ -20,6 +20,7 @@ function registerClickEventOfEmpCloseBtn() {
 function closeBusinessDayOfEmployee() {
 
     isValidRequest = checkInvalidCashTrade();
+
     if (!isValidRequest) {
         swal({
             title: "마감 실패",
@@ -31,7 +32,15 @@ function closeBusinessDayOfEmployee() {
     }
 
 
-    let vaultCash = calculateVaultCash();
+    let vaultCashValue = $('#emp-close-today-vault-cash').val();
+    // let vaultCash = calculateVaultCash();
+
+    // 쉼표 제거
+    vaultCashValue = vaultCashValue.replace(/,/g, '');
+    // 숫자 변환
+    const vaultCash = Number(vaultCashValue);
+
+    console.log("vaultCash",vaultCash);
 
     $.ajax({
         url: '/api/employee/business-day-close',

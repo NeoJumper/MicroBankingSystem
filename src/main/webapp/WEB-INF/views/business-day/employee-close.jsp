@@ -120,7 +120,7 @@
             <td>
                 <c:choose>
                     <c:when test="${employeeClosingData.expectedVaultCash != null}">
-                        <input class="emp-close-vault-cash" type="text"
+                        <input id="emp-close-today-vault-cash" class="emp-close-vault-cash" type="text"
                                value="<fmt:formatNumber value='${employeeClosingData.expectedVaultCash}' type='number'/>"
                                disabled>
                     </c:when>
