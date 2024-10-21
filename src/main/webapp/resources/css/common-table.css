@@ -30,7 +30,7 @@
 .common-table th {
     background: linear-gradient(var(--light-gray), var(--basic-gray));
     color: black;
-    width: 10%;
+    min-width: 10%;
 }
 
 .common-table td{
