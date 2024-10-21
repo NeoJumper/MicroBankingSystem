@@ -48,10 +48,18 @@
                         </button>
                     </div>
                 </div>
-                <div class="account-balance">
-                    계좌잔액 <span id="account-balance"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원 | 이체가능금액 <span
-                        id="transferable-amount"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원
+                <div class="account-balance d-flex">
+                    <div class="me-2">
+                        계좌잔액<span id="account-balance" style="margin-left: 20px;">0</span> 원
+                    </div>
+                    <div class="mx-3 transfer-possible-amount">|</div>
+                    <div class="ms-2 transfer-possible-amount">
+                        이체가능금액<span id="transferable-amount" style="margin-left: 20px">0</span>  원
+                    </div>
                 </div>
+
+
+
             </div>
             <div>
                 <h3>거래정보</h3>
@@ -62,7 +70,7 @@
                     <th><label for="transfer-amount">이체금액</label></th>
                     <td>
                         <div><span id="over-account-balance"></span></div>
-                        <input disabled type="text" id="transfer-amount"> 원
+                        <input disabled type="text" id="transfer-amount"  style="text-align: right"> 원
                         <div class="button-group">
                             <button type="button" class="amount-btn" disabled>100만</button>
                             <button type="button" class="amount-btn" disabled>50만</button>

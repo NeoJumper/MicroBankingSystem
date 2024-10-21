@@ -28,7 +28,14 @@ public class TradeController {
     }
 
     @GetMapping("/cash-trade")
-    public String getCashTradePage() {
+    public String getCashTradePage(Model model) {
+        CurrentData currentData = commonService.getCurrentData();
+
+        model.addAttribute("branchId", currentData.getBranchId());
+        model.addAttribute("employeeName", currentData.getEmployeeName());
+        model.addAttribute("employeeId", currentData.getEmployeeId());
+        model.addAttribute("tradeDate", currentData.getCurrentBusinessDate());
+
         return "trade/cash-trade";
     }
 
