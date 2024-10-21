@@ -66,68 +66,70 @@
 
     </table>
 
+    <div id = "account-open-info" style="display: none">
+        <div>
+            <h3>계좌 개설 정보 입력</h3>
+        </div>
+        <table class="common-table account-open-table">
+            <tr>
+                <th>상품명</th>
+                <td>
+                    <input type="text" id="deposit-product-name-input" readonly >
+                    <button data-bs-toggle="modal" data-bs-target="#search-deposit-product-modal"  type="button" id="deposit-product-search-btn" class="basic-btn">
+                        <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
+                    </button>
+                </td>
+                <th>기준이율</th>
+                <td><input type="text" id="product-interest-input" disabled> %</td>
+            </tr>
+            <tr>
+                <th>우대이율</th>
+                <td><input type="text" id="preferred-interest-input"> %</td>
 
-    <div>
-        <h3>계좌 개설 정보 입력</h3>
+                <th>총 이자율</th>
+                <td><input type="text" id="total-interest-input" disabled> %</td>
+            </tr>
+            <tr>
+                <th>초기 예치금(KRW)</th>
+                <td><input type="text" id="init-balance-input" class="balance-input"></td>
+
+                <fmt:parseDate value="${tradeDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedTradeDate" />
+                <th>계좌 비밀번호</th>
+                <td><input type="password" id="password-input"></td>
+
+            </tr>
+            <tr>
+                <th>1회 이체한도</th>
+                <td>
+                    <input type="text" id="per-trade-limit-input" value="0" class="balance-input">&nbsp원<span class="max-amount-span" style="color: #5F5F5F"></span>
+
+                </td>
+
+
+                <th>1일 이체한도</th>
+                <td>
+                    <input type="text" id="daily-limit-input" value="0" class="balance-input">&nbsp원<span class="max-amount-span" style="color: #5F5F5F"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>담당자</th>
+                <td><input type="text" id="emp-name-input" value="${employeeName}" disabled></td>
+                <th>등록일자</th>
+                <td>
+                    <input type="text" id="start-date-input" value="<fmt:formatDate value='${parsedTradeDate}' pattern='yyyy-MM-dd' />" disabled>
+                </td>
+            </tr>
+            <input type="hidden" id="emp-id-hidden-input" value="${employeeId}" >
+            <input type="hidden" id="branch-id-hidden-input" value="${branchId}" >
+            <input type="hidden" id="product-id-hidden-input">
+        </table>
+
+        <div  style="text-align:center;">
+            <button class="basic-btn" id="account-create-btn">계좌 개설</button>
+
+        </div>
     </div>
-    <table class="common-table account-open-table">
-        <tr>
-            <th>상품명</th>
-            <td>
-                <input type="text" id="deposit-product-name-input" readonly >
-                <button data-bs-toggle="modal" data-bs-target="#search-deposit-product-modal"  type="button" id="deposit-product-search-btn" class="basic-btn">
-                    <span class="bi bi-search" style="margin-right: 5px;"></span> 찾기
-                </button>
-            </td>
-            <th>기준이율</th>
-            <td><input type="text" id="product-interest-input" disabled> %</td>
-        </tr>
-        <tr>
-            <th>우대이율</th>
-            <td><input type="text" id="preferred-interest-input"> %</td>
 
-            <th>총 이자율</th>
-            <td><input type="text" id="total-interest-input" disabled> %</td>
-        </tr>
-        <tr>
-            <th>초기 예치금(KRW)</th>
-            <td><input type="text" id="init-balance-input" class="balance-input"></td>
-
-            <fmt:parseDate value="${tradeDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedTradeDate" />
-            <th>계좌 비밀번호</th>
-            <td><input type="password" id="password-input"></td>
-
-        </tr>
-        <tr>
-            <th>1회 이체한도</th>
-            <td>
-                <input type="text" id="per-trade-limit-input" value="0" class="balance-input">&nbsp원<span style="color: #5F5F5F"></span>
-
-            </td>
-
-
-            <th>1일 이체한도</th>
-            <td>
-                <input type="text" id="daily-limit-input" value="0" class="balance-input">&nbsp원<span style="color: #5F5F5F"></span>
-            </td>
-        </tr>
-        <tr>
-            <th>담당자</th>
-            <td><input type="text" id="emp-name-input" value="${employeeName}" disabled></td>
-            <th>등록일자</th>
-            <td>
-                <input type="text" id="start-date-input" value="<fmt:formatDate value='${parsedTradeDate}' pattern='yyyy-MM-dd' />" disabled>
-            </td>
-        </tr>
-        <input type="hidden" id="emp-id-hidden-input" value="${employeeId}" >
-        <input type="hidden" id="branch-id-hidden-input" value="${branchId}" >
-        <input type="hidden" id="product-id-hidden-input">
-    </table>
-
-    <div  style="text-align:center;">
-        <button class="basic-btn" id="account-create-btn">계좌 개설</button>
-
-    </div>
 
     <input type="hidden" id="page-account" value="00">
 
