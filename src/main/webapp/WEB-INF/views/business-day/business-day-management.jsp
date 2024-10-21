@@ -54,7 +54,7 @@
                 <table class="common-table">
                     <tbody>
                     <tr>
-                        <th>
+                        <th style="width: 30%">
                             현재 영업일
                         </th>
                         <td>
@@ -62,7 +62,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>
+                        <th style="width: 30%">
                             다음 영업일
                         </th>
                         <td>
