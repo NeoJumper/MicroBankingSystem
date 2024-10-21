@@ -70,14 +70,14 @@ public class BusinessDayCloseService {
      * 1. 개인 마감 데이터 조회(거래내역과 마감 데이터)
      *      - 사원들의 마감 내역(전일자 현금 잔액, 입출금액, 금일 마감 금액 등)
      *      - 지점의 전일자 현금 잔액
-     *      - 지점의 현금 입출금액, 금일 마감 금액(사원들의 )
+     *      - 지점의 현금 입출금액, 금일 마감 금액(사원들의 현금 입금 합산 - 출금 합산)
      */
     public ManagerClosingData getManagerClosingData() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId= commonService.getCurrentBusinessDateAndBranchId();
         String branchName = commonService.getCurrentData().getBranchName();
         List<ClosingData> closingDataList = businessDayCloseMapper.findClosingDataList(currentBusinessDateAndBranchId);
+        // if branchClosingVaultCash == null : ManagerClosingData 내부에서 처리
         BigDecimal branchClosingVaultCash = businessDayCloseMapper.findBranchClosingVaultCash(currentBusinessDateAndBranchId);
-
         return ManagerClosingData.of(closingDataList, branchClosingVaultCash, branchName);
     }
 
