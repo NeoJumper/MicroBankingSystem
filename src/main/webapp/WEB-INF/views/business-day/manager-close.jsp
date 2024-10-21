@@ -69,7 +69,7 @@
                                        value="<fmt:formatNumber value='${closingData.vaultCash}' type='number'/>"
                                        disabled>
                             </td>
-                            <td style="width: 20%;" class="${closingData.status == 'OPEN' ? 'status-open' : closingData.status == 'CLOSED' ? 'status-closed' : ''}">
+                            <td style="width: 20%;" class="${closingData.status == 'OPEN' ? 'status-open' : closingData.status == 'CLOSED' ? 'status-closed' : ''} branch-close-employee-status">
                                     ${closingData.status}
                             </td>
                         </tr>
@@ -109,21 +109,16 @@
                 <tr>
                     <th>금일 마감 금액</th>
                     <td>
-                        <c:choose>
-                            <c:when test="${managerClosingData.vaultCashOfBranch != null}">
-                                <input id="manager-close-vault-cash" type="text"
-                                       value="<fmt:formatNumber value='${managerClosingData.vaultCashOfBranch}' type='number'/>"
-                                       disabled>
-                            </c:when>
-                            <c:otherwise>
-                                <input id="manager-close-vault-cash" type="text"
-                                       placeholder="처리중..." disabled>
-                            </c:otherwise>
-                        </c:choose>
+                        <input id="manager-close-vault-cash" type="text" value="<fmt:formatNumber value='${managerClosingData.vaultCashOfBranch}' type='number'/>" disabled>
                     </td>
                 </tr>
                 </tbody>
             </table>
+            <c:choose>
+                <c:when test="${managerClosingData.isWaitingEmployeeClose == 'TRUE'}">
+                    <div>현재 마감 대기중이며, 금액 변동이 있을 수 있습니다.</div>
+                </c:when>
+            </c:choose>
             <div style="display: flex; justify-content: center; align-items: center; margin: 20px">
                 <button id="manager-business-day-close-btn">
                 </button>

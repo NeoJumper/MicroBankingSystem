@@ -130,7 +130,6 @@ public class BusinessDayManagementFacade {
 
 
         // 2
-
         if (managerClosingData.getClosingDataList().stream().map(ClosingData::getStatus).anyMatch("OPEN"::equals))
             throw new BadRequestException(ErrorCode.REQUIRED_EMPLOYEE_CLOSING);
         if(businessDayCloseService.getBranchClosingStatusByDateAndId(businessDateAndBranchId).equals("CLOSED"))

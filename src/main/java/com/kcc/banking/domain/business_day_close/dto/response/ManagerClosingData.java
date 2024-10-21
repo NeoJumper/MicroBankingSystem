@@ -19,6 +19,7 @@ public class ManagerClosingData {
     private BigDecimal totalWithdrawalOfBranch;
     private BigDecimal vaultCashOfBranch;
     private String branchName;
+    private String isWaitingEmployeeClose;
 
     @Builder
     public ManagerClosingData(List<ClosingData> closingDataList, BigDecimal prevCashBalanceOfBranch, BigDecimal totalDepositOfBranch, BigDecimal totalWithdrawalOfBranch, BigDecimal vaultCashOfBranch, String branchName) {
@@ -45,7 +46,16 @@ public class ManagerClosingData {
             BigDecimal expectedBranchClosingVaultCash = managerClosingData.prevCashBalanceOfBranch.add(managerClosingData.totalDepositOfBranch).subtract(managerClosingData.totalWithdrawalOfBranch);
             managerClosingData.setVaultCashOfBranch(expectedBranchClosingVaultCash);
         }
-        
+
+        // 행원이 OPEN 상태를 포함한다면
+        if(closingDataList.stream().map(ClosingData::getStatus).anyMatch("OPEN"::equals)) {
+            // 아직 마감 대기중
+            managerClosingData.setIsWaitingEmployeeClose("TRUE");
+        }else{
+            // 아니라면 매니저 마감 차례
+            managerClosingData.setIsWaitingEmployeeClose("FALSE");
+        }
+
         return managerClosingData;
     }
 }
