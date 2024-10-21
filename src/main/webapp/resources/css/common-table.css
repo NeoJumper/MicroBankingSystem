@@ -21,7 +21,6 @@
 
 .common-table th, .common-table td {
     padding: 12px 15px;
-    text-align: left;
     border-bottom: 1px solid var(--little-dark-gray);
     font-size: 1.0rem;
     font-weight: normal;
