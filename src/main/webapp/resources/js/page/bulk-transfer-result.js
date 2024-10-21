@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         row.append($('<td>').text(bulkTransferInfo.status));
                     }
                     row.append($('<td>').text(bulkTransferInfo.targetAccId));
-                    row.append($('<td>').text(bulkTransferInfo.amount));
+                    row.append($('<td>').text(bulkTransferInfo.amount.toLocaleString()));
                     row.append($('<td>').text(bulkTransferInfo.targetName));
                     row.append($('<td>').text(bulkTransferInfo.description));
                     row.append($('<td>').text(bulkTransferInfo.failureReason));
