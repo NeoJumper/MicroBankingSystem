@@ -29,17 +29,17 @@
     <div class="row">
         <div id="table-container" class="col-9">
             <table id="employee-add-list-thead" class="common-table no-margin">
-                <tbody>
+                <thead>
                 <tr>
-                    <th style="width: 3%">사번</th>
-                    <th style="width: 6%">이름</th>
-                    <th style="width: 10%">전일자 현금 잔액</th>
-                    <th>입금액</th>
-                    <th style="width: 15%">출금액</th>
-                    <th>금일 마감 금액</th>
-                    <th style="width: 8%">마감 상태</th>
+                    <th style="width: 8%;">사번</th>
+                    <th style="width: 8%;">이름</th>
+                    <th style="width: 20%;">전일자 현금 잔액</th>
+                    <th style="width: 16%;">입금액</th>
+                    <th style="width: 20%;">출금액</th>
+                    <th style="width: 16%;">금일 마감 금액</th>
+                    <th>마감 상태</th>
                 </tr>
-                </tbody>
+                </thead>
             </table>
 
             <div id="employee-add-list" style="overflow-y: auto;">
@@ -47,40 +47,38 @@
                     <tbody>
                     <c:forEach var="closingData" items="${managerClosingData.closingDataList}">
                         <tr class="branch-close-employee-data">
-                            <td style="width: 6%; text-align: center">${closingData.id}</td>
-                            <td style="width: 8%; text-align: center">${closingData.name}</td>
-                            <td style="width: 10%">
+                            <td style="width: 8%;">${closingData.id}</td>
+                            <td style="width: 8%;">${closingData.name}</td>
+                            <td style="width: 16%;">
                                 <input class="employee-prev-cash-balance" type="text"
                                        value="<fmt:formatNumber value='${closingData.prevCashBalance}' type='number'/>"
                                        disabled>
                             </td>
-                            <td style="width: 10%">
+                            <td style="width: 16%;">
                                 <input class="employee-total-deposit" type="text"
                                        value="<fmt:formatNumber value='${closingData.totalDeposit}' type='number'/>"
                                        disabled>
                             </td>
-                            <td style="width: 10%">
+                            <td style="width: 16%;">
                                 <input class="employee-total-withdrawal" type="text"
                                        value="<fmt:formatNumber value='${closingData.totalWithdrawal}' type='number'/>"
                                        disabled>
                             </td>
-                            <td style="width: 10%">
+                            <td style="width: 16%;">
                                 <input class="employee-vaultCash" type="text"
                                        value="<fmt:formatNumber value='${closingData.vaultCash}' type='number'/>"
                                        disabled>
                             </td>
-                            <td style="width: 10%"
-                                class="branch-close-employee-status ${closingData.status == 'OPEN' ? 'status-open' : closingData.status == 'CLOSED' ? 'status-closed' : ''}">
+                            <td style="width: 20%;" class="${closingData.status == 'OPEN' ? 'status-open' : closingData.status == 'CLOSED' ? 'status-closed' : ''} branch-close-employee-status">
                                     ${closingData.status}
                             </td>
-
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
-
             </div>
         </div>
+
         <div class="col-3">
             <table id="manager-close-table" class="common-table">
                 <tbody>
@@ -111,21 +109,16 @@
                 <tr>
                     <th>금일 마감 금액</th>
                     <td>
-                        <c:choose>
-                            <c:when test="${managerClosingData.vaultCashOfBranch != null}">
-                                <input id="manager-close-vault-cash" type="text"
-                                       value="<fmt:formatNumber value='${managerClosingData.vaultCashOfBranch}' type='number'/>"
-                                       disabled>
-                            </c:when>
-                            <c:otherwise>
-                                <input id="manager-close-vault-cash" type="text"
-                                       placeholder="처리중..." disabled>
-                            </c:otherwise>
-                        </c:choose>
+                        <input id="manager-close-vault-cash" type="text" value="<fmt:formatNumber value='${managerClosingData.vaultCashOfBranch}' type='number'/>" disabled>
                     </td>
                 </tr>
                 </tbody>
             </table>
+            <c:choose>
+                <c:when test="${managerClosingData.isWaitingEmployeeClose == 'TRUE'}">
+                    <div>현재 마감 대기중이며, 금액 변동이 있을 수 있습니다.</div>
+                </c:when>
+            </c:choose>
             <div style="display: flex; justify-content: center; align-items: center; margin: 20px">
                 <button id="manager-business-day-close-btn">
                 </button>

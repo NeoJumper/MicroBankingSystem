@@ -40,11 +40,6 @@
     margin-bottom: 0;
 }
 
-#manager-close-table th {
-    text-align: center;
-    width: 20%;
-}
-
 #manager-close-table td {
     text-align: left !important;
 }
