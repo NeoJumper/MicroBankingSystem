@@ -41,17 +41,25 @@
                         <span id="withdrawal-account-number">계좌를 선택해주세요.</span>
                     </div>
                     <div>
-                        <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
+                        <button id="withdrawal-account-check-btn" class="basic-btn" type="button"
                                 data-account-type="withdrawal" data-bs-toggle="modal"
                                 data-bs-target="#search-modal-account">
                             계좌조회
                         </button>
                     </div>
                 </div>
-                <div class="account-balance">
-                    계좌잔액 <span id="account-balance"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원 | 이체가능금액 <span
-                        id="transferable-amount"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원
+                <div class="account-balance d-flex">
+                    <div class="me-2">
+                        계좌잔액<span id="account-balance" style="margin-left: 20px;">0</span> 원
+                    </div>
+                    <div class="mx-3 transfer-possible-amount">|</div>
+                    <div class="ms-2 transfer-possible-amount">
+                        이체가능금액<span id="transferable-amount" style="margin-left: 20px">0</span>  원
+                    </div>
                 </div>
+
+
+
             </div>
             <div>
                 <h3>거래정보</h3>
@@ -62,7 +70,7 @@
                     <th><label for="transfer-amount">이체금액</label></th>
                     <td>
                         <div><span id="over-account-balance"></span></div>
-                        <input disabled type="text" id="transfer-amount"> 원
+                        <input disabled type="text" id="transfer-amount"  style="text-align: right"> 원
                         <div class="button-group">
                             <button type="button" class="amount-btn" disabled>100만</button>
                             <button type="button" class="amount-btn" disabled>50만</button>
@@ -128,7 +136,7 @@
             <tr>
                 <th><label for="deposit-account-number">입금계좌번호</label></th>
                 <td><input disabled type="text" id="deposit-account-number">
-                    <button id="check-deposit-account-btn" class="basic-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
+                    <button id="deposit-account-check-btn" class="basic-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
                 </td>
             </tr>
             <tr>

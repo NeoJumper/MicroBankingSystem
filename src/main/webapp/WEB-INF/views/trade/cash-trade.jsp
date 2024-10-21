@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,19 +19,28 @@
     <div>
         <h5>계좌관리 > </h5>
         <h5>&nbsp 거래 내역 조회 > </h5>
-        <h5>&nbsp 계좌 입출금</h5>
+        <h5>&nbsp 현금 입출금</h5>
     </div>
 
-    <div id = "reserve-button-group" class="button-group mb-2">
-        <label>거래 유형 &nbsp;&nbsp;</label>
-        <input type="radio" id="deposit" name="trade-type" value="deposit" checked>
-        <label for="deposit">입금</label>
-        <input class="ms-3" type="radio" id="withdrawal" name="trade-type" value="withdrawal">
-        <label for="withdrawal">출금</label>
+
+
+
+
+    <div id = "select-trade-type-button-group" class="button-group my-4">
+        <div style="width: 100%">
+            <input type="radio" id="deposit-radio-btn" class="select-trade-type-radio-btn" name="trade-type" value="deposit" checked>
+            <label for="deposit-radio-btn">현금 입금</label>
+        </div>
+        <div style="width: 100%">
+            <input type="radio" id="withdrawal-radio-btn" class="select-trade-type-radio-btn ms-3" name="trade-type" value="withdrawal">
+            <label for="withdrawal-radio-btn">현금 출금</label>
+        </div>
+
     </div>
 
-    <div>
-        <h3>계좌 정보</h3>
+    <div class="d-flex">
+        <h3 id="account-info-h3">입금 계좌 정보</h3>
+
         <hr>
     </div>
 
@@ -45,15 +54,21 @@
                 <span id="cash-trade-account-number">계좌를 선택해주세요.</span>
             </div>
             <div>
-                <button id="check-cash-trade-account-btn" class="basic-btn" type="button"
+                <button id="cash-trade-account-check-btn" class="basic-btn" type="button"
                         data-bs-toggle="modal" data-bs-target="#search-modal-account">
                     계좌조회
                 </button>
             </div>
         </div>
-        <div class="account-balance">
-            계좌잔액 <span id="cash-deposit-trade-balance"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원 | 이체가능금액 <span
-                id="transferable-amount"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원
+        <div class="account-balance d-flex">
+            <div class="me-2">
+                계좌잔액<span id="cash-trade-balance" style="margin-left: 20px;">0</span> 원
+            </div>
+            <div class="mx-3 transfer-possible-amount" style="display: none;">|</div>
+            <div class="ms-2 transfer-possible-amount" style="display: none;">
+                 이체가능금액<span id="transferable-amount" style="margin-left: 20px">0</span>  원
+            </div>
+
         </div>
     </div>
 
@@ -62,11 +77,11 @@
     </div>
     <table class="common-table">
         <tr>
-            <th><label for="cash-trade-amount">이체금액</label></th>
+            <th><label for="cash-trade-amount">입금액</label></th>
             <td>
                 <div><span id="over-account-balance"></span></div>
-                <input disabled type="text" id="cash-trade-amount"> 원
-                <div class="button-group">
+                <input disabled type="text" style="text-align: right" id="cash-trade-amount"> 원
+                <div class="button-group trade-amount-button-group  mb-2">
                     <button type="button" class="amount-btn" disabled>100만</button>
                     <button type="button" class="amount-btn" disabled>50만</button>
                     <button type="button" class="amount-btn" disabled>10만</button>
@@ -82,12 +97,15 @@
         </tr>
         <tr>
             <th><label for="cash-trade-employee">담당자</label></th>
-            <td><input disabled type="text" id="cash-trade-employee"></td>
+            <td><input type="text" id="cash-trade-employee" value="${employeeName}" disabled></td>
         </tr>
 
         <tr>
-            <th><label for="cash-trade-registration-date">승인일자</label></th>
-            <td><input disabled type="text" id="cash-trade-registration-date"></td>
+            <th>등록일자</th>
+            <td>
+                <fmt:parseDate value="${tradeDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedTradeDate" />
+                <input type="text" id="cash-trade-registration-date" value="<fmt:formatDate value='${parsedTradeDate}' pattern='yyyy-MM-dd' />" disabled>
+            </td>
         </tr>
     </table>
 
