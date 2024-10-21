@@ -1,25 +1,26 @@
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function () {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+});
 
-    $("#trade-list-detail-btn").click(function() {
-        // tradeDetails와 tradeDetailsContent의 표시 여부를 토글
-        $("#tradeDetails, #tradeDetailsContent").toggle();
-    });
+
+$(document).ready(function () {
     handleAuthDataOfEmployeeClosePage();
     registerClickEventOfEmpCloseBtn();
 
 });
 
-function registerClickEventOfEmpCloseBtn(){
-    $("#employee-business-day-close-btn").click(function() {
+function registerClickEventOfEmpCloseBtn() {
+    $("#employee-business-day-close-btn").click(function () {
         closeBusinessDayOfEmployee();
     });
 }
 
 
-function closeBusinessDayOfEmployee(){
+function closeBusinessDayOfEmployee() {
 
     isValidRequest = checkInvalidCashTrade();
-    if(!isValidRequest){
+    if (!isValidRequest) {
         swal({
             title: "마감 실패",
             text: "현금 입출금액과 거래내역의 현금 입출금액이 일치하지 않습니다.",
@@ -30,15 +31,14 @@ function closeBusinessDayOfEmployee(){
     }
 
 
-
     let vaultCash = calculateVaultCash();
 
     $.ajax({
         url: '/api/employee/business-day-close',
         type: 'PATCH',
         contentType: 'application/json',
-        data: JSON.stringify({ vaultCash: vaultCash }),
-        success: function(response) {
+        data: JSON.stringify({vaultCash: vaultCash}),
+        success: function () {
             swal({
                 title: "마감 완료",
                 text: "금일 영업 마감이 성공적으로 완료되었습니다.",
@@ -49,10 +49,10 @@ function closeBusinessDayOfEmployee(){
             $("#employee-business-day-close-btn").prop("disabled", true);
             $("#employee-business-day-close-btn").text("마감 완료");
 
-            let todayClosingAmount = calculateVaultCash();
-            fillEmpVaultCash(todayClosingAmount);
+            // let todayClosingAmount = calculateVaultCash();
+            // fillEmpVaultCash(todayClosingAmount);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             swal({
                 title: "마감 실패",
                 text: xhr.responseText,
@@ -63,24 +63,24 @@ function closeBusinessDayOfEmployee(){
     });
 }
 
-function handleAuthDataOfEmployeeClosePage(){
+function handleAuthDataOfEmployeeClosePage() {
     $.ajax({
         url: '/api/common/auth-data',
         type: 'GET',
-        success: function(authData) {
+        success: function (authData) {
             // 성공 시 처리할 로직 작성
             console.log(authData);
             $('#employee-close-page-user-branch-name').text(authData.branchName);
             $('#employee-close-page-user-name').text(authData.name + '님');
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             // 에러 발생 시 처리할 로직 작성
             console.error('에러 발생:', error);
         }
     });
 }
 
-function calculateVaultCash(){
+function calculateVaultCash() {
     // 전일자 현금 잔액
     const prevCashBalance = parseFloat($('.emp-close-prev-cash-balance').val()) || 0;
     // 현금 입금액
