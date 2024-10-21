@@ -22,16 +22,25 @@
         <h5>&nbsp 계좌 입출금</h5>
     </div>
 
-    <div id = "reserve-button-group" class="button-group mb-2">
-        <label>거래 유형 &nbsp;&nbsp;</label>
-        <input type="radio" id="deposit" name="trade-type" value="deposit" checked>
-        <label for="deposit">입금</label>
-        <input class="ms-3" type="radio" id="withdrawal" name="trade-type" value="withdrawal">
-        <label for="withdrawal">출금</label>
+
+
+
+
+    <div id = "select-trade-type-button-group" class="button-group my-5">
+        <div style="width: 100%">
+            <input type="radio" id="deposit-radio-btn" class="select-trade-type-radio-btn" name="trade-type" value="deposit" checked>
+            <label for="deposit-radio-btn">현금 입금</label>
+        </div>
+        <div style="width: 100%">
+            <input type="radio" id="withdrawal-radio-btn" class="select-trade-type-radio-btn ms-3" name="trade-type" value="withdrawal">
+            <label for="withdrawal-radio-btn">현금 출금</label>
+        </div>
+
     </div>
 
-    <div>
+    <div class="d-flex">
         <h3>계좌 정보</h3>
+
         <hr>
     </div>
 

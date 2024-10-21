@@ -7,7 +7,6 @@ h3 {
     font-weight: bold;
 }
 span {
-    font-weight: bold;
     color: #073082;
 }
 
@@ -42,7 +41,9 @@ span {
     background: initial;
 }
 
-
+.account-balance span{
+    font-weight: bold;
+}
 #account-balance-label {
     /*border: 1px solid #C8C8C8;*/
     padding: 8px;
@@ -139,4 +140,8 @@ p {
 
 .account-transfer-page-table th{
     width: 25%;
+}
+#withdrawal-account-number{
+    font-size: 1.5rem;
+    font-weight: bold;
 }
