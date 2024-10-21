@@ -73,10 +73,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <th><label for="description">비고</label></th>
-                    <td><input type="text" id="description"></td>
-                </tr>
+
                 <tr>
                     <th><label>예약 여부</label></th>
                     <td>
@@ -102,6 +99,10 @@
                             </div>
                         </div>
                     </td>
+                </tr>
+                <tr>
+                    <th><label for="description">비고</label></th>
+                    <td><input type="text" id="description"></td>
                 </tr>
                 <tr>
                     <th>담당자</th>
