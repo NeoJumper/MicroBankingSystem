@@ -27,48 +27,87 @@
             <h3>출금계좌정보</h3>
 
         </div>
-        <table class="common-table">
-            <tr>
-                <th><label for="withdrawal-account-number">출금계좌번호</label></th>
-                <td><input disabled type="text" id="withdrawal-account-number">
-                    <button id="check-withdrawal-account-btn" class="basic-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="withdrawal-product-name">상품명</label></th>
-                <td><input disabled type="text" id="withdrawal-product-name"></td>
-            </tr>
-            <tr>
-                <th><label for="withdrawal-customer-name">고객명</label></th>
-                <td><input disabled type="text" id="withdrawal-customer-name"></td>
-            </tr>
-            <tr>
-                <th><label for="transfer-amount">이체금액</label></th>
-                <td>
-                    <div><span id="over-account-balance"></span></div>
-                    <input disabled type="text" id="transfer-amount"> 원
-                    <label id="account-balance-label" style="display: none">
-                        | 계좌 잔액: <span id="account-balance"></span> 원
-                </label>
-                    <div class="button-group">
-                        <button type="button" class="amount-btn" disabled>100만</button>
-                        <button type="button" class="amount-btn" disabled>50만</button>
-                        <button type="button" class="amount-btn" disabled>10만</button>
-                        <button type="button" class="amount-btn" disabled>5만</button>
-                        <button type="button" class="amount-btn" disabled>1만</button>
-                        <button type="button" class="amount-btn" disabled>전액</button>
+    <container id="registration-page">
+        <%--  계좌선택 섹션  --%>
+        <section>
+            <hr>
+            <%--계좌선택--%>
+            <div id="select-account-form">
+                <div class="account-info">
+                    <div>
+                        <span id="withdrawal-customer-name"></span>
+                        <span id="withdrawal-product-name"></span>
+                        <br>
+                        <span id="withdrawal-account-number">계좌를 선택해주세요.</span>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="execution-date">이체 실행일자</label></th>
-                <td><input disabled type="date" id="execution-date"></td>
-            </tr>
-            <tr>
-                <th><label for="description">비고</label></th>
-                <td><input type="text" id="description"></td>
-            </tr>
-        </table>
+                    <div>
+                        <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
+                                data-account-type="withdrawal" data-bs-toggle="modal"
+                                data-bs-target="#search-modal-account">
+                            계좌조회
+                        </button>
+                    </div>
+                </div>
+                <div class="account-balance">
+                    계좌잔액 <span id="account-balance"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원 | 이체가능금액 <span
+                        id="transferable-amount"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원
+                </div>
+            </div>
+            <%--계좌비밀번호 table--%>
+            <table class="common-table">
+                <tr>
+                    <th><label for="transfer-amount">이체금액</label></th>
+                    <td>
+                        <div><span id="over-account-balance"></span></div>
+                        <input disabled type="text" id="transfer-amount"> 원
+                        <div class="button-group">
+                            <button type="button" class="amount-btn" disabled>100만</button>
+                            <button type="button" class="amount-btn" disabled>50만</button>
+                            <button type="button" class="amount-btn" disabled>10만</button>
+                            <button type="button" class="amount-btn" disabled>5만</button>
+                            <button type="button" class="amount-btn" disabled>1만</button>
+                            <button type="button" class="amount-btn" disabled>전액</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="transfer-account-password">출금계좌 비밀번호</label></th>
+                    <td><input id="transfer-account-password" type="password"><button class="basic-btn" id="account-transfer-validate">비밀번호 인증</button></td>
+                </tr>
+                <tr>
+                    <th><label for="description">비고</label></th>
+                    <td><input type="text" id="description"></td>
+                </tr>
+                <tr>
+                    <th><label>예약 여부</label></th>
+                    <td>
+                        <div id = "reserve-button-group" class="button-group mb-2">
+                            <input type="radio" id="immediate-transfer-btn" name="scheduled-status" checked>
+                            <label for="immediate-transfer-btn">즉시 이체</label>
+                            <input class="ms-3" type="radio" id="scheduled-transfer-btn" name="scheduled-status">
+                            <label for="scheduled-transfer-btn">예약 이체</label>
+                        </div>
+                        <div id="reserve-time-select-div" style="display: none">
+                            <input type="date" value="1234" style="margin-right: 20px">
+                            <div id="time-search-container">
+                                <select id="time-search-btn">
+                                    <option value="1">9:30 ~ 10:30</option>
+                                    <option value="1">10:30 ~ 11:30</option>
+                                    <option value="1">11:30 ~ 12:30</option>
+                                    <option value="1">12:30 ~ 13:30</option>
+                                    <option value="1">13:30 ~ 14:30</option>
+                                    <option value="1">14:30 ~ 15:30</option>
+                                    <option value="1">15:30 ~ 16:00</option>
+                                </select>
+                                <img class="search-icon" type="submit" src="/resources/assets/timer.jpg">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </section>
+
+
         <div>
             <h3 class="mt-3">입금계좌정보</h3>
 
@@ -84,18 +123,6 @@
             <tr>
                 <th><label for="deposit-customer-name">고객명</label></th>
                 <td><input disabled type="text" id="deposit-customer-name"></td>
-            </tr>
-            </tbody>
-        </table>
-        <div>
-            <h3 class="mt-3">출금계좌 비밀번호</h3>
-
-        </div>
-        <table class="common-table">
-            <tbody>
-            <tr>
-                <th><label for="transfer-account-password">출금계좌 비밀번호</label></th>
-                <td><input id="transfer-account-password" type="password"><button class="basic-btn" id="account-transfer-validate">비밀번호 인증</button></td>
             </tr>
             </tbody>
         </table>

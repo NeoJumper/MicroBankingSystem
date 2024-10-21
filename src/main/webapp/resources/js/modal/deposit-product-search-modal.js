@@ -9,8 +9,6 @@ $(document).ready(function () {
 
 function registerClickEventOfDepositProductSearchBtn() {
     $('#deposit-product-search-btn').on('click', function () {
-        console.log("ddasdsadas");
-        console.log($('#deposit-product-search-modal-product-information'));
         $('#deposit-product-search-modal-product-information').empty();
     });
 }
@@ -20,8 +18,8 @@ function searchEmployee(){
     let searchOption = $('#deposit-product-search-modal-select').val();
     let searchValue = $('#deposit-product-search-modal-input').val();
     let selectedAccountType =  $('input[name="major-category"]:checked').val();
-    console.log("option : " + searchOption);
-    console.log("value : "+searchValue);
+    //console.log("option : " + searchOption);
+    //console.log("value : "+searchValue);
     // Ajax 요청
     $.ajax({
         url: '/api/employee/deposit-products',
@@ -46,7 +44,6 @@ function searchEmployee(){
                             </tr>
                         `;
 
-                console.log("new",newRow)
                 $('#deposit-product-search-modal-product-information').append(newRow); // 새 데이터 추가
             });
 
@@ -78,7 +75,7 @@ function selectDepositProduct() {
         if (selectedProduct.length > 0) {
 
             const insertValueMappings = [
-                { selector: '', columnIndex: 2 },
+                { selector: '#product-id-hidden-input', columnIndex: 2 },
                 { selector: '#deposit-product-name-input', columnIndex: 3 },
                 { selector: '#product-interest-input', columnIndex: 4 },
             ];
@@ -89,8 +86,8 @@ function selectDepositProduct() {
                 const value = selectedRow.find(`td:nth-child(${item.columnIndex})`).text();
                 const inputElement = $(item.selector);
 
-                console.log(value);
-                console.log(inputElement);
+                //console.log(value);
+                //console.log(inputElement);
                 // 존재하는 요소에 필요한 값 넣어주기
                 if (inputElement.length > 0 && value && value.trim() !== "") {
                     inputElement.val(value);
