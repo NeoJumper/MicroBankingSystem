@@ -2,6 +2,7 @@ package com.kcc.banking.domain.account.controller;
 
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
+import com.kcc.banking.domain.common.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AccountController {
 
     private final AccountService accountService;
+    private final CommonService commonService;
 
     @GetMapping("/page/employee/savings-account-open")
     public String getSavingsAccountCreatePage(){
@@ -21,12 +23,12 @@ public class AccountController {
     @GetMapping("/page/employee/account-open")
     public String getAccountCreatePage(Model model){
 
-        CurrentData registerInfo = accountService.getRegistrantInfo();
+        CurrentData currentData = commonService.getCurrentData();
 
-        model.addAttribute("branchId", registerInfo.getBranchId());
-        model.addAttribute("employeeName", registerInfo.getEmployeeName());
-        model.addAttribute("employeeId", registerInfo.getEmployeeId());
-        model.addAttribute("tradeDate", registerInfo.getCurrentBusinessDate());
+        model.addAttribute("branchId", currentData.getBranchId());
+        model.addAttribute("employeeName", currentData.getEmployeeName());
+        model.addAttribute("employeeId", currentData.getEmployeeId());
+        model.addAttribute("tradeDate", currentData.getCurrentBusinessDate());
 
         return "account/account-open";
     }

@@ -1,5 +1,7 @@
 package com.kcc.banking.domain.trade.controller;
 
+import com.kcc.banking.domain.common.dto.request.CurrentData;
+import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TradeController {
 
     private final TradeService tradeService;
+    private final CommonService commonService;
 
     @GetMapping("/trade-list")
     public String getTradeListPage(Model businessDay){
@@ -30,7 +33,13 @@ public class TradeController {
     }
 
     @GetMapping("/account-transfer")
-    public String getAccountTransferPage() {
+    public String getAccountTransferPage(Model model) {
+        CurrentData currentData = commonService.getCurrentData();
+
+        model.addAttribute("branchId", currentData.getBranchId());
+        model.addAttribute("employeeName", currentData.getEmployeeName());
+        model.addAttribute("employeeId", currentData.getEmployeeId());
+        model.addAttribute("tradeDate", currentData.getCurrentBusinessDate());
         return "trade/account-transfer";
     }
 
