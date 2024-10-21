@@ -9,7 +9,7 @@ $(document).ready(function () {
         selectAccount();  // 선택된 계좌 처리 함수 호출
     });
 
-    // 거래 유형(입금/출금) 선택 시
+// 거래 유형(입금/출금) 선택 시
     $('input[name="trade-type"]').change(function () {
         var selectedTradeType = $('input[name="trade-type"]:checked').val();
 
@@ -17,11 +17,11 @@ $(document).ready(function () {
         resetTradeForm();
 
         if (selectedTradeType === 'withdrawal') {
-            // 출금 선택 시 비밀번호 입력란 보이기
-            $('#withdrawal-password-section').show();
+            // 출금 선택 시 비밀번호 입력란을 부드럽게 보이게 함
+            $('#withdrawal-password-section').stop().slideDown();
         } else {
-            // 입금 선택 시 비밀번호 입력란 숨기기
-            $('#withdrawal-password-section').hide();
+            // 입금 선택 시 비밀번호 입력란을 부드럽게 숨김
+            $('#withdrawal-password-section').stop().slideUp();
         }
     });
 
@@ -194,18 +194,20 @@ function selectAccount() {
         success: function (data) {
             if (selectedTradeType === "withdrawal") {
                 // 출금 계좌 처리
-                $('#cash-trade-account-number').val(data[0].accId);
-                $('#cash-trade-customer-name').val(data[0].customerName);
-                $('#cash-deposit-trade-balance').val(data[0].balance.toLocaleString('ko-KR'));
+                $('#cash-trade-account-number').text(data[0].accId);
+                $('#cash-trade-customer-name').text(data[0].customerName + "  |  "   );
+                $('#cash-trade-product-name').text(data[0].productName);
+                $('#cash-deposit-trade-balance').text(data[0].balance.toLocaleString('ko-KR'));
 
                 // 출금일 경우, 비밀번호 인증 후에만 승인 버튼 활성화
                 $('#cash-trade-submit').prop('disabled', true); // 비밀번호 인증 전까지 비활성화
 
             } else if (selectedTradeType === "deposit") {
                 // 입금 계좌 처리
-                $('#cash-trade-account-number').val(data[0].accId);
-                $('#cash-trade-customer-name').val(data[0].customerName);
-                $('#cash-deposit-trade-balance').val(data[0].balance.toLocaleString('ko-KR'));
+                $('#cash-trade-account-number').text(data[0].accId);
+                $('#cash-trade-customer-name').text(data[0].customerName + "  |  "   );
+                $('#cash-trade-product-name').text(data[0].productName);
+                $('#cash-deposit-trade-balance').text(data[0].balance.toLocaleString('ko-KR'));
 
                 // 입금일 경우, 계좌 조회 후 바로 승인 버튼 활성화
                 $('#cash-trade-submit').prop('disabled', false);
