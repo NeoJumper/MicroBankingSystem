@@ -162,27 +162,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     });
-
-    // 이체확인증
-    $('input[value="이체확인증"]').click(function () {
-        transferReceipt();
-    })
-
-    // 이체확인증(일괄)
-    $('input[value="이체확인증"]').click(function () {
-        transferReceiptAll();
+    
+    // 이전 페이지 
+    $('#back-btn').click(function () {
+        history.replaceState(null, '', document.referrer); // 이전 페이지로 설정
+        window.history.back(); // 이전 페이지로 돌아가기
     })
     }); // DOMContentLoaded 이벤트 끝
 
-    // 이체 확인증 실행 함수
-    function transferReceipt() {
-        
-    }
 
-    // 이체 확인증 (일괄) 실행 함수
-    function transferReceiptAll() {
-
-    }
 
     // table 채우는 메서드
     function fillBulkTransferInfoListBody(bulkTransferId){
