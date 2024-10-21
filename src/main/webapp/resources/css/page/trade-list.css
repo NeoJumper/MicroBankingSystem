@@ -1,7 +1,3 @@
-th{
-    width : 250px;
-}
-
 .common-table input[type="text"]{
     max-width: 60%;
 }
@@ -216,4 +212,9 @@ th{
 
 a {
     text-decoration: none;
+}
+
+
+.common-table  th, .common-table  td {
+    text-align: center;
 }
