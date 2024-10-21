@@ -34,7 +34,7 @@
 }
 
 .common-table td{
-    width: 30%;
+    min-width: 30%;
 }
 
 .common-table select, input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
