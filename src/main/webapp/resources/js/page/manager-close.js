@@ -10,9 +10,15 @@ function registerClickEventOfEmpCloseBtn(){
     });
 }
 
-
 function closeBusinessDayOfManager(){
-    let vaultCash = calculateVaultCash();
+    let vaultCashValue = $('#manager-close-vault-cash').val();
+
+    // 쉼표 제거
+    vaultCashValue = vaultCashValue.replace(/,/g, '');
+    // 숫자 변환
+    const vaultCash = Number(vaultCashValue);
+
+    console.log("vaultCash",vaultCash);
 
     $.ajax({
         url: '/api/manager/business-day-close',
@@ -32,8 +38,7 @@ function closeBusinessDayOfManager(){
             $("#manager-business-day-close-btn").text("마감 완료");
             $('#business-day-status > span').text("CLOSED");
 
-            let todayClosingAmount = calculateVaultCash();
-            fillEmpVaultCash(todayClosingAmount);
+            // branch_closing 테이블에서 마감정보 가져와서 다시 채우기
         },
         error: function(xhr, status, error) {
             swal({
@@ -93,29 +98,6 @@ function handleCurrentBusinessDay(){
 
         },
         error: function(xhr, status, error) {
-
         }
     });
-}
-
-function calculateVaultCash(){
-    // 전일자 현금 잔액
-    const prevCashBalance = parseFloat($('#manager-close-prev-cash-balance').val()) || 0;
-    // 현금 입금액
-    const cashDeposit = parseFloat($('#manager-close-total-deposit').val()) || 0;
-    // 현금 출금액
-    const cashWithdrawal = parseFloat($('#manager-close-total-withdrawal').val()) || 0;
-
-    // 금일 마감 금액 계산
-    console.log(prevCashBalance);
-    console.log(cashDeposit);
-    console.log(cashWithdrawal);
-    console.log(prevCashBalance - (cashDeposit + cashWithdrawal));
-    return prevCashBalance - (cashDeposit + cashWithdrawal);
-}
-
-function fillEmpVaultCash(todayClosingAmount) {
-
-    // 금일 마감 금액 입력란에 값 설정
-    $('#manager-close-vault-cash').val(todayClosingAmount);
 }
