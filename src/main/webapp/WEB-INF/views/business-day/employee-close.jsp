@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert title here</title>
-    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/deadline-management.css"/>
 </head>
@@ -22,8 +22,8 @@
     </div>
     <div>
         <div class="d-flex align-items-center mb-3">
-            <h3 class="mb-0">마감일 관리(행원)</h3>
-            <h4 id="employee-close-page-user-branch-name" ></h4>
+            <h3>마감 관리(행원)</h3>
+            <h4 id="employee-close-page-user-branch-name"></h4>
             <h5 id="employee-close-page-user-name" class="mb-0">2024-09-24</h5>
         </div>
     </div>
@@ -31,67 +31,74 @@
         <div class="col-9">
             <table class="common-table">
                 <tbody>
-                    <tr>
-                        <th><label >현금 입금액</label></th>
-                        <td>
-                            <input class="emp-close-cash-deposit" type="text" value="<c:out value='${employeeClosingData.closingData.totalDeposit}' />" disabled>
-                        </td>
-                        <th><label>거래내역 현금 입금액</label></th>
-                        <td>
-                            <input class="emp-close-trade-list-deposit" type="text" value="<c:out value='${employeeClosingData.totalDepositOfTrade}' />" disabled>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label>현금 출금액</label></th>
-                        <td>
-                            <input class="emp-close-cash-withdrawal" type="text" value="<c:out value='${employeeClosingData.closingData.totalWithdrawal}' />" disabled>
-                        </td>
-                        <th><label>거래내역 현금 출금액</label></th>
-                        <td>
-                            <input class="emp-close-trade-list-withdrawal" type="text" value="<c:out value='${employeeClosingData.totalWithdrawalOfTrade}' />" disabled>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label>전일자 현금 잔액</label></th>
-                        <td>
-                            <input class="emp-close-prev-cash-balance" type="text" value="<c:out value='${employeeClosingData.closingData.prevCashBalance}' />" disabled>
-                        </td>
-                        <th><label>금일 마감 금액</label></th>
-                        <td>
-                            <c:choose>
-                                <c:when test="${employeeClosingData.closingData.vaultCash != null}">
-                                    <input class="emp-close-vault-cash" type="text" value="<c:out value='${employeeClosingData.closingData.vaultCash}' />" disabled>
-                                </c:when>
-                                <c:otherwise>
-                                    <input class="emp-close-vault-cash" type="text" placeholder="처리중..." disabled>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                    </tr>
+                <tr>
+                    <th><label>현금 입금액</label></th>
+                    <td>
+                        <input class="emp-close-cash-deposit" type="text"
+                               value="<fmt:formatNumber value='${employeeClosingData.closingData.totalDeposit}' type='number'/>" disabled>
+                    </td>
+                    <th><label>거래내역 현금 입금액</label></th>
+                    <td>
+                        <input class="emp-close-trade-list-deposit" type="text"
+                               value="<fmt:formatNumber value='${employeeClosingData.totalDepositOfTrade}' type='number'/>" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>현금 출금액</label></th>
+                    <td>
+                        <input class="emp-close-cash-withdrawal" type="text"
+                               value="<fmt:formatNumber value='${employeeClosingData.closingData.totalWithdrawal}' type='number'/>" disabled>
+                    </td>
+                    <th><label>거래내역 현금 출금액</label></th>
+                    <td>
+                        <input class="emp-close-trade-list-withdrawal" type="text"
+                               value="<fmt:formatNumber value='${employeeClosingData.totalWithdrawalOfTrade}' type='number'/>" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>전일자 현금 잔액</label></th>
+                    <td>
+                        <input class="emp-close-prev-cash-balance" type="text"
+                               value="<fmt:formatNumber value='${employeeClosingData.closingData.prevCashBalance}' type='number'/>" disabled>
+                    </td>
+                    <th><label>금일 마감 금액</label></th>
+                    <td>
+                        <c:choose>
+                            <c:when test="${employeeClosingData.closingData.vaultCash != null}">
+                                <input class="emp-close-vault-cash" type="text"
+                                       value="<fmt:formatNumber value='${employeeClosingData.closingData.vaultCash}' type='number'/>" disabled>
+                            </c:when>
+                            <c:otherwise>
+                                <input class="emp-close-vault-cash" type="text" placeholder="처리중..." disabled>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
                 </tbody>
+
             </table>
 
         </div>
         <div class="col-3 d-flex justify-content-end">
-            <div >
-                <button id="trade-list-detail-btn" class ="basic-btn">
+            <div>
+                <button id="trade-list-detail-btn" class="basic-btn">
                     내역 상세보기
                 </button>
             </div>
-            <div >
+            <div>
                 <button
-                    id="employee-business-day-close-btn"
-                    class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'basic-btn'}"
-                    <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>
+                        id="employee-business-day-close-btn"
+                        class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'basic-btn'}"
+                        <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>
                 >
-                        <c:choose>
-                            <c:when test="${employeeClosingData.closingData.status == 'CLOSED'}">
-                                마감 완료
-                            </c:when>
-                            <c:otherwise>
-                                개인 마감
-                            </c:otherwise>
-                        </c:choose>
+                    <c:choose>
+                        <c:when test="${employeeClosingData.closingData.status == 'CLOSED'}">
+                            마감 완료
+                        </c:when>
+                        <c:otherwise>
+                            개인 마감
+                        </c:otherwise>
+                    </c:choose>
 
                 </button>
             </div>
@@ -111,7 +118,10 @@
             <tr>
                 <th style="width: 20%;">거래일시</th>
                 <th style="width: 20%;">거래 계좌</th>
-                <th style="width: 10%;">유형</th>
+                <th style="width: 10%;">
+                    <span style="display: inline-block;" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="이 필드는 거래 유형을 나타냅니다.">유형</span>
+                </th>
                 <th style="width: 20%;">거래액</th>
                 <th style="width: 10%;">담당자</th>
                 <th style="width: 20%;">거래점</th>
@@ -128,7 +138,7 @@
                         <td style="width: 20%;">${trade.tradeDate}</td>
                         <td style="width: 20%;">${trade.accId}</td>
                         <td style="width: 10%;">${trade.tradeType}</td>
-                        <td style="width: 20%;">${trade.amount}</td>
+                        <td style="width: 20%;"><fmt:formatNumber value="${trade.amount}" type="number" /></td>
                         <td style="width: 10%;">${trade.registrantName}</td>
                         <td style="width: 20%;">${trade.branchName}</td>
                     </tr>
@@ -140,8 +150,13 @@
 
 </div>
 
-
 <script src="/resources/js/page/employee-close.js"></script>
 <script src="/resources/js/footer.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    });
+</script>
 </body>
 </html>

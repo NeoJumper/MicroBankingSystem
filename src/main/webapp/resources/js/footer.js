@@ -11,6 +11,7 @@ bootstrapScript.integrity = 'sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy
 bootstrapScript.crossOrigin = 'anonymous';
 document.body.appendChild(bootstrapScript);
 
+
 // SweetAlert
 const sweetalertScript = document.createElement('script');
 sweetalertScript.src = 'https://unpkg.com/sweetalert/dist/sweetalert.min.js';

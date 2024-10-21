@@ -27,7 +27,8 @@ public class EmployeeClosingData {
 
     public static EmployeeClosingData of(ClosingData closingData, List<TradeByCash> tradeByCashList)
     {
-        return EmployeeClosingData.builder()
+
+        EmployeeClosingData employeeClosingData = EmployeeClosingData.builder()
                 .closingData(closingData)
                 .tradeByCashList(tradeByCashList)
                 .totalDepositOfTrade(tradeByCashList.stream()
@@ -40,5 +41,10 @@ public class EmployeeClosingData {
                         .map(TradeByCash::getAmount)
                         .reduce(BigDecimal.ZERO, BigDecimal::add)
                 ).build();
+
+        BigDecimal vaultCash = employeeClosingData.getClosingData().getPrevCashBalance().add(employeeClosingData.getTotalDepositOfTrade()).subtract(employeeClosingData.getTotalWithdrawalOfTrade());
+        employeeClosingData.getClosingData().setVaultCash(vaultCash);
+
+        return employeeClosingData;
     }
 }
