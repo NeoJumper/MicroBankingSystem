@@ -7,10 +7,6 @@
     margin: 0 10px;
 }
 
-.no-margin {
-    margin: 0 !important;
-}
-
 #manager-close-page-user {
     display: flex;
     align-items: center;
@@ -33,7 +29,7 @@
 
 #employee-add-list {
     overflow-y: scroll;
-    height: 450px;
+    max-height: 450px;
 }
 
 #employee-list-table {
@@ -53,5 +49,11 @@
 }
 
 .status-closed {
+    color: var(--point-red);
+}
+
+.warning-text {
+    margin-top: 10px;
+    font-size: 15px;
     color: var(--point-red);
 }

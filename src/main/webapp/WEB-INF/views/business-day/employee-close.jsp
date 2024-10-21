@@ -17,62 +17,59 @@
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
     <div>
-        <h5>마감일 관리</h5>
+        <h5>마감 관리 ></h5>
+        <h5>&nbsp마감 상태 관리</h5>
     </div>
     <div>
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center mb-3">
             <h3 class="mb-0">마감일 관리(행원)</h3>
             <h4 id="employee-close-page-user-branch-name" ></h4>
             <h5 id="employee-close-page-user-name" class="mb-0">2024-09-24</h5>
         </div>
-        <hr>
     </div>
     <div class="d-flex">
         <div class="col-9">
-            <div class="d-flex w-100">
-                <div class="me-5 mb-2">
-                    <label class="amount-label1">현금 입금액</label>
-                    <input class="emp-close-cash-deposit" type="text" value="<c:out value='${employeeClosingData.closingData.totalDeposit}' />" disabled>
-                </div>
-                <div>
-                    <label class="amount-label2">거래내역 현금 입금액</label>
-                    <input class="emp-close-trade-list-deposit" type="text" value="<c:out value='${employeeClosingData.totalDepositOfTrade}' />" disabled>
-                </div>
-            </div>
-            <div class="d-flex w-100">
-                <div class="me-5 mb-2">
-                    <label class="amount-label1">현금 출금액</label>
-                    <input class="emp-close-cash-withdrawal" type="text" value="<c:out value='${employeeClosingData.closingData.totalWithdrawal}' />" disabled>
-                </div>
-                <div>
-                    <label class="amount-label2">거래내역 현금 출금액</label>
-                    <input class="emp-close-trade-list-withdrawal" type="text" value="<c:out value='${employeeClosingData.totalWithdrawalOfTrade}' />" disabled>
-                </div>
-            </div>
-            <div class="d-flex w-100">
-                <div class="me-5 mb-2">
-                    <label class="amount-label1">전일자 현금 잔액</label>
-                    <input class="emp-close-prev-cash-balance" type="text"
-                           value="<c:out value='${employeeClosingData.closingData.prevCashBalance}' />" disabled>
-
-                </div>
-                <div>
-                    <label class="amount-label2">금일 마감 금액</label>
-                    <c:choose>
-                        <c:when test="${employeeClosingData.closingData.vaultCash != null}">
-                            <input class="emp-close-vault-cash" type="text"
-                                   value="<c:out value='${employeeClosingData.closingData.vaultCash}' />"
-                                   disabled>
-                        </c:when>
-
-                        <c:otherwise>
-                            <input class="emp-close-vault-cash" type="text"
-                                   placeholder="처리중..."
-                                   disabled>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </div>
+            <table class="common-table">
+                <tbody>
+                    <tr>
+                        <th><label >현금 입금액</label></th>
+                        <td>
+                            <input class="emp-close-cash-deposit" type="text" value="<c:out value='${employeeClosingData.closingData.totalDeposit}' />" disabled>
+                        </td>
+                        <th><label>거래내역 현금 입금액</label></th>
+                        <td>
+                            <input class="emp-close-trade-list-deposit" type="text" value="<c:out value='${employeeClosingData.totalDepositOfTrade}' />" disabled>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label>현금 출금액</label></th>
+                        <td>
+                            <input class="emp-close-cash-withdrawal" type="text" value="<c:out value='${employeeClosingData.closingData.totalWithdrawal}' />" disabled>
+                        </td>
+                        <th><label>거래내역 현금 출금액</label></th>
+                        <td>
+                            <input class="emp-close-trade-list-withdrawal" type="text" value="<c:out value='${employeeClosingData.totalWithdrawalOfTrade}' />" disabled>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label>전일자 현금 잔액</label></th>
+                        <td>
+                            <input class="emp-close-prev-cash-balance" type="text" value="<c:out value='${employeeClosingData.closingData.prevCashBalance}' />" disabled>
+                        </td>
+                        <th><label>금일 마감 금액</label></th>
+                        <td>
+                            <c:choose>
+                                <c:when test="${employeeClosingData.closingData.vaultCash != null}">
+                                    <input class="emp-close-vault-cash" type="text" value="<c:out value='${employeeClosingData.closingData.vaultCash}' />" disabled>
+                                </c:when>
+                                <c:otherwise>
+                                    <input class="emp-close-vault-cash" type="text" placeholder="처리중..." disabled>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
         </div>
         <div class="col-3 d-flex justify-content-end">
@@ -104,13 +101,12 @@
 
     <div class="mt-4" id="tradeDetails" style="display: none;">
         <div class="d-flex align-items-center">
-            <h3 class="mb-0">거래 금액</h3>
+            <h3 class="mb-3">거래 금액</h3>
         </div>
-        <hr>
     </div>
 
     <div id="tradeDetailsContent" style="display: none;">
-        <table class="table">
+        <table class="common-table no-margin">
             <thead>
             <tr>
                 <th style="width: 20%;">거래일시</th>
@@ -123,9 +119,10 @@
             </thead>
         </table>
 
-        <div id="employee-add-list" style="overflow-y: auto; height: 260px;">
-            <table class="table table-hover">
+        <div id="employee-add-list" class="mb-5">
+            <table class="common-table table-hover no-margin">
                 <tbody>
+
                 <c:forEach var="trade" items="${employeeClosingData.tradeByCashList}">
                     <tr>
                         <td style="width: 20%;">${trade.tradeDate}</td>
