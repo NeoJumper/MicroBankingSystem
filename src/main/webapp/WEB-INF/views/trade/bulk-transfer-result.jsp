@@ -89,7 +89,6 @@
         <%--    입금계좌정보 테이블    --%>
         <section id="sectionB">
             <h4>입금계좌정보</h4>
-            <hr>
             <div class="table-top-btns">
                 <div>
                     <input type="button" value="파일등록">

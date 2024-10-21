@@ -76,13 +76,13 @@
             </div>
             <%--계좌비밀번호 table--%>
             <table class="common-table">
-                <tr>
-                    <th><label for="account-pw-input">계좌비밀번호</label></th>
-                    <td>
-                        <input placeholder="비밀번호 입력" type="password" id="account-pw-input">
-                        <button id="input-confirm" class="basic-btn" type="button">확인</button>
-                    </td>
-                </tr>
+                <%--                <tr>--%>
+                <%--                    <th><label for="account-pw-input">계좌비밀번호</label></th>--%>
+                <%--                    <td>--%>
+                <%--                        <input placeholder="비밀번호 입력" type="password" id="account-pw-input">--%>
+                <%--                        <button id="input-confirm" class="basic-btn" type="button">확인</button>--%>
+                <%--                    </td>--%>
+                <%--                </tr>--%>
                 <tr>
                     <th><label for="withdrawal-product-name">이체일</label></th>
                     <td>
@@ -101,12 +101,23 @@
                         <input placeholder="10자 이내  입력" type="text" id="description" maxlength="10">
                     </td>
                 </tr>
+                <tr>
+                    <th><label for="business-day-date-input">등록일자</label></th>
+                    <td>
+                        <input id="business-day-date-input" type="text" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="user-name-input">담당자</label></th>
+                    <td>
+                        <input id="user-name-input" type="text" disabled>
+                    </td>
+                </tr>
             </table>
         </section>
         <%--    입금계좌정보 테이블    --%>
         <section>
             <h4>입금계좌정보</h4>
-            <hr>
             <div class="table-top-btns">
                 <div>
                     <input id="uploadEmployeeBtn" type="button" value="파일등록">

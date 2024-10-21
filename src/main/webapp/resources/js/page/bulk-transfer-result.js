@@ -162,8 +162,27 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     });
-    
+
+    // 이체확인증
+    $('input[value="이체확인증"]').click(function () {
+        transferReceipt();
+    })
+
+    // 이체확인증(일괄)
+    $('input[value="이체확인증"]').click(function () {
+        transferReceiptAll();
+    })
     }); // DOMContentLoaded 이벤트 끝
+
+    // 이체 확인증 실행 함수
+    function transferReceipt() {
+        
+    }
+
+    // 이체 확인증 (일괄) 실행 함수
+    function transferReceiptAll() {
+
+    }
 
     // table 채우는 메서드
     function fillBulkTransferInfoListBody(bulkTransferId){

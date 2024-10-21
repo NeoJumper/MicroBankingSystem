@@ -29,6 +29,9 @@ function convertToKoreanNumber(num) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    handleBusinessDayDateInput();
+    userNameInput();
+
     // 모달 계좌선택 버튼
     $('#search-modal-select-account-btn').click(function () {
         selectAccount();
@@ -41,7 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!selectedAccountId) {
             swal({
                 title: "계좌를 선택해 주세요.",
-                // text: "비밀번호 인증 성공",
                 icon: "warning",
             });
             return;
@@ -541,4 +543,33 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 })
 
-
+// 등록일자 추가 함수
+function handleBusinessDayDateInput(){
+    $.ajax({
+        url: '/api/common/current-business-day',
+        type: 'GET',
+        success: function(response) {
+            // 성공 시 처리할 로직 작성
+            var formattedDate = response.businessDate.substring(0, 10);
+            $('#business-day-date-input').val(formattedDate);
+        },
+        error: function(xhr, status, error) {
+            // 에러 발생 시 처리할 로직 작성
+            console.error('에러 발생:', error);
+        }
+    });
+}
+// 담당자 이름 가져오기 함수
+function userNameInput(){
+    $.ajax({
+        url: '/api/common/auth-data',
+        type: 'GET',
+        success: function(authData) {
+            $('#user-name-input').val(authData.name);
+        },
+        error: function(xhr, status, error) {
+            // 에러 발생 시 처리할 로직 작성
+            console.error('에러 발생:', error);
+        }
+    });
+}
