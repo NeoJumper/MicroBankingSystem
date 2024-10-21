@@ -3,12 +3,14 @@ package com.kcc.banking.domain.business_day_close.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class ClosingData {
 
     private String id;
