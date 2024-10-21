@@ -28,14 +28,19 @@
         <h5>&nbsp계좌 개설 </h5>
     </div>
 
-    <div class="mb-3">
-        <div id = "account-type-button-group" class="button-group">
-            <input type="radio" id="private-account" value="PRIVATE" name="major-category" checked>
+    <div id = "select-account-type-button-group" class="button-group my-4">
+        <div style="width: 100%">
+            <input type="radio" id="private-account" class="select-account-type-btn" value="PRIVATE" name="major-category" checked>
             <label for="private-account">개인 계좌</label>
-            <input class="ms-3" type="radio" id="corporation-account" value="CORPORATION" name="major-category">
+        </div>
+        <div style="width: 100%">
+            <input  type="radio" id="corporation-account" class="select-account-type-btn ms-3"  value="CORPORATION" name="major-category">
             <label for="corporation-account">법인 계좌</label>
         </div>
+
     </div>
+
+
     <div>
         <h3>고객 정보</h3>
     </div>

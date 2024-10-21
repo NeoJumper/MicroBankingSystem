@@ -26,7 +26,7 @@
 
 
 
-    <div id = "select-trade-type-button-group" class="button-group my-5">
+    <div id = "select-trade-type-button-group" class="button-group my-4">
         <div style="width: 100%">
             <input type="radio" id="deposit-radio-btn" class="select-trade-type-radio-btn" name="trade-type" value="deposit" checked>
             <label for="deposit-radio-btn">현금 입금</label>
