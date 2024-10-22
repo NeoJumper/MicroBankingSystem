@@ -276,12 +276,11 @@ function disableAmountButtons(balance) {
     $('#cash-trade-amount').prop('disabled', true);
 
     $('.amount-btn').each(function () {
-
-        $(this).prop('disabled', true);  // 잔액보다 큰 금액 버튼 비활성화
+        $(this).prop('disabled', true).removeClass('active');  // 잔액보다 큰 금액 버튼 비활성화
     });
 
     // 전액 버튼은 항상 활성화
-    $('.amount-btn:contains("전액")').prop('disabled', true);
+    $('.amount-btn:contains("전액")').prop('disabled', true).removeClass('active');
 }
 function clickTradeAmountBtn() {
     $('.amount-btn').click(function () {
