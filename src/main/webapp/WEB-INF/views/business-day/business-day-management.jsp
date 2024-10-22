@@ -45,7 +45,7 @@
                     </tr>
                     </thead>
                     <tbody id="calendar-body">
-                    <!-- 날짜가 동적으로 삽입됩니다 -->
+                    <!-- 날짜 동적으로 삽입 -->
                     </tbody>
                 </table>
             </div>

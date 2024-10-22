@@ -41,12 +41,11 @@ public class ManagerClosingData {
                 .build();
 
         // branchClosingVaultCash == null 이라면 아직 OPEN 중인 상태
-        if(branchClosingVaultCash == null) {
+        //if(branchClosingVaultCash == null) {
             // 직전 영업일 현금 마감액 + 오늘자 현금 입금액 - 오늘자 현금 출금액
             BigDecimal expectedBranchClosingVaultCash = managerClosingData.prevCashBalanceOfBranch.add(managerClosingData.totalDepositOfBranch).subtract(managerClosingData.totalWithdrawalOfBranch);
             managerClosingData.setVaultCashOfBranch(expectedBranchClosingVaultCash);
-        }
-
+//        }
         // 행원이 OPEN 상태를 포함한다면
         if(closingDataList.stream().map(ClosingData::getStatus).anyMatch("OPEN"::equals)) {
             // 아직 마감 대기중

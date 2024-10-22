@@ -10,7 +10,7 @@
 <body>
 <!-- Modal -->
 <div class="modal fade" id="business-day-update-modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">영업일 변경</h2>
@@ -29,15 +29,21 @@
                     </tbody>
                 </table>
 
-
                 <h3 class="mt-5">근무 인원 지정</h3>
                 <table class="common-table no-margin">
                     <thead>
                     <tr id="business-day-modal-all-checkbox">
-                        <th style="width: 5%"><i class="bi bi-square"></i></th>
-                        <th style="width: 25%"><label id="business-day-modal-emp-id">사원번호</label></th>
-                        <th style="width: 30%"><label id="business-day-modal-emp-name">사원명</label></th>
-                        <th style="width: 40%"><label id="business-day-modal-emp-roles">전일자 현금 잔액</label></th>
+                        <th>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="selectAllSwitch">
+                                <label class="form-check-label" for="selectAllSwitch">전체 선택</label>
+                            </div>
+                        </th>
+                        <th><label id="business-day-modal-emp-id">사원번호</label></th>
+                        <th><label id="business-day-modal-emp-name">사원명</label></th>
+                        <th><label id="business-day-modal-emp-role">권한</label></th>
+                        <th><label id="business-day-modal-emp-vault-cash">전일자 마감 금액</label></th>
+                        <th><label id="business-day-modal-emp-prev-cash-balance">시재금</label></th>
                     </tr>
                     </thead>
                 </table>
@@ -49,6 +55,7 @@
                     </table>
                 </div>
             </div>
+
 
             <div class="modal-footer">
                 <button id="business-day-update-modal-update-btn" class="basic-btn">영업 시작</button>

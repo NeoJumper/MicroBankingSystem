@@ -35,7 +35,7 @@
 
 
     <select id="findClosingDataList" parameterType="BusinessDateAndBranchId" >
-        select e.id, e.name, ec.prev_cash_balance, ec.total_deposit, ec.total_withdrawal, ec.vault_cash, ec.status
+        select e.id, e.name, e.roles, ec.prev_cash_balance, ec.total_deposit, ec.total_withdrawal, ec.vault_cash, ec.status
         from employee_closing ec
         join employee e on ec.registrant_id = e.id
         where ec.branch_id = #{branchId} and ec.closing_date = #{businessDate}
