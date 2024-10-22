@@ -1,3 +1,5 @@
+
+
 $(document).ready(function () {
 
 
@@ -11,13 +13,12 @@ $(document).ready(function () {
     // 입력 금액 포맷 변경
     handleKRWFormat();
 
-    // 이체금액 text 변경
-    handleTransferLimitText();
+
+
 
 
     $('input[name="major-category"]').change(function() {
-        // span의 내용을 변경합니다.
-        handleTransferLimitText();
+        resetFormData();
     });
 });
 
@@ -99,18 +100,6 @@ function accountOpen() {
         });// end
     });
 }
-
-// modal 내용 지우기
-function clearCustomerSearchModal() {
-    $('#customerIdText').val('');
-    $('#customerName').val('');
-    $('#customerBirth').val('');
-    $('#customerPhone').val('');
-    $('#searchQuery').val('');
-    $('#customerSearch').prop('selectedIndex', 0);
-    $('#customer-info').empty();
-}
-
 
 // 계좌 개설 완료 모달 호출 함수
 function accountOpenResult(accountId) {
@@ -210,4 +199,30 @@ function handleTransferLimitText() {
 }
 function removeCommas(numberString) {
     return numberString.replace(/,/g, '');
+}
+
+function resetFormData() {
+
+    $('#customer-id-input').val('');              // 고객번호 비우기
+    $('#emp-id-hidden-input').val('');            // 숨겨진 직원 ID 비우기
+    $('#branch-id-hidden-input').val('');         // 숨겨진 지점 ID 비우기
+    $('#product-id-hidden-input').val('');        // 숨겨진 상품 ID 비우기
+    $('#customer-security-level-input').val('');        // 숨겨진 상품 ID 비우기
+    $('#customer-name-input').val('');        // 숨겨진 상품 ID 비우기
+
+
+    $('#deposit-product-name-input').val('');   // 상품명 비우기
+    $('#product-interest-input').val('');       // 기준이율 비우기
+    $('#preferred-interest-input').val('');     // 우대이율 비우기
+    $('#total-interest-input').val('');         // 총 이자율 비우기
+    $('#init-balance-input').val('');           // 초기 예치금 비우기
+    $('#password-input').val('');               // 계좌 비밀번호 비우기
+    $('#per-trade-limit-input').val('');        // 1회 이체한도 비우기
+    $('#daily-limit-input').val('');            // 1일 이체한도 비우기
+
+    $('.max-amount-span').text('');             // 내부 텍스트 비우기
+
+    $('#account-open-info').hide();
+
+
 }

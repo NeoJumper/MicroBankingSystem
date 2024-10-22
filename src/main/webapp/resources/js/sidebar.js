@@ -135,7 +135,7 @@ function createAccountManagementSidebar(selectedSidebarMenu) {
             title: '계좌 이체',
             icon: 'bi bi-arrow-right-circle',
             submenu: [
-                { name: '즉시 이체', url: '/page/employee/account-transfer' },
+                { name: '즉시/예약 이체', url: '/page/employee/account-transfer' },
                 { name: '대량 계좌 이체', url: '/page/employee/bulk-transfer' },
                 { name: '거래 내역', url: '/page/employee/trade-list' },
                 { name: '현금 입출금', url: '/page/employee/cash-trade' },

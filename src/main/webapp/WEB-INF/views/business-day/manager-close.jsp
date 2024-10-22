@@ -45,9 +45,10 @@
             <div id="employee-add-list" style="overflow-y: auto;">
                 <table id="employee-list-table" class="common-table">
                     <tbody>
+
                     <c:forEach var="closingData" items="${managerClosingData.closingDataList}">
                         <tr class="branch-close-employee-data">
-                            <td style="width: 8%;">${closingData.id}</td>
+                            <td style="width: 8%; text-align: center">${closingData.id}</td>
                             <td style="width: 8%;">${closingData.name}</td>
                             <td style="width: 16%;">
                                 <input class="employee-prev-cash-balance" type="text"
@@ -80,7 +81,7 @@
         </div>
 
         <div class="col-3">
-            <table id="manager-close-table" class="common-table">
+            <table id="manager-close-table" class="common-table no-margin">
                 <tbody>
                 <tr>
                     <th>현금 입금액</th>
@@ -116,7 +117,7 @@
             </table>
             <c:choose>
                 <c:when test="${managerClosingData.isWaitingEmployeeClose == 'TRUE'}">
-                    <div>현재 마감 대기중이며, 금액 변동이 있을 수 있습니다.</div>
+                    <div class="warning-text">* 현재 마감 대기중이며, 금액 변동이 있을 수 있습니다.</div>
                 </c:when>
             </c:choose>
             <div style="display: flex; justify-content: center; align-items: center; margin: 20px">

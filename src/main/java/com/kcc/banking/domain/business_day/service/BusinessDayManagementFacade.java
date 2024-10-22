@@ -79,11 +79,8 @@ public class BusinessDayManagementFacade {
     public EmployeeClosingData getEmployeeClosingData() {
 
         BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
-
-
         ClosingData closingData = businessDayCloseService.getClosingData(currentBusinessDateAndEmployeeId);
         List<TradeByCash> tradeByCashList = tradeService.findTradeByCash(currentBusinessDateAndEmployeeId);
-
 
         return EmployeeClosingData.of(closingData, tradeByCashList);
     }

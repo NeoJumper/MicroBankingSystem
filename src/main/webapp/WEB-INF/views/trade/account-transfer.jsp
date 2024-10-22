@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8" />
     <title>계좌관리 >
         계좌이체 >
-        즉시이체</title>
+        즉시/예약 이체</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/page/account-transfer.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
@@ -20,17 +20,17 @@
         <div>
             <h5>계좌관리 > </h5>
             <h5>&nbsp 계좌이체 > </h5>
-            <h5>&nbsp&nbsp;즉시이체</h5>
-
+            <h5>&nbsp&nbsp;즉시/예약 이체</h5>
         </div>
+
+    <container id="registration-page">
         <div>
             <h3>출금계좌정보</h3>
-
+            <hr>
         </div>
-    <container id="registration-page">
         <%--  계좌선택 섹션  --%>
         <section>
-            <hr>
+
             <%--계좌선택--%>
             <div id="select-account-form">
                 <div class="account-info">
@@ -41,25 +41,36 @@
                         <span id="withdrawal-account-number">계좌를 선택해주세요.</span>
                     </div>
                     <div>
-                        <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
+                        <button id="withdrawal-account-check-btn" class="basic-btn" type="button"
                                 data-account-type="withdrawal" data-bs-toggle="modal"
                                 data-bs-target="#search-modal-account">
                             계좌조회
                         </button>
                     </div>
                 </div>
-                <div class="account-balance">
-                    계좌잔액 <span id="account-balance"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원 | 이체가능금액 <span
-                        id="transferable-amount"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원
+                <div class="account-balance d-flex">
+                    <div class="me-2">
+                        계좌잔액<span id="account-balance" style="margin-left: 20px;">0</span> 원
+                    </div>
+                    <div class="mx-3 transfer-possible-amount">|</div>
+                    <div class="ms-2 transfer-possible-amount">
+                        이체가능금액<span id="transferable-amount" style="margin-left: 20px">0</span>  원
+                    </div>
                 </div>
+
+
+
+            </div>
+            <div>
+                <h3>거래정보</h3>
             </div>
             <%--계좌비밀번호 table--%>
-            <table class="common-table">
+            <table class="common-table account-transfer-page-table">
                 <tr>
                     <th><label for="transfer-amount">이체금액</label></th>
                     <td>
                         <div><span id="over-account-balance"></span></div>
-                        <input disabled type="text" id="transfer-amount"> 원
+                        <input disabled type="text" id="transfer-amount"  style="text-align: right"> 원
                         <div class="button-group">
                             <button type="button" class="amount-btn" disabled>100만</button>
                             <button type="button" class="amount-btn" disabled>50만</button>
@@ -70,14 +81,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <th><label for="transfer-account-password">출금계좌 비밀번호</label></th>
-                    <td><input id="transfer-account-password" type="password"><button class="basic-btn" id="account-transfer-validate">비밀번호 인증</button></td>
-                </tr>
-                <tr>
-                    <th><label for="description">비고</label></th>
-                    <td><input type="text" id="description"></td>
-                </tr>
+
                 <tr>
                     <th><label>예약 여부</label></th>
                     <td>
@@ -87,8 +91,8 @@
                             <input class="ms-3" type="radio" id="scheduled-transfer-btn" name="scheduled-status">
                             <label for="scheduled-transfer-btn">예약 이체</label>
                         </div>
-                        <div id="reserve-time-select-div" style="display: none">
-                            <input type="date" value="1234" style="margin-right: 20px">
+                        <div id="reserve-time-select-div" style="overflow: hidden; transition: height 0.5s ease;">
+                            <input type="date" value="1234" style="margin-right: 20px; height: 50px">
                             <div id="time-search-container">
                                 <select id="time-search-btn">
                                     <option value="1">9:30 ~ 10:30</option>
@@ -104,6 +108,21 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <th><label for="description">비고</label></th>
+                    <td><input type="text" id="description"></td>
+                </tr>
+                <tr>
+                    <th>담당자</th>
+                    <td><input type="text" id="emp-name-input" value="${employeeName}" disabled></td>
+                </tr>
+                <tr>
+                    <th>등록일자</th>
+                    <td>
+                        <fmt:parseDate value="${tradeDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedTradeDate" />
+                        <input type="text" id="start-date-input" value="<fmt:formatDate value='${parsedTradeDate}' pattern='yyyy-MM-dd' />" disabled>
+                    </td>
+                </tr>
             </table>
         </section>
 
@@ -112,12 +131,12 @@
             <h3 class="mt-3">입금계좌정보</h3>
 
         </div>
-        <table class="common-table">
+        <table class="common-table account-transfer-page-table">
             <tbody>
             <tr>
                 <th><label for="deposit-account-number">입금계좌번호</label></th>
                 <td><input disabled type="text" id="deposit-account-number">
-                    <button id="check-deposit-account-btn" class="basic-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
+                    <button id="deposit-account-check-btn" class="basic-btn" type="button" data-account-type="deposit" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
                 </td>
             </tr>
             <tr>
@@ -126,6 +145,25 @@
             </tr>
             </tbody>
         </table>
+
+        <div>
+            <h3 class="mt-3">비밀번호 인증</h3>
+
+        </div>
+        <table class="common-table account-transfer-page-table">
+            <tbody>
+            <tr>
+                <th><label for="transfer-account-password">출금계좌 비밀번호</label></th>
+                <td>
+                    <input id="transfer-account-password" type="password"><button class="basic-btn" id="account-transfer-validate">비밀번호 인증</button>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </container>
+
+
     <div class="row justify-content-center mb-5">
         <button disabled id="account-transfer-submit" class="col-1 basic-btn">이체하기</button>
     </div>
