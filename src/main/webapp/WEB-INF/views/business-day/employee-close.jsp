@@ -29,7 +29,7 @@
     </div>
 
     <div class="row" style="margin-bottom: 30px">
-        <div class="col-9">
+        <div class="col-12">
             <table class="common-table no-margin">
                 <tbody>
                 <tr>
@@ -38,6 +38,29 @@
                         <input class="emp-close-prev-cash-balance" type="text"
                                value="<fmt:formatNumber value='${employeeClosingData.closingData.prevCashBalance}' type='number'/>"
                                disabled>
+
+
+                            <button id="trade-list-detail-btn" class="basic-btn">
+                                내역 새로고침
+                            </button>
+
+
+                            <button
+                                    id="employee-business-day-close-btn"
+                                    class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'basic-btn'}"
+                                    <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>
+                            >
+                                <c:choose>
+                                    <c:when test="${employeeClosingData.closingData.status == 'CLOSED'}">
+                                        마감 완료
+                                    </c:when>
+                                    <c:otherwise>
+                                        개인 마감
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </button>
+
                     </td>
                 </tr>
                 </tbody>
@@ -45,28 +68,7 @@
         </div>
 
         <div class="col-3" style="display: flex; align-items: center">
-            <div>
-                <button id="trade-list-detail-btn" class="basic-btn">
-                    내역 새로고침
-                </button>
-            </div>
-            <div>
-                <button
-                        id="employee-business-day-close-btn"
-                        class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'basic-btn'}"
-                        <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>
-                >
-                    <c:choose>
-                        <c:when test="${employeeClosingData.closingData.status == 'CLOSED'}">
-                            마감 완료
-                        </c:when>
-                        <c:otherwise>
-                            개인 마감
-                        </c:otherwise>
-                    </c:choose>
 
-                </button>
-            </div>
         </div>
 
     </div>
@@ -107,7 +109,7 @@
 
     <c:choose>
         <c:when test="${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade}">
-            <div class="warning-text mb-3">
+            <div class="warning-text mb-3" style="font-size: 15px">
                 * 금일 현금 마감 금액과 금일 거래내역 마감 금액이 일치하지 않습니다. 내역 확인 후 누락된 거래 추가 또는 관리자에게 문의 바랍니다.
             </div>
         </c:when>
@@ -120,7 +122,8 @@
             <td>
                 <c:choose>
                     <c:when test="${employeeClosingData.expectedVaultCash != null}">
-                        <input id="emp-close-today-vault-cash" class="emp-close-vault-cash" type="text"
+                        <input id="emp-close-today-vault-cash"
+                               class="emp-close-vault-cash <c:if test='${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade}'>warning-text</c:if>"type="text"
                                value="<fmt:formatNumber value='${employeeClosingData.expectedVaultCash}' type='number'/>"
                                disabled>
                     </c:when>
@@ -134,7 +137,7 @@
             <td>
                 <c:choose>
                     <c:when test="${employeeClosingData.vaultCashOfTrade != null}">
-                        <input class="emp-close-vault-cash" type="text"
+                        <input class="emp-close-vault-cash <c:if test='${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade}'>warning-text</c:if>" type="text"
                                value="<fmt:formatNumber value='${employeeClosingData.vaultCashOfTrade}' type='number'/>"
                                disabled>
                     </c:when>

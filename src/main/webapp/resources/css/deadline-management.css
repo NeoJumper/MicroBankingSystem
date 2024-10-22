@@ -53,11 +53,10 @@
 }
 
 .warning-text {
-    margin-top: 10px;
-    font-size: 15px;
-    color: var(--point-red);
+    color: var(--point-red) !important;
 }
 
 .tooltip-span {
     cursor: pointer;
 }
+
