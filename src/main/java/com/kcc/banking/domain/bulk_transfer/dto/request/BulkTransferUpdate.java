@@ -21,10 +21,10 @@ public class BulkTransferUpdate {
     private Integer failureCnt;
     private String status;
     private String description;
-    private String modifierId;
+    private Long modifierId;
 
     @Builder
-    public BulkTransferUpdate(Long id, Long registrantId, String accId, Long branchId, String tradeDate, BigDecimal amount, Integer successCnt, Integer failureCnt, String status, String description, String modifierId) {
+    public BulkTransferUpdate(Long id, Long registrantId, String accId, Long branchId, String tradeDate, BigDecimal amount, Integer successCnt, Integer failureCnt, String status, String description, Long modifierId) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;

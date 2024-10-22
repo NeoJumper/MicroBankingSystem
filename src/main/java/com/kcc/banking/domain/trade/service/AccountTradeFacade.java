@@ -7,10 +7,11 @@ import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
-import com.kcc.banking.domain.auto_transfer.dto.request.AutoTransferCreate;
 import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
+import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferUpdate;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferValidation;
+import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferValidationResult;
 import com.kcc.banking.domain.bulk_transfer.service.BulkTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
@@ -24,14 +25,15 @@ import com.kcc.banking.domain.trade.dto.request.*;
 import com.kcc.banking.domain.trade.dto.response.CloseCancelDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TransferDetail;
+import com.kcc.banking.domain.trade.mapper.TradeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +48,7 @@ public class AccountTradeFacade {
     private final BulkTransferService bulkTransferService;
     private final CommonService commonService;
     private final AutoTransferService autoTransferService;
+    private final TradeMapper tradeMapper;
 
     /**
      *   @Description - 보통 예금계좌 개설
@@ -539,4 +542,69 @@ public class AccountTradeFacade {
 
         return result;
     }
+
+    /**
+     * @Description - 대량이체 오류건 재전송
+     * 1- 대량이체 테이블 수정: bulkTransferService.updateAllBulkTransfer(BulkTransferUpdate)
+     * 2- 거래 테이블 수정: tradeMapper.updateAllTrade(TradeUpdate)
+     * **/
+    public Long processBulkTransferRetryErrors(List<TransferTradeUpdate> transferTradeUpdateList, Long bulkTransferId){
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+        CurrentData currentData = commonService.getCurrentData();
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+        // 기존 대량거래 정보
+        BulkTransferDetail bulkTransfer = bulkTransferService.getBulkTransfer(bulkTransferId);
+
+        int successCnt = bulkTransfer.getSuccessCnt(); // 기존 successCnt로 초기화
+        int failureCnt = bulkTransfer.getFailureCnt(); // 기존 failureCnt로 초기화
+        BigDecimal totalAmount = bulkTransfer.getAmount(); // 기존 총금액으로 초기화
+
+        for (TransferTradeUpdate transferTradeUpdate : transferTradeUpdateList){
+            try {
+                // 거래내역 업데이트
+
+
+            }catch (CustomException e){
+                transferTradeUpdate.setFailureReason(e.getErrorCode().getMessage());
+
+            }
+        }
+
+        BulkTransferUpdate bulkTransferUpdate = BulkTransferUpdate.builder()
+                .id(bulkTransferId)
+                .registrantId(bulkTransfer.getRegistrantId())
+                .accId(transferTradeUpdateList.get(0).getAccId())
+                .branchId(currentData.getBranchId())
+                .tradeDate(currentData.getCurrentBusinessDate())
+                .amount(totalAmount) //기존 amount + totalAmount
+                .successCnt(successCnt)
+                .failureCnt(failureCnt)
+                .status("NOR")
+                .description(bulkTransfer.getDescription()) // 기존
+                .modifierId(currentData.getEmployeeId()).build();
+
+        // 대량이체 테이블 update
+        bulkTransferService.updateAllBulkTransfer(bulkTransferUpdate);
+
+        return 1L;
+    }
+
+    /**
+     * @Description - 대량이체 오류건 재전송 수정
+     * **/
+    @Transactional(rollbackFor = {Exception.class})  // 모든 예외 발생 시 롤백
+    public List<TransferDetail> processTransferUpdate(TransferTradeUpdate transferTradeUpdate){
+        return new LinkedList<>();
+    }
+    /**
+     * @Description - 대량이체 오류건 재전송 수정 실패
+     * **/
+    public void processFailTransferUpdate(TransferTradeUpdate transferTradeUpdate) {
+
+    }
+
 }
