@@ -3,6 +3,7 @@ package com.kcc.banking.domain.trade.mapper;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 import com.kcc.banking.domain.trade.dto.request.TradeCreate;
+import com.kcc.banking.domain.trade.dto.request.TradeUpdate;
 import com.kcc.banking.domain.trade.dto.response.*;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
 import org.apache.ibatis.annotations.Mapper;
@@ -38,4 +39,7 @@ public interface TradeMapper {
     int insertTrade(TradeCreate withdrawalTrade);
 
     List<TradeByBulkTransfer> findTradeListByBulkTransfer(Long bulkTransferId);
+
+    // trade 테이블 업데이트
+    int updateAllTrade(TradeUpdate tradeUpdate);
 }

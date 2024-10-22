@@ -112,4 +112,9 @@ public class BulkTransferRestController {
         return ResponseEntity.ok().body(BulkTransferSearchResult.of(bulkTransferList, pageDTO));
     }
 
+    // 대량 이체 오류건 재전송
+    @PutMapping("/api/employee/bulk-transfer")
+    public void resendErrors (@RequestBody List<TransferTradeCreate> transferTradeCreateList) {
+
+    }
 }

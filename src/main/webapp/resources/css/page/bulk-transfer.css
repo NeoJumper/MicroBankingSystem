@@ -259,3 +259,8 @@ p {
 .step:last-child .line {
     display: none;
 }
+
+#account-number{
+    font-size: 1.5rem;
+    font-weight: bold;
+}

@@ -76,13 +76,13 @@
             </div>
             <%--계좌비밀번호 table--%>
             <table class="common-table">
-                <tr>
-                    <th><label for="account-pw-input">계좌비밀번호</label></th>
-                    <td>
-                        <input placeholder="비밀번호 입력" type="password" id="account-pw-input">
-                        <button id="input-confirm" class="basic-btn" type="button">확인</button>
-                    </td>
-                </tr>
+<%--                <tr>--%>
+<%--                    <th><label for="account-pw-input">계좌비밀번호</label></th>--%>
+<%--                    <td>--%>
+<%--                        <input placeholder="비밀번호 입력" type="password" id="account-pw-input">--%>
+<%--                        <button id="input-confirm" class="basic-btn" type="button">확인</button>--%>
+<%--                    </td>--%>
+<%--                </tr>--%>
                 <tr>
                     <th><label for="withdrawal-product-name">이체일</label></th>
                     <td>
@@ -113,6 +113,20 @@
                         <input id="user-name-input" type="text" disabled>
                     </td>
                 </tr>
+            </table>
+
+            <h4>계좌 비밀번호</h4>
+
+            <table class="common-table">
+                <tbody>
+                <tr>
+                    <th>계좌 비밀번호</th>
+                    <td>
+                        <input type="password" id="account-pw-input">
+                        <input id="input-confirm" type="submit" class="basic-btn" value="확인">
+                    </td>
+                </tr>
+                </tbody>
             </table>
         </section>
         <%--    입금계좌정보 테이블    --%>
