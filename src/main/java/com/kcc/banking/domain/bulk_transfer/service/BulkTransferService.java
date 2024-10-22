@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.bulk_transfer.service;
 
+import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferUpdate;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferSearch;
 import com.kcc.banking.domain.bulk_transfer.mapper.BulkTransferMapper;
@@ -29,5 +30,9 @@ public class BulkTransferService {
 
     public BulkTransferDetail getBulkTransfer(Long bulkTransferId) {
         return bulkTransferMapper.findBulkTransfer(bulkTransferId);
+    }
+
+    public int updateAllBulkTransfer(BulkTransferUpdate bulkTransferUpdate) {
+        return bulkTransferMapper.updateAllBulkTransfer(bulkTransferUpdate);
     }
 }
