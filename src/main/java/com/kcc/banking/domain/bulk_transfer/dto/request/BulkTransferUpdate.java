@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BulkTransferCreate {
+public class BulkTransferUpdate {
     private Long id;
     private Long registrantId;
     private String accId;
@@ -21,9 +21,10 @@ public class BulkTransferCreate {
     private Integer failureCnt;
     private String status;
     private String description;
+    private String modifierId;
 
     @Builder
-    public BulkTransferCreate(Long id, Long registrantId, String accId, Long branchId, String tradeDate, BigDecimal amount, Integer successCnt, Integer failureCnt, String status, String description) {
+    public BulkTransferUpdate(Long id, Long registrantId, String accId, Long branchId, String tradeDate, BigDecimal amount, Integer successCnt, Integer failureCnt, String status, String description, String modifierId) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;
@@ -34,5 +35,6 @@ public class BulkTransferCreate {
         this.failureCnt = failureCnt;
         this.status = status;
         this.description = description;
+        this.modifierId = modifierId;
     }
 }

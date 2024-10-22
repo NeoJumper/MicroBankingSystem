@@ -1,4 +1,5 @@
 let employeeDataForUpload = [];
+let errorItems = [];
 let checkedData = [];
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -163,8 +164,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
     
+    // 이전 페이지 
+    $('#back-btn').click(function () {
+        history.replaceState(null, '', document.referrer); // 이전 페이지로 설정
+        window.history.back(); // 이전 페이지로 돌아가기
+    })
+
+    // 오류건 재전송
+    $('#resend-error-item').click(function () {
+        resendErrorItem();
+    })
+
     }); // DOMContentLoaded 이벤트 끝
 
+    // TODO:: 오류건 재전송 함수
+    function  resendErrorItem() {
+        $.ajax({
+            url: '/api/',
+            type: 'PUT',
+            success: function (response) {
+
+            },
+            error: function (xhr, status, error) {
+                console.error('Upload failed!');
+                console.error(error); // Handle errors
+            }
+        })
+    }
+// {
+//     "id": 654,
+//     "status": "FAIL",
+//     "targetAccId": "001-0000023-2323",
+//     "amount": 4000000,
+//     "targetName": "박준형",
+//     "description": "월급",
+//     "failureReason": "계좌 잔액보다 이체 금액이 더 많습니다."
+// }
+//         accId: $('#account-number').text(),
+//         accountPassword: validPassword,
+//         targetAccId: $('#targetAccIdModal').val(),
+//         transferAmount: $('#transferAmountModal').val(),
+//         krw: $('#krwModal').val(),
+//         depositor: $('#depositorModal').val(),
+//         description: $('#descriptionModal').val(),
     // table 채우는 메서드
     function fillBulkTransferInfoListBody(bulkTransferId){
         $.ajax({
@@ -172,7 +214,10 @@ document.addEventListener("DOMContentLoaded", function () {
             type: 'GET',
             success: function (bulkTransferInfoList) {
                 employeeDataForUpload = bulkTransferInfoList;
-                console.log("this is bulkTransferInfoList: ", employeeDataForUpload);
+
+                // 상태가 FAIL인 객체 전역에 저장
+                errorItems = bulkTransferInfoList.filter((item)=> item.status === "FAIL");
+
                 var tbody = $('#bulk-transfer-info-list-body');
                 tbody.empty(); // 기존 내용을 비웁니다.
 
@@ -189,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         row.append($('<td>').text(bulkTransferInfo.status));
                     }
                     row.append($('<td>').text(bulkTransferInfo.targetAccId));
-                    row.append($('<td>').text(bulkTransferInfo.amount));
+                    row.append($('<td>').text(bulkTransferInfo.amount.toLocaleString()));
                     row.append($('<td>').text(bulkTransferInfo.targetName));
                     row.append($('<td>').text(bulkTransferInfo.description));
                     row.append($('<td>').text(bulkTransferInfo.failureReason));

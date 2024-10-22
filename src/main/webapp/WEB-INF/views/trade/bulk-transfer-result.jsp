@@ -30,7 +30,6 @@
     </div>
     <div>
         <h3>대량이체</h3>
-
     </div>
     <div class="progress-container">
         <div class="step">
@@ -63,7 +62,7 @@
             <%--계좌선택--%>
             <div id="select-account-form">
                 <div class="account-info-result">
-                    <div><span>업무계좌</span> <br> <span>${bulkTransfer.accId}</span></div>
+                    <div><span>업무계좌</span> <br> <span id="account-number">${bulkTransfer.accId}</span></div>
                     <hr>
                     <div class="account-result-contents">
                         <div>
@@ -89,7 +88,6 @@
         <%--    입금계좌정보 테이블    --%>
         <section id="sectionB">
             <h4>입금계좌정보</h4>
-            <hr>
             <div class="table-top-btns">
                 <div>
                     <input type="button" value="파일등록">
@@ -132,9 +130,8 @@
 
         </section>
         <section class="submit-btns">
-            <input class="basic-btn" type="button" value="오류건재전송">
-            <input class="basic-btn" type="button" value="이체확인증">
-            <input class="basic-btn" type="button" value="이체확인증(일괄)">
+            <input id="resend-error-item" class="basic-btn" type="button" value="오류건재전송">
+            <input id="back-btn" class="basic-btn" type="button" value="이전 페이지">
         </section>
     </container>
 </div>

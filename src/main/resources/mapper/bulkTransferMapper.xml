@@ -109,4 +109,22 @@
             1
         )
     </insert>
+
+    <update id="updateAllBulkTransfer" parameterType="BulkTransferUpdate">
+        UPDATE bulk_transfer
+        SET
+            acc_id = #{accId, jdbcType=VARCHAR},
+            branch_id = #{branchId, jdbcType=BIGINT},
+            trade_date = #{tradeDate, jdbcType=VARCHAR},
+            amount = #{amount, jdbcType=DECIMAL},
+            status = #{status, jdbcType=VARCHAR},
+            success_cnt = #{successCnt, jdbcType=BIGINT},
+            failure_cnt = #{failureCnt, jdbcType=BIGINT},
+            description = #{description, jdbcType=VARCHAR},
+            registrant_id = #{registrantId, jdbcType=BIGINT},
+            modification_date = SYSTIMESTAMP,
+            modifier_id = #{modifierId, jdbcType=VARCHAR},
+            version = 1
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
 </mapper>
