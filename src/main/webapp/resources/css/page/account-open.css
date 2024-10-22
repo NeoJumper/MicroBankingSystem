@@ -37,3 +37,7 @@
     color: #fff; /* 체크 시 글자색 */
     border-color: #007bff; /* 체크 시 테두리 색상 */
 }
+#over-daily-limit, #over-per-trade-limit {
+    font-weight: bold;
+    color: #FF0000;
+}

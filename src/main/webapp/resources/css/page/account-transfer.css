@@ -191,7 +191,7 @@ p {
     content: '';
     position: absolute;
     bottom: 100%; /* 툴팁 위쪽에 위치 */
-    left: 78%; /* 중앙에 위치 */
+    left: 83%; /* 중앙에 위치 */
     margin-left: -6px; /* 화살표의 중앙을 맞추기 위해 좌우로 이동 */
     border-width: 12px;
     border-style: solid;

@@ -1,4 +1,5 @@
-
+var perTradeLimit = 0;
+var dailyLimit = 0;
 
 $(document).ready(function () {
 
@@ -14,8 +15,8 @@ $(document).ready(function () {
     handleKRWFormat();
 
 
-
-
+    handlePerTradeLimit();
+    handleDailyLimit()
 
     $('input[name="major-category"]').change(function() {
         resetFormData();
@@ -168,6 +169,7 @@ function handleTransferLimitText() {
         if(selectedCustomerSecurityLevel === "1등급"){
             $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1억 원');
             $('#per-trade-limit-input').val('100,000,000');
+            perTradeLimit = 100000000;
             $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5억 원');
             $('#daily-limit-input').val('500,000,000');
         }
@@ -175,8 +177,10 @@ function handleTransferLimitText() {
         {
             $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5백만 원');
             $('#per-trade-limit-input').val('5,000,000');
+            perTradeLimit = 5000000;
             $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1천만 원');
             $('#daily-limit-input').val('10,000,000');
+            dailyLimit = 10000000;
         }
 
     }
@@ -184,16 +188,20 @@ function handleTransferLimitText() {
         if(selectedCustomerSecurityLevel === "1등급"){
             $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 10억 원');
             $('#per-trade-limit-input').val('1,000,000,000');
+            perTradeLimit = 1000000000;
             $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 50억 원');
             $('#daily-limit-input').val('5,000,000,000');
+            dailyLimit = 5000000000;
 
         }
         else if(selectedCustomerSecurityLevel === "2등급")
         {
             $('#per-trade-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 1억 원');
             $('#per-trade-limit-input').val('100,000,000');
+            perTradeLimit = 100000000;
             $('#daily-limit-input').siblings('span').html('&nbsp;&nbsp; 최대 금액 : 5억 원');
             $('#daily-limit-input').val('500,000,000');
+            dailyLimit = 500000000;
         }
     }
 }
@@ -225,4 +233,55 @@ function resetFormData() {
     $('#account-open-info').hide();
 
 
+}
+
+function handlePerTradeLimit() {
+    $(document).on('input', '#per-trade-limit-input', function () {
+        $(this).val(comma(convertNumber(($(this).val()))));
+
+        var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+
+
+
+        if (inputAmount > perTradeLimit) {
+            $('#over-per-trade-limit').text("최대 이체 한도를 초과했습니다.");
+            $(this).val(comma(perTradeLimit));  // 입력된 값을 계좌 잔액으로 제한
+        } else {
+            $('#over-per-trade-limit').text("");  // 경고 메시지 제거
+        }
+    });
+}
+
+function handleDailyLimit() {
+    $(document).on('input', '#daily-limit-input', function () {
+        $(this).val(comma(convertNumber(($(this).val()))));
+
+        var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+
+
+
+        if (inputAmount > dailyLimit) {
+            $('#over-daily-limit').text("최대 이체 한도를 초과했습니다.");
+            $(this).val(comma(dailyLimit));  // 입력된 값을 계좌 잔액으로 제한
+        } else {
+            $('#over-daily-limit').text("");  // 경고 메시지 제거
+        }
+    });
+}
+
+
+function comma(str) {
+    str = String(str);
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');  // 천 단위 쉼표 추가
+}
+
+function convertNumber(str) {
+    str = String(str.replace(/[^\d]+/g, ''));  // 숫자를 제외한 모든 문자 제거
+
+
+    if (/^0{2,}/.test(str)) {
+        // 두 번 이상 연속된 0을 잘라내고 나머지 부분 반환
+        return str.replace(/^0{2,}/, '0');
+    }
+    return str;
 }
