@@ -27,6 +27,17 @@ $(document).ready(function () {
         }
     });
 
+    $('#select-transfer-limit').hover(
+        function() {
+            // 마우스가 올라갔을 때
+            $('#select-transfer-limit-tooltip').css('opacity', '1');
+        },
+        function() {
+            // 마우스가 벗어났을 때
+            $('#select-transfer-limit-tooltip').css('opacity', '0');
+        }
+    );
+
 });
 
 function comma(str) {
@@ -76,24 +87,47 @@ function selectAccount() {
 
     // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
     $.ajax({
-        url: "/api/employee/accounts",
-        data: {accId: selectedAccountId, productName: null},
+        url: "/api/employee/accounts/" + selectedAccountId,
         type: "GET",
         success: function (data) {
             if (accountType === "withdrawal") {
+
+                let transferAmountOfToday = data.transferAmountOfToday || 0;
+
                 // 출금계좌 처리
-                $('#withdrawal-customer-name').text(data[0].customerName + '  |   ');
-                $('#withdrawal-product-name').text(data[0].productName);
-                $('#withdrawal-account-number').text(data[0].accId);
+                $('#withdrawal-customer-name').text(data.customerName + '  |   ');
+                $('#withdrawal-product-name').text(data.productName);
+                $('#withdrawal-account-number').text(data.accId);
+                $('#per-trade-limit').replaceWith(`<span id="per-trade-limit" class="amount-span">${comma(data.perTradeLimit)}&nbsp; 원</span>`);
+                $('#daily-limit').replaceWith(`<span id="per-trade-limit" class="amount-span">${comma(data.dailyLimit)}&nbsp; 원</span>`);
+                $('#transfer-amount-of-today').replaceWith(`<span id="transfer-amount-of-today" class="amount-span">${comma(transferAmountOfToday)}&nbsp; 원</span>`);
+
+
+                // 금일 이체 한도
+                var transferableAmountLimitOfToday = data.dailyLimit - transferAmountOfToday;
+
+
+                // 현재 거래에서의 이체 가능 한도 = 1회 이체 한도 > 금일 이체 한도 ? 1회 이체 한도 : 금일 이체 한도;
+                var currentTransferableLimit = data.perTradeLimit < transferableAmountLimitOfToday
+                    ? data.perTradeLimit : transferableAmountLimitOfToday;
+
+                // 현재 거래에서의 이체 가능 금액 = 한도와 잔액중 작은 금액을 사용
+                var transferableAmount = currentTransferableLimit < data.balance ? currentTransferableLimit : data.balance;
+
+                $('#transferable-amount-limit-of-today').replaceWith(`<span id="transferable-amount-limit-of-today" class="amount-span">${comma(transferableAmountLimitOfToday)}&nbsp; 원</span>`);
+                $('#transferable-amount').replaceWith(`<span id="transferable-amount" class="amount-span">${comma(transferableAmount)}&nbsp;</span>`);
+
+
+                console.log(data);
 
                 // 계좌 잔액 라벨을 표시하고 금액 업데이트
-                $('#account-balance').text(data[0].balance.toLocaleString('ko-KR'));
+                $('#account-balance').text(data.balance.toLocaleString('ko-KR'));
 
-                enableAmountButtons(data[0].balance); // 금액 입력 버튼 활성화
+                enableAmountButtons(transferableAmount); // 금액 입력 버튼 활성화
             } else if (accountType === "deposit") {
                 // 입금계좌 처리
-                $('#deposit-account-number').val(data[0].accId);
-                $('#deposit-customer-name').val(data[0].customerName);
+                $('#deposit-account-number').val(data.accId);
+                $('#deposit-customer-name').val(data.customerName);
             }
 
             // 모달 닫기
@@ -167,7 +201,7 @@ function validateAccountPassword() {
 
 // 이체하기 버튼 클릭 시
 function transferSubmit() {
-    var withdrawalAccountId = $('#withdrawal-account-number').val();
+    var withdrawalAccountId = $('#withdrawal-account-number').text();
     var depositAccountId = $('#deposit-account-number').val();
     var transferAmount = parseInt(convertNumber($('#transfer-amount').val()));
     var description = $('#description').val();
@@ -186,7 +220,7 @@ function transferSubmit() {
         }),
 
         success: function (data) {
-
+            console.log(data);
             swal({
                 title: "이체 완료",
                 text: "계좌 이체 성공",
@@ -309,11 +343,11 @@ function handleAmount() {
         $(this).val(comma(convertNumber($(this).val())));
 
         var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
-        var accountBalance = parseFloat(convertNumber($('#account-balance').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
+        var transferableAmount = parseFloat(convertNumber($('#transferable-amount').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
 
-        if (inputAmount > accountBalance) {
-            $('#over-account-balance').text("계좌 잔액을 초과했습니다.");
-            $(this).val(comma(accountBalance));  // 입력된 값을 계좌 잔액으로 제한
+        if (inputAmount > transferableAmount) {
+            $('#over-account-balance').text("이체 가능 금액을 초과했습니다.");
+            $(this).val(comma(transferableAmount));  // 입력된 값을 계좌 잔액으로 제한
         } else {
             $('#over-account-balance').text("");  // 경고 메시지 제거
         }

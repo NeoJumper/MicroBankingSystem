@@ -114,6 +114,15 @@
         </where>
     </select>
 
+    <select id="findTransferAmountOfToday" parameterType="TradeSearch">
+        SELECT sum(amount) FROM trade WHERE
+        trade_date = #{tradeDate} and
+        acc_id = #{accId} and
+        cash_indicator = 'FALSE' and
+        trade_type = 'WITHDRAWAL' and
+        status IN ('NOR', 'RVK')
+    </select>
+
     <select id="findTradeByCashList" parameterType="BusinessDateAndEmployeeId">
 
         select trade_date, acc_id, trade_type, amount, e.name as "registrant_name", b.name as "branch_name" from trade t

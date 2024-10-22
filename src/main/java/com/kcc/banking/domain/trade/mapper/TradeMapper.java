@@ -29,6 +29,8 @@ public interface TradeMapper {
 
     BigDecimal findPaidAmount(AccountIdWithExpireDate accountIdWithExpireDate);
 
+    BigDecimal findTransferAmountOfToday(TradeSearch tradeSearch);
+
     // 거래 번호로 내역 조회
     List<TransferDetail> getTradeDetailsByTradeNumber(Long tradeNumber);
 
