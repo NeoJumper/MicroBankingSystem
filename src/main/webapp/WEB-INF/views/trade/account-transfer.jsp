@@ -48,13 +48,23 @@
                         </button>
                     </div>
                 </div>
-                <div class="account-balance d-flex">
+                <div class="account-balance d-flex align-items-center">
                     <div class="me-2">
                         계좌잔액<span id="account-balance" style="margin-left: 20px;">0</span> 원
                     </div>
                     <div class="mx-3 transfer-possible-amount">|</div>
                     <div class="ms-2 transfer-possible-amount">
                         이체가능금액<span id="transferable-amount" style="margin-left: 20px">0</span>  원
+                    </div>
+                    <div id="select-transfer-limit">
+                        <span class="tooltip-link">이체한도조회
+                        </span>
+                    </div>
+                    <div id="select-transfer-limit-tooltip">
+                        <div><span style="width: 110px; display: inline-block">1회 이체 한도  </span><span>:&nbsp &nbsp </span><span id="per-trade-limit" class="amount-span">0 &nbsp 원</span></div>
+                        <div><span style="width: 110px; display: inline-block">1일 이체 한도  </span><span>:&nbsp &nbsp </span><span id="daily-limit" class="amount-span">0 &nbsp 원</span></div>
+                        <div><span style="width: 110px; display: inline-block">금일 출금액  </span><span>:&nbsp &nbsp </span><span id="transfer-amount-of-today" class="amount-span">0 &nbsp 원</span></div>
+                        <div><span style="width: 110px; display: inline-block">금일 이체 한도</span><span>:&nbsp &nbsp </span><span id="transferable-amount-limit-of-today" class="amount-span">0 &nbsp 원</span></div>
                     </div>
                 </div>
 

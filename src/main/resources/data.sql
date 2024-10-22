@@ -278,7 +278,7 @@ VALUES (trade_seq.nextval, '001-0000003-3456', 2, 1, TO_TIMESTAMP('2024-08-01 00
 
 -- 4번 고객 계좌
 INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
-VALUES (trade_seq.nextval, '001-0000004-4567', 2, 1, TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 300000, 300000, 'OPEN', 'NOR', 'TRUE',  '계좌개설', trade_num_seq.NEXTVAL);
+VALUES (trade_seq.nextval, '001-0000004-4567', 2, 1, TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 6000000, 6000000, 'OPEN', 'NOR', 'TRUE',  '계좌개설', trade_num_seq.NEXTVAL);
 
 -- 5번 고객 계좌
 INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number)
@@ -369,7 +369,7 @@ SET status = 'CLS',
 WHERE id IN ('001-0000001-1234', '001-0000002-2345', '001-0000003-3456');
 
 UPDATE Account
-SET balance = 250000
+SET balance = 12000000
 WHERE id = '001-0000004-4567';
 
 UPDATE Account

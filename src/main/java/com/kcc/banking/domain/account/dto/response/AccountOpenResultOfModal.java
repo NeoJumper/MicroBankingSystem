@@ -3,12 +3,14 @@ package com.kcc.banking.domain.account.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class AccountOpenResultOfModal {
 
@@ -29,11 +31,15 @@ public class AccountOpenResultOfModal {
 
     private BigDecimal preferentialInterestRate;
     private BigDecimal interestRate;
-    //총이율
+    // 총 이율
     private BigDecimal totalInterestRate;
 
+    // 총 이체 출금액
+    private BigDecimal transferAmountOfToday;
+
+
     @Builder
-    public AccountOpenResultOfModal(String accId, String password, String customerName, int customerId, String phoneNumber, String productName, String startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal perTradeLimit, BigDecimal dailyLimit, BigDecimal preferentialInterestRate, BigDecimal interestRate, BigDecimal totalInterestRate) {
+    public AccountOpenResultOfModal(String accId, String password, String customerName, int customerId, String phoneNumber, String productName, String startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal perTradeLimit, BigDecimal dailyLimit, BigDecimal preferentialInterestRate, BigDecimal interestRate, BigDecimal totalInterestRate, BigDecimal transferAmountOfToday) {
         this.accId = accId;
         this.password = password;
         this.customerName = customerName;
@@ -49,5 +55,6 @@ public class AccountOpenResultOfModal {
         this.preferentialInterestRate = preferentialInterestRate;
         this.interestRate = interestRate;
         this.totalInterestRate = totalInterestRate;
+        this.transferAmountOfToday = transferAmountOfToday;
     }
 }
