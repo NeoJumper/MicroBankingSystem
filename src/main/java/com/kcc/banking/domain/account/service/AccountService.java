@@ -142,7 +142,13 @@ public class AccountService {
      * 현금 거래에 사용
      */
     public int updateByCashTrade(AccountDetail cashTradeAccount, CurrentData currentData, BigDecimal afterTradeBalance) {
-        return 0;
+        AccountUpdate accountUpdate = AccountUpdate.builder()
+                .targetAccId(cashTradeAccount.getId())
+                .modifierId(currentData.getEmployeeId())
+                .balance(afterTradeBalance)
+                .build();
+
+        return accountMapper.partialUpdateAccount(accountUpdate);
     }
 
     public int getAccountSeq() {
