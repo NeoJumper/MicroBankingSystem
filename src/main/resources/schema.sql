@@ -90,6 +90,7 @@ CREATE TABLE Customer (
                           registrant_id NUMBER NOT NULL,
                           branch_id NUMBER NOT NULL,
                           name VARCHAR(100) NULL,
+                          email VARCHAR(100) NULL,
                           phone_number VARCHAR(20) NULL,
                           gender VARCHAR(10) NULL,
                           identification_code VARCHAR(15) NULL,
