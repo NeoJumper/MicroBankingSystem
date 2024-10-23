@@ -17,6 +17,8 @@ public enum ErrorCode {
     INVALID_ACCOUNT_PASSWORD("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
     CLS_ACCOUNT("해지된 계좌에 대한 거래가 불가능합니다.", HttpStatus.BAD_REQUEST),
     OVER_AMOUNT("계좌 잔액보다 이체 금액이 더 많습니다.", HttpStatus.BAD_REQUEST),
+    OVER_PER_TRADE_LIMIT("1회 이체 한도를 초과했습니다.", HttpStatus.BAD_REQUEST),
+    OVER_DAILY_LIMIT("1일 이체 한도를 초과했습니다.", HttpStatus.BAD_REQUEST),
     ALREADY_CHANGED_BUSINESS_DAY("이미 변경된 영업일입니다.", HttpStatus.BAD_REQUEST),
     ALREADY_CLOSED_BUSINESS_DAY("이미 마감된 영업일입니다.", HttpStatus.BAD_REQUEST),
     CLOSED_BUSINESS_DAY("영업일이 마감되었습니다.", HttpStatus.BAD_REQUEST),
