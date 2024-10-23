@@ -63,8 +63,8 @@
                             </div>
                         </th>
                         <th style="width: 8%"><label id="business-day-modal-emp-id">사원번호</label></th>
-                        <th style="width: 8%;><label id="business-day-modal-emp-name">사원명</label></th>
-                        <th style="width: 8%;><label id="business-day-modal-emp-role">권한</label></th>
+                        <th style="width: 8%;"><label id="business-day-modal-emp-name">사원명</label></th>
+                        <th style="width: 8%;"><label id="business-day-modal-emp-role">권한</label></th>
                         <th style="width: 35%"><label id="business-day-modal-emp-vault-cash">전일자 마감 금액</label></th>
                         <th><label id="business-day-modal-emp-prev-cash-balance">시재금</label></th>
                     </tr>
