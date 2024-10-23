@@ -566,11 +566,10 @@ public class AccountTradeFacade {
         for (TransferTradeUpdate transferTradeUpdate : transferTradeUpdateList){
             try {
                 // 거래내역 업데이트
-
-
+                successCnt++;
             }catch (CustomException e){
                 transferTradeUpdate.setFailureReason(e.getErrorCode().getMessage());
-
+                failureCnt++;
             }
         }
 
@@ -598,8 +597,10 @@ public class AccountTradeFacade {
      * **/
     @Transactional(rollbackFor = {Exception.class})  // 모든 예외 발생 시 롤백
     public List<TransferDetail> processTransferUpdate(TransferTradeUpdate transferTradeUpdate){
+
         return new LinkedList<>();
     }
+
     /**
      * @Description - 대량이체 오류건 재전송 수정 실패
      * **/
