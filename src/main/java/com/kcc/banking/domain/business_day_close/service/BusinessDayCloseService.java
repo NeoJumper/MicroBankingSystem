@@ -122,7 +122,6 @@ public class BusinessDayCloseService {
                 .targetClosingDate(currentData.getCurrentBusinessDate())
                 .targetEmployeeId(currentData.getEmployeeId())
                 .modifierId(currentData.getEmployeeId())
-                .status("CLOSED")
                 .build();
 
         // 출금, 해지일 경우
