@@ -110,7 +110,7 @@ function validateAccountPassword() {
 
 
 function cashTradeSubmit(){
-    var accId = $('#cash-trade-account-number').val();
+    var accId = $('#cash-trade-account-number').text();
     var tradeType = $('input[name="trade-type"]:checked').val().toUpperCase();  // 입금/출금 구분
     var amount = parseInt(convertNumber($('#cash-trade-amount').val()));
     var password = $('#cash-trade-password').val();

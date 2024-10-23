@@ -27,4 +27,22 @@
             </if>
         </where>
     </select>
+
+    <insert id="insertCustomer" parameterType="CustomerCreate">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT customer_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO Customer (id, branch_id, email, name, phone_number,birth_date, registrant_id, registration_date, version)
+        VALUES (
+        #{id},
+        #{branchId},
+        #{email},
+        #{name},
+        #{phoneNumber},
+        #{birthDate},
+        #{registrantId},
+        SYSTIMESTAMP,
+        1
+        )
+    </insert>
 </mapper>

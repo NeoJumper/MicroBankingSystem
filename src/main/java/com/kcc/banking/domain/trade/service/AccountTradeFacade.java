@@ -285,10 +285,19 @@ public class AccountTradeFacade {
 
         // 출금 계좌 잔액 조회
         BigDecimal withdrawalAccountBalance = withdrawalAccount.getBalance();
+        // 오늘의 이체 출금총액 조회
+        BigDecimal transferAmountOfToday = tradeService.getTransferAmountOfToday(TradeSearch.builder().accId(withdrawalAccount.getId()).tradeDate(currentData.getCurrentBusinessDate()).build());
+        transferAmountOfToday = (transferAmountOfToday != null) ? transferAmountOfToday : BigDecimal.ZERO;
+
 
         // 이체 금액이 잔액보다 큰 경우
         if (withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()).compareTo(BigDecimal.ZERO) < 0) {
             throw new BadRequestException(ErrorCode.OVER_TRANSFER_AMOUNT);
+        }
+        if (transferTradeCreate.getTransferAmount().add(transferAmountOfToday).compareTo(withdrawalAccount.getDailyLimit()) > 0){
+            throw new BadRequestException(ErrorCode.OVER_DAILY_LIMIT);
+        } else if (transferTradeCreate.getTransferAmount().compareTo(withdrawalAccount.getPerTradeLimit()) > 0) {
+            throw new BadRequestException(ErrorCode.OVER_PER_TRADE_LIMIT);
         }
 
         // 상대 계좌 조회 -> 입금 계좌 잔액 조회

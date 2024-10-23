@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.customer.service;
 
+import com.kcc.banking.domain.customer.dto.request.CustomerCreate;
 import com.kcc.banking.domain.customer.dto.response.CustomerSearchDTO;
 import com.kcc.banking.domain.customer.dto.response.CustomerSearchInfo;
 import com.kcc.banking.domain.customer.mapper.CustomerMapper;
@@ -17,5 +18,8 @@ public class CustomerService {
 
     public List<CustomerSearchInfo> findCustomers(CustomerSearchDTO customerSearchDTO){
         return customerMapper.findCustomers(customerSearchDTO);
+    }
+    public void createCustomer(CustomerCreate customerCreate){
+        customerMapper.insertCustomer(customerCreate);
     }
 }
