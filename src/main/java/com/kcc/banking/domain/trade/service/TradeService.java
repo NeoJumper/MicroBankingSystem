@@ -28,10 +28,7 @@ import java.util.List;
 public class TradeService {
 
     private final TradeMapper tradeMapper;
-
     private final BusinessDayService businessDayService;
-    private final EmployeeService employeeService;
-    private final AccountService accountService;
 
     public List<TradeByCash> findTradeByCash(BusinessDateAndEmployeeId businessDateAndEmployeeId) {
         return tradeMapper.findTradeByCashList(businessDateAndEmployeeId);
@@ -76,6 +73,15 @@ public class TradeService {
 
     /**
      * @Description
+     * - 금일 계좌의 출금 거래금액 총합
+     * - 이체가능 금액 계산에 사용
+     */
+    public BigDecimal getTransferAmountOfToday(TradeSearch tradeSearch) {
+        return tradeMapper.findTransferAmountOfToday(tradeSearch);
+    }
+
+    /**
+     * @Description
      *
      */
     public BigDecimal getPaidAmount(AccountIdWithExpireDate awe) {
@@ -107,7 +113,7 @@ public class TradeService {
      * - 이체 거래시 사용
      * - 입금/출금 계좌 거래 데이터 생성 및 상세내역 반환
      */
-    public TransferDetail createTransferTrade(TransferTradeCreate transferTradeCreate, CurrentData currentData, BigDecimal afterBalance, Long tradeNumber, String tradeType) {
+    public TransferDetail createTransferTrade(TransferTradeCreate transferTradeCreate,String customerName ,CurrentData currentData, BigDecimal afterBalance, Long tradeNumber, String tradeType) {
         // 이체 내역 생성
         TradeCreate transferTrade = TradeCreate.builder()
                 .accId(transferTradeCreate.getAccId()) // 본인 계좌
@@ -129,7 +135,7 @@ public class TradeService {
 
         return TransferDetail.builder()
                 .accId(transferTradeCreate.getAccId())
-                .customerName(currentData.getEmployeeName())
+                .customerName(customerName)
                 .amount(transferTradeCreate.getTransferAmount())   // 이체 금액
                 .balance(afterBalance)  // 이체 후 잔액
                 .build();
@@ -156,7 +162,7 @@ public class TradeService {
         tradeMapper.insertTrade(transferTrade);
     }
 
-    public TransferDetail createTransferCancelTrade(TransferTradeCreate transferTradeCreate, CurrentData currentData, BigDecimal afterBalance, Long tradeNumber, String tradeType) {
+    public TransferDetail createTransferCancelTrade(TransferTradeCreate transferTradeCreate, String customerName,CurrentData currentData, BigDecimal afterBalance, Long tradeNumber, String tradeType) {
         // 입금 내역 생성
         TradeCreate transferTrade = TradeCreate.builder()
                 .accId(transferTradeCreate.getAccId()) // 본인 계좌
@@ -177,7 +183,7 @@ public class TradeService {
 
         return TransferDetail.builder()
                 .accId(transferTradeCreate.getAccId())
-                .customerName(currentData.getEmployeeName())
+                .customerName(customerName)
                 .amount(transferTradeCreate.getTransferAmount())   // 이체 금액
                 .balance(afterBalance)  // 이체 후 잔액
                 .build();

@@ -303,7 +303,7 @@ public class AccountTradeFacade {
 
 
         // 출금 거래내역 추가
-        TransferDetail withdrawalTrade = tradeService.createTransferTrade(transferTradeCreate, currentData, withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()), tradeNumber, "WITHDRAWAL");
+        TransferDetail withdrawalTrade = tradeService.createTransferTrade(transferTradeCreate, withdrawalAccount.getCustomerName(), currentData, withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()), tradeNumber, "WITHDRAWAL");
         // 출금 계좌 잔액 업데이트
         accountService.updateByTransferTrade(withdrawalAccount, currentData, withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()));
 
@@ -322,7 +322,7 @@ public class AccountTradeFacade {
         transferTradeCreate.setTargetAccId(withdrawalAccount.getId());
 
         // 입금 거래내역 추가
-        TransferDetail depositTrade = tradeService.createTransferTrade(transferTradeCreate, currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()), tradeNumber, "DEPOSIT");
+        TransferDetail depositTrade = tradeService.createTransferTrade(transferTradeCreate,depositAccount.getCustomerName() ,currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()), tradeNumber, "DEPOSIT");
         // 입금 계좌 잔액 업데이트
         accountService.updateByTransferTrade(depositAccount, currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()));
 
@@ -387,16 +387,26 @@ public class AccountTradeFacade {
         // 입금 -> 출금 역거래 생성 내역
         // 입금된 계좌에서 출금
         TransferDetail reverseWithdrawalTrade = tradeService.createTransferCancelTrade(
-                TransferTradeCreate.builder().accId(depositAccountDetail.getId()).targetAccId(withdrawalAccountDetail.getId()).transferAmount(amount).description("거래 취소").build(),
-                currentData, depositAccountDetail.getBalance().subtract(amount), tradeCancelRequest.getTradeNumber(), "WITHDRAWAL");
+                TransferTradeCreate.builder()
+                        .accId(depositAccountDetail.getId())
+                        .targetAccId(withdrawalAccountDetail.getId())
+                        .transferAmount(amount).description("거래 취소")
+                        .build(),
+                withdrawalAccountDetail.getCustomerName(), currentData, depositAccountDetail.getBalance().subtract(amount), tradeCancelRequest.getTradeNumber(), "WITHDRAWAL");
         
         // 입금된 계좌에서 출금 후 잔액 업데이트
         accountService.updateByTransferTrade(depositAccountDetail, currentData, depositAccountDetail.getBalance().subtract(amount));
         
         // 출금 -> 입금 역거래 생성 내역
         // 출금된 계좌에서 입금
-        TransferDetail reverseDepositTrade = tradeService.createTransferCancelTrade(TransferTradeCreate.builder().accId(withdrawalAccountDetail.getId()).targetAccId(depositAccountDetail.getId()).transferAmount(amount).description("거래 취소").build(),
-                currentData, withdrawalAccountDetail.getBalance().add(amount), tradeCancelRequest.getTradeNumber(), "DEPOSIT");
+        TransferDetail reverseDepositTrade = tradeService.createTransferCancelTrade(
+                TransferTradeCreate.builder()
+                        .accId(withdrawalAccountDetail.getId())
+                        .targetAccId(depositAccountDetail.getId())
+                        .transferAmount(amount)
+                        .description("거래 취소")
+                        .build(),
+                depositAccountDetail.getCustomerName() ,currentData, withdrawalAccountDetail.getBalance().add(amount), tradeCancelRequest.getTradeNumber(), "DEPOSIT");
 
         // 출금된 계좌에서 입금 후 잔액 업데이트
         accountService.updateByTransferTrade(withdrawalAccountDetail, currentData, withdrawalAccountDetail.getBalance().add(amount));

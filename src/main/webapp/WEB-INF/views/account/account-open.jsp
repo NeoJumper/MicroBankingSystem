@@ -101,6 +101,7 @@
             <tr>
                 <th>1회 이체한도</th>
                 <td>
+                    <div><span id="over-per-trade-limit"></span></div>
                     <input type="text" id="per-trade-limit-input" value="0" class="balance-input">&nbsp원<span class="max-amount-span" style="color: #5F5F5F"></span>
 
                 </td>
@@ -108,6 +109,7 @@
 
                 <th>1일 이체한도</th>
                 <td>
+                    <div><span id="over-daily-limit"></span></div>
                     <input type="text" id="daily-limit-input" value="0" class="balance-input">&nbsp원<span class="max-amount-span" style="color: #5F5F5F"></span>
                 </td>
             </tr>

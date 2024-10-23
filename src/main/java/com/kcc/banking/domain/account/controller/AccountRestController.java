@@ -3,14 +3,18 @@ package com.kcc.banking.domain.account.controller;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.*;
 import com.kcc.banking.domain.account.service.AccountService;
+import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
+import com.kcc.banking.domain.trade.dto.request.TradeSearch;
 import com.kcc.banking.domain.trade.service.AccountTradeFacade;
+import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -18,7 +22,9 @@ import java.util.List;
 public class AccountRestController {
 
     private final AccountService accountService;
+    private final TradeService tradeService;
     private final AccountTradeFacade accountTradeFacade;
+    private final CommonService commonService;
 
     @PostMapping("/api/employee/account-validate")
     public ResponseEntity<Void> validatePassword(@ModelAttribute PasswordValidation passwordValidation) {
@@ -59,6 +65,14 @@ public class AccountRestController {
     @GetMapping("/api/employee/accounts/{accountId}")
     public ResponseEntity<AccountOpenResultOfModal> getAccountInfo(@PathVariable String accountId) {
         AccountOpenResultOfModal accountInfo = accountService.getAccountOpenResultOfModal(accountId);
+        BigDecimal transferAmountOfToday = tradeService.getTransferAmountOfToday(TradeSearch.builder()
+                .tradeDate(commonService.getCurrentData().getCurrentBusinessDate())
+                .accId(accountId)
+                .build()
+        );
+        accountInfo.setTransferAmountOfToday(transferAmountOfToday);
+
+
         return ResponseEntity.ok().body(accountInfo);
     }
 

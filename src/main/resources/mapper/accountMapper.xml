@@ -109,7 +109,9 @@
         a.status,
         c.name AS customer_name,
         p.name AS product_name,
-        a.balance AS balance
+        a.balance AS balance,
+        a.per_trade_limit,
+        a.daily_limit
         FROM
         Account a
         JOIN

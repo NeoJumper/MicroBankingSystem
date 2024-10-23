@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -122,4 +123,13 @@ public class TradeRestController {
         List<TradeByBulkTransfer> tradeByBulkTransferList = tradeService.getTradeListByBulkTransfer(bulkTransferId);
         return ResponseEntity.ok().body(tradeByBulkTransferList);
     }
+
+    // 금일 계좌 이체 출금액
+    @GetMapping("/transfer-trades/daily-total")
+    public ResponseEntity<BigDecimal> getTransferTradeOfToday(TradeSearch tradeSearch) {
+        BigDecimal transferAmountOfToday = tradeService.getTransferAmountOfToday(tradeSearch);
+        return ResponseEntity.ok().body(transferAmountOfToday);
+    }
+
+
 }
