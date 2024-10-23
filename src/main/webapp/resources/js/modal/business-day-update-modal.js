@@ -155,7 +155,7 @@ function handleWorkers() {
             $('#business-day-manager-list').empty();
             $('#business-day-modal-emp-list').empty();
 
-            const branchBalance = response.prevCashBalanceOfBranch;
+            const branchBalance = response.vaultCashOfBranch;
 
             response.closingDataList.forEach(function (employee) {
                 // 매니저의 전일자 현금
