@@ -16,3 +16,21 @@ document.body.appendChild(bootstrapScript);
 const sweetalertScript = document.createElement('script');
 sweetalertScript.src = 'https://unpkg.com/sweetalert/dist/sweetalert.min.js';
 document.body.appendChild(sweetalertScript);
+
+// 전역 쉼표 처리 함수
+function comma(str) {
+    str = String(str);
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');  // 천 단위 쉼표 추가
+}
+
+// 전역 쉼표 제거 함수
+function convertNumber(str) {
+    str = String(str.replace(/[^\d]+/g, ''));  // 숫자를 제외한 모든 문자 제거
+
+
+    if (/^0{2,}/.test(str)) {
+        // 두 번 이상 연속된 0을 잘라내고 나머지 부분 반환
+        return str.replace(/^0{2,}/, '0');
+    }
+    return str;
+}

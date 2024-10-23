@@ -15,6 +15,7 @@ public class ClosingData {
 
     private String id;
     private String name;
+    private String roles;
     private BigDecimal prevCashBalance;
     private BigDecimal totalDeposit;
     private BigDecimal totalWithdrawal;
@@ -23,9 +24,10 @@ public class ClosingData {
 
 
     @Builder
-    public ClosingData(String id, String name, BigDecimal prevCashBalance, BigDecimal totalDeposit, BigDecimal totalWithdrawal, BigDecimal vaultCash, String status) {
+    public ClosingData(String id, String name, String roles, BigDecimal prevCashBalance, BigDecimal totalDeposit, BigDecimal totalWithdrawal, BigDecimal vaultCash, String status) {
         this.id = id;
         this.name = name;
+        this.roles = roles;
         this.prevCashBalance = prevCashBalance;
         this.totalDeposit = totalDeposit;
         this.totalWithdrawal = totalWithdrawal;

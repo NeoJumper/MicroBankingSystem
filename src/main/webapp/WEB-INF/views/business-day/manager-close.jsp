@@ -117,7 +117,7 @@
             </table>
             <c:choose>
                 <c:when test="${managerClosingData.isWaitingEmployeeClose == 'TRUE'}">
-                    <div class="warning-text">* 현재 마감 대기중이며, 금액 변동이 있을 수 있습니다.</div>
+                    <div class="warning-text mt-2 mb-2" style="font-size: 15px">* 현재 마감 대기중이며, 금액 변동이 있을 수 있습니다.</div>
                 </c:when>
             </c:choose>
             <div style="display: flex; justify-content: center; align-items: center; margin: 20px">
