@@ -19,6 +19,10 @@ $(document).ready(function () {
         overflow: 'hidden',  // 숨길 때 내용이 잘리도록 함
         transition: 'height 0.5s ease'  // 부드러운 애니메이션 적용
     });
+
+    $('#result-modal-cash-trade').on('hidden.bs.modal', function () {
+        window.location.href = `/page/employee/cash-trade`;
+    })
 });
 
 // ----------------------------------------
@@ -153,6 +157,7 @@ function showCashTradeResultModal(data){
     // 모달 띄우기
     $('#result-modal-cash-trade').modal('show');
 }
+
 
 
 function selectAccount() {
