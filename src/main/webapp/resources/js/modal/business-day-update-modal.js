@@ -166,7 +166,7 @@ function handleWorkers() {
                 // 매니저는 별도로 처리
                 if (employee.roles === 'ROLE_MANAGER') {
                     let managerRow = `
-                        <tr>
+                        <tr class="business-day-manager-element">
                             <td style="text-align: center">${employee.id}</td>
                             <td>${employee.name}</td>
                             <td>매니저</td>
@@ -227,6 +227,25 @@ function handleWorkers() {
 function changeBusinessDay() {
     const data = [];
 
+    // 매니저의 employee_close 추가
+    $('.business-day-manager-element').each(function () {
+        const row = $(this); // 현재 행
+        const status = 'OPEN';
+
+        const id = row.find('td:nth-child(1)').text().trim();
+        const name = row.find('td:nth-child(2)').text().trim();
+
+        const prevCashBalance = row.find('.manager-vault-cash').val().trim().replace(/,/g, '');
+
+        data.push({
+            id: id,
+            name: name,
+            prevCashBalance: prevCashBalance,
+            status: status
+        })
+    })
+
+
     // 각 business-day-element 행을 순회
     $('.business-day-element').each(function () {
         const row = $(this); // 현재 행
@@ -238,7 +257,8 @@ function changeBusinessDay() {
         // ID, 이름, 이전 캐시 밸런스 값 추출
         const id = row.find('td:nth-child(2)').text().trim(); // 두 번째 열에서 id
         const name = row.find('td:nth-child(3)').text().trim(); // 세 번째 열에서 name
-        const prevCashBalance = row.find('td:nth-child(5) input').val().trim().replace(/,/g, ''); // 네 번째 열의 input에서 value
+        // 지정한 시재금 값 저장
+        const prevCashBalance = row.find('.prev-cash-balance-init').val().trim().replace(/,/g, '');
 
         // 추출한 데이터를 객체로 만들고 배열에 추가
         data.push({
@@ -254,6 +274,11 @@ function changeBusinessDay() {
         prevCashBalanceOfBranch: $('#business-day-modal-branch-balance').val().trim().replace(/,/g, ''),
         businessDateToChange: $('#next-business-day').val()
     }
+
+
+    console.log("CLOSING TESETSET", data);
+    alert("CLOSING TESETSET", data);
+    console.log("DATE TESET", businessDayUpdate);
 
     $.ajax({
         url: '/api/manager/business-day-change',
