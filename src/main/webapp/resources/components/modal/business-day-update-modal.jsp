@@ -16,6 +16,7 @@
                 <h2 class="modal-title">영업일 변경</h2>
             </div>
             <div class="modal-body">
+                <h4>지점 정보</h4>
                 <table class="common-table">
                     <tbody>
                     <tr>
@@ -29,20 +30,42 @@
                     </tbody>
                 </table>
 
-                <h3 class="mt-5">근무 인원 지정</h3>
+                <h4>매니저 정보</h4>
+                <table class="common-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 8%">사원번호</th>
+                        <th>사원명</th>
+                        <th>권한</th>
+                        <th>전일자 현금 총액</th>
+                        <th>
+                            시재금
+                            <i class="bi bi-question-circle"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               title="매니저의 시재금은 지점 보유 현금에서 행원의 시재금을 제한 금액으로 자동 책정됩니다."></i>
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody id="business-day-manager-list">
+                        <!-- 매니저 정보 여기에 동적으로 삽입 -->
+                    </tbody>
+                </table>
+
+                <h4 class="mt-5">근무 인원 지정</h4>
                 <table class="common-table no-margin">
                     <thead>
                     <tr id="business-day-modal-all-checkbox">
-                        <th>
+                        <th style="width: 6%">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="selectAllSwitch">
-                                <label class="form-check-label" for="selectAllSwitch">전체 선택</label>
                             </div>
                         </th>
-                        <th><label id="business-day-modal-emp-id">사원번호</label></th>
-                        <th><label id="business-day-modal-emp-name">사원명</label></th>
-                        <th><label id="business-day-modal-emp-role">권한</label></th>
-                        <th><label id="business-day-modal-emp-vault-cash">전일자 마감 금액</label></th>
+                        <th style="width: 8%"><label id="business-day-modal-emp-id">사원번호</label></th>
+                        <th style="width: 8%;><label id="business-day-modal-emp-name">사원명</label></th>
+                        <th style="width: 8%;><label id="business-day-modal-emp-role">권한</label></th>
+                        <th style="width: 35%"><label id="business-day-modal-emp-vault-cash">전일자 마감 금액</label></th>
                         <th><label id="business-day-modal-emp-prev-cash-balance">시재금</label></th>
                     </tr>
                     </thead>
