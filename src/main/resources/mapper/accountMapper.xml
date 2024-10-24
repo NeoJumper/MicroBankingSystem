@@ -175,7 +175,7 @@
             Branch b ON a.branch_id = b.id
                 JOIN
             EMPLOYEE e ON a.registrant_id = e.id
-        WHERE a.id = #{accId}
+        WHERE a.id = #{accId} FOR UPDATE
     </select>
 
     <select id="getAccountDetail" resultType="AccountDetail">
@@ -202,7 +202,7 @@
             c.name AS customerName
         FROM Account a
                  JOIN Customer c ON a.customer_id = c.id
-        WHERE a.id = #{accountId}
+        WHERE a.id = #{accountId} FOR UPDATE
     </select>
 
 

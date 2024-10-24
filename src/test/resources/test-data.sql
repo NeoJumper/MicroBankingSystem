@@ -233,10 +233,10 @@ INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, star
 VALUES ('001-0000003-3456', 1, 3, 3, 2, SYSDATE, 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 150000, 5000000, 10000000, 'PRIVATE',SYSDATE, 'OPN', 1);
 
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, per_trade_limit, daily_limit, account_type, open_date, status, version)
-VALUES ('001-0000004-4567', 1, 4, 4, 2, SYSDATE, 0.3, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 12000000, 5000000, 10000000, 'PRIVATE',SYSDATE, 'OPN', 1);
+VALUES ('001-0000004-4567', 1, 4, 4, 2, SYSDATE, 0.3, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 10000000, 5000000, 10000000, 'PRIVATE',SYSDATE, 'OPN', 1);
 
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, per_trade_limit, daily_limit, account_type, open_date, status, version)
-VALUES ('001-0000005-5678', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, 5000000, 10000000, 'PRIVATE',SYSDATE, 'OPN', 1);
+VALUES ('001-0000005-5678', 1, 5, 5, 2, SYSDATE, 0.9, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 10000000, 5000000, 10000000, 'PRIVATE',SYSDATE, 'OPN', 1);
 
 --거래내역 해지 전용
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, per_trade_limit, daily_limit, account_type, open_date, status, version)
