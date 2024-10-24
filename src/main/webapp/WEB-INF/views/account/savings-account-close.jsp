@@ -27,7 +27,7 @@
         <tr>
             <th><label for="savings-account-close-number">해지 계좌 번호</label></th>
             <td><input disabled type="text" id="savings-account-close-number">
-                <button id="check-withdrawal-account-btn" class="basic-btn" type="button" data-account-type="withdrawal" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
+                <button id="check-withdrawal-account-btn" class="basic-btn" type="button" data-bs-toggle="modal" data-bs-target="#search-modal-account">계좌조회</button>
             </td>
         </tr>
         <tr>
@@ -148,6 +148,9 @@
     </table>
 </div>
 <script src="/resources/js/footer.js"></script>
+
+<script src="/resources/js/page/savings-account-close.js"></script>
+<%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 </body>
 
 </html>

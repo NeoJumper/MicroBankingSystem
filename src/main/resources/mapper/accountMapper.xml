@@ -128,6 +128,15 @@
         <if test="productName != null and !productName.equals('')">
             AND p.name LIKE  #{productName} || '%'
         </if>
+        <!-- 예금일때 period = 00 / 적금일때  period != 00인 모든경우 -->
+        <if test="period != null and !period.equals('')">
+            <if test="period.equals('00')">
+                AND p.period = '00'
+            </if>
+            <if test="!period.equals('00')">
+                AND p.period != '00'
+            </if>
+        </if>
         </where>
     </select>
 

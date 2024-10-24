@@ -6,8 +6,9 @@ import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
+import com.kcc.banking.domain.account.dto.response.CloseSavingsAccount;
+import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
-import com.kcc.banking.domain.auto_transfer.dto.request.AutoTransferCreate;
 import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferValidation;
@@ -30,7 +31,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +39,7 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class AccountTradeFacade {
+
     private final InterestService interestService;
     private final AccountService accountService;
     private final TradeService tradeService;
@@ -55,6 +56,7 @@ public class AccountTradeFacade {
      *   3. 계좌 생성
      *   
      */
+
     public String openAccount(AccountOpen accountOpen) {
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
@@ -78,6 +80,7 @@ public class AccountTradeFacade {
     }
 
 
+    //---------------------------------------------------------
     /**
      *   @Description - 정기적금 예금계좌 개설
      *      1. 계좌 개설 거래 내역 생성
@@ -89,7 +92,71 @@ public class AccountTradeFacade {
      */
 
 
+    /**
+     *   @Description - 정기적금 예금계좌 해지
+     *      1. 계좌 해지 거래 내역 생성
+     *      2. 계좌 잔액 및 상태 변경
+     *      3. 자동이체 및 해지 금액 계산
+     *
+     */
 
+    @Transactional(rollbackFor = Exception.class)
+    public String addCloseSavingsTrade(StatusWithTrade statusWithTrade){
+
+        StringBuilder resultText = new StringBuilder("SUCCESS");
+
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+        int tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
+        int statusResult = accountService.updateByCloseTrade(statusWithTrade, currentData);
+
+
+        if (tradeResult > 0) {
+            resultText.append(" 'tradeResult' ");
+        }
+        if (statusResult > 0) {
+            resultText.append(" 'statusResult' ");
+        }
+
+        // 행원 마감 출금액 변경
+        businessDayCloseService.updateTradeAmount(statusWithTrade.getAmount(), currentData, statusWithTrade.getTradeType());
+
+        return (tradeResult + statusResult ) > 0 ? resultText.toString() : "FAIL";
+
+    }
+
+    public CloseSavingsAccountTotal findCloseSavingAccountTotal(String accountId){
+
+        Optional<CloseSavingsAccount> optCloseSavingsAccount = Optional.ofNullable(accountService.getCloseSavingsAccount(accountId));
+        CloseSavingsAccount closeSavingsAccount = optCloseSavingsAccount.orElse(new CloseSavingsAccount());
+
+        CloseSavingsAccountTotal closeSavingsAccountTotal = CloseSavingsAccountTotal.builder()
+                .accountId(closeSavingsAccount.getAccountId())
+                .accountStatus(closeSavingsAccount.getAccountStatus())
+                .customerName(closeSavingsAccount.getCustomerName())
+                .customerId(closeSavingsAccount.getCustomerId())
+                .productName(closeSavingsAccount.getProductName())
+                .accountInterestRate(closeSavingsAccount.getAccountInterestRate())
+                .productInterestRate(closeSavingsAccount.getProductInterestRate())
+                .accountBalance(closeSavingsAccount.getAccountBalance())
+                .productTaxRate(closeSavingsAccount.getProductTaxRate()) // 자동이체 관련 써야됨
+                .build();
+
+        return closeSavingsAccountTotal;
+    }
+
+
+
+    //---------------------------------------------------------
     /**
      *   @Description - 계좌 해지
      *
@@ -111,7 +178,6 @@ public class AccountTradeFacade {
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
-
 
 
         int tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
@@ -309,6 +375,7 @@ public class AccountTradeFacade {
         if(depositAccount == null){
             throw new BadRequestException(ErrorCode.NOT_FOUND_TARGET_ACCOUNT);
         }
+
         //입금 계좌 상태 확인
         else if(depositAccount.getStatus().equals("CLS")){
             throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
@@ -322,8 +389,6 @@ public class AccountTradeFacade {
         TransferDetail depositTrade = tradeService.createTransferTrade(transferTradeCreate,depositAccount.getCustomerName() ,currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()), tradeNumber, "DEPOSIT");
         // 입금 계좌 잔액 업데이트
         accountService.updateByTransferTrade(depositAccount, currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()));
-
-
 
         // 출금 내역과 입금 내역 반환
         return Arrays.asList(withdrawalTrade, depositTrade);
@@ -549,4 +614,6 @@ public class AccountTradeFacade {
 
         return result;
     }
+
+
 }

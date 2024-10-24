@@ -261,6 +261,19 @@ VALUES ('001-0000010-9345', 1, 1, 2, 2, TO_TIMESTAMP('2024-06-01 00:00:00', 'YYY
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, per_trade_limit, daily_limit, account_type,  open_date, status, version)
 VALUES ('001-0000011-1056', 1, 1, 3, 2, TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, 5000000, 10000000, 'PRIVATE',  TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
+-- -- 이미 가입된 적금 확인용 (2024/3/3가입)
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, account_type, open_date, status, version)
+VALUES ('001-0000012-0726', 1, 1, 8, 2, TO_TIMESTAMP('2024-03-03 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, 'PRIVATE', TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- 이미 가입된 적금 확인용 (2024/3/3가입)
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, account_type, open_date, status, version)
+VALUES ('001-0000013-0726', 1, 1, 9, 2, TO_TIMESTAMP('2024-03-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, 'PRIVATE', TO_TIMESTAMP('2024-07-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- 이미 가입된 적금 확인용 (2024/3/3가입)
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, account_type, open_date, status, version)
+VALUES ('001-0000014-0726', 1, 1, 10, 2, TO_TIMESTAMP('2024-03-13 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, 'PRIVATE', TO_TIMESTAMP('2024-07-13 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+--
+
 
 -- 계좌 가입 내역
 

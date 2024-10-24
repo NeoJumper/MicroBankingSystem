@@ -119,5 +119,13 @@ public class AccountRestController {
         List<ProductOfModal> allProductList = accountService.getAllProductList(searchProductOfModal);
         return ResponseEntity.ok(allProductList);
     }
+
+    // 적금 해지 페이지에 필요한 Customer DETAIL 데이터
+    @GetMapping("/api/employee/savings-account-close-details/{accountId}")
+    public ResponseEntity<?> getSavingsAccountInfo(@PathVariable("accountId") String accountId) {
+        CloseSavingsAccountTotal savingsInfo = accountTradeFacade.findCloseSavingAccountTotal(accountId);
+        return ResponseEntity.status(HttpStatus.OK).body(savingsInfo);
+    }
+
 }
 

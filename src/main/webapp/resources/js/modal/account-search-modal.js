@@ -4,36 +4,49 @@ $(document).ready(function() {
     $('#modal-input-account').keypress(function(event) {
         if (event.key === 'Enter') {
             let status = '';
+            let period = '';
             const currentUrl = extractUrl(window.location.href);
             console.log(currentUrl,"currentUrl=======!!!!")
             switch (currentUrl) {
                 case 'account-close':
                     status = 'OPN';
+                    period = '00';
                     break;
 
                 case 'account-close-cancel':
                     status = 'CLS';
+                    period = '00';
                     break;
 
-                case '':
+                case 'savings-account-close':
+                    status = 'OPN';
+                    period = 'SAVINGS';
                     break;
             }
 
-            checkAccount(status);  // 계좌 조회 함수 호출
+            checkAccount(status,period);  // 계좌 조회 함수 호출
         }
     });
 
     $('#modal-check-account-btn').click(function () {
         let status = '';
+        let period = '';
         const currentUrl = extractUrl(window.location.href);
         console.log(currentUrl,"currentUrl=======!!!!")
         switch (currentUrl) {
             case 'account-close':
                 status = 'OPN';
+                period = '00';
                 break;
 
             case 'account-close-cancel':
                 status = 'CLS';
+                period = '00';
+                break;
+
+            case 'savings-account-close':
+                status = 'OPN';
+                period = 'SAVINGS';
                 break;
 
             // case 'bulk-transfer':
@@ -46,7 +59,7 @@ $(document).ready(function() {
 
         }
 
-        checkAccount(status);  // 계좌 조회 함수 호출
+        checkAccount(status,period);  // 계좌 조회 함수 호출
     });
 
     $('#modal-check-account-reset-btn').click(function() {
@@ -66,12 +79,14 @@ $(document).ready(function() {
 });
 
 
+
+
 // 계좌 조회 함수
-function checkAccount(status) {
+function checkAccount(status,period) {
     var accountId = $('#modal-input-account').val();
     $.ajax({
         url: "/api/employee/accounts",
-        data: {accId: accountId, productName: null, status:status},
+        data: {accId: accountId, productName: null, status:status, period: period},
         type: "GET",
         success: function(data) {
             var accountTableBody = $("#search-modal-common-table tbody");

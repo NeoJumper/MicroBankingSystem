@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Getter
 @Setter
+
 public class CloseAccountTotal {
     private String accountId;
     private String accountStatus;

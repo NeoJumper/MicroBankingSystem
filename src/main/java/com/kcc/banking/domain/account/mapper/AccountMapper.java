@@ -47,4 +47,6 @@ public interface AccountMapper {
     // 예적금 상품 찾기 모달 조건별 조회
     List<ProductOfModal> findAccountProductList(SearchProductOfModal searchProductOfModal);
 
+    // 적금 해지 검색 모달 조회
+    CloseSavingsAccount findCloseSavingsAccount(String accountId);
 }

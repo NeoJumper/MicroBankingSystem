@@ -12,11 +12,13 @@ public class SearchAccountOfModal {
     private String accId;
     private String productName;
     private String status;
+    private String period;
 
     @Builder
-    public SearchAccountOfModal(String accId, String productName, String status) {
+    public SearchAccountOfModal(String accId, String productName, String status, String period) {
         this.accId = accId;
         this.productName = productName;
         this.status = status;
+        this.period = period;
     }
 }

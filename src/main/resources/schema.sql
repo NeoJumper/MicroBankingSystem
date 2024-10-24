@@ -197,8 +197,10 @@ CREATE TABLE Product (
                          registration_date TIMESTAMP NULL,
                          modification_date TIMESTAMP NULL,
                          modifier_id NUMBER NULL,
-                         version NUMBER NULL
-);
+                         version NUMBER NULL,
+                         product_type VARCHAR(10) NULL,
+                         interest_calculation_method VARCHAR(20) NULL
+                         );
 
 CREATE TABLE Branch_closing (
                                 closing_date TIMESTAMP NOT NULL,
