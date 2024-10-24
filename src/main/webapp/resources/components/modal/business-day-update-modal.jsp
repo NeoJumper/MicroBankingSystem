@@ -31,6 +31,7 @@
                 </table>
 
                 <h4>매니저 정보</h4>
+                <hr>
                 <table class="common-table">
                     <thead>
                     <tr>
