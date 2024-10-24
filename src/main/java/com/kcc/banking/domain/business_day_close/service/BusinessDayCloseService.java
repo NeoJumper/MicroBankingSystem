@@ -75,8 +75,10 @@ public class BusinessDayCloseService {
     public ManagerClosingData getManagerClosingData() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId= commonService.getCurrentBusinessDateAndBranchId();
         String branchName = commonService.getCurrentData().getBranchName();
+
         List<ClosingData> closingDataList = businessDayCloseMapper.findClosingDataList(currentBusinessDateAndBranchId);
         // if branchClosingVaultCash == null : ManagerClosingData 내부에서 처리
+
         BigDecimal branchClosingVaultCash = businessDayCloseMapper.findBranchClosingVaultCash(currentBusinessDateAndBranchId);
         return ManagerClosingData.of(closingDataList, branchClosingVaultCash, branchName);
     }
@@ -120,7 +122,6 @@ public class BusinessDayCloseService {
                 .targetClosingDate(currentData.getCurrentBusinessDate())
                 .targetEmployeeId(currentData.getEmployeeId())
                 .modifierId(currentData.getEmployeeId())
-                .status("CLOSED")
                 .build();
 
         // 출금, 해지일 경우

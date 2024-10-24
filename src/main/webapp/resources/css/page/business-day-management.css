@@ -37,10 +37,9 @@
 .calendar th,
 .calendar td {
     width: calc(100% / 7);
-    height: 60px;
+    height: 65px;
     overflow: hidden;
     position: relative;
-    text-align: center;
     vertical-align: middle
 }
 

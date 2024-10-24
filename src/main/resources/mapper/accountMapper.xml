@@ -201,6 +201,8 @@
             a.balance AS balance,
             a.open_date AS openDate,
             a.status AS status,
+            a.per_trade_limit,
+            a.daily_limit,
             a.trade_number AS tradeNumber,
             a.registration_date AS registrationDate,
             a.modification_date AS modificationDate,

@@ -65,7 +65,8 @@
         bt.success_cnt,
         bt.failure_cnt,
         bt.success_cnt + bt.failure_cnt as total_cnt,
-        description
+        bt.description,
+        bt.registrant_id
         FROM Bulk_Transfer bt
         JOIN EMPLOYEE e ON bt.registrant_id = e.id
         WHERE bt.id = #{bulkTransferId}
@@ -123,7 +124,7 @@
             description = #{description, jdbcType=VARCHAR},
             registrant_id = #{registrantId, jdbcType=BIGINT},
             modification_date = SYSTIMESTAMP,
-            modifier_id = #{modifierId, jdbcType=VARCHAR},
+            modifier_id = #{modifierId, jdbcType=BIGINT},
             version = 1
         WHERE id = #{id, jdbcType=BIGINT}
     </update>

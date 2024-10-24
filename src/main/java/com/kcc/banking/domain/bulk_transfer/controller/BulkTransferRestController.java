@@ -8,6 +8,7 @@ import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResul
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferValidationResult;
 import com.kcc.banking.domain.bulk_transfer.service.BulkTransferService;
 import com.kcc.banking.domain.trade.dto.request.TransferTradeCreate;
+import com.kcc.banking.domain.trade.dto.request.TransferTradeUpdate;
 import com.kcc.banking.domain.trade.dto.response.PageDTO;
 import com.kcc.banking.domain.trade.service.AccountTradeFacade;
 import jakarta.servlet.http.HttpServletResponse;
@@ -113,8 +114,8 @@ public class BulkTransferRestController {
     }
 
     // 대량 이체 오류건 재전송
-    @PutMapping("/api/employee/bulk-transfer")
-    public void resendErrors (@RequestBody List<TransferTradeCreate> transferTradeCreateList) {
-
+    @PutMapping("/api/employee/bulk-transfer/{bulkTransferId}")
+    public void resendErrors (@RequestBody List<TransferTradeUpdate> transferTradeUpdateList, @PathVariable Long bulkTransferId) {
+        accountTradeFacade.processBulkTransferRetryErrors(transferTradeUpdateList, bulkTransferId);
     }
 }

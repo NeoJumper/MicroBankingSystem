@@ -33,8 +33,9 @@ public class BusinessDayCloseRestController {
         businessDayManagementFacade.closeByManager(vaultCashRequest);
     }
     @GetMapping("/api/manager/business-day-close")
-    public ManagerClosingData getBusinessDayChangeDataOfManager(Model model)
+    public ManagerClosingData getBusinessDayChangeDataOfManager()
     {
-        return businessDayCloseService.getManagerClosingData();
+        ManagerClosingData managerClosingData = businessDayCloseService.getManagerClosingData();
+        return managerClosingData;
     }
 }
