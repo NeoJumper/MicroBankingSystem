@@ -40,26 +40,26 @@
                                disabled>
 
 
-                            <button id="trade-list-detail-btn" class="basic-btn">
-                                내역 새로고침
-                            </button>
+                        <button id="trade-list-detail-btn" class="basic-btn">
+                            내역 새로고침
+                        </button>
 
 
-                            <button
-                                    id="employee-business-day-close-btn"
-                                    class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'basic-btn'}"
-                                    <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>
-                            >
-                                <c:choose>
-                                    <c:when test="${employeeClosingData.closingData.status == 'CLOSED'}">
-                                        마감 완료
-                                    </c:when>
-                                    <c:otherwise>
-                                        개인 마감
-                                    </c:otherwise>
-                                </c:choose>
+                        <button
+                                id="employee-business-day-close-btn"
+                                class="${employeeClosingData.closingData.status == 'CLOSED' ? 'closed-btn' : 'basic-btn'}"
+                                <c:if test="${employeeClosingData.closingData.status == 'CLOSED'}">disabled</c:if>
+                        >
+                            <c:choose>
+                                <c:when test="${employeeClosingData.closingData.status == 'CLOSED'}">
+                                    마감 완료
+                                </c:when>
+                                <c:otherwise>
+                                    개인 마감
+                                </c:otherwise>
+                            </c:choose>
 
-                            </button>
+                        </button>
 
                     </td>
                 </tr>
@@ -77,12 +77,23 @@
     <table class="common-table">
         <tbody>
         <tr>
+            <%--            employee_closing 금액--%>
             <th><label>현금 입금액</label></th>
             <td>
                 <input class="emp-close-cash-deposit" type="text"
                        value="<fmt:formatNumber value='${employeeClosingData.closingData.totalDeposit}' type='number'/>"
                        disabled>
             </td>
+            <%--                cash_exchange 금액--%>
+            <th><label>현금 인수액</label></th>
+            <td>
+                <input class="emp-close-cash-exchange-deposit"
+                       value="<fmt:formatNumber value='${employeeClosingData.totalDepositOfCashExchange}' type='number'/>"
+                       type="text" disabled/>
+            </td>
+
+
+            <%--             trade 금액   --%>
             <th><label>거래내역 현금 입금액</label></th>
             <td>
                 <input class="emp-close-trade-list-deposit" type="text"
@@ -90,6 +101,7 @@
                        disabled>
             </td>
         </tr>
+
         <tr>
             <th><label>현금 출금액</label></th>
             <td>
@@ -97,6 +109,15 @@
                        value="<fmt:formatNumber value='${employeeClosingData.closingData.totalWithdrawal}' type='number'/>"
                        disabled>
             </td>
+
+            <%--                cash_exchange 금액--%>
+            <th><label>현금 인도액</label></th>
+            <td>
+                <input class="emp-close-cash-exchange-withdrawal"
+                       value="<fmt:formatNumber value='${employeeClosingData.totalWithdrawalOfCashExchange}' type='number'/>"
+                       type="text" disabled/>
+            </td>
+
             <th><label>거래내역 현금 출금액</label></th>
             <td>
                 <input class="emp-close-trade-list-withdrawal" type="text"
@@ -108,7 +129,7 @@
     </table>
 
     <c:choose>
-        <c:when test="${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade}">
+        <c:when test="${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade + employeeClosingData.vaultCashOfCashExchange}">
             <div class="warning-text mb-3" style="font-size: 15px">
                 * 금일 현금 마감 금액과 금일 거래내역 마감 금액이 일치하지 않습니다. 내역 확인 후 누락된 거래 추가 또는 관리자에게 문의 바랍니다.
             </div>
@@ -120,31 +141,35 @@
         <tr>
             <th style="width: 13.5%"><label>금일 현금 마감 금액</label></th>
             <td>
-                <c:choose>
-                    <c:when test="${employeeClosingData.expectedVaultCash != null}">
-                        <input id="emp-close-today-vault-cash"
-                               class="emp-close-vault-cash <c:if test='${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade}'>warning-text</c:if>"type="text"
-                               value="<fmt:formatNumber value='${employeeClosingData.expectedVaultCash}' type='number'/>"
-                               disabled>
-                    </c:when>
-                    <c:otherwise>
-                        <input class="emp-close-vault-cash" type="text" placeholder="처리중..." disabled>
-                    </c:otherwise>
-                </c:choose>
+                <input id="emp-close-today-vault-cash"
+                       <c:if test='${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade + employeeClosingData.vaultCashOfCashExchange}'>warning-text</c:if>"
+                type="text"
+                value="<fmt:formatNumber value='${employeeClosingData.expectedVaultCash}' type='number'/>"
+                disabled>
             </td>
+
+
+            <th style="width: 13.5%"><label>인수도 거래 금액</label></th>
+            <td>
+
+                <input id="emp-close-cash-exchange-sum"
+                       <c:if test='${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade + employeeClosingData.vaultCashOfCashExchange}'>warning-text</c:if>"
+                type="text"
+                value="<fmt:formatNumber value='${employeeClosingData.vaultCashOfCashExchange}' type='number'/>"
+                disabled>
+
+            </td>
+
 
             <th style="width: 21%"><label>금일 거래내역 마감 금액</label></th>
             <td>
-                <c:choose>
-                    <c:when test="${employeeClosingData.vaultCashOfTrade != null}">
-                        <input class="emp-close-vault-cash <c:if test='${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade}'>warning-text</c:if>" type="text"
-                               value="<fmt:formatNumber value='${employeeClosingData.vaultCashOfTrade}' type='number'/>"
-                               disabled>
-                    </c:when>
-                    <c:otherwise>
-                        <input class="emp-close-vault-cash" type="text" placeholder="처리중..." disabled>
-                    </c:otherwise>
-                </c:choose>
+
+                <input
+                        <c:if test='${employeeClosingData.expectedVaultCash != employeeClosingData.vaultCashOfTrade  + employeeClosingData.vaultCashOfCashExchange}'>warning-text</c:if>"
+                type="text"
+                value="<fmt:formatNumber value='${employeeClosingData.vaultCashOfTrade}' type='number'/>"
+                disabled>
+
             </td>
         </tr>
         </tbody>

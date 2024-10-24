@@ -242,6 +242,8 @@ CREATE TABLE Cash_exchange (
                                amount DECIMAL NOT NULL,
                                emp_cash_balance DECIMAL,
                                manager_cash_balance DECIMAL,
+                               exchange_type VARCHAR(10) NOT NULL,
+                               exchange_date TIMESTAMP NULL,
                                registration_date TIMESTAMP NULL,
                                modification_date TIMESTAMP NULL,
                                modifier_id NUMBER NULL,
