@@ -103,7 +103,7 @@
     <insert id="insertBranchClosing" parameterType="BranchClosingCreate">
 
             INSERT INTO BRANCH_CLOSING
-            (closing_date, registrant_id, branch_id, status, prev_cash_balance, cash_balance, vault_cash, trade_number, registration_date, version)
+            (closing_date, registrant_id, branch_id, status, prev_cash_balance, vault_cash, trade_number, registration_date, version)
             VALUES
             (
             #{closingDate},
@@ -111,7 +111,6 @@
             #{branchId},
             #{status},
             #{prevCashBalance},
-            #{cashBalance},
             0,
             #{tradeNumber},
             SYSTIMESTAMP,

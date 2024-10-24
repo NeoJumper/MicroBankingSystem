@@ -1,4 +1,4 @@
-package com.kcc.banking.domain.branch.dto.response;
+package com.kcc.banking.domain.dashboard.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

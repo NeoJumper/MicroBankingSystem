@@ -1,7 +1,7 @@
-package com.kcc.banking.domain.branch.mapper;
+package com.kcc.banking.domain.dashboard.mapper;
 
 
-import com.kcc.banking.domain.branch.dto.response.*;
+import com.kcc.banking.domain.dashboard.dto.response.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

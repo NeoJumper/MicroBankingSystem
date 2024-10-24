@@ -14,13 +14,11 @@ import java.util.List;
 public class BusinessDayChange {
     private List<WorkerData> workerDataList;
     private BigDecimal prevCashBalanceOfBranch;
-    private BigDecimal cashBalanceOfBranch;
     private String businessDateToChange;
 
-    public BusinessDayChange(List<WorkerData> workerDataList, BigDecimal prevCashBalanceOfBranch, BigDecimal cashBalanceOfBranch,String businessDateToChange) {
+    public BusinessDayChange(List<WorkerData> workerDataList, BigDecimal prevCashBalanceOfBranch, String businessDateToChange) {
         this.workerDataList = workerDataList;
         this.prevCashBalanceOfBranch = prevCashBalanceOfBranch;
-        this.cashBalanceOfBranch = cashBalanceOfBranch;
         this.businessDateToChange = businessDateToChange;
     }
 }

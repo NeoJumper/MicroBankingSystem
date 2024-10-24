@@ -24,18 +24,27 @@
                             <label>전일자 현금 총액</label>
                         </th>
                         <td>
-                            <input id="business-day-modal-prev-cash-balance" type="text" disabled>
-                        </td>
-                        <th>
-                            <label>지점 시재금</label>
-                        </th>
-                        <td>
                             <input id="business-day-modal-branch-balance" type="text" disabled>
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
+                <h4>매니저 정보</h4>
+                <hr>
+                <table class="common-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 8%">사원번호</th>
+                        <th>사원명</th>
+                        <th>권한</th>
+                        <th>전일자 현금 총액</th>
+                    </tr>
+                    </thead>
+                    <tbody id="business-day-manager-list">
+                        <!-- 매니저 정보 여기에 동적으로 삽입 -->
+                    </tbody>
+                </table>
 
                 <h4 class="mt-5">근무 인원 지정</h4>
                 <table class="common-table no-margin">

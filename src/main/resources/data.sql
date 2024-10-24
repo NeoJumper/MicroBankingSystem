@@ -393,6 +393,11 @@ VALUES('2024-08-01 00:00:00', 5, 1, 'CLOSED', 10000000, 0, 0, 10000000,trade_num
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number)
 VALUES('2024-08-01 00:00:00', 6, 1, 'CLOSED',  10000000, 0, 0, 10000000,trade_num_seq.CURRVAL);
 
+-- 매니저 마감
+INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number)
+VALUES('2024-08-01 00:00:00', 1, 1, 'CLOSED',  0, 0, 0, 0,trade_num_seq.CURRVAL);
+
+
 
 -- 거래번호 1: 지점 마감
 INSERT INTO BRANCH_CLOSING (closing_date,registrant_id, branch_id,  status, prev_cash_balance, vault_cash, trade_number, version)
@@ -417,6 +422,11 @@ VALUES('2024-08-02 00:00:00', 6, 1, 'CLOSED',  10000000, 0, 0, 10000000,trade_nu
 -- 거래번호 2: 지점 마감
 INSERT INTO BRANCH_CLOSING (closing_date,registrant_id, branch_id,  status, prev_cash_balance, vault_cash, trade_number, version)
 VALUES('2024-08-02 00:00:00', 2, 1, 'OPEN',   51110000,  null,trade_num_seq.CURRVAL,1);
+
+-- 매니저 마감
+INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, vault_cash, trade_number)
+VALUES('2024-08-02 00:00:00', 1, 1, 'CLOSED',  0, 0, 0, 0,trade_num_seq.CURRVAL);
+
 
 ---------- [ 추가 SQL문 ] ----------
 

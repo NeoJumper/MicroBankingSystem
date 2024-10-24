@@ -1,7 +1,8 @@
-package com.kcc.banking.domain.branch.controller;
+package com.kcc.banking.domain.dashboard.controller;
 
 
-import com.kcc.banking.domain.branch.service.DashboardService;
+import ch.qos.logback.core.model.Model;
+import com.kcc.banking.domain.dashboard.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
