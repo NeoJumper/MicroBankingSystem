@@ -21,7 +21,8 @@ headerMap.set("header-account-management", {
 headerMap.set("header-business-day-management", {
     sidebar: [
         "business-day-management",
-        "business-day-close"],
+        "business-day-close"
+    ],
     sub: {}
 });
 headerMap.set("header-customer-management", {
@@ -35,7 +36,7 @@ headerMap.set("header-employee-management", {
 });
 
 headerMap.set("header-dashboard", {
-    sidebar: ["dashboard", "cash-exchange"],
+    sidebar: ["dashboard", "cash-exchange", "cash-exchange-close"],
     sub: {}
 });
 
@@ -226,7 +227,7 @@ function createBranchManagementSidebar() {
             icon: 'bi bi-house',
             submenu: [
                 { name: '지점 추가', url: '/branch/add' },
-                { name: '지점 수정/삭제', url: '/branch/manage' }
+                { name: '지점 수정/삭제', url: '/branch/manage' },
             ]
         }
     ];
@@ -264,6 +265,7 @@ function createDashboardSidebar(selectedSidebarMenu, roles) {
                 icon: 'bi bi-coin',
                 submenu: [
                     { name: '시재금 거래', url: '/page/manager/cash-exchange' },
+                    { name: '시재금 거래 마감', url: '/page/manager/cash-exchange-close' }
                 ]
             }
         ];

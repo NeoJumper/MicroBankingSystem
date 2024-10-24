@@ -14,5 +14,10 @@ public class BranchController {
         return "branch/cash-exchange";
     }
 
+    @GetMapping("/page/manager/cash-exchange-close")
+    public String businessDayClose() {
+        return "branch/cash-exchange-close";
+    }
+
 }
 
