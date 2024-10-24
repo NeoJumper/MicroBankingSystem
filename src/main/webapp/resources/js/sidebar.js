@@ -35,7 +35,7 @@ headerMap.set("header-employee-management", {
 });
 
 headerMap.set("header-dashboard", {
-    sidebar: ["dashboard"],
+    sidebar: ["dashboard", "cash-exchange"],
     sub: {}
 });
 
@@ -257,6 +257,13 @@ function createDashboardSidebar(selectedSidebarMenu, roles) {
                 icon: 'bi bi-house',
                 submenu: [
                     { name: '지점 운영', url: '/page/manager/dashboard' },
+                ]
+            },
+            {
+                title: '시재 관리',
+                icon: 'bi bi-coin',
+                submenu: [
+                    { name: '시재금 거래', url: '/page/manager/cash-exchange' },
                 ]
             }
         ];
