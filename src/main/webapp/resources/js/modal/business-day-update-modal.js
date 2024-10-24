@@ -32,17 +32,14 @@ function registerCashBalanceChangeEvent() {
             currentValue = currentValue.replace(/^0+/, ''); // 앞에 붙은 0을 제거
         }
 
-        // 값이 비어있으면 그대로 두고, 숫자가 있으면 쉼표를 추가
-        if (currentValue !== "") {
+        // 값이 비어있으면 0으로 처리
+        if (currentValue === "") {
+            currentValue = "0";
+        } else {
             currentValue = comma(currentValue); // 천 단위 쉼표 추가
         }
 
         $(this).val(currentValue); // 수정된 값을 다시 input에 설정
-
-        // 값이 빈 문자열인 경우 더 이상 처리하지 않음
-        if (currentValue === "") {
-            return;
-        }
 
         const row = $(this).closest('tr');
         const managerVaultElem = $('.manager-vault-cash'); // 매니저 현금 총액 엘리먼트
@@ -63,6 +60,7 @@ function registerCashBalanceChangeEvent() {
         }
     });
 }
+
 
 // 개별 스위치 클릭 이벤트
 function registerClickEventOfEmpCheckBox() {

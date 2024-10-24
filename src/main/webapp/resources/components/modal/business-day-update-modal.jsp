@@ -39,14 +39,6 @@
                         <th>사원명</th>
                         <th>권한</th>
                         <th>전일자 현금 총액</th>
-                        <th>
-                            시재금
-                            <i class="bi bi-question-circle"
-                               data-bs-toggle="tooltip"
-                               data-bs-placement="top"
-                               title="매니저의 시재금은 지점 보유 현금에서 행원의 시재금을 제한 금액으로 자동 책정됩니다."></i>
-                        </th>
-
                     </tr>
                     </thead>
                     <tbody id="business-day-manager-list">
