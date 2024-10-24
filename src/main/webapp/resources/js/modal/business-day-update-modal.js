@@ -32,37 +32,36 @@ function registerCashBalanceChangeEvent() {
             currentValue = currentValue.replace(/^0+/, ''); // 앞에 붙은 0을 제거
         }
 
-        // 값이 비어있으면 그대로 두고, 숫자가 있으면 쉼표를 추가
-        if (currentValue !== "") {
+        // 값이 비어있으면 0으로 처리
+        if (currentValue === "") {
+            currentValue = "0";
+        } else {
             currentValue = comma(currentValue); // 천 단위 쉼표 추가
         }
 
         $(this).val(currentValue); // 수정된 값을 다시 input에 설정
 
-        // 값이 빈 문자열인 경우 더 이상 처리하지 않음
-        if (currentValue === "") {
-            return;
-        }
-
         const row = $(this).closest('tr');
-        const managerVaultElem = $('.manager-vault-cash'); // 매니저 현금 총액 엘리먼트
+        const branchPrevCash = $('#business-day-modal-branch-balance'); // 지점 현금 총액 엘리먼트
+        let branchCashBalance = parseFloat(branchPrevCash.val().replace(/,/g, '')) || 0; // 지점 현금 총액
 
-        // 시재금 차감 및 매니저 현금 총액 업데이트 (이전 코드와 동일)
-        let managerVaultCash = parseFloat(managerVaultElem.val().replace(/,/g, '')) || 0; // 매니저 현금 총액
         const prevCashBalance = parseFloat($(this).data('prevCashBalance')) || 0; // 이전 시재금 값
-        const difference = parseFloat(currentValue.replace(/,/g, '')) - prevCashBalance; // 쉼표 제거 후 계산
+        let newCashBalance = parseFloat(currentValue.replace(/,/g, '')) || 0; // 쉼표 제거 후 현재 값
 
-        // 매니저 현금 총액이 0 이하로 내려가지 않도록 방지
-        if (managerVaultCash - difference < 0) {
-            alert('매니저의 전일자 현금 총액이 0 이하로 떨어질 수 없습니다.');
+        const difference = newCashBalance - prevCashBalance; // 현재 값과 이전 값의 차이
+
+        // 지점 현금 총액이 0 이하로 내려가지 않도록 방지
+        if (branchCashBalance - difference < 0) {
+            alert('지점의 전일자 현금 총액이 0 이하로 떨어질 수 없습니다.');
             $(this).val(comma(prevCashBalance)); // 이전 값으로 되돌리고 쉼표 추가
         } else {
-            managerVaultCash -= difference;
-            managerVaultElem.val(managerVaultCash.toLocaleString()); // 포맷팅된 매니저 현금 총액 업데이트
-            $(this).data('prevCashBalance', parseFloat(currentValue.replace(/,/g, ''))); // 현재 시재금 값을 저장 (쉼표 제거 후 저장)
+            branchCashBalance -= difference;
+            branchPrevCash.val(branchCashBalance.toLocaleString()); // 포맷팅된 지점 현금 총액 업데이트
+            $(this).data('prevCashBalance', newCashBalance); // 현재 시재금 값을 저장 (쉼표 제거 후 저장)
         }
     });
 }
+
 
 // 개별 스위치 클릭 이벤트
 function registerClickEventOfEmpCheckBox() {
@@ -70,14 +69,14 @@ function registerClickEventOfEmpCheckBox() {
         const isChecked = $(this).prop('checked');
         const row = $(this).closest('tr');
         const prevCashBalance = parseFloat(row.find('.prev-cash-balance-init').val().replace(/,/g, '')) || 0; // 현재 시재금 값
-        const managerVaultElem = $('.manager-vault-cash'); // 매니저 현금 총액 엘리먼트
-        let managerVaultCash = parseFloat(managerVaultElem.val().replace(/,/g, '')) || 0; // 매니저 현금 총액
+        const branchCashBalanceElem = $('#business-day-modal-branch-balance'); // 지점 현금 총액 엘리먼트
+        let branchCashBalance = parseFloat(branchCashBalanceElem.val().replace(/,/g, '')) || 0; // 지점 현금 총액
 
         if (!isChecked) {
-            // 체크 해제 시, 시재금을 매니저 현금 총액에 더해줌
+            // 체크 해제 시, 시재금을 지점 현금 총액에 더해줌
             if (prevCashBalance > 0) {
-                managerVaultCash += prevCashBalance; // 시재금이 0보다 큰 경우에만 더함
-                managerVaultElem.val(managerVaultCash.toLocaleString()); // 포맷팅된 매니저 현금 총액 업데이트
+                branchCashBalance += prevCashBalance; // 시재금이 0보다 큰 경우에만 더함
+                branchCashBalanceElem.val(branchCashBalance.toLocaleString()); // 포맷팅된 매니저 현금 총액 업데이트
             }
 
             // 체크 해제 시, 해당 행원의 시재금을 0으로 설정
@@ -110,12 +109,12 @@ function registerClickEventOfEmpAllCheckBox() {
             // 체크 해제 시, 모든 행원의 시재금을 0으로 설정
             if (!isChecked) {
                 const prevCashBalance = parseFloat(row.find('.prev-cash-balance-init').val().replace(/,/g, '')) || 0; // 현재 시재금 값
-                const managerVaultElem = $('.manager-vault-cash'); // 매니저 현금 총액 엘리먼트
-                let managerVaultCash = parseFloat(managerVaultElem.val().replace(/,/g, '')) || 0; // 매니저 현금 총액
+                const branchCashBalanceElem = $('#business-day-modal-branch-balance'); // 지점 현금 총액 엘리먼트
+                let branchCashBalance = parseFloat(branchCashBalanceElem.val().replace(/,/g, '')) || 0; // 매니저 현금 총액
 
                 if (prevCashBalance > 0) {
-                    managerVaultCash += prevCashBalance; // 현재 시재금을 매니저 현금에 다시 더해줌
-                    managerVaultElem.val(managerVaultCash.toLocaleString()); // 포맷팅된 매니저 현금 총액 업데이트
+                    branchCashBalance += prevCashBalance; // 현재 시재금을 매니저 현금에 다시 더해줌
+                    branchCashBalanceElem.val(branchCashBalance.toLocaleString()); // 포맷팅된 매니저 현금 총액 업데이트
                 }
 
                 // 행원의 시재금을 0으로 설정
@@ -151,35 +150,17 @@ function handleWorkers() {
         url: '/api/manager/business-day-close',
         type: 'GET',
         success: function (response) {
-            // 매니저와 직원 리스트 초기화
-            $('#business-day-manager-list').empty();
+            // 직원 리스트 초기화
             $('#business-day-modal-emp-list').empty();
 
             const branchBalance = response.vaultCashOfBranch;
+            const formattedBranchBalance = new Intl.NumberFormat().format(branchBalance);
+            $('#business-day-modal-branch-balance').val(formattedBranchBalance); // 포맷팅된 값 적용
+            $('#business-day-modal-prev-cash-balance').val(formattedBranchBalance); // 포맷팅된 값 적용
 
             response.closingDataList.forEach(function (employee) {
-                // 매니저의 전일자 현금
-                let vaultCash = employee.prevCashBalance;
-                let formattedVaultCash = new Intl.NumberFormat().format(vaultCash);
 
-                let formattedBranchBalance = new Intl.NumberFormat().format(branchBalance);
-                // 매니저는 별도로 처리
-                if (employee.roles === 'ROLE_MANAGER') {
-                    let managerRow = `
-                        <tr class="business-day-manager-element">
-                            <td style="text-align: center">${employee.id}</td>
-                            <td>${employee.name}</td>
-                            <td>매니저</td>
-                            <td>
-                                <input type="text" value="${formattedVaultCash}" disabled/>    
-                            </td> <!-- 전일자 매니저 현금 총액 -->
-                            <td>
-                                <input class="manager-vault-cash" value="${formattedBranchBalance}" type="text" disabled/>
-                            </td> <!-- 전일자 현금 총액 -->
-                        </tr>
-                    `;
-                    $('#business-day-manager-list').append(managerRow);
-                } else {
+
                     // 직원 정보 처리
                     let vaultCash = employee.prevCashBalance;
                     let prevCashBalance = 0;
@@ -208,11 +189,8 @@ function handleWorkers() {
                         </tr>
                     `;
                     $('#business-day-modal-emp-list').append(employeeRow);
-                }
-            });
 
-            const formattedBranchBalance = new Intl.NumberFormat().format(branchBalance);
-            $('#business-day-modal-branch-balance').val(formattedBranchBalance); // 포맷팅된 값 적용
+            });
 
             // 스위치 초기화 상태 맞추기
             resetSwitchStates();
@@ -226,25 +204,6 @@ function handleWorkers() {
 // 영업일 변경 처리 함수
 function changeBusinessDay() {
     const data = [];
-
-    // 매니저의 employee_close 추가
-    $('.business-day-manager-element').each(function () {
-        const row = $(this); // 현재 행
-        const status = 'OPEN';
-
-        const id = row.find('td:nth-child(1)').text().trim();
-        const name = row.find('td:nth-child(2)').text().trim();
-
-        const prevCashBalance = row.find('.manager-vault-cash').val().trim().replace(/,/g, '');
-
-        data.push({
-            id: id,
-            name: name,
-            prevCashBalance: prevCashBalance,
-            status: status
-        })
-    })
-
 
     // 각 business-day-element 행을 순회
     $('.business-day-element').each(function () {
@@ -271,7 +230,8 @@ function changeBusinessDay() {
 
     const businessDayUpdate = {
         workerDataList: data,
-        prevCashBalanceOfBranch: $('#business-day-modal-branch-balance').val().trim().replace(/,/g, ''),
+        prevCashBalanceOfBranch: $('#business-day-modal-prev-cash-balance').val().trim().replace(/,/g, ''),
+        cashBalanceOfBranch: $('#business-day-modal-branch-balance').val().trim().replace(/,/g, ''),
         businessDateToChange: $('#next-business-day').val()
     }
 

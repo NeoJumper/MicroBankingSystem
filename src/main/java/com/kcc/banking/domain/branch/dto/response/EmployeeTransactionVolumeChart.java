@@ -1,7 +1,6 @@
-package com.kcc.banking.domain.dashboard.dto.response;
+package com.kcc.banking.domain.branch.dto.response;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

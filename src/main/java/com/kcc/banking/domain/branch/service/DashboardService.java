@@ -1,9 +1,9 @@
-package com.kcc.banking.domain.dashboard.service;
+package com.kcc.banking.domain.branch.service;
 
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 import com.kcc.banking.domain.common.service.CommonService;
-import com.kcc.banking.domain.dashboard.dto.response.*;
-import com.kcc.banking.domain.dashboard.mapper.DashboardMapper;
+import com.kcc.banking.domain.branch.dto.response.*;
+import com.kcc.banking.domain.branch.mapper.DashboardMapper;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

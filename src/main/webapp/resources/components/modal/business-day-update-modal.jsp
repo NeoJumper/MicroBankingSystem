@@ -24,34 +24,18 @@
                             <label>전일자 현금 총액</label>
                         </th>
                         <td>
+                            <input id="business-day-modal-prev-cash-balance" type="text" disabled>
+                        </td>
+                        <th>
+                            <label>지점 시재금</label>
+                        </th>
+                        <td>
                             <input id="business-day-modal-branch-balance" type="text" disabled>
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
-                <h4>매니저 정보</h4>
-                <table class="common-table">
-                    <thead>
-                    <tr>
-                        <th style="width: 8%">사원번호</th>
-                        <th>사원명</th>
-                        <th>권한</th>
-                        <th>전일자 현금 총액</th>
-                        <th>
-                            시재금
-                            <i class="bi bi-question-circle"
-                               data-bs-toggle="tooltip"
-                               data-bs-placement="top"
-                               title="매니저의 시재금은 지점 보유 현금에서 행원의 시재금을 제한 금액으로 자동 책정됩니다."></i>
-                        </th>
-
-                    </tr>
-                    </thead>
-                    <tbody id="business-day-manager-list">
-                        <!-- 매니저 정보 여기에 동적으로 삽입 -->
-                    </tbody>
-                </table>
 
                 <h4 class="mt-5">근무 인원 지정</h4>
                 <table class="common-table no-margin">
