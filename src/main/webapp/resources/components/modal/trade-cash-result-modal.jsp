@@ -13,6 +13,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="resultModalCashTradeLabel">거래 내역 확인</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <table class="common-table">
@@ -43,7 +44,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button id="cash-trade-result-modal-close-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>

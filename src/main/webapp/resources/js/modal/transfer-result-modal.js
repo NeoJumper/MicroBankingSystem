@@ -1,7 +1,8 @@
 $(document).ready(function () {
-    $('#transfer-result-modal').on('hidden.bs.modal', function () {
+    $('#result-modal-close-btn').on('click', function () {
         resultModalClose();
     })
+
 })
 
 function resultModalClose() {
