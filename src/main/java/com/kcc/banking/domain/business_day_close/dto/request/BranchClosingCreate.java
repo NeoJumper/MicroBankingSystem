@@ -17,16 +17,18 @@ public class BranchClosingCreate {
     private String branchId;
     private String status;
     private BigDecimal prevCashBalance;
+    private BigDecimal cashBalance;
     private Long tradeNumber;
     private String registrantId;
 
 
     @Builder
-    public BranchClosingCreate(String closingDate, String branchId, String status, BigDecimal prevCashBalance, Long tradeNumber, String registrantId) {
+    public BranchClosingCreate(String closingDate, String branchId, String status, BigDecimal prevCashBalance, BigDecimal cashBalance, Long tradeNumber, String registrantId) {
         this.closingDate = closingDate;
         this.branchId = branchId;
         this.status = status;
         this.prevCashBalance = prevCashBalance;
+        this.cashBalance = cashBalance;
         this.tradeNumber = tradeNumber;
         this.registrantId = registrantId;
 

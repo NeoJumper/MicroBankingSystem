@@ -207,6 +207,7 @@ CREATE TABLE Branch_closing (
                                 registrant_id NUMBER NOT NULL,
                                 status VARCHAR(6) NULL,
                                 prev_cash_balance DECIMAL NULL,
+                                cash_balance DECIMAL NULL,
                                 vault_cash DECIMAL NULL,
                                 trade_number VARCHAR(20) NULL,
                                 registration_date TIMESTAMP NULL,
