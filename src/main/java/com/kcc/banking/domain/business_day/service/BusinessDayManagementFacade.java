@@ -10,6 +10,8 @@ import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
+import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeData;
+import com.kcc.banking.domain.cash_exchange.service.CashExchangeService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
@@ -31,6 +33,7 @@ public class BusinessDayManagementFacade {
     private final CommonService commonService;
     private final TradeService tradeService;
     private final InterestService interestService;
+    private final CashExchangeService cashExchangeService;
 
 
     /**
@@ -74,15 +77,19 @@ public class BusinessDayManagementFacade {
      * 1. 개인 마감 데이터 조회(거래내역과 마감 데이터)
      *      - 마감 데이터(현금 입출금액, 전일자 현금 잔액이며 금일 마감 금액은 마감시 변경)
      *      - 거래 내역 데이터(내역 상세 보기 시 조회 가능)
-     *      - 거래 내역의 입출금 총액( 거래내역 합산)
+     *      - 거래 내역의 입출금 총액(거래내역 합산)
+     *      - 인수도거래 내역의 입출금
      */
     public EmployeeClosingData getEmployeeClosingData() {
 
         BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
+        // employe_closing 테이블의 Data
         ClosingData closingData = businessDayCloseService.getClosingData(currentBusinessDateAndEmployeeId);
+        // trade 테이블의 행원 Data
         List<TradeByCash> tradeByCashList = tradeService.findTradeByCash(currentBusinessDateAndEmployeeId);
-
-        return EmployeeClosingData.of(closingData, tradeByCashList);
+        // cash_exchange 테이블의 Data
+        List<CashExchangeData> cashExchangeList =  cashExchangeService.getCashExchangeData(currentBusinessDateAndEmployeeId);
+        return EmployeeClosingData.of(closingData, tradeByCashList, cashExchangeList);
     }
 
 
