@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
 
         log.info(request.getRequestURI());
         //return "redirect:/error1?errorCode=" +errorCode.getMessage();
-//        log.error(errorCode.getMessage());
+        log.error(errorCode.getMessage());
        return ResponseEntity.status(errorCode.getStatus()).body(errorCode.getMessage());
     }
 
