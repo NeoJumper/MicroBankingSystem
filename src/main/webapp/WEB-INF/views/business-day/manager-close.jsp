@@ -26,14 +26,14 @@
         <h5 class="mb-0">2024-09-24</h5>
     </div>
 
-    <div class="row">
-        <div id="table-container" class="col-9">
+        <div id="table-container" class="mb-5" style="border-bottom: 1px solid var(--little-dark-gray)">
             <table id="employee-add-list-thead" class="common-table no-margin">
                 <thead>
                 <tr>
-                    <th style="width: 8%;">사번</th>
-                    <th style="width: 8%;">이름</th>
-                    <th style="width: 20%;">전일자 현금 잔액</th>
+                    <th style="width: 5%">사번</th>
+                    <th style="width: 5%">이름</th>
+                    <th style="width: 5%">직책</th>
+                    <th style="width: 18%;">전일자 현금 잔액</th>
                     <th style="width: 16%;">입금액</th>
                     <th style="width: 20%;">출금액</th>
                     <th style="width: 16%;">금일 마감 금액</th>
@@ -48,8 +48,21 @@
 
                     <c:forEach var="closingData" items="${managerClosingData.closingDataList}">
                         <tr class="branch-close-employee-data">
-                            <td style="width: 8%; text-align: center">${closingData.id}</td>
-                            <td style="width: 8%;">${closingData.name}</td>
+                            <td style="width: 5%; text-align: center">${closingData.id}</td>
+                            <td>${closingData.name}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${closingData.roles == 'ROLE_MANAGER'}">
+                                        매니저
+                                    </c:when>
+                                    <c:when test="${closingData.roles == 'ROLE_EMPLOYEE'}">
+                                        행원
+                                    </c:when>
+                                    <c:otherwise>
+                                        기타
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                             <td style="width: 16%;">
                                 <input class="employee-prev-cash-balance" type="text"
                                        value="<fmt:formatNumber value='${closingData.prevCashBalance}' type='number'/>"
@@ -70,7 +83,8 @@
                                        value="<fmt:formatNumber value='${closingData.vaultCash}' type='number'/>"
                                        disabled>
                             </td>
-                            <td style="width: 20%;" class="${closingData.status == 'OPEN' ? 'status-open' : closingData.status == 'CLOSED' ? 'status-closed' : ''} branch-close-employee-status">
+                            <td style="width: 20%;"
+                                class="${closingData.status == 'OPEN' ? 'status-open' : closingData.status == 'CLOSED' ? 'status-closed' : ''} branch-close-employee-status">
                                     ${closingData.status}
                             </td>
                         </tr>
@@ -80,25 +94,9 @@
             </div>
         </div>
 
-        <div class="col-3">
+        <div>
             <table id="manager-close-table" class="common-table no-margin">
                 <tbody>
-                <tr>
-                    <th>현금 입금액</th>
-                    <td>
-                        <input id="manager-close-total-deposit" type="text"
-                               value="<fmt:formatNumber value='${managerClosingData.totalDepositOfBranch}' type='number'/>"
-                               disabled>
-                    </td>
-                </tr>
-                <tr>
-                    <th>현금 출금액</th>
-                    <td>
-                        <input id="manager-close-total-withdrawal" type="text"
-                               value="<fmt:formatNumber value='${managerClosingData.totalWithdrawalOfBranch}' type='number'/>"
-                               disabled>
-                    </td>
-                </tr>
                 <tr>
                     <th>전일자 현금</th>
                     <td>
@@ -108,9 +106,30 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>현금 총 입금액</th>
+                    <td style="display: flex; align-items: center">
+                        <i class="bi bi-plus-circle-fill" style="font-size: 1.5rem; margin-right: 10px; color: var(--little-dark-gray)"></i>
+                        <input id="manager-close-total-deposit" type="text"
+                               value="<fmt:formatNumber value='${managerClosingData.totalDepositOfBranch}' type='number'/>"
+                               disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th>현금 총 출금액</th>
+                    <td style="display: flex; align-items: center">
+                        <i class="bi  bi-dash-circle-fill" style="font-size: 1.5rem; margin-right: 10px; color: var(--little-dark-gray)"></i>
+                        <input id="manager-close-total-withdrawal" type="text"
+                               value="<fmt:formatNumber value='${managerClosingData.totalWithdrawalOfBranch}' type='number'/>"
+                               disabled>
+                    </td>
+                </tr>
+
+                <tr>
                     <th>금일 마감 금액</th>
                     <td>
-                        <input id="manager-close-vault-cash" type="text" value="<fmt:formatNumber value='${managerClosingData.vaultCashOfBranch}' type='number'/>" disabled>
+                        <input id="manager-close-vault-cash" type="text"
+                               value="<fmt:formatNumber value='${managerClosingData.vaultCashOfBranch}' type='number'/>"
+                               disabled>
                     </td>
                 </tr>
                 </tbody>
@@ -125,7 +144,7 @@
                 </button>
             </div>
         </div>
-    </div>
+
 </div>
 
 <script src="/resources/js/page/manager-close.js"></script>

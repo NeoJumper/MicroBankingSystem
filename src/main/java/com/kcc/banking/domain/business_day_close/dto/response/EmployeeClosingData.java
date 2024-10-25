@@ -25,6 +25,8 @@ public class EmployeeClosingData {
     private BigDecimal expectedVaultCash;
     // trade 테이블에서의 거래 내역
     private List<TradeByCash> tradeByCashList;
+    // cash_exchange에서의 거래 내역
+    private List<CashExchangeData> cashExchangeDataList;
     //    거래내역에서의 총 입금, 총 출금, 총 합
     private BigDecimal totalDepositOfTrade;
     private BigDecimal totalWithdrawalOfTrade;
@@ -35,10 +37,11 @@ public class EmployeeClosingData {
     private BigDecimal vaultCashOfCashExchange;
 
     @Builder
-    public EmployeeClosingData(ClosingData closingData, BigDecimal expectedVaultCash, List<TradeByCash> tradeByCashList, BigDecimal totalDepositOfTrade, BigDecimal totalWithdrawalOfTrade, BigDecimal vaultCashOfTrade, BigDecimal totalDepositOfCashExchange, BigDecimal totalWithdrawalOfCashExchange, BigDecimal vaultCashOfCashExchange) {
+    public EmployeeClosingData(ClosingData closingData, BigDecimal expectedVaultCash, List<TradeByCash> tradeByCashList, List<CashExchangeData> cashExchangeDataList, BigDecimal totalDepositOfTrade, BigDecimal totalWithdrawalOfTrade, BigDecimal vaultCashOfTrade, BigDecimal totalDepositOfCashExchange, BigDecimal totalWithdrawalOfCashExchange, BigDecimal vaultCashOfCashExchange) {
         this.closingData = closingData;
         this.expectedVaultCash = expectedVaultCash;
         this.tradeByCashList = tradeByCashList;
+        this.cashExchangeDataList = cashExchangeDataList;
         this.totalDepositOfTrade = totalDepositOfTrade;
         this.totalWithdrawalOfTrade = totalWithdrawalOfTrade;
         this.vaultCashOfTrade = vaultCashOfTrade;
@@ -52,6 +55,7 @@ public class EmployeeClosingData {
         EmployeeClosingData employeeClosingData = EmployeeClosingData.builder()
                 .closingData(closingData)
                 .tradeByCashList(tradeByCashList)
+                .cashExchangeDataList(cashExchangeList)
                 .totalDepositOfTrade(tradeByCashList.stream()
                         .filter(trade -> "OPEN".equals(trade.getTradeType()) || "DEPOSIT".equals(trade.getTradeType()))
                         .map(TradeByCash::getAmount)
