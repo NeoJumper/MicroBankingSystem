@@ -29,10 +29,11 @@ public class TradeOfList {
     private String cashIndicator;
     private BigDecimal amount;
     private BigDecimal balance;
-    private String status;  
+    private String status;
+    private Long tradeNumber;
 
-
-    public TradeOfList(Timestamp tradeDate, String accId, String targetAccId, String tradeType, String cashIndicator, BigDecimal amount, BigDecimal balance, String status) {
+    @Builder
+    public TradeOfList(Timestamp tradeDate, String accId, String targetAccId, String tradeType, String cashIndicator, BigDecimal amount, BigDecimal balance, String status, Long tradeNumber) {
         this.tradeDate = tradeDate;
         this.accId = accId;
         this.targetAccId = targetAccId;
@@ -41,5 +42,6 @@ public class TradeOfList {
         this.amount = amount;
         this.balance = balance;
         this.status = status;
+        this.tradeNumber = tradeNumber;
     }
 }

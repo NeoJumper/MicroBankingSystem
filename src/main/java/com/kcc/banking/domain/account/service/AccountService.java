@@ -9,17 +9,23 @@ import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 //import com.kcc.banking.domain.trade.dto.request.TradeCreate;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -61,7 +67,12 @@ public class AccountService {
         return accountMapper.findAccountsBySearchOption(searchAccountOfModal);
     }
 
+    @Retryable(
+             include = {DataAccessException.class, SQLException.class}, // 재시도할 예외
+            maxAttempts = 3, // 최대 3번 재시도
+            backoff = @Backoff(delay = 2000)) // 재시도 간격 2초
     public AccountDetail getAccountDetail(String accountId) {
+        log.info("{} 계좌 조회 시도", accountId);
         return accountMapper.getAccountDetail(accountId);
     }
 

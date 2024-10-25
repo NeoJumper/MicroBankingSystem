@@ -40,13 +40,10 @@ public class TradeService {
         // 총 거래 건수 조회 (해당 계좌에 대한 전체 거래 수)
         int totalCount = tradeMapper.getTradeCount(tradeSearch);
 
-        System.out.println( "서비스 : totalCount "+ totalCount);
-        System.out.println( "서비스 : getPageNum "+ tradeSearch.getCriteria().getPageNum());
 
         // 페이징 처리 객체 생성
         PageDTO pageDTO = new PageDTO(tradeSearch.getCriteria(), totalCount);
 
-        System.out.println("pageDTO.getCriteria()"+pageDTO.getCriteria());
 
         // 특정 계좌에 대한 페이징 처리된 거래 리스트 조회
         List<TradeOfList> tradeList = tradeMapper.findTradeListOfAccId(tradeSearch);
