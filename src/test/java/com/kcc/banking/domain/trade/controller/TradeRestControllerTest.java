@@ -278,8 +278,8 @@ class TradeRestControllerTest extends IntegrationTest {
     }
 */
     @DisplayName("데드락 테스트")
-    //@RepeatedTest(5) // 이 테스트를 여러 번 반복하여 동시성 문제를 찾음
-    @Test
+    @RepeatedTest(5) // 이 테스트를 여러 번 반복하여 동시성 문제를 찾음
+    //@Test
     @WithUserDetails(value = "2", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void deadlockTest() throws Exception {
 
