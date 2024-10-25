@@ -140,6 +140,24 @@
         </where>
     </select>
 
+    <select id="findCloseSavingsAccount" >
+        SELECT
+            a.id as account_id,
+            a.status as account_status,
+            c.name as customer_name,
+            c.id as customer_id,
+            p.name as product_name,
+            a.start_date as amount_date,
+            a.preferential_interest_rate as account_ineterest_rate,
+            p.interest_rate as product_interest_rate,
+            a.balance as account_balance,
+            p.tax_rate as product_tax_rate,
+            p.product_type as product_type,
+        FROM Account a JOIN Customer c ON a.customer_id = c.id
+                       JOIN Product p ON a.product_id = p.id
+        WHERE a.id = #{accountId}
+    </select>
+
 
     <resultMap id="AccountOpenModalResultMap" type="AccountOpenResultOfModal">
         <result property="accId" column="acc_id" />

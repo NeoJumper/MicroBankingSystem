@@ -205,20 +205,20 @@ VALUES (product_seq.NEXTVAL, 1, 'ONE 사업자 통장', 0.1, SYSDATE, '00', 0.15
 
 --적금 상품 8 - 12번
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 1, '6개월만기정기적금', 2.5, SYSDATE, '06', 0.15, 1, 'PRIVATE');
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type, product_type)
+VALUES (product_seq.NEXTVAL, 1, '6개월만기정기적금', 2.5, SYSDATE, '06', 0.15, 1, 'PRIVATE',FIXED);
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 1, '1년만기정기적금', 3, SYSDATE, '12', 0.15, 1, 'PRIVATE');
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,product_type)
+VALUES (product_seq.NEXTVAL, 1, '1년만기정기적금', 3, SYSDATE, '12', 0.15, 1, 'PRIVATE', FIXED);
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 1, '2년만기정기적금', 3.5, SYSDATE, '24', 0.15, 1, 'PRIVATE');
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,product_type)
+VALUES (product_seq.NEXTVAL, 1, '2년만기정기적금', 3.5, SYSDATE, '24', 0.15, 1, 'PRIVATE',FIXED);
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.15, 1, 'PRIVATE');
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,product_type)
+VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.15, 1, 'PRIVATE',FIXED);
 
-INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 1, '1년만기자유적금', 3.5, TO_TIMESTAMP('2024-02-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), '12', 0.15, 1, 'PRIVATE');
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,product_type)
+VALUES (product_seq.NEXTVAL, 1, '1년만기자유적금', 3.5, TO_TIMESTAMP('2024-02-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), '12', 0.15, 1, 'PRIVATE',FLEXIBLE);
 
 
 ---------- 계좌 생성 ----------
@@ -261,20 +261,142 @@ VALUES ('001-0000010-9345', 1, 1, 2, 2, TO_TIMESTAMP('2024-06-01 00:00:00', 'YYY
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, per_trade_limit, daily_limit, account_type,  open_date, status, version)
 VALUES ('001-0000011-1056', 1, 1, 3, 2, TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, 5000000, 10000000, 'PRIVATE',  TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
--- -- 이미 가입된 적금 확인용 (2024/3/3가입)
+
+-----------------    적금 관련 더미      ----------------------
+
+-- 적금 계좌 생성
+
+-- 가입된 적금 확인용 (2024/3/3가입)
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, account_type, open_date, status, version)
-VALUES ('001-0000012-0726', 1, 1, 8, 2, TO_TIMESTAMP('2024-03-03 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, 'PRIVATE', TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+VALUES ('001-0000012-0726', 1, 1, 8, 2, TO_TIMESTAMP('2023-03-03 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 300000, 'PRIVATE', TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
--- 이미 가입된 적금 확인용 (2024/3/3가입)
+-- 가입된 적금 확인용 (2024/3/3가입)
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, account_type, open_date, status, version)
-VALUES ('001-0000013-0726', 1, 1, 9, 2, TO_TIMESTAMP('2024-03-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, 'PRIVATE', TO_TIMESTAMP('2024-07-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+VALUES ('001-0000013-3687', 1, 1, 9, 2, TO_TIMESTAMP('2023-03-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1000000, 'PRIVATE', TO_TIMESTAMP('2024-07-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
--- 이미 가입된 적금 확인용 (2024/3/3가입)
+-- 가입된 적금 확인용 (2024/3/3가입)
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, account_type, open_date, status, version)
-VALUES ('001-0000014-0726', 1, 1, 10, 2, TO_TIMESTAMP('2024-03-13 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000, 'PRIVATE', TO_TIMESTAMP('2024-07-13 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
---
+VALUES ('001-0000014-8954', 1, 1, 10, 2, TO_TIMESTAMP('2023-03-13 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 100000, 'PRIVATE', TO_TIMESTAMP('2024-07-13 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- 적금전용 자동이체 출금통장
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, per_trade_limit, daily_limit, account_type,  open_date, status, version)
+VALUES ('001-0000015-7777', 1, 1, 2, 2, TO_TIMESTAMP('2023-01-10 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 100000000, 5000000, 10000000, 'PRIVATE',  TO_TIMESTAMP('2024-01-10 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- 가입된 적금 확인용 (2024/3/3가입)
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate, expire_date, password, balance, account_type, open_date, status, version)
+VALUES ('001-0000016-7116', 1, 1, 12, 2, TO_TIMESTAMP('2024-02-13 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL, '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 100000, 'PRIVATE', TO_TIMESTAMP('2024-02-13 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 
+-- 적금 가입 내역 생성
+-----------------   자동이체 관련 더미      ----------------------
+/*
+    1번 고객 출금통장 : 001-0000015-7777 (1억)
+        -> 12번(6개월) 적금 통장: 001-0000012-0726 / 30만원 자동이체
+        -> 13번(1년)  적금 통장: 001-0000013-3687 / 100만원 자동이체
+        -> 14번(2년)  적금 통장: 001-0000014-8954 / 10만원 자동이체
+*/
+
+------------------------------- 1회차 적금 개설 예치금 : (001-0000015-7777  -> 적금) -----------------------------
+
+-- 8번 상품
+-- 001-0000015-7777 출금(w)-> 12번
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000015-7777', 2, 1, TO_TIMESTAMP('2023-03-03 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 300000, 99700000, 'WITHDRAWAL', 'NOR', 'FALSE', '1회차 예치금입금', trade_num_seq.NEXTVAL, '001-0000012-0726');
+
+-- 12번 1회 예치금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000012-0726', 2, 1, TO_TIMESTAMP('2023-03-03 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 300000, 300000, 'OPEN', 'NOR', 'FALSE', '적금계좌개설', trade_num_seq.NEXTVAL, '001-0000015-7777');
+
+-- 9번 상품
+-- 001-0000015-7777 출금(w)-> 13번
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000015-7777', 2, 1, TO_TIMESTAMP('2023-03-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 98700000, 'WITHDRAWAL', 'NOR', 'FALSE', '1회차 예치금입금', trade_num_seq.NEXTVAL, '001-0000013-3687');
+
+-- 1번 고객 적금 계좌 (9번 상품)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000013-3687', 2, 1, TO_TIMESTAMP('2023-03-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 1000000, 'OPEN', 'NOR', 'FALSE',  '적금계좌개설', trade_num_seq.NEXTVAL,'001-0000015-7777');
+
+
+-- 10번 상품
+-- 001-0000015-7777 출금(w)-> 13번
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000015-7777', 2, 1, TO_TIMESTAMP('2023-03-13 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 100000, 98600000, 'WITHDRAWAL', 'NOR', 'FALSE', '1회차 예치금입금', trade_num_seq.NEXTVAL, '001-0000014-8954');
+
+-- 1번 고객 적금 계좌 (10번 상품)
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000014-8954', 2, 1, TO_TIMESTAMP('2023-03-13 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 100000, 100000, 'OPEN', 'NOR', 'FALSE',  '적금계좌개설', trade_num_seq.NEXTVAL,'001-0000015-7777');
+------------------------------------------------------------
+
+
+-----------------   2회차 자동이체 (15 -> 13번(1년상품)    ----------------------
+
+-- 15번 출금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000015-7777', 2, 1, TO_TIMESTAMP('2023-04-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 97600000, 'WITHDRAWAL', 'NOR', 'FALSE', '2회차 예치금입금', trade_num_seq.NEXTVAL, '001-0000013-3687');
+
+-- 13번 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000013-3687', 2, 1, TO_TIMESTAMP('2023-04-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 2000000, 'DEPOSIT', 'NOR', 'FALSE',  '2회차 13번 적금 출금', trade_num_seq.NEXTVAL,'001-0000015-7777');
+
+-----------------   3회차 자동이체 (15 -> 13번(1년상품)    ----------------------
+
+-- 15번 출금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000015-7777', 2, 1, TO_TIMESTAMP('2023-05-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 96600000, 'WITHDRAWAL', 'NOR', 'FALSE', '3회차 예치금입금', trade_num_seq.NEXTVAL, '001-0000013-3687');
+
+-- 13번 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000013-3687', 2, 1, TO_TIMESTAMP('2023-05-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 3000000, 'DEPOSIT', 'NOR', 'FALSE',  '3회차 13번 적금 출금', trade_num_seq.NEXTVAL,'001-0000015-7777');
+
+
+-----------------   4회차 자동이체 (15 -> 13번(1년상품)    ----------------------
+
+-- 15번 출금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000015-7777', 2, 1, TO_TIMESTAMP('2023-06-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 95600000, 'WITHDRAWAL', 'NOR', 'FALSE', '4회차 예치금입금', trade_num_seq.NEXTVAL, '001-0000013-3687');
+
+-- 13번 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000013-3687', 2, 1, TO_TIMESTAMP('2023-06-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 4000000, 'DEPOSIT', 'NOR', 'FALSE',  '4회차 13번 적금 출금', trade_num_seq.NEXTVAL,'001-0000015-7777');
+
+
+-----------------   5회차 자동이체 (15 -> 13번(1년상품)    ----------------------
+
+-- 15번 출금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000015-7777', 2, 1, TO_TIMESTAMP('2023-07-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 94600000, 'WITHDRAWAL', 'NOR', 'FALSE', '5회차 예치금입금', trade_num_seq.NEXTVAL, '001-0000013-3687');
+
+-- 13번 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000013-3687', 2, 1, TO_TIMESTAMP('2023-07-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 5000000, 'DEPOSIT', 'NOR', 'FALSE',  '5회차 13번 적금 출금', trade_num_seq.NEXTVAL,'001-0000015-7777');
+
+-----------------   6회차 자동이체 (15 -> 13번(1년상품)    ----------------------
+
+-- 15번 출금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000015-7777', 2, 1, TO_TIMESTAMP('2023-08-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 93600000, 'WITHDRAWAL', 'NOR', 'FALSE', '6회차 예치금입금', trade_num_seq.NEXTVAL, '001-0000013-3687');
+
+-- 13번 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000013-3687', 2, 1, TO_TIMESTAMP('2023-08-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 6000000, 'DEPOSIT', 'NOR', 'FALSE',  '6회차 13번 적금 출금', trade_num_seq.NEXTVAL,'001-0000015-7777');
+
+-----------------   7회차 자동이체 (15 -> 13번(1년상품)    ----------------------
+
+-- 15번 출금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000015-7777', 2, 1, TO_TIMESTAMP('2023-09-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 92600000, 'WITHDRAWAL', 'NOR', 'FALSE', '7회차 예치금입금', trade_num_seq.NEXTVAL, '001-0000013-3687');
+
+-- 13번 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status, cash_indicator, description, trade_number, target_acc_id)
+VALUES (trade_seq.nextval, '001-0000013-3687', 2, 1, TO_TIMESTAMP('2023-09-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'), 1000000, 7000000, 'DEPOSIT', 'NOR', 'FALSE',  '7회차 13번 적금 출금', trade_num_seq.NEXTVAL,'001-0000015-7777');
+
+
+
+
+
+-----------------   자동이체 3회차     ----------------------
+
+------------------------------------------------------------
 -- 계좌 가입 내역
 
 -- 1번 고객 계좌
