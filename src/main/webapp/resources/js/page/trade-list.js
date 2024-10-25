@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
 
     customPeriodBtnDisplay();
@@ -8,7 +9,6 @@ $(document).ready(function () {
     calculateOfPeriodDate();
     calculateOfMonthDate();
     majorCategoryDisplay();
-
 
     // 검색 버튼 클릭 시 거래내역 조회
     $("#trade-list-search-btn").on("click", function () {
@@ -234,6 +234,7 @@ function searchResultOfTradeList(pageNum = 1) {
             },
             success: function (data) {
                 renderOfTradeSearchResults(data);
+                registerClickEventOfTradeCancelBtn();
                 updatePagination(data.pageDTO);
                 $('#common-transfer-select-result').show(); // 계좌 이체 결과 보여주기
                 $('#bulk-transfer-select-result').hide(); // 대량 이체 결과 숨기기
@@ -354,6 +355,10 @@ function renderOfTradeSearchResults(data) {
         const tradeTypeInfo = getTradeTypeInfo(trade.tradeType);
 
         var row = $('<tr>')
+            .append($('<td class="hidden-trade-number">')
+                .addClass('text-center')
+                .attr('hidden', true) // hidden 속성 추가
+                .text(trade.tradeNumber))
             .append($('<td>')
                 .addClass('text-center')
                 .text(index + 1))
@@ -527,6 +532,26 @@ function calculateOfPeriodDate() {
         periodEndDate: periodEndDate
     };
 
+}
+
+function registerClickEventOfTradeCancelBtn() {
+    $('.status-nor').on('click', function() {
+
+        // 버튼이 클릭된 트리거의 부모인 <tr> 요소 찾기
+        const $row = $(this).closest('tr');
+
+        // hidden-trade-number 클래스의 값을 가져오기
+        const tradeNumber = $row.find('.hidden-trade-number').text();
+
+        // 결과 출력
+        console.log('추출된 거래 번호:', tradeNumber);
+
+        // AJAX 요청
+        const url = '/page/employee/account-transfer-cancel?tradeNumber=' + tradeNumber; // 요청할 URL 설정
+        window.location.href = url; // 지정한 URL로 이동
+
+
+    });
 }
 
 
