@@ -10,5 +10,9 @@ import java.util.List;
 @Mapper
 public interface CashExchangeMapper {
 
+    // search for emp_id
     List<CashExchangeData> getCashExchangeData(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId);
+
+    // search for registrant_id
+    List<CashExchangeData> getCashExchangeDataForManager(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId);
 }
