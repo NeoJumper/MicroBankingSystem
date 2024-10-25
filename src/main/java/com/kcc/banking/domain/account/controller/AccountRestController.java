@@ -120,11 +120,18 @@ public class AccountRestController {
         return ResponseEntity.ok(allProductList);
     }
 
-    // 적금 해지 페이지에 필요한 Customer DETAIL 데이터
-    @GetMapping("/api/employee/savings-account-close-details/{accountId}")
-    public ResponseEntity<?> getSavingsAccountInfo(@PathVariable("accountId") String accountId) {
-        CloseSavingsAccountTotal savingsInfo = accountTradeFacade.findCloseSavingAccountTotal(accountId);
-        return ResponseEntity.status(HttpStatus.OK).body(savingsInfo);
+//    // 적금 해지
+//    @GetMapping("/api/employee/savings-account-close-details/{accountId}")
+//    public ResponseEntity<?> getSavingsAccountInfo(@PathVariable("accountId") String accountId) {
+//        CloseSavingsAccountTotal savingsInfo = accountTradeFacade.findCloseSavingAccountTotal(accountId);
+//        return ResponseEntity.status(HttpStatus.OK).body(savingsInfo);
+//    }
+
+    @GetMapping("/api/employee/savings-account-close-total-info/{accountId}")
+    public ResponseEntity<CloseSavingsAccountTotal> getCloseAccountInfo(@PathVariable("accountId") String accountId){
+
+        CloseSavingsAccountTotal closeSavingsAccountInfo = accountService.getCloseSavingsAccount(accountId);
+        return ResponseEntity.ok(closeSavingsAccountInfo);
     }
 
 }

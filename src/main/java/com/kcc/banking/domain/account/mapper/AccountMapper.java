@@ -48,5 +48,5 @@ public interface AccountMapper {
     List<ProductOfModal> findAccountProductList(SearchProductOfModal searchProductOfModal);
 
     // 적금 해지 검색 모달 조회
-    CloseSavingsAccount findCloseSavingsAccount(String accountId);
+    CloseSavingsAccountTotal findCloseSavingsAccountDetail(String accountId);
 }

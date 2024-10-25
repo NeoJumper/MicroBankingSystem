@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $('#search-modal-select-account-btn').click(function () {
 
+        selectSavingsAccount();
         // 검색한 적금계좌의 해지 정보 api
         getSavingsAccount();
 
@@ -8,7 +9,7 @@ $(document).ready(function () {
 
 });
 
-/*
+
 function selectSavingsAccount() {
 
     var selectedRow = $('input[name="select-account"]:checked').closest('tr');
@@ -21,6 +22,7 @@ function selectSavingsAccount() {
         });
         return;
     }
+
     // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
     $.ajax({
         url: "/api/employee/accounts",
@@ -41,7 +43,6 @@ function selectSavingsAccount() {
     });
 
 }
-*/
 
 function getSavingsAccount() {
 
@@ -66,10 +67,22 @@ function getSavingsAccount() {
             $('#savings-account-product-name').val(data.productName);
             $('#customer-name').val(data.customerName);
 
-
             $('#product-type').val(data.productType);
 
-            $('#table-content tbody').append(
+            let period ;
+            let productRate;
+            let savingsDays;
+            let productTotalDays;
+
+            calculateRate(period, productRate, savingsDays, productTotalDays);
+
+            $('#savings-account-close-info').append(
+
+
+
+            );
+
+            $('#savings-account-total-cash').append(
                 '<tr>' +
                 '<td style="width: 5%;">' + data.productType  + '</td>' +
                 '<td style="width: 5%;">' + data.productInterestRate + '%' + '</td>' +
@@ -90,4 +103,43 @@ function getSavingsAccount() {
         }
     });
 
+}
+
+function calculateRate(period, productRate, savingsDays, productTotalDays) {
+    var result;
+
+    switch (period) {
+        case 'under-1m':
+            result = productRate;
+            break;
+        case 'under-3m':
+            result = productRate * 0.5;
+            break;
+        case 'under-6m':
+            result = productRate * 0.6;
+            break;
+        case 'over-6m':
+            result = productRate * 0.6 * (savingsDays / productTotalDays);
+            break;
+        case 'over-9m':
+            result = productRate * 0.7 * (savingsDays / productTotalDays);
+            break;
+        case 'over-11m':
+            result = productRate * 0.9 * (savingsDays / productTotalDays);
+            break;
+        case 'maturity':
+            // 만기 시 이율 계산
+            result = productRate;
+            break;
+        case 'after-maturity':
+            // 만기 후 이율 계산
+            if (savingsDays <= 30) {
+                result = productRate * 0.5;
+            } else {
+                result = productRate * 0.25;
+            }
+            break;
+    }
+
+    return result;
 }

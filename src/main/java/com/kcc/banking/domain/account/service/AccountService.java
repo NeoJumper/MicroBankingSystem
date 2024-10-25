@@ -88,8 +88,8 @@ public class AccountService {
      * 정기적금 계좌 해지 / (예금 제외)
      * 
      */
-    public CloseSavingsAccount getCloseSavingsAccount(String accountId){
-        return accountMapper.findCloseSavingsAccount(accountId);
+    public CloseSavingsAccountTotal getCloseSavingsAccount(String accountId){
+        return accountMapper.findCloseSavingsAccountDetail(accountId);
     }
 
     public String getExpireDateById(String accId) {

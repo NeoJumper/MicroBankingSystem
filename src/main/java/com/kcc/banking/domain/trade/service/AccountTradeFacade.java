@@ -138,25 +138,25 @@ public class AccountTradeFacade {
 
     }
 
-    public CloseSavingsAccountTotal findCloseSavingAccountTotal(String accountId){
-
-        Optional<CloseSavingsAccount> optCloseSavingsAccount = Optional.ofNullable(accountService.getCloseSavingsAccount(accountId));
-        CloseSavingsAccount closeSavingsAccount = optCloseSavingsAccount.orElse(new CloseSavingsAccount());
-
-        CloseSavingsAccountTotal closeSavingsAccountTotal = CloseSavingsAccountTotal.builder()
-                .accountId(closeSavingsAccount.getAccountId())
-                .accountStatus(closeSavingsAccount.getAccountStatus())
-                .customerName(closeSavingsAccount.getCustomerName())
-                .customerId(closeSavingsAccount.getCustomerId())
-                .productName(closeSavingsAccount.getProductName())
-                .accountInterestRate(closeSavingsAccount.getAccountInterestRate())
-                .productInterestRate(closeSavingsAccount.getProductInterestRate())
-                .accountBalance(closeSavingsAccount.getAccountBalance())
-                .productTaxRate(closeSavingsAccount.getProductTaxRate()) // 자동이체 관련 써야됨
-                .build();
-
-        return closeSavingsAccountTotal;
-    }
+//    public CloseSavingsAccountTotal findCloseSavingAccountTotal(String accountId){
+//
+//        Optional<CloseSavingsAccountTotal> optCloseSavingsAccount = Optional.ofNullable(accountService.getCloseSavingsAccount(accountId));
+//        CloseSavingsAccountTotal closeSavingsAccount = optCloseSavingsAccount.orElse(new CloseSavingsAccountTotal());
+//
+//        CloseSavingsAccountTotal closeSavingsAccountTotal = CloseSavingsAccountTotal.builder()
+//                .accountId(closeSavingsAccount.getAccountId())
+//                .accountStatus(closeSavingsAccount.getAccountStatus())
+//                .customerName(closeSavingsAccount.getCustomerName())
+//                .customerId(closeSavingsAccount.getCustomerId())
+//                .productName(closeSavingsAccount.getProductName())
+//                .accountInterestRate(closeSavingsAccount.getAccountInterestRate())
+//                .productInterestRate(closeSavingsAccount.getProductInterestRate())
+//                .accountBalance(closeSavingsAccount.getAccountBalance())
+//                .productTaxRate(closeSavingsAccount.getProductTaxRate()) // 자동이체 관련 써야됨
+//                .build();
+//
+//        return closeSavingsAccountTotal;
+//    }
 
 
 
