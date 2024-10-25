@@ -128,7 +128,42 @@
         <if test="productName != null and !productName.equals('')">
             AND p.name LIKE  #{productName} || '%'
         </if>
+        <!-- 예금일때 period = 00 / 적금일때  period != 00인 모든경우 -->
+        <if test="period != null and !period.equals('')">
+            <if test="period.equals('00')">
+                AND p.period = '00'
+            </if>
+            <if test="!period.equals('00')">
+                AND p.period != '00'
+            </if>
+        </if>
         </where>
+    </select>
+
+    <select id="findCloseSavingsAccountDetail" resultType="CloseSavingsAccountTotal">
+        SELECT
+            a.id as account_id,
+            a.status as account_status,
+            c.name as customer_name,
+            c.id as customer_id,
+            p.name as product_name,
+            a.start_date as amount_date,
+            a.preferential_interest_rate as account_ineterest_rate,
+            p.interest_rate as product_interest_rate,
+            a.balance as account_balance,
+            p.tax_rate as product_tax_rate,
+            p.product_type as product_type,
+            p.period as product_period,
+            a.start_date as start_date,
+            auto.amount as fixed_Amount,
+            auto.auto_transfer_start_date as auto_transfer_start_date,
+            auto.auto_transfer_end_date as auto_transfer_end_date,
+            auto.auto_transfer_period as auto_transfer_period,
+            auto.create_date as create_date
+        FROM Account a  JOIN Customer c ON a.customer_id = c.id
+                        JOIN Product p ON a.product_id = p.id
+                        JOIN Auto_transfer auto on a.id = auto.acc_id
+        WHERE auto.target_acc_id = #{accountId}
     </select>
 
 
@@ -175,7 +210,7 @@
             Branch b ON a.branch_id = b.id
                 JOIN
             EMPLOYEE e ON a.registrant_id = e.id
-        WHERE a.id = #{accId} FOR UPDATE
+        WHERE a.id = #{accId}
     </select>
 
     <select id="getAccountDetail" resultType="AccountDetail">
@@ -202,7 +237,7 @@
             c.name AS customerName
         FROM Account a
                  JOIN Customer c ON a.customer_id = c.id
-        WHERE a.id = #{accountId} FOR UPDATE
+        WHERE a.id = #{accountId}
     </select>
 
 

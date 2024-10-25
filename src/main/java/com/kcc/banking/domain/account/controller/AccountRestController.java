@@ -119,5 +119,20 @@ public class AccountRestController {
         List<ProductOfModal> allProductList = accountService.getAllProductList(searchProductOfModal);
         return ResponseEntity.ok(allProductList);
     }
+
+//    // 적금 해지
+//    @GetMapping("/api/employee/savings-account-close-details/{accountId}")
+//    public ResponseEntity<?> getSavingsAccountInfo(@PathVariable("accountId") String accountId) {
+//        CloseSavingsAccountTotal savingsInfo = accountTradeFacade.findCloseSavingAccountTotal(accountId);
+//        return ResponseEntity.status(HttpStatus.OK).body(savingsInfo);
+//    }
+
+    @GetMapping("/api/employee/savings-account-close-total-info/{accountId}")
+    public ResponseEntity<CloseSavingsAccountTotal> getCloseAccountInfo(@PathVariable("accountId") String accountId){
+
+        CloseSavingsAccountTotal closeSavingsAccountInfo = accountService.getCloseSavingsAccount(accountId);
+        return ResponseEntity.ok(closeSavingsAccountInfo);
+    }
+
 }
 
