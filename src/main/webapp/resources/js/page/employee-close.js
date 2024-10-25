@@ -1,12 +1,12 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-});
-
-
 $(document).ready(function () {
     handleAuthDataOfEmployeeClosePage();
     registerClickEventOfEmpCloseBtn();
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    });
 
 });
 
@@ -101,24 +101,21 @@ function calculateVaultCash() {
     return prevCashBalance - (cashDeposit + cashWithdrawal);
 }
 
-function fillEmpVaultCash(todayClosingAmount) {
-
-    // 금일 마감 금액 입력란에 값 설정
-    $('.emp-close-vault-cash').val(todayClosingAmount);
-}
 
 function checkInvalidCashTrade() {
     // 현금 입금액과 거래내역 현금 입금액 비교
     const cashDeposit = parseFloat($('.emp-close-cash-deposit').val()) || 0;
     const tradeListDeposit = parseFloat($('.emp-close-trade-list-deposit').val()) || 0;
+    const cashExchangeListDeposit = parseFloat($('.emp-close-cash-exchange-deposit').val()) || 0;
 
     // 현금 출금액과 거래내역 현금 출금액 비교
     const cashWithdrawal = parseFloat($('.emp-close-cash-withdrawal').val()) || 0;
     const tradeListWithdrawal = parseFloat($('.emp-close-trade-list-withdrawal').val()) || 0;
+    const cashExchangeListWithdrawal = parseFloat($('.emp-close-cash-exchange-withdrawal').val()) || 0;
 
     // 입금액과 출금액의 불일치 확인
-    const isDepositMismatch = cashDeposit !== tradeListDeposit;
-    const isWithdrawalMismatch = cashWithdrawal !== tradeListWithdrawal;
+    const isDepositMismatch = cashDeposit !== tradeListDeposit + cashExchangeListDeposit;
+    const isWithdrawalMismatch = cashWithdrawal !== tradeListWithdrawal + cashExchangeListWithdrawal;
 
     // 결과 반환 또는 알림
     if (isDepositMismatch || isWithdrawalMismatch) {

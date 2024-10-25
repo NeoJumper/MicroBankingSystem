@@ -12,7 +12,6 @@ drop sequence customer_seq;
 drop sequence account_seq;
 drop sequence auto_transfer_seq;
 drop sequence bulk_transfer_seq;
-drop sequence cash_exchange_seq;
 
 -- 테이블 삭제
 DROP TABLE BRANCH_CLOSING CASCADE CONSTRAINTS PURGE;
@@ -27,7 +26,6 @@ DROP TABLE CUSTOMER CASCADE CONSTRAINTS PURGE;
 DROP TABLE ACCOUNT CASCADE CONSTRAINTS PURGE;
 DROP TABLE AUTO_TRANSFER CASCADE CONSTRAINTS PURGE;
 DROP TABLE BULK_TRANSFER CASCADE CONSTRAINTS PURGE;
-DROP TABLE Cash_exchange CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Employee (
                           id NUMBER NOT NULL,
@@ -200,10 +198,8 @@ CREATE TABLE Product (
                          registration_date TIMESTAMP NULL,
                          modification_date TIMESTAMP NULL,
                          modifier_id NUMBER NULL,
-                         version NUMBER NULL,
-                         product_type VARCHAR(10) NULL,
-                         interest_calculation_method VARCHAR(20) NULL
-                         );
+                         version NUMBER NULL
+);
 
 CREATE TABLE Branch_closing (
                                 closing_date TIMESTAMP NOT NULL,
@@ -235,24 +231,6 @@ CREATE TABLE Employee_closing (
                                   version NUMBER NULL
 );
 
-
-CREATE TABLE Cash_exchange (
-                               id NUMBER NOT NULL,
-                               registrant_id NUMBER NOT NULL,
-                               emp_id NUMBER NOT NULL,
-                               branch_id NUMBER NOT NULL,
-                               amount DECIMAL NOT NULL,
-                               emp_cash_balance DECIMAL,
-                               manager_cash_balance DECIMAL,
-                               exchange_type VARCHAR(10) NOT NULL,
-                               exchange_date TIMESTAMP NULL,
-                               registration_date TIMESTAMP NULL,
-                               modification_date TIMESTAMP NULL,
-                               modifier_id NUMBER NULL,
-                               version NUMBER NULL
-);
-
-
 -- Primary Keys
 ALTER TABLE Employee ADD CONSTRAINT PK_EMPLOYEE PRIMARY KEY (id);
 ALTER TABLE trade ADD CONSTRAINT PK_TRADE PRIMARY KEY (id);
@@ -264,7 +242,6 @@ ALTER TABLE Branch ADD CONSTRAINT PK_BRANCH PRIMARY KEY (id);
 ALTER TABLE Product ADD CONSTRAINT PK_PRODUCT PRIMARY KEY (id);
 ALTER TABLE Branch_closing ADD CONSTRAINT PK_BRANCH_CLOSING PRIMARY KEY (closing_date, registrant_id);
 ALTER TABLE Employee_closing ADD CONSTRAINT PK_EMPLOYEE_CLOSING PRIMARY KEY (closing_date, registrant_id);
-ALTER TABLE Cash_exchange ADD CONSTRAINT PK_CASH_EXCHANGE PRIMARY KEY (id);
 
 -- Foreign Keys
 -- 1. Employee
@@ -434,19 +411,6 @@ ALTER TABLE Auto_transfer
     ADD CONSTRAINT FK_AUTO_TRANSFER_REG_ID
         FOREIGN KEY (registrant_id) REFERENCES EMPLOYEE(id);
 
--- cash_exchange 테이블 fk 생성
-ALTER TABLE Cash_exchange
-    ADD CONSTRAINT FK_CE_REG_ID
-    FOREIGN KEY (registrant_id) REFERENCES Employee(id);
-
-ALTER TABLE Cash_exchange
-    ADD CONSTRAINT FK_CE_EMP_ID
-        FOREIGN KEY (emp_id) REFERENCES Employee(id);
-
-ALTER TABLE Cash_exchange
-    ADD CONSTRAINT FK_CE_BRANCH_ID
-        FOREIGN KEY (branch_id) REFERENCES Branch(id);
-
 -- 시퀀스 생성
 create sequence branch_cls_seq;
 create sequence emp_cls_seq;
@@ -461,4 +425,3 @@ create sequence customer_seq;
 create sequence account_seq;
 create sequence auto_transfer_seq;
 create sequence bulk_transfer_seq;
-create sequence cash_exchange_seq;
