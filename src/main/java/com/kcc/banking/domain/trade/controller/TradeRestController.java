@@ -82,7 +82,9 @@ public class TradeRestController {
     // 계좌 이체
     @PostMapping("/account-transfer")
     public ResponseEntity<List<TransferDetail>> transfer(@RequestBody TransferTradeCreate transferTradeCreate) {
+
         List<TransferDetail> tradeDetails = accountTradeFacade.processTransfer(transferTradeCreate);
+
         return ResponseEntity.ok(tradeDetails);
     }
 
