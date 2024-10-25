@@ -34,40 +34,9 @@ public class TradeRestController {
     private final AccountTradeFacade accountTradeFacade;
 
     @GetMapping("/trade/search/result")
-    public ResponseEntity<PagingInfoOfTradeList> getSearchResultOfTradeList(@ModelAttribute TradeSearch tradeSearch, Model model){
-
-        String accId = tradeSearch.getAccId();
-        String tradeType = tradeSearch.getTradeType();
-        String startDate = tradeSearch.getStartDate();
-        String endDate = tradeSearch.getEndDate();
-        String sortOrder = tradeSearch.getSortOrder();
-
-
-
-        // 디버깅용 출력
-        System.out.println("Account ID: " + accId);
-        System.out.println("Trade Type: " + tradeType);
-        System.out.println("Start Date: " + startDate);
-        System.out.println("End Date: " + endDate);
-        System.out.println("Sort Order: " + sortOrder);
-
-
-        Criteria criteria = tradeSearch.getCriteria();
-        System.out.println("Page Number: " + criteria.getPageNum());
-        System.out.println("Amount: " + criteria.getAmount());
-
-        System.out.println(" tradeSearch getaccID >>>>>>>"+tradeSearch.getAccId());
+    public ResponseEntity<PagingInfoOfTradeList> getSearchResultOfTradeList(@ModelAttribute TradeSearch tradeSearch){
 
         PagingInfoOfTradeList tradeCashOfPerAccount = tradeService.findTradeListOfAccId(tradeSearch);
-
-        System.out.println("Page Number: " + tradeCashOfPerAccount.getPageDTO().getCriteria().getPageNum());
-        System.out.println("Amount: " + tradeCashOfPerAccount.getPageDTO().getCriteria().getAmount());
-
-        System.out.println("Page getStartPage: " + tradeCashOfPerAccount.getPageDTO().getStartPage());
-
-        System.out.println("Page getEndPage: " + tradeCashOfPerAccount.getPageDTO().getEndPage());
-
-
 
         return  ResponseEntity.ok(tradeCashOfPerAccount);
     }
@@ -82,7 +51,9 @@ public class TradeRestController {
     // 계좌 이체
     @PostMapping("/account-transfer")
     public ResponseEntity<List<TransferDetail>> transfer(@RequestBody TransferTradeCreate transferTradeCreate) {
+
         List<TransferDetail> tradeDetails = accountTradeFacade.processTransfer(transferTradeCreate);
+
         return ResponseEntity.ok(tradeDetails);
     }
 

@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("!test") // "local" 프로파일에서만 실행
+@Profile("local") // "local" 프로파일에서만 실행
 public class InitData {
 
     private final JdbcTemplate jdbcTemplate;

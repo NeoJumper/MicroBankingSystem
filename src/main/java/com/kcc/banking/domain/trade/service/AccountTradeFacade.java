@@ -30,10 +30,14 @@ import com.kcc.banking.domain.trade.dto.response.TransferDetail;
 import com.kcc.banking.domain.trade.mapper.TradeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -327,8 +331,11 @@ public class AccountTradeFacade {
      * 9. 상세보기 모달을 위한 입출금 결과 데이터 반환
      *
      */
+
     @Transactional(rollbackFor = {Exception.class})  // 모든 예외 발생 시 롤백
     public List<TransferDetail> processTransfer(TransferTradeCreate transferTradeCreate) {
+        log.info("트랜잭션 시작: 계좌 {}에서 계좌 {}로 이체 금액 {}", transferTradeCreate.getAccId(), transferTradeCreate.getTargetAccId(), transferTradeCreate.getTransferAmount());
+
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
@@ -340,8 +347,21 @@ public class AccountTradeFacade {
         // 입출금 계좌 조회
         // 출금 계좌: accId
         // 입금 계좌: targetAccId
-        AccountDetail withdrawalAccount = accountService.getAccountDetail(transferTradeCreate.getAccId());
-        AccountDetail depositAccount = accountService.getAccountDetail(transferTradeCreate.getTargetAccId());
+
+        AccountDetail withdrawalAccount = null;
+        AccountDetail depositAccount = null;
+
+        if(transferTradeCreate.getAccId().compareTo(transferTradeCreate.getTargetAccId()) < 0)
+        {
+            withdrawalAccount = accountService.getAccountDetail(transferTradeCreate.getAccId());
+            depositAccount = accountService.getAccountDetail(transferTradeCreate.getTargetAccId());
+        }
+        else{
+            depositAccount = accountService.getAccountDetail(transferTradeCreate.getTargetAccId());
+            withdrawalAccount = accountService.getAccountDetail(transferTradeCreate.getAccId());
+        }
+
+        log.info("{} 스레드 계좌 조회 완료", Thread.currentThread().getName());
 
         if(withdrawalAccount == null) {  // 출금 계좌가 없을 때
             throw new BadRequestException(ErrorCode.NOT_FOUND_ACCOUNT);

@@ -15,7 +15,7 @@ import java.util.List;
 public interface TradeMapper {
 
     // 페이징 처리한 거래내역표 정보들
-    public List<TradeOfList> findTradeListOfAccId(TradeSearch tradeSearch);
+    List<TradeOfList> findTradeListOfAccId(TradeSearch tradeSearch);
 
     // 한계좌에대한 총 입출금 합계
     List<TradeInfoOfPerAccount> getTotalSumOfTradeList(TradeSearch tradeSearch);
