@@ -26,6 +26,8 @@ public enum ErrorCode {
     REQUIRED_EMPLOYEE_CLOSING("개인마감을 진행중인 사원이 존재합니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_UPDATE_TRANSFER_CANCEL("이체 상태 변경이 처리되지 않았습니다.", HttpStatus.BAD_REQUEST),
 
+    INVALID_MANAGER_BALANCE("마감 금액이 입출금 내역과 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
+
     // 403
 
     NOT_INSERT_ACCOUNT_ID("계좌번호가 생성되지 않았습니다.", HttpStatus.BAD_REQUEST),

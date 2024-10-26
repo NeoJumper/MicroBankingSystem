@@ -92,7 +92,8 @@
         <tr>
             <th>금일 시재금 마감 금액</th>
             <td>
-                <input type="text"
+                <input id="lastManagerCash"
+                       type="text"
                        value="<fmt:formatNumber value='${cashExchangeCloseData.lastManagerCash}' type='number'/>"
                        disabled>
                 원

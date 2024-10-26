@@ -40,7 +40,7 @@ function closeBusinessDayOfEmployee() {
     // 숫자 변환
     const vaultCash = Number(vaultCashValue);
 
-    console.log("vaultCash",vaultCash);
+    console.log("vaultCash", vaultCash);
 
     $.ajax({
         url: '/api/employee/business-day-close',
@@ -103,19 +103,37 @@ function calculateVaultCash() {
 
 
 function checkInvalidCashTrade() {
-    // 현금 입금액과 거래내역 현금 입금액 비교
-    const cashDeposit = parseFloat($('.emp-close-cash-deposit').val()) || 0;
-    const tradeListDeposit = parseFloat($('.emp-close-trade-list-deposit').val()) || 0;
-    const cashExchangeListDeposit = parseFloat($('.emp-close-cash-exchange-deposit').val()) || 0;
 
-    // 현금 출금액과 거래내역 현금 출금액 비교
-    const cashWithdrawal = parseFloat($('.emp-close-cash-withdrawal').val()) || 0;
-    const tradeListWithdrawal = parseFloat($('.emp-close-trade-list-withdrawal').val()) || 0;
-    const cashExchangeListWithdrawal = parseFloat($('.emp-close-cash-exchange-withdrawal').val()) || 0;
+    // 현금 입금액
+    let empCloseCashDeposit = Number($('.emp-close-cash-deposit').val().replace(/,/g, ''));
+
+// 현금 인수액
+    let empCloseCashExchangeDeposit = Number($('.emp-close-cash-exchange-deposit').val().replace(/,/g, ''));
+
+// 거래내역 현금 입금액
+    let empCloseTradeListDeposit = Number($('.emp-close-trade-list-deposit').val().replace(/,/g, ''));
+
+// 현금 출금액
+    let empCloseCashWithdrawal = Number($('.emp-close-cash-withdrawal').val().replace(/,/g, ''));
+
+// 현금 인도액
+    let empCloseCashExchangeWithdrawal = Number($('.emp-close-cash-exchange-withdrawal').val().replace(/,/g, ''));
+
+// 거래내역 현금 출금액
+    let empCloseTradeListWithdrawal = Number($('.emp-close-trade-list-withdrawal').val().replace(/,/g, ''));
+
+
+    // 결과 확인 (콘솔에 출력)
+    console.log("현금 입금액:", empCloseCashDeposit);
+    console.log("현금 인수액:", empCloseCashExchangeDeposit);
+    console.log("거래내역 현금 입금액:", empCloseTradeListDeposit);
+    console.log("현금 출금액:", empCloseCashWithdrawal);
+    console.log("현금 인도액:", empCloseCashExchangeWithdrawal);
+    console.log("거래내역 현금 출금액:", empCloseTradeListWithdrawal);
 
     // 입금액과 출금액의 불일치 확인
-    const isDepositMismatch = cashDeposit !== tradeListDeposit + cashExchangeListDeposit;
-    const isWithdrawalMismatch = cashWithdrawal !== tradeListWithdrawal + cashExchangeListWithdrawal;
+    const isDepositMismatch = empCloseCashDeposit !== empCloseCashExchangeDeposit + empCloseTradeListDeposit;
+    const isWithdrawalMismatch = empCloseCashWithdrawal !== empCloseCashExchangeWithdrawal + empCloseTradeListWithdrawal;
 
     // 결과 반환 또는 알림
     if (isDepositMismatch || isWithdrawalMismatch) {
