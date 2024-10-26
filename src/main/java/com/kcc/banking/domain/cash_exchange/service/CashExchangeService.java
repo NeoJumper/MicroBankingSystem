@@ -10,6 +10,7 @@ import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -28,7 +29,13 @@ public class CashExchangeService {
     public CashExchangeCloseData getCashExchangeDataForManager(){
         BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
         List<CashExchangeData> cashExchangeList = cashExchangeMapper.getCashExchangeDataForManager(currentBusinessDateAndEmployeeId);
-        CashExchangeCloseData cashExchangeCloseData =  CashExchangeCloseData.builder().cashExchangeList(cashExchangeList).lastManagerCash(cashExchangeList.get(cashExchangeList.size() - 1).getManagerCashBalance()).build();
+        BigDecimal lastManagerCash = BigDecimal.ZERO;
+        CashExchangeCloseData cashExchangeCloseData =  CashExchangeCloseData.builder().cashExchangeList(cashExchangeList).build();
+        if (cashExchangeList != null && !cashExchangeList.isEmpty()) {
+            lastManagerCash = cashExchangeList.get(cashExchangeList.size() - 1).getManagerCashBalance();
+            cashExchangeCloseData.setLastManagerCash(cashExchangeList.get(cashExchangeList.size() - 1).getManagerCashBalance());
+        }
+
         return cashExchangeCloseData;
     }
 
