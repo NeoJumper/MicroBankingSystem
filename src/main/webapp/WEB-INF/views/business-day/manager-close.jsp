@@ -33,7 +33,7 @@
                     <th style="width: 5%">사번</th>
                     <th style="width: 5%">이름</th>
                     <th style="width: 5%">직책</th>
-                    <th style="width: 18%;">전일자 현금 잔액</th>
+                    <th style="width: 18%;">현금 초기액</th>
                     <th style="width: 16%;">입금액</th>
                     <th style="width: 20%;">출금액</th>
                     <th style="width: 16%;">금일 마감 금액</th>
@@ -98,7 +98,7 @@
             <table id="manager-close-table" class="common-table no-margin">
                 <tbody>
                 <tr>
-                    <th>전일자 현금</th>
+                    <th>전일자 현금 총액</th>
                     <td>
                         <input id="manager-close-prev-cash-balance" type="text"
                                value="<fmt:formatNumber value='${managerClosingData.prevCashBalanceOfBranch}' type='number'/>"
