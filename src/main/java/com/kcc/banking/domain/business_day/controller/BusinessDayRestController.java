@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class BusinessDayRestController {
@@ -34,6 +36,11 @@ public class BusinessDayRestController {
     @PatchMapping("/api/manager/business-day-reset")
     public void resetBusinessDay(){
         businessDayManagementFacade.resetBusinessDay();
+    }
+
+    @GetMapping("/api/manager/full-business-day")
+    public List<BusinessDay> getFullBusinessDay(){
+        return businessDayManagementFacade.getFullBusinessDay();
     }
 
 }
