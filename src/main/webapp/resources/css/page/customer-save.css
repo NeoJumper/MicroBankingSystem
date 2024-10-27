@@ -1,4 +1,4 @@
-#toggle-visibility {
+.toggle-visibility {
     position: absolute;
     top: 50%; /* 세로 중앙 정렬 */
     right: 39%; /* 오른쪽 여백 */
@@ -6,7 +6,7 @@
     cursor: pointer; /* 커서 모양 변경 */
 }
 
-#toggle-visibility  i {
+.toggle-visibility  i {
 
     width: 22px;
     height: 30px;

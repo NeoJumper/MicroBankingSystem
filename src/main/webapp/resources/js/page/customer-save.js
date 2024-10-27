@@ -87,12 +87,18 @@ function fillCustomerDataOfDetailModal(createdCustomer){
     $('#detail-modal-customer-name').val(createdCustomer.name);
     $('#detail-modal-customer-birth-date').val(new Date(createdCustomer.birthDate).toISOString().split('T')[0]);
     $('#detail-modal-customer-email').val(createdCustomer.email);
+    $('#detail-modal-customer-identification-code').val(createdCustomer.identificationCode);
     $('#detail-modal-customer-phone-number').val(createdCustomer.phoneNumber);
-    $('#detail-modal-customer-gender').val(createdCustomer.gender);
+    if(createdCustomer.gender === 'MAIL')
+        $('#detail-modal-customer-gender').val('남성');
+    else
+        $('#detail-modal-customer-gender').val('여성');
     $('#detail-modal-customer-branch-name').val(createdCustomer.branchName); // 지점명은 id로 받음, 필요 시 변환
     $('#detail-modal-customer-security-level').val(createdCustomer.securityLevel); // 지점명은 id로 받음, 필요 시 변환
     $('#detail-modal-customer-registrant-name').val(createdCustomer.registrantName); // 지점명은 id로 받음, 필요 시 변환
     $('#detail-modal-customer-start-date').val(createdCustomer.currentBusinessDate); // 지점명은 id로 받음, 필요 시 변환
+    maskResidentNumber(); // 현재 상태에 따라 업데이트
+    hyphenPhoneNumber();
 }
 function handleResidentNumber() {
     $('#customer-resident-number').on('input', function(event) {
@@ -129,10 +135,12 @@ function maskResidentNumber() {
         displayValue = visiblePart + maskedPart; // 화면에 표시할 값 업데이트
     }
     $('#customer-resident-number').val(displayValue); // 화면에 마스킹된 값만 보여주기
+    $('#detail-modal-customer-identification-code').val(displayValue); // 화면에 마스킹된 값만 보여주기
+
 }
 
 function clickViewResidentNumber() {
-    $('#toggle-visibility').on('click', function () {
+    $('.toggle-visibility').on('click', function () {
         isMasked = !isMasked; // 마스킹 상태 토글
         maskResidentNumber(); // 현재 상태에 따라 업데이트
         // 아이콘 클래스 토글
@@ -173,4 +181,5 @@ function hyphenPhoneNumber() {
         displayPhoneNumber = originalPhoneNumber.slice(0, 3) + '-' + originalPhoneNumber.slice(3, 7) + '-' + originalPhoneNumber.slice(7); // 하이픈 추가
     }
     $('#customer-phone-number').val(displayPhoneNumber); // 화면에 마스킹된 값만 보여주기
+    $('#detail-modal-customer-phone-number').val(displayPhoneNumber); // 화면에 마스킹된 값만 보여주기
 }

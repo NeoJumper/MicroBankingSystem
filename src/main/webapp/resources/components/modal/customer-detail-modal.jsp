@@ -34,7 +34,10 @@
                         <td><input type="text" id="detail-modal-customer-security-level" disabled></td>
 
                         <th>주민번호</th>
-                        <td><input type="date" id="detail-modal-customer-birth-date" disabled></td>
+                        <td style="position: relative;">
+                            <input type="text" id="detail-modal-customer-identification-code" disabled>
+                            <div class="toggle-visibility"><i class="bi bi-eye"></i></div>
+                        </td>
                     </tr>
                     <tr>
                         <th>이메일</th>
