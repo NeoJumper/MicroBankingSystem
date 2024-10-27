@@ -157,6 +157,23 @@
         where branch_id = #{targetBranchId} and closing_date = #{targetClosingDate}
     </update>
 
+    <update id="updateAdditionalCashExchange" parameterType="EmployeeAdditionalUpdate">
+        update employee_closing
+        set
+        <if test="transactionType == 'ADD'">
+            total_deposit = total_deposit + #{amount},
+        </if>
+        <if test="transactionType == 'SUBTRACT'">
+            total_withdrawal = total_withdrawal + #{amount},
+        </if>
+        modifier_id = #{modifierId},
+        modification_date = SYSTIMESTAMP,
+        version = version + 1
+        where registrant_id = #{registrantId} and closing_date = #{closingDate}
+    </update>
+
+
+
     <!-- ****************************** DELETE ****************************** -->
     <delete id="deleteEmployeeClosing" parameterType="String">
         delete from employee_closing

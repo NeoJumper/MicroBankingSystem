@@ -185,4 +185,8 @@ public class BusinessDayManagementFacade {
         // 5
         businessDayService.openBusinessDay(prevBusinessDate, String.valueOf(currentData.getEmployeeId()));
     }
+
+    public List<BusinessDay> getFullBusinessDay() {
+        return null;
+    }
 }
