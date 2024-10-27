@@ -725,29 +725,29 @@ WHERE id = '001-0000005-5678';
 -- 행원 마감
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit,
-                              total_withdrawal, vault_cash, trade_number)
-VALUES ('2024-08-01 00:00:00', 2, 1, 'CLOSED', 10000000, 1210000, 100000, 11110000, trade_num_seq.NEXTVAL);
+                              total_withdrawal, vault_cash, trade_number, version)
+VALUES ('2024-08-01 00:00:00', 2, 1, 'CLOSED', 10000000, 1210000, 100000, 11110000, trade_num_seq.NEXTVAL, 1);
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit,
-                              total_withdrawal, vault_cash, trade_number)
-VALUES ('2024-08-01 00:00:00', 3, 1, 'CLOSED', 10000000, 0, 0, 10000000, trade_num_seq.CURRVAL);
+                              total_withdrawal, vault_cash, trade_number, version)
+VALUES ('2024-08-01 00:00:00', 3, 1, 'CLOSED', 10000000, 0, 0, 10000000, trade_num_seq.CURRVAL, 1);
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit,
-                              total_withdrawal, vault_cash, trade_number)
-VALUES ('2024-08-01 00:00:00', 4, 1, 'CLOSED', 10000000, 0, 0, 10000000, trade_num_seq.CURRVAL);
+                              total_withdrawal, vault_cash, trade_number, version)
+VALUES ('2024-08-01 00:00:00', 4, 1, 'CLOSED', 10000000, 0, 0, 10000000, trade_num_seq.CURRVAL, 1);
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit,
-                              total_withdrawal, vault_cash, trade_number)
-VALUES ('2024-08-01 00:00:00', 5, 1, 'CLOSED', 10000000, 0, 0, 10000000, trade_num_seq.CURRVAL);
+                              total_withdrawal, vault_cash, trade_number, version)
+VALUES ('2024-08-01 00:00:00', 5, 1, 'CLOSED', 10000000, 0, 0, 10000000, trade_num_seq.CURRVAL, 1);
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit,
-                              total_withdrawal, vault_cash, trade_number)
-VALUES ('2024-08-01 00:00:00', 6, 1, 'CLOSED', 10000000, 0, 0, 10000000, trade_num_seq.CURRVAL);
+                              total_withdrawal, vault_cash, trade_number, version)
+VALUES ('2024-08-01 00:00:00', 6, 1, 'CLOSED', 10000000, 0, 0, 10000000, trade_num_seq.CURRVAL, 1);
 
 -- 매니저 마감
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit,
-                              total_withdrawal, vault_cash, trade_number)
-VALUES ('2024-08-01 00:00:00', 1, 1, 'CLOSED', 1000000, 0, 0, 0, trade_num_seq.CURRVAL);
+                              total_withdrawal, vault_cash, trade_number, version)
+VALUES ('2024-08-01 00:00:00', 1, 1, 'CLOSED', 1000000, 0, 0, 0, trade_num_seq.CURRVAL,1);
 
 
 -- 거래번호 1: 지점 마감
@@ -782,14 +782,14 @@ INSERT INTO BRANCH_CLOSING (closing_date, registrant_id, branch_id, status, prev
 VALUES ('2024-08-02 00:00:00', 2, 1, 'OPEN', 61110000, null, trade_num_seq.CURRVAL, 1);
 
 -- 매니저 마감
-INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, trade_number)
-VALUES('2024-08-02 00:00:00', 1, 1, 'OPEN',  1000000, 0, 0, trade_num_seq.CURRVAL);
+INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit, total_withdrawal, trade_number, version)
+VALUES('2024-08-02 00:00:00', 1, 1, 'OPEN',  1000000, 0, 0, trade_num_seq.CURRVAL, 1);
 
 
 -- 마감 행원간 현금 거래
 -- 매니저 -> 행원 3번에게 50만원 인도
 INSERT INTO Cash_exchange (id, registrant_id, emp_id, branch_id, amount, emp_cash_balance, manager_cash_balance, exchange_type, exchange_date ,registration_date, version)
-VALUES (1, 1, 3, 1, 500000, 6000000, 500000, 'HANDOVER', '2024-08-02 00:00:00', '2024-08-02 00:00:00', 1);
+VALUES (cash_exchange_seq.NEXTVAL, 1, 3, 1, 500000, 6000000, 500000, 'HANDOVER', '2024-08-02 00:00:00', '2024-08-02 00:00:00', 1);
 
 -- 행원 업데이트
 UPDATE EMPLOYEE_CLOSING SET total_deposit=500000, modifier_id = 1, modification_date ='2024-08-02 00:00:00', version = version + 1   WHERE registrant_id = 3 AND closing_date = '2024-08-02 00:00:00';

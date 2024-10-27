@@ -59,7 +59,7 @@
 
                     </table>
 
-                    <div id="employee-add-list" style="overflow-y: auto; height: 250px;">
+                    <div id="employee-add-list" style="overflow-y: auto; height: 230px;">
                         <table class="common-table">
                             <tbody id="search-modal-employee-information">
 
