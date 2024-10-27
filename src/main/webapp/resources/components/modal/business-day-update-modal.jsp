@@ -39,6 +39,7 @@
                         <th>사원명</th>
                         <th>권한</th>
                         <th>전일자 현금 총액</th>
+                        <th>시재금</th>
                     </tr>
                     </thead>
                     <tbody id="business-day-manager-list">
