@@ -1,25 +1,56 @@
 $(document).ready(function () {
     updateTransactionTitle();
     registerClickEventOfEmpSearchBtn();
-    handleEmpDataOfUpdateForm();
     searchModalSelectBtn();
 })
 
+
+
 function searchModalSelectBtn() {
     $('#search-modal-select-btn').on('click', function () {
-
         const selectedEmployee = $('input[name="selected-employee"]:checked');
 
         if (selectedEmployee.length > 0) {
-
             const selectedRow = selectedEmployee.closest('tr');
+            const employeeId = selectedRow.find('td:nth-child(2)').text();
 
-
+            // AJAX 요청을 보내서 선택된 사원의 정보를 가져옴
+            $.ajax({
+                type: 'GET',
+                url: '/api/manager/cash-exchange',
+                data: { employeeId: employeeId },
+                success: function (employeeDetail) {
+                    updateEmployeeTable(employeeDetail);  // 테이블에 데이터를 추가하는 함수 호출
+                },
+                error: function (error) {
+                    alert('데이터 전송 중 오류가 발생했습니다.');
+                    console.error(error);
+                }
+            });
         } else {
             alert('고객을 선택해 주세요.');
         }
     });
 }
+
+// 선택된 사원 정보를 테이블에 추가하는 함수
+function updateEmployeeTable(employeeDetail) {
+    const tableBody = $('#selected-employee-table tbody');
+
+    // 새로운 행을 생성하여 ClosingData 정보 추가
+    const newRow = `
+        <tr>
+            <td>${employeeDetail.id}</td>
+            <td>${employeeDetail.name}</td>
+            <td>${(employeeDetail.prevCashBalance+employeeDetail.totalDeposit-employeeDetail.totalWithdrawal).toLocaleString()} 원</td>
+             <td><input type="text" /></td>
+        </tr>
+    `;
+
+    // 테이블에 새로운 행 추가
+    tableBody.append(newRow);
+}
+
 
 // 라디오 버튼 선택에 따라 <h3> 제목 변경
 function updateTransactionTitle() {
@@ -40,31 +71,4 @@ function registerClickEventOfEmpSearchBtn(){
         var employeeSearchModal = new bootstrap.Modal(document.getElementById('employee-search-modal'));
         employeeSearchModal.show();
     });
-}
-
-
-function handleEmpDataOfUpdateForm(){
-
-    // 특정 파라미터 값 가져오기 (예: "id"라는 파라미터가 있을 때)
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-
-    // 파라미터 값이 있을 경우에만 수정 폼을 채워준다.
-    if(id)
-    {
-        $.ajax({
-            type: 'GET',
-            url: '/api/manager/employee/' + id,  // 서버의 URL로 변경
-            success: function(employeeDetail) {
-
-                console.log("selectedEmpId",id);
-                console.log(employeeDetail);
-
-            },
-            error: function(error) {
-                alert('데이터 전송 중 오류가 발생했습니다.');
-                console.error(error);
-            }
-        });
-    }
 }

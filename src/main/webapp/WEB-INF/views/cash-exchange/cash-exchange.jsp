@@ -40,7 +40,7 @@
 
     <h3 id="transactionTitle">인도 거래</h3>
 
-    <table class="common-table">
+    <table class="common-table" >
         <tr>
             <th>잔여 시재금</th>
             <td>
@@ -53,12 +53,13 @@
         </tr>
     </table>
 
-    <table class="common-table">
+    <table class="common-table" id="selected-employee-table">
         <tbody>
             <tr>
                 <th>사번</th>
                 <th>이름</th>
                 <th>현재 시재금</th>
+                <th>거래금</th>
             </tr>
         </tbody>
     </table>

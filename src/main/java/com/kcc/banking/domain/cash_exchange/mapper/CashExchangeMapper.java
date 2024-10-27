@@ -3,6 +3,7 @@ package com.kcc.banking.domain.cash_exchange.mapper;
 
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeData;
+import com.kcc.banking.domain.cash_exchange.dto.response.EmployeeDataResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface CashExchangeMapper {
 
     // search for registrant_id
     List<CashExchangeData> getCashExchangeDataForManager(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId);
+
 }

@@ -10,6 +10,7 @@ import com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper;
 import com.kcc.banking.domain.cash_exchange.dto.request.ManagerCashBalanceRequest;
 import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeCloseData;
 import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeData;
+import com.kcc.banking.domain.cash_exchange.dto.response.EmployeeDataResponse;
 import com.kcc.banking.domain.cash_exchange.mapper.CashExchangeMapper;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
@@ -31,6 +32,13 @@ public class CashExchangeService {
     // employee
     public List<CashExchangeData> getCashExchangeData(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId) {
         return cashExchangeMapper.getCashExchangeData(currentBusinessDateAndEmployeeId);
+    }
+
+    public ClosingData getEmployeeData(Long employeeId) {
+        BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
+        BusinessDateAndEmployeeId selectEmployee = BusinessDateAndEmployeeId.builder().businessDate(currentBusinessDateAndBranchId.getBusinessDate()).employeeId(employeeId).build();
+       ;
+        return  businessDayCloseMapper.findClosingData(selectEmployee);
     }
 
     // manager
