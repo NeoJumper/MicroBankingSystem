@@ -32,14 +32,19 @@
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
             SELECT customer_seq.nextval FROM dual
         </selectKey>
-        INSERT INTO Customer (id, branch_id, email, name, phone_number,birth_date, registrant_id, registration_date, version)
+        INSERT INTO Customer (id, branch_id, email, name,gender, phone_number, address, detail_address, identification_code, birth_date, security_level ,registrant_id, registration_date, version)
         VALUES (
         #{id},
         #{branchId},
         #{email},
         #{name},
+        #{gender},
         #{phoneNumber},
+        #{address},
+        #{detailAddress},
+        #{identificationCode},
         #{birthDate},
+        '2등급',
         #{registrantId},
         SYSTIMESTAMP,
         1

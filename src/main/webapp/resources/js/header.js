@@ -54,7 +54,7 @@ function createHeader(roles){
         $('#navbar').append(`
         <ul id="navbar-globalMenu">
           <li id="header-account-management"><a href="/page/employee/account-open">계좌 관리</a></li>
-          <li id="header-customer-management"><a href="/page/common/account-open">고객 관리</a></li>
+          <li id="header-customer-management"><a href="/page/employee/customer-save">고객 관리</a></li>
           <li id="header-business-day-close-management"><a href="/page/employee/business-day-close">마감 관리</a></li>
           <li id="header-dashboard"><a href="/page/employee/dashboard">실적 관리 </a></li>
         </ul>
