@@ -33,7 +33,7 @@
             <th>주민번호</th>
             <td style="position: relative;">
                 <input type="text" id="customer-resident-number" placeholder="000000-0000000" maxlength="14">
-                <div id="toggle-visibility"><i class="bi bi-eye"></i></div>
+                <div class="toggle-visibility"><i class="bi bi-eye"></i></div>
             </td>
             <th>주소</th>
             <td>
@@ -57,8 +57,8 @@
             <td>
                 <select id="customer-gender">
                     <option disabled selected>성별 선택</option>
-                    <option value="MAIL">남자</option>
-                    <option value="FEMAIL">여자</option>
+                    <option value="MAIL">남성</option>
+                    <option value="FEMAIL">여성</option>
                 </select>
             </td>
             <th>지점명</th>
