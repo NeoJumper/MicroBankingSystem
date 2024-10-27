@@ -1,22 +1,10 @@
 $(document).ready(function () {
 
 
+    /*각자 선택 버튼 클릭 시 함수 구현
     $('#search-modal-select-btn').on('click', function () {
 
-        const selectedEmployee = $('input[name="selected-employee"]:checked');
-
-        if (selectedEmployee.length > 0) {
-
-            const selectedRow = selectedEmployee.closest('tr');
-            const customerId = selectedRow.find('td:nth-child(2)').text();
-
-            window.location.href = `/page/manager/employee-update?id=${customerId}`;
-
-
-        } else {
-            alert('고객을 선택해 주세요.');
-        }
-    });
+    });*/
 
     $("#search-modal-search-btn").on("click", function () {
         searchEmployee();

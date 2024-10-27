@@ -9,11 +9,11 @@ import java.math.BigDecimal;
 
 @NoArgsConstructor
 @Getter
-public class ManagerCashBalanceRequest {
+public class ManagerCashBalance {
     private BigDecimal managerCashBalance;
 
     @Builder
-    public ManagerCashBalanceRequest(BigDecimal managerCashBalance) {
+    public ManagerCashBalance(BigDecimal managerCashBalance) {
         this.managerCashBalance = managerCashBalance;
     }
 
