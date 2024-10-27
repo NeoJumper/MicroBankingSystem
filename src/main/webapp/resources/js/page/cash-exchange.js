@@ -2,7 +2,24 @@ $(document).ready(function () {
     updateTransactionTitle();
     registerClickEventOfEmpSearchBtn();
     handleEmpDataOfUpdateForm();
+    searchModalSelectBtn();
 })
+
+function searchModalSelectBtn() {
+    $('#search-modal-select-btn').on('click', function () {
+
+        const selectedEmployee = $('input[name="selected-employee"]:checked');
+
+        if (selectedEmployee.length > 0) {
+
+            const selectedRow = selectedEmployee.closest('tr');
+
+
+        } else {
+            alert('고객을 선택해 주세요.');
+        }
+    });
+}
 
 // 라디오 버튼 선택에 따라 <h3> 제목 변경
 function updateTransactionTitle() {

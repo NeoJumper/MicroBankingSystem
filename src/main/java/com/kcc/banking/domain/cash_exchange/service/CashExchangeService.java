@@ -34,7 +34,17 @@ public class CashExchangeService {
     }
 
     // manager
-
+    /**
+     * @Discription
+     * 1. 날짜와 로그인한 유저 확인
+     * 2. Employee_closing 테이블에서 매니저의 시재금 확인
+     */
+    
+    public BigDecimal getCurrentCashBalanceForManager(){
+        BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
+        ClosingData closingData = businessDayCloseMapper.findClosingData(currentBusinessDateAndEmployeeId);
+        return closingData.getPrevCashBalance().add(closingData.getTotalDeposit()).subtract(closingData.getTotalWithdrawal());
+    }
     /**
      * @Discription
      *  1. 시재금 거래 내역 불러오기
@@ -49,10 +59,6 @@ public class CashExchangeService {
 
         BigDecimal currentCashBalance = closingData.getPrevCashBalance().add(closingData.getTotalDeposit()).subtract(closingData.getTotalWithdrawal());
 
-        CashExchangeCloseData cashExchangeCloseData =  CashExchangeCloseData.builder()
-                .cashExchangeList(cashExchangeList)
-                .lastManagerCash(currentCashBalance)
-                .build();
         /*        if (cashExchangeList != null && !cashExchangeList.isEmpty()) {
             lastManagerCash = cashExchangeList.get(cashExchangeList.size() - 1).getManagerCashBalance();
             cashExchangeCloseData.setLastManagerCash(cashExchangeList.get(cashExchangeList.size() - 1).getManagerCashBalance());
@@ -60,7 +66,10 @@ public class CashExchangeService {
             cashExchangeCloseData.setLastManagerCash(lastManagerCash);
         }*/
 
-        return cashExchangeCloseData;
+        return CashExchangeCloseData.builder()
+                .cashExchangeList(cashExchangeList)
+                .lastManagerCash(currentCashBalance)
+                .build();
     }
 
     // manager clicked cash exchange close btn

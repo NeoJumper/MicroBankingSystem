@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,9 +41,23 @@
     <h3 id="transactionTitle">인도 거래</h3>
 
     <table class="common-table">
+        <tr>
+            <th>잔여 시재금</th>
+            <td>
+                <input id="lastManagerCash"
+                       type="text"
+                       value="<fmt:formatNumber value='${currentCashBalanceForManager}' type='number'/>"
+                       disabled>
+                원
+            </td>
+        </tr>
+    </table>
+
+    <table class="common-table">
         <tbody>
             <tr>
-                <th>행원</th>
+                <th>사번</th>
+                <th>이름</th>
                 <th>현재 시재금</th>
             </tr>
         </tbody>
