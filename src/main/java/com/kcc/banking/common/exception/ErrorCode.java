@@ -25,7 +25,8 @@ public enum ErrorCode {
     REQUIRED_BRANCH_CLOSING("지점 마감이 처리되지 않았습니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_EMPLOYEE_CLOSING("개인마감을 진행중인 사원이 존재합니다.", HttpStatus.BAD_REQUEST),
     REQUIRED_UPDATE_TRANSFER_CANCEL("이체 상태 변경이 처리되지 않았습니다.", HttpStatus.BAD_REQUEST),
-
+    INVALID_CERTIFICATION_NUMBER("인증번호가 일치하지 않습니다", HttpStatus.BAD_REQUEST),
+    EXPIRED_CERTIFICATION_NUMBER("인증번호 만료되었습니다.", HttpStatus.BAD_REQUEST),
     INVALID_MANAGER_BALANCE("마감 금액이 입출금 내역과 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
 
     // 403

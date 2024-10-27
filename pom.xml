@@ -172,6 +172,14 @@
 			<artifactId>javase</artifactId>
 			<version>3.4.1</version>
 		</dependency>
+
+		<!-- SMS 발송 -->
+		<dependency>
+			<groupId>net.nurigo</groupId>
+			<artifactId>sdk</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
