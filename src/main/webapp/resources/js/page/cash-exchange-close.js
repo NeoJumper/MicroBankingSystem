@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-
     // 현재 상태 확인
     isClosed();
     

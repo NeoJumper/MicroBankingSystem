@@ -88,7 +88,7 @@
     </div>
 
 </div>
-
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 
 <script src="/resources/js/footer.js"></script>

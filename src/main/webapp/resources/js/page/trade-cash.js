@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    isClosed();
 
     clickCashTradeAccountSelectBtn(); // 계좌선택 시
 

@@ -127,7 +127,7 @@
         <button disabled id="cash-trade-submit" class="col-1 basic-btn">현금 거래 승인</button>
     </div>
 </div>
-
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <%@ include file="/resources/components/modal/trade-cash-result-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>

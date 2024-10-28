@@ -29,8 +29,10 @@ function convertToKoreanNumber(num) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    isClosed();
     handleBusinessDayDateInput();
     userNameInput();
+
 
     // 모달 계좌선택 버튼
     $('#search-modal-select-account-btn').click(function () {
@@ -90,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                         return;
                     } else {
-                        accountData = data;
+                        accountCloseCancelData = data;
 
                         const textAfterInter = Number(data.amountSum) * (1 - Number(data.productTaxRate));
                         const totalPayment = data.accountBal + textAfterInter;

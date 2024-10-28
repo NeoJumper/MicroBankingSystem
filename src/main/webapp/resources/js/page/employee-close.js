@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    isClosed();
+
     handleAuthDataOfEmployeeClosePage();
     registerClickEventOfEmpCloseBtn();
 
@@ -60,6 +62,7 @@ function closeBusinessDayOfEmployee() {
 
             // let todayClosingAmount = calculateVaultCash();
             // fillEmpVaultCash(todayClosingAmount);
+            isClosed();
         },
         error: function (xhr, status, error) {
             swal({

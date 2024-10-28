@@ -1,5 +1,8 @@
 
 $(document).ready(function () {
+
+    isClosed();
+
     accountType = "";
 
     clickReserveTransferBtn(); // 예약이체 버튼
