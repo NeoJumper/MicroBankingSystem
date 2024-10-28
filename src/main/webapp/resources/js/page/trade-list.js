@@ -216,7 +216,7 @@ function searchResultOfTradeList(pageNum = 1) {
     console.log("searchEndDate" + searchEndDate);
     // 페이지 번호와 항목 수 설정
 
-    const amount = 10; // 페이지당 항목 수
+    const amount = 8; // 페이지당 항목 수
 
 
     if (majorCategoryValue === 'common'){
@@ -292,6 +292,9 @@ function updatePagination(pageDTO) {
         paginationContainer.append(nextButton);
     }
 
+    // 페이지 가장 아래로
+    $('html, body').animate({ scrollTop: $(document).height() }, 'slow');
+
     // 페이지 버튼 클릭 이벤트 처리
     paginationContainer.find('a').on('click', function (e) {
         e.preventDefault(); // 기본 링크 동작 방지
@@ -321,8 +324,8 @@ function renderOfTradeSearchResults(data) {
     const tradeResultsTableBody = $('#trade-result-tbody');
     tradeResultsTableBody.empty();
 
-    $('#total-deposit-input').val(data.totalDeposit);
-    $('#total-withdraw-input').val(data.totalWithDraw);
+    $('#total-deposit-input').val(comma(data.totalDeposit == null ? 0 : data.totalDeposit) + '원');
+    $('#total-withdraw-input').val(comma(data.totalWithDraw == null ? 0 : data.totalWithDraw) + '원');
 
     const tradeList = data.tradeList;
 
@@ -393,11 +396,11 @@ function renderOfTradeSearchResults(data) {
                 .addClass('text-center')
                 .text(trade.targetAccId))
             .append($('<td>')
-                .addClass('text-center')
+                .addClass('text-right')
                 .addClass(amountClass)
                 .text(comma(amountText) + '원'))
             .append($('<td>')
-                .addClass('text-center')
+                .addClass('text-right')
                 .text(comma(balance) + '원'))
             .append($('<td>')
                 .addClass('text-center')
@@ -443,7 +446,7 @@ function renderOfBulkTransferSearchResults(transferList){
             .append($('<td>').text(transfer.rn)) // 순번
             .append($('<td>').text(formattedTransferDate)) // 거래일시
             .append($('<td>').text(transfer.accId)) // 비고 (여기선 계좌 ID)
-            .append($('<td>').text(transfer.amount + ' 원' )) // 총 이체금액
+            .append($('<td>').text(comma(transfer.amount) + ' 원' )) // 총 이체금액
             .append($('<td>').text(transfer.failureCnt)) // 실패건수
             .append($('<td>').text(transfer.successCnt)) // 성공건수
             .append($('<td>').text(transfer.totalCnt)) // 총건수

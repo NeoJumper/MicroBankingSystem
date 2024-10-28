@@ -148,8 +148,8 @@
 .status-nor {
     background: linear-gradient(to bottom, var(--basic-color), var(--basic-hover-dark-color));
     color: #F5F5F5;
-    font-size: 1.0rem;
-    padding: 8px 8px;
+    font-size: 0.9rem;
+    padding: 5px 8px;
     margin: 0 6px;
     border: none;
     border-radius: 5px;
