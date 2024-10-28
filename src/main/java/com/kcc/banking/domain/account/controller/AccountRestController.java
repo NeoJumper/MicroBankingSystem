@@ -120,7 +120,7 @@ public class AccountRestController {
         return ResponseEntity.ok(allProductList);
     }
 
-//    // 적금 해지
+    // 적금 해지
 //    @GetMapping("/api/employee/savings-account-close-details/{accountId}")
 //    public ResponseEntity<?> getSavingsAccountInfo(@PathVariable("accountId") String accountId) {
 //        CloseSavingsAccountTotal savingsInfo = accountTradeFacade.findCloseSavingAccountTotal(accountId);
