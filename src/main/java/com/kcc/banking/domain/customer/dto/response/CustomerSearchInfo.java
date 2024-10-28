@@ -15,6 +15,8 @@ public class CustomerSearchInfo {
 
     private int customerId;
     private String customerName;
+    private String email;
+    private String address;
     private Date birthDate;
     private String phoneNumber;
     private String securityLevel;
@@ -22,9 +24,11 @@ public class CustomerSearchInfo {
 
 
     @Builder
-    public CustomerSearchInfo(int customerId, String customerName, Date birthDate, String phoneNumber, String securityLevel, int branchId) {
+    public CustomerSearchInfo(int customerId, String customerName, String email, String address, Date birthDate, String phoneNumber, String securityLevel, int branchId) {
         this.customerId = customerId;
         this.customerName = customerName;
+        this.email = email;
+        this.address = address;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
         this.securityLevel = securityLevel;

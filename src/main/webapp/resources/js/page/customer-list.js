@@ -47,9 +47,11 @@ function searchCustomer(searchOption, searchValue,pageNum = 1){
                 var newRow = $('<tr class="customer-element">')
                     .append($('<td>').text(customer.customerId)).addClass('text-center')
                     .append($('<td>').text(customer.customerName)).addClass('text-center')
+                    .append($('<td>').text(customer.email)).addClass('text-center')
                     .append($('<td>').text(customer.phoneNumber)).addClass('text-center')
+                    .append($('<td>').text(customer.address)).addClass('text-center')
                     .append($('<td>').text(customer.securityLevel)).addClass('text-center')
-                    .append($('<td>').text(customer.branchId)).addClass('text-center');
+
 
                 $('#customer-table-body').append(newRow); // 새 데이터 추가
             });
