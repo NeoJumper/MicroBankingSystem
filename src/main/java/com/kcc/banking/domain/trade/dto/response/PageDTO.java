@@ -16,28 +16,31 @@ public class PageDTO {
     private Criteria criteria; // 검색 조건이 담긴 객체
 
     public PageDTO(Criteria criteria, int total) {
-        this.criteria = criteria;
-        this.total = total;
+        if(criteria != null){
+            this.criteria = criteria;
+            this.total = total;
 
-        // 한 페이지 블록에 표시할 마지막 페이지 번호
-        this.endPage = (int) (Math.ceil(criteria.getPageNum() / 10.0)) * 10;
+            // 한 페이지 블록에 표시할 마지막 페이지 번호
+            this.endPage = (int) (Math.ceil(criteria.getPageNum() / 10.0)) * 10;
 
-        // 한 페이지 블록에 표시할 시작 페이지 번호
-        this.startPage = this.endPage - 9;
+            // 한 페이지 블록에 표시할 시작 페이지 번호
+            this.startPage = this.endPage - 9;
 
-        // 전체 데이터 기준으로 계산한 실제 마지막 페이지 번호
-        int realEnd = (int) (Math.ceil((total * 1.0) / criteria.getAmount()));
+            // 전체 데이터 기준으로 계산한 실제 마지막 페이지 번호
+            int realEnd = (int) (Math.ceil((total * 1.0) / criteria.getAmount()));
 
-        // 계산한 마지막 페이지 번호보다 실제 페이지가 적다면 endPage를 실제 페이지로 설정
-        if (realEnd <= this.endPage) {
-            this.endPage = realEnd;
+            // 계산한 마지막 페이지 번호보다 실제 페이지가 적다면 endPage를 실제 페이지로 설정
+            if (realEnd <= this.endPage) {
+                this.endPage = realEnd;
+            }
+
+            // 이전 버튼 활성화 여부
+            this.prev = this.startPage > 1;
+
+            // 다음 버튼 활성화 여부
+            this.next = this.endPage < realEnd;
         }
 
-        // 이전 버튼 활성화 여부
-        this.prev = this.startPage > 1;
-
-        // 다음 버튼 활성화 여부
-        this.next = this.endPage < realEnd;
     }
 }
 

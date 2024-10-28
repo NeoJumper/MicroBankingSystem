@@ -4,9 +4,11 @@ import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.customer.dto.request.CustomerCreate;
 import com.kcc.banking.domain.customer.dto.response.CreatedCustomer;
-import com.kcc.banking.domain.customer.dto.response.CustomerSearchDTO;
+import com.kcc.banking.domain.customer.dto.request.CustomerSearch;
 import com.kcc.banking.domain.customer.dto.response.CustomerSearchInfo;
+import com.kcc.banking.domain.customer.dto.response.CustomerSearchResult;
 import com.kcc.banking.domain.customer.mapper.CustomerMapper;
+import com.kcc.banking.domain.trade.dto.response.PageDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,15 @@ public class CustomerService {
     private final CommonService commonService;
 
 
-    public List<CustomerSearchInfo> findCustomers(CustomerSearchDTO customerSearchDTO){
-        return customerMapper.findCustomers(customerSearchDTO);
+    public CustomerSearchResult findCustomers(CustomerSearch customerSearch){
+
+        int totalCount = customerMapper.getCustomerCount(customerSearch);
+
+        // 페이징 처리 객체 생성
+        PageDTO pageDTO = new PageDTO(customerSearch.getCriteria(), totalCount);
+        List<CustomerSearchInfo> customers = customerMapper.findCustomers(customerSearch);
+
+        return CustomerSearchResult.of(customers, pageDTO);
     }
     public CreatedCustomer createCustomer(CustomerCreate customerCreate){
         CurrentData currentData = commonService.getCurrentData();
