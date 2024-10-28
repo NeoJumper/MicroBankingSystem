@@ -138,7 +138,7 @@
 
 
 </div>
-
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/search-modal-customer.jsp" %>
 <%@ include file="/resources/components/modal/search-modal-deposit-product.jsp" %>
 <%@ include file="/resources/components/modal/result-modal-open-account.jsp" %>

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    isClosed();
+
     handleTransferData();
 
     // 비밀번호 인증 버튼 클릭 시

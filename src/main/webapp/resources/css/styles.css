@@ -193,13 +193,13 @@ td.text-center {
 
 
 #close-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: calc(100% - 220px); /* 사이드바 폭만큼 줄이기 */
-  height: 100%;
+  height: 100vh;
   margin-left: 220px; /* 사이드바 폭만큼 오른쪽으로 밀기 */
-  background-color: rgba(0, 0, 0, 0.65); /* 어두운 반투명 배경 */
+  background-color: rgba(0, 0, 0, 0.6); /* 어두운 반투명 배경 */
   display: flex;
   align-items: center;
   justify-content: center;

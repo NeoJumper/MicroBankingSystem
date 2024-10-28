@@ -1,6 +1,6 @@
-let accountData = {};
-
 $(document).ready(function () {
+    isClosed();
+
     $('#search-modal-account').on('hidden.bs.modal', function () {
         getAccountDetail();
     });

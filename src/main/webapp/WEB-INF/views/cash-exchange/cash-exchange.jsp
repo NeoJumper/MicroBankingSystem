@@ -89,6 +89,7 @@
         <button id="cash-exchange-accept" class="basic-btn">시재금 거래 승인</button>
     </div>
 </div>
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/employee-search-modal.jsp" %>
 <%@ include file="/resources/components/modal/cash-exchange-result-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>

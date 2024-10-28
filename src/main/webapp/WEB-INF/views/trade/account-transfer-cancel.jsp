@@ -97,7 +97,7 @@
         <button disabled id="cancel-transfer-submit" class="col-1 basic-btn">거래 취소 요청</button>
     </div>
 </div>
-
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/account-transfer-cancel.js"></script>
 </body>

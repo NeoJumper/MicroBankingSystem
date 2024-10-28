@@ -2,7 +2,7 @@ var perTradeLimit = 0;
 var dailyLimit = 0;
 
 $(document).ready(function () {
-
+    isClosed();
 
     // 총이율 입력 함수
     InputChangeOfTotalInterest();

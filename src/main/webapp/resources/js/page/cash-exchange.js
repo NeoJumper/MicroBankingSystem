@@ -1,4 +1,6 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
+    isClosed();
+
     updateTransactionTitle();
     registerClickEventOfEmpSearchBtn();
     searchModalSelectBtn();
