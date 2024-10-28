@@ -107,46 +107,40 @@
     width: 30%;
 
 }
-
+.trade-type-close > i{
+    color: #FFCE56;
+    font-size: 12px;
+}
+.trade-type-deposit > i{
+    color: #0079D4;
+    font-size: 12px;
+}
+.trade-type-withdrawal > i{
+    color: #cc0000;
+    font-size: 12px;
+}
+.trade-type-open > i{
+    color: #3AB764;
+    font-size: 12px;
+}
 
 
 .cash-text {
     padding: 10px;
     color: var(--point-green);
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
-.transfer-text {
-    padding: 10px;
-    color: var(--basic-color);
-    font-weight: bold;
-}
-.open-text {
-    padding: 10px;
-    color: white;
-    background-color: var(--basic-color);
-    font-weight: bold;
-}
-
-.close-text {
-    padding: 10px;
-    color: white;
-    background-color: var(--point-red);
-    font-weight: bold;
-}
-
-.withdrawal-text {
+.withdrawal-trade-text {
     padding: 10px;
     color: black;
-    background-color: var(--point-yellow);
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
-.deposit-text {
+.deposit-trade-text {
     padding: 10px;
-    color: black;
-    background-color: var(--point-green);
-    font-weight: bold;
+    color: #0079D4;
+    font-weight: bold !important;
 }
 
 

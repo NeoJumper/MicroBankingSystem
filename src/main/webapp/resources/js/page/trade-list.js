@@ -304,13 +304,13 @@ function updatePagination(pageDTO) {
 function getTradeTypeInfo(tradeType) {
     switch (tradeType) {
         case 'OPEN':
-            return {type: '개설', cssClass: 'open-text'}; // 개설
+            return {type: '개설', cssClass: 'trade-type-open'}; // 개설
         case 'CLOSE':
-            return {type: '해지', cssClass: 'close-text'}; // 해지
+            return {type: '해지', cssClass: 'trade-type-close'}; // 해지
         case 'WITHDRAWAL':
-            return {type: '출금', cssClass: 'withdrawal-text'}; // 출금
+            return {type: '출금', cssClass: 'trade-type-withdrawal'}; // 출금
         case 'DEPOSIT':
-            return {type: '입금', cssClass: 'deposit-text'}; // 입금
+            return {type: '입금', cssClass: 'trade-type-deposit'}; // 입금
         default:
             return {type: tradeType, cssClass: ''};
     }
@@ -339,13 +339,13 @@ function renderOfTradeSearchResults(data) {
 
 
         // 현금 이체 css 표시
-        const cashIndicatorText = trade.cashIndicator === 'TRUE' ? '현금' : '이체';
-        const cashIndicatorClass = trade.cashIndicator === 'TRUE' ? 'cash-text' : 'transfer-text';
+        const cashIndicatorText = trade.cashIndicator === 'TRUE' ? '현금' : '';
+        const cashIndicatorClass = trade.cashIndicator === 'TRUE' ? 'cash-text' : '';
 
         const statusMap = {
-            'NOR': {text: '취소 신청', class: 'status-nor'},
-            'CAN': {text: '취소 신청 진행중', class: 'status-can'},
-            'RVK': {text: '취소 신청 완료', class: 'status-rvk'}
+            'NOR': {text: '정상'},
+            'CAN': {text: '거래취소'},
+            'RVK': {text: '거래정정'}
         };
 
         // 상태에 따른 텍스트와 클래스 가져오기
@@ -354,6 +354,25 @@ function renderOfTradeSearchResults(data) {
         // 유형 가져오기
         const tradeTypeInfo = getTradeTypeInfo(trade.tradeType);
 
+
+
+        let amountText = '';
+        let amountClass = '';
+        let balance = trade.balance;
+        if (tradeTypeInfo.type ==='출금' || tradeTypeInfo.type ==='해지')
+        {
+            amountText = -trade.amount;
+            amountClass = 'withdrawal-trade-text'
+        }
+        else{
+            amountText = trade.amount;
+            amountClass = 'deposit-trade-text'
+        }
+
+
+
+
+
         var row = $('<tr>')
             .append($('<td class="hidden-trade-number">')
                 .addClass('text-center')
@@ -361,7 +380,9 @@ function renderOfTradeSearchResults(data) {
                 .text(trade.tradeNumber))
             .append($('<td>')
                 .addClass('text-center')
-                .text(index + 1))
+                .addClass(tradeTypeInfo.cssClass)
+                .append($('<i>').addClass('bi bi-circle-fill me-2'))
+                .append(tradeTypeInfo.type))
             .append($('<td>')
                 .addClass('text-center')
                 .text(formattedTradeDate))
@@ -373,27 +394,27 @@ function renderOfTradeSearchResults(data) {
                 .text(trade.targetAccId))
             .append($('<td>')
                 .addClass('text-center')
-                .text(trade.amount))
+                .addClass(amountClass)
+                .text(comma(amountText) + '원'))
             .append($('<td>')
                 .addClass('text-center')
-                .text(trade.balance))
+                .text(comma(balance) + '원'))
             .append($('<td>')
                 .addClass('text-center')
                 .addClass(cashIndicatorClass)
                 .text(cashIndicatorText))
             .append($('<td>')
-                .addClass('text-center')
-                .addClass(tradeTypeInfo.cssClass)
-                .text(tradeTypeInfo.type));
+                    .addClass('text-center')
+                    .text(statusInfo.text)
+                    .addClass(statusInfo.class));
 
-        if (formattedBusinessDay === formattedTradeDate && trade.tradeType !== 'OPEN') {
+        if (formattedBusinessDay === formattedTradeDate && trade.status === 'NOR') {
             // 영업일과 거래일이 동일하고 거래 유형이 'OPEN'이 아닐 경우 버튼 추가
             row.append($('<td>')
                 .addClass('text-center')
                 .append($('<button>')
-                    .text(statusInfo.text)
-                    .addClass(statusInfo.class)
-
+                    .text('취소하기')
+                    .addClass('status-nor')
                 )
             );
         } else {

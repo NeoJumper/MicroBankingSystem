@@ -174,16 +174,15 @@
 
             <table class="common-table">
                 <thead>
-
-                <th>순번</th>
+                <th><label id="trade-type">거래유형</label></th>
                 <th><label id="trade-date">거래일시</label></th>
                 <th><label id="acc-id">대상계좌</label></th>
                 <th><label id="target-acc-id">상대계좌</label></th>
                 <th><label id="amount">거래액</label></th>
                 <th><label id="balance">잔액</label></th>
                 <th><label id="cash-indicator">현금여부</label></th>
-                <th><label id="trade-type">거래유형</label></th>
                 <th><label id="status">상태</label></th>
+                <th><label></label></th>
                 </thead>
                 <tbody id="trade-result-tbody">
 
