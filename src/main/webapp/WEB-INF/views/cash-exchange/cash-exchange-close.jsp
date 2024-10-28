@@ -58,7 +58,7 @@
                     </c:choose>
                 </td>
                 <td>${cashExchange.empId}</td>
-                <td>${cashExchange.name}</td>
+                <td>${cashExchange.empName}</td>
                 <td>
                     <input type="text" value="<fmt:formatNumber value='${cashExchange.empCashBalance}' type='number'/>"
                            disabled>

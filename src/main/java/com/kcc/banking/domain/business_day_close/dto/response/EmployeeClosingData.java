@@ -1,6 +1,6 @@
 package com.kcc.banking.domain.business_day_close.dto.response;
 
-import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeData;
+import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeResultData;
 import com.kcc.banking.domain.trade.dto.response.TradeByCash;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class EmployeeClosingData {
     // trade 테이블에서의 거래 내역
     private List<TradeByCash> tradeByCashList;
     // cash_exchange에서의 거래 내역
-    private List<CashExchangeData> cashExchangeDataList;
+    private List<CashExchangeResultData> cashExchangeResultDataList;
     //    거래내역에서의 총 입금, 총 출금, 총 합
     private BigDecimal totalDepositOfTrade;
     private BigDecimal totalWithdrawalOfTrade;
@@ -37,11 +37,11 @@ public class EmployeeClosingData {
     private BigDecimal vaultCashOfCashExchange;
 
     @Builder
-    public EmployeeClosingData(ClosingData closingData, BigDecimal expectedVaultCash, List<TradeByCash> tradeByCashList, List<CashExchangeData> cashExchangeDataList, BigDecimal totalDepositOfTrade, BigDecimal totalWithdrawalOfTrade, BigDecimal vaultCashOfTrade, BigDecimal totalDepositOfCashExchange, BigDecimal totalWithdrawalOfCashExchange, BigDecimal vaultCashOfCashExchange) {
+    public EmployeeClosingData(ClosingData closingData, BigDecimal expectedVaultCash, List<TradeByCash> tradeByCashList, List<CashExchangeResultData> cashExchangeResultDataList, BigDecimal totalDepositOfTrade, BigDecimal totalWithdrawalOfTrade, BigDecimal vaultCashOfTrade, BigDecimal totalDepositOfCashExchange, BigDecimal totalWithdrawalOfCashExchange, BigDecimal vaultCashOfCashExchange) {
         this.closingData = closingData;
         this.expectedVaultCash = expectedVaultCash;
         this.tradeByCashList = tradeByCashList;
-        this.cashExchangeDataList = cashExchangeDataList;
+        this.cashExchangeResultDataList = cashExchangeResultDataList;
         this.totalDepositOfTrade = totalDepositOfTrade;
         this.totalWithdrawalOfTrade = totalWithdrawalOfTrade;
         this.vaultCashOfTrade = vaultCashOfTrade;
@@ -50,12 +50,12 @@ public class EmployeeClosingData {
         this.vaultCashOfCashExchange = vaultCashOfCashExchange;
     }
 
-    public static EmployeeClosingData of(ClosingData closingData, List<TradeByCash> tradeByCashList, List<CashExchangeData> cashExchangeList) {
+    public static EmployeeClosingData of(ClosingData closingData, List<TradeByCash> tradeByCashList, List<CashExchangeResultData> cashExchangeList) {
 
         EmployeeClosingData employeeClosingData = EmployeeClosingData.builder()
                 .closingData(closingData)
                 .tradeByCashList(tradeByCashList)
-                .cashExchangeDataList(cashExchangeList)
+                .cashExchangeResultDataList(cashExchangeList)
                 .totalDepositOfTrade(tradeByCashList.stream()
                         .filter(trade -> "OPEN".equals(trade.getTradeType()) || "DEPOSIT".equals(trade.getTradeType()))
                         .map(TradeByCash::getAmount)
@@ -68,12 +68,12 @@ public class EmployeeClosingData {
                 )
                 .totalDepositOfCashExchange(cashExchangeList.stream()
                         .filter(cashExchangeData -> "HANDOVER".equals(cashExchangeData.getExchangeType()))
-                        .map(CashExchangeData::getAmount)
+                        .map(CashExchangeResultData::getAmount)
                         .reduce(BigDecimal.ZERO, BigDecimal::add)
                 )
                 .totalWithdrawalOfCashExchange(cashExchangeList.stream()
                         .filter(cashExchangeData -> "RECEIPT".equals(cashExchangeData.getExchangeType()))
-                        .map(CashExchangeData::getAmount)
+                        .map(CashExchangeResultData::getAmount)
                         .reduce(BigDecimal.ZERO, BigDecimal::add)
                 )
                 .build();

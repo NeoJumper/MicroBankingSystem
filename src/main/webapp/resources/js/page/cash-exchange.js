@@ -36,8 +36,8 @@ $(document).ready(function () {
             success : function (response) {
                 // 모달 데이터 업데이트
                 $('#resultEmpId').text(response.empId);
-                $('#resultEmpName').text(response.name);
-                $('#resultAmount').text(response.amount.toLocaleString());
+                $('#resultEmpName').text($('.cash-exchnage-emp-name').text());
+                $('#resultAmount').val(response.amount.toLocaleString());
                 $('#resultEmpCashBalance').text(response.empCashBalance.toLocaleString());
                 $('#resultManagerCashBalance').text(response.managerCashBalance.toLocaleString());
 
@@ -117,7 +117,7 @@ function resetTransactionDetails() {
     tbody.innerHTML = `
         <tr id="empty-message">
             <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 250px">
-                행원 검색 버튼을 눌러 행원을 선택하여 주십시오
+                행원 조회 버튼을 눌러 행원을 선택하여 주십시오
             </td>
         </tr>
     `;
@@ -153,7 +153,7 @@ function updateEmployeeTable(employeeDetail) {
     const newRow = `
         <tr>
             <td class="cash-exchange-emp-id">${employeeDetail.id}</td>
-            <td >${employeeDetail.name}</td>
+            <td class="cash-exchnage-emp-name">${employeeDetail.name}</td>
             <td>
                 <input
                        class="cash-exchange-emp-balance"
@@ -162,7 +162,7 @@ function updateEmployeeTable(employeeDetail) {
                        disabled>
             </td>
             <td><input type="text" class="cash-exchange-amount" /></td>
-            <td><input type="text" class="cash-exchange-after-balance" disabled></td>
+            <td><input type="text" class="cash-exchange-after-balance" value="${formattedBalance}" disabled></td>
         </tr>
     `;
 

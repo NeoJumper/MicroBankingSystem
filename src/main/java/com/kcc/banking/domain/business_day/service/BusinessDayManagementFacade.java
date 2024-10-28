@@ -10,7 +10,7 @@ import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
-import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeData;
+import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeResultData;
 import com.kcc.banking.domain.cash_exchange.service.CashExchangeService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
@@ -88,7 +88,7 @@ public class BusinessDayManagementFacade {
         // trade 테이블의 행원 Data
         List<TradeByCash> tradeByCashList = tradeService.findTradeByCash(currentBusinessDateAndEmployeeId);
         // cash_exchange 테이블의 Data
-        List<CashExchangeData> cashExchangeList =  cashExchangeService.getCashExchangeData(currentBusinessDateAndEmployeeId);
+        List<CashExchangeResultData> cashExchangeList =  cashExchangeService.getCashExchangeData(currentBusinessDateAndEmployeeId);
         return EmployeeClosingData.of(closingData, tradeByCashList, cashExchangeList);
     }
 

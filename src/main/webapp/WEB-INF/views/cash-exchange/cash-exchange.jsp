@@ -56,7 +56,7 @@
         <tbody>
         <tr id="empty-message">
             <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 250px">
-                행원 검색 버튼을 눌러 행원을 선택하여 주십시오
+                행원 조회 버튼을 눌러 행원을 선택하여 주십시오
             </td>
         </tr>
         </tbody>
