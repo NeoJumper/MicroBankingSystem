@@ -216,7 +216,7 @@ function searchResultOfTradeList(pageNum = 1) {
     console.log("searchEndDate" + searchEndDate);
     // 페이지 번호와 항목 수 설정
 
-    const amount = 10; // 페이지당 항목 수
+    const amount = 8; // 페이지당 항목 수
 
 
     if (majorCategoryValue === 'common'){
@@ -292,6 +292,9 @@ function updatePagination(pageDTO) {
         paginationContainer.append(nextButton);
     }
 
+    // 페이지 가장 아래로
+    $('html, body').animate({ scrollTop: $(document).height() }, 'slow');
+
     // 페이지 버튼 클릭 이벤트 처리
     paginationContainer.find('a').on('click', function (e) {
         e.preventDefault(); // 기본 링크 동작 방지
@@ -304,13 +307,13 @@ function updatePagination(pageDTO) {
 function getTradeTypeInfo(tradeType) {
     switch (tradeType) {
         case 'OPEN':
-            return {type: '개설', cssClass: 'open-text'}; // 개설
+            return {type: '개설', cssClass: 'trade-type-open'}; // 개설
         case 'CLOSE':
-            return {type: '해지', cssClass: 'close-text'}; // 해지
+            return {type: '해지', cssClass: 'trade-type-close'}; // 해지
         case 'WITHDRAWAL':
-            return {type: '출금', cssClass: 'withdrawal-text'}; // 출금
+            return {type: '출금', cssClass: 'trade-type-withdrawal'}; // 출금
         case 'DEPOSIT':
-            return {type: '입금', cssClass: 'deposit-text'}; // 입금
+            return {type: '입금', cssClass: 'trade-type-deposit'}; // 입금
         default:
             return {type: tradeType, cssClass: ''};
     }
@@ -321,8 +324,8 @@ function renderOfTradeSearchResults(data) {
     const tradeResultsTableBody = $('#trade-result-tbody');
     tradeResultsTableBody.empty();
 
-    $('#total-deposit-input').val(data.totalDeposit);
-    $('#total-withdraw-input').val(data.totalWithDraw);
+    $('#total-deposit-input').val(comma(data.totalDeposit == null ? 0 : data.totalDeposit) + '원');
+    $('#total-withdraw-input').val(comma(data.totalWithDraw == null ? 0 : data.totalWithDraw) + '원');
 
     const tradeList = data.tradeList;
 
@@ -339,13 +342,13 @@ function renderOfTradeSearchResults(data) {
 
 
         // 현금 이체 css 표시
-        const cashIndicatorText = trade.cashIndicator === 'TRUE' ? '현금' : '이체';
-        const cashIndicatorClass = trade.cashIndicator === 'TRUE' ? 'cash-text' : 'transfer-text';
+        const cashIndicatorText = trade.cashIndicator === 'TRUE' ? '현금' : '';
+        const cashIndicatorClass = trade.cashIndicator === 'TRUE' ? 'cash-text' : '';
 
         const statusMap = {
-            'NOR': {text: '취소 신청', class: 'status-nor'},
-            'CAN': {text: '취소 신청 진행중', class: 'status-can'},
-            'RVK': {text: '취소 신청 완료', class: 'status-rvk'}
+            'NOR': {text: '정상'},
+            'CAN': {text: '거래취소'},
+            'RVK': {text: '거래정정'}
         };
 
         // 상태에 따른 텍스트와 클래스 가져오기
@@ -354,6 +357,25 @@ function renderOfTradeSearchResults(data) {
         // 유형 가져오기
         const tradeTypeInfo = getTradeTypeInfo(trade.tradeType);
 
+
+
+        let amountText = '';
+        let amountClass = '';
+        let balance = trade.balance;
+        if (tradeTypeInfo.type ==='출금' || tradeTypeInfo.type ==='해지')
+        {
+            amountText = -trade.amount;
+            amountClass = 'withdrawal-trade-text'
+        }
+        else{
+            amountText = trade.amount;
+            amountClass = 'deposit-trade-text'
+        }
+
+
+
+
+
         var row = $('<tr>')
             .append($('<td class="hidden-trade-number">')
                 .addClass('text-center')
@@ -361,7 +383,9 @@ function renderOfTradeSearchResults(data) {
                 .text(trade.tradeNumber))
             .append($('<td>')
                 .addClass('text-center')
-                .text(index + 1))
+                .addClass(tradeTypeInfo.cssClass)
+                .append($('<i>').addClass('bi bi-circle-fill me-2'))
+                .append(tradeTypeInfo.type))
             .append($('<td>')
                 .addClass('text-center')
                 .text(formattedTradeDate))
@@ -372,28 +396,28 @@ function renderOfTradeSearchResults(data) {
                 .addClass('text-center')
                 .text(trade.targetAccId))
             .append($('<td>')
-                .addClass('text-center')
-                .text(trade.amount))
+                .addClass('text-right')
+                .addClass(amountClass)
+                .text(comma(amountText) + '원'))
             .append($('<td>')
-                .addClass('text-center')
-                .text(trade.balance))
+                .addClass('text-right')
+                .text(comma(balance) + '원'))
             .append($('<td>')
                 .addClass('text-center')
                 .addClass(cashIndicatorClass)
                 .text(cashIndicatorText))
             .append($('<td>')
-                .addClass('text-center')
-                .addClass(tradeTypeInfo.cssClass)
-                .text(tradeTypeInfo.type));
+                    .addClass('text-center')
+                    .text(statusInfo.text)
+                    .addClass(statusInfo.class));
 
-        if (formattedBusinessDay === formattedTradeDate && trade.tradeType !== 'OPEN') {
+        if (formattedBusinessDay === formattedTradeDate && trade.status === 'NOR') {
             // 영업일과 거래일이 동일하고 거래 유형이 'OPEN'이 아닐 경우 버튼 추가
             row.append($('<td>')
                 .addClass('text-center')
                 .append($('<button>')
-                    .text(statusInfo.text)
-                    .addClass(statusInfo.class)
-
+                    .text('취소하기')
+                    .addClass('status-nor')
                 )
             );
         } else {
@@ -422,7 +446,7 @@ function renderOfBulkTransferSearchResults(transferList){
             .append($('<td>').text(transfer.rn)) // 순번
             .append($('<td>').text(formattedTransferDate)) // 거래일시
             .append($('<td>').text(transfer.accId)) // 비고 (여기선 계좌 ID)
-            .append($('<td>').text(transfer.amount + ' 원' )) // 총 이체금액
+            .append($('<td>').text(comma(transfer.amount) + ' 원' )) // 총 이체금액
             .append($('<td>').text(transfer.failureCnt)) // 실패건수
             .append($('<td>').text(transfer.successCnt)) // 성공건수
             .append($('<td>').text(transfer.totalCnt)) // 총건수

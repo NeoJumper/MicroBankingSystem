@@ -10,15 +10,17 @@
         <result property="birthDate" column="birth_date" />
         <result property="phoneNumber" column="phone_number" />
         <result property="branchId" column="branch_id" />
+        <result property="email" column="email" />
+        <result property="address" column="address" />
 
     </resultMap>
 
     <select id="findCustomers" parameterType="CustomerSearch" resultMap="CustomerSearchInfoMap">
         SELECT *
         FROM (
-        SELECT ROWNUM rn, id, name, birth_date, phone_number, branch_id, security_level
+        SELECT ROWNUM rn, id, name, birth_date, phone_number, branch_id, security_level, email,  address || detail_address as "address"
         FROM (
-            SELECT id,name,birth_date,phone_number, branch_id, security_level
+            SELECT id,name,birth_date,phone_number, branch_id, security_level,email ,  address, detail_address
             FROM customer
             <where>
                 <if test="searchOption != null and !searchOption.equals('')">

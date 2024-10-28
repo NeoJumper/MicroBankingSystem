@@ -162,10 +162,10 @@
 
             <div id="trade-total-balance">
                 <label for="total-deposit-input" >입금액</label>
-                <input type="text" id="total-deposit-input" disabled>
+                <input type="text" id="total-deposit-input" style="text-align: right;" disabled >
 
                 <label for="total-withdraw-input">출금액</label>
-                <input type="text" id="total-withdraw-input" disabled>
+                <input type="text" id="total-withdraw-input" style="text-align: right;" disabled>
 
             </div>
         </div>
@@ -174,16 +174,15 @@
 
             <table class="common-table">
                 <thead>
-
-                <th>순번</th>
-                <th><label id="trade-date">거래일시</label></th>
-                <th><label id="acc-id">대상계좌</label></th>
-                <th><label id="target-acc-id">상대계좌</label></th>
-                <th><label id="amount">거래액</label></th>
-                <th><label id="balance">잔액</label></th>
-                <th><label id="cash-indicator">현금여부</label></th>
-                <th><label id="trade-type">거래유형</label></th>
-                <th><label id="status">상태</label></th>
+                <th style="width: 8%"><label id="trade-type">거래유형</label></th>
+                <th style="width: 10%"><label id="trade-date">거래일</label></th>
+                <th style="width: 15%"><label id="acc-id">대상계좌</label></th>
+                <th style="width: 15%"><label id="target-acc-id">상대계좌</label></th>
+                <th style="width: 14%"><label id="amount">거래액</label></th>
+                <th style="width: 14%"><label id="balance">잔액</label></th>
+                <th style="width: 7%"><label id="cash-indicator">현금여부</label></th>
+                <th style="width: 7%"><label id="status">상태</label></th>
+                <th style="width: 20%"><label></label></th>
                 </thead>
                 <tbody id="trade-result-tbody">
 

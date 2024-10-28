@@ -46,12 +46,12 @@
         <table class="common-table">
             <thead>
             <tr>
-                <th style="text-align: center;">고객번호</th>
-                <th style="text-align: center;">이름</th>
-                <th style="text-align: center;">전화번호</th>
+                <th style="width:8%; text-align: center;">고객번호</th>
+                <th style="width:15%; text-align: center;">이름</th>
+                <th style="width:20%; text-align: center;">이메일</th>
+                <th style="width:15%; text-align: center;">전화번호</th>
+                <th style="width:25%; text-align: center;">주소</th>
                 <th style="text-align: center;">보안등급</th>
-                <th style="text-align: center;">이메일</th>
-
             </tr>
             </thead>
             <tbody id="customer-table-body">
