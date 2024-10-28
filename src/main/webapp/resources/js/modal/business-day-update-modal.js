@@ -157,7 +157,7 @@ function handleWorkers() {
 
             response.closingDataList.forEach(function (employee) {
                 // 매니저의 전일자 현금
-                let vaultCash = employee.prevCashBalance;
+                let vaultCash = employee.vaultCash;
                 let formattedVaultCash = new Intl.NumberFormat().format(vaultCash);
 
                 let formattedBranchBalance = new Intl.NumberFormat().format(branchBalance);
@@ -179,7 +179,7 @@ function handleWorkers() {
                     $('#business-day-manager-list').append(managerRow);
                 } else {
                     // 직원 정보 처리
-                    let vaultCash = employee.prevCashBalance;
+                    let vaultCash = employee.vaultCash;
                     let prevCashBalance = 0;
                     let roleDisplay = employee.roles === 'ROLE_EMPLOYEE' ? '행원' : employee.roles;
 

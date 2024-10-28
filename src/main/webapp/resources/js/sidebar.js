@@ -26,7 +26,9 @@ headerMap.set("header-business-day-management", {
     sub: {}
 });
 headerMap.set("header-customer-management", {
-    sidebar: [],
+    sidebar: [
+        "customer-save", "customer-list", "customer-update"
+    ],
     sub: {}
 });
 
@@ -154,9 +156,9 @@ function createCustomerManagementSidebar() {
             title: '고객 관리',
             icon: 'bi bi-person',
             submenu: [
-                { name: '고객 등록', url: '/page/common/customer/register' },
-                { name: '고객 목록', url: '/page/common/customer/list' },
-                { name: '고객 수정', url: '/page/common/customer/edit' }
+                { name: '고객 등록', url: '/page/common/customer-save' },
+                { name: '고객 목록', url: '/page/common/customer-list' },
+                { name: '고객 수정', url: '/page/common/customer-update' }
             ]
         }
     ];

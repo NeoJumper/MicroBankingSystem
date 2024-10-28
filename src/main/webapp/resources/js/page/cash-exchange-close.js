@@ -21,11 +21,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeButton = document.getElementById("cash-exchange-close");
 
     closeButton.addEventListener("click", function () {
-        // $.ajax({
-        //     url: '/api/manager/cash-exchange-close',
-        //     type: 'PATCH',
-        //     contentType: 'application/json',
-        //     data: JSON.stringify(),
-        // })
+        let managerCashBalanceVal = $('#lastManagerCash').val();
+        managerCashBalanceVal = managerCashBalanceVal.replace(/,/g, '');
+
+        // 숫자 변환
+        let managerCashBalance = Number(managerCashBalanceVal);
+
+        $.ajax({
+            url: '/api/manager/cash-exchange-close',
+            type: 'PATCH',
+            contentType: 'application/json',
+            data: JSON.stringify({managerCashBalance: managerCashBalance}),
+            success: function () {
+                swal({
+                        title: "시재금 마감 완료",
+                        text: "금일 시재금 거래 마감이 성공적으로 완료되었습니다.",
+                        icon: "success",
+                        button: "닫기",
+                    }
+                );
+
+            },
+            error: function (xhr, status, error) {
+                swal({
+                    title: "마감 실패",
+                    text: xhr.responseText,
+                    icon: "error",
+                    button: "닫기"
+                })
+            }
+        })
     });
 });

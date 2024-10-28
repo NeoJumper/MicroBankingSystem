@@ -31,8 +31,8 @@
             <th>유형</th>
             <th>사번</th>
             <th>행원 이름</th>
-            <th>행원 잔액</th>
-            <th>시재금 잔액</th>
+            <th>거래 후 행원 잔액</th>
+            <th>거래 후 시재금 잔액</th>
         </tr>
         </thead>
         <tbody>
@@ -92,7 +92,8 @@
         <tr>
             <th>금일 시재금 마감 금액</th>
             <td>
-                <input type="text"
+                <input id="lastManagerCash"
+                       type="text"
                        value="<fmt:formatNumber value='${cashExchangeCloseData.lastManagerCash}' type='number'/>"
                        disabled>
                 원

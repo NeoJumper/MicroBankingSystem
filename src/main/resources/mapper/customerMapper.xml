@@ -10,20 +10,37 @@
         <result property="birthDate" column="birth_date" />
         <result property="phoneNumber" column="phone_number" />
         <result property="branchId" column="branch_id" />
+        <result property="email" column="email" />
+        <result property="address" column="address" />
 
     </resultMap>
 
-    <select id="findCustomers" parameterType="CustomerSearchDTO" resultMap="CustomerSearchInfoMap">
-        SELECT id,name,birth_date,phone_number, branch_id, security_level FROM customer
+    <select id="findCustomers" parameterType="CustomerSearch" resultMap="CustomerSearchInfoMap">
+        SELECT *
+        FROM (
+        SELECT ROWNUM rn, id, name, birth_date, phone_number, branch_id, security_level, email,  address || detail_address as "address"
+        FROM (
+            SELECT id,name,birth_date,phone_number, branch_id, security_level,email ,  address, detail_address
+            FROM customer
+            <where>
+                <if test="searchOption != null and !searchOption.equals('')">
+                    AND ${searchOption} LIKE '%' || #{searchValue} || '%'
+                </if>
+            </where>
+        )
+        )
+        <if test="criteria != null and !criteria.equals('')">
+        WHERE rn BETWEEN #{criteria.amount} * (#{criteria.pageNum} - 1) + 1 AND #{criteria.amount} * #{criteria.pageNum}
+        </if>
+    </select>
+
+
+    <select id="getCustomerCount" parameterType="CustomerSearch">
+        SELECT COUNT(*)
+        FROM customer
         <where>
-            <if test="customerName != null and customerName != ''">
-                name LIKE '%' || #{customerName} || '%'
-            </if>
-            <if test="customerId != null and customerId != ''">
-                id = #{customerId}
-            </if>
-            <if test="customerPhone != null and customerPhone != ''">
-                phone_number LIKE '%' || #{customerPhone} || '%'
+            <if test="searchOption != null and !searchOption.equals('')">
+                AND ${searchOption} LIKE '%' || #{searchValue} || '%'
             </if>
         </where>
     </select>
@@ -32,14 +49,19 @@
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
             SELECT customer_seq.nextval FROM dual
         </selectKey>
-        INSERT INTO Customer (id, branch_id, email, name, phone_number,birth_date, registrant_id, registration_date, version)
+        INSERT INTO Customer (id, branch_id, email, name,gender, phone_number, address, detail_address, identification_code, birth_date, security_level ,registrant_id, registration_date, version)
         VALUES (
         #{id},
         #{branchId},
         #{email},
         #{name},
+        #{gender},
         #{phoneNumber},
+        #{address},
+        #{detailAddress},
+        #{identificationCode},
         #{birthDate},
+        '2등급',
         #{registrantId},
         SYSTIMESTAMP,
         1

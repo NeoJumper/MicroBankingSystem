@@ -107,82 +107,49 @@
     width: 30%;
 
 }
-
+.trade-type-close > i{
+    color: #FFCE56;
+    font-size: 12px;
+}
+.trade-type-deposit > i{
+    color: #0079D4;
+    font-size: 12px;
+}
+.trade-type-withdrawal > i{
+    color: #cc0000;
+    font-size: 12px;
+}
+.trade-type-open > i{
+    color: #3AB764;
+    font-size: 12px;
+}
 
 
 .cash-text {
     padding: 10px;
     color: var(--point-green);
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
-.transfer-text {
-    padding: 10px;
-    color: var(--basic-color);
-    font-weight: bold;
-}
-.open-text {
-    padding: 10px;
-    color: white;
-    background-color: var(--basic-color);
-    font-weight: bold;
-}
-
-.close-text {
-    padding: 10px;
-    color: white;
-    background-color: var(--point-red);
-    font-weight: bold;
-}
-
-.withdrawal-text {
+.withdrawal-trade-text {
     padding: 10px;
     color: black;
-    background-color: var(--point-yellow);
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
-.deposit-text {
+.deposit-trade-text {
     padding: 10px;
-    color: black;
-    background-color: var(--point-green);
-    font-weight: bold;
-}
-#pagination {
-    display: flex;             /* 내부 요소들을 가로로 배치 */
-    justify-content: center;   /* 가로 가운데 정렬 */
-    align-items: center;       /* 세로 가운데 정렬 */
-    list-style-type: none;     /* 리스트 스타일 제거 */
-    padding: 0;
-    margin: 20px 0;
+    color: #0079D4;
+    font-weight: bold !important;
 }
 
-.pagination-btn {
-    display: inline-block;
-    margin: 0 5px;
-    padding: 10px 15px;
-    text-decoration: none; /* 밑줄 제거 */
-    background: var(--basic-color);
-    color: #333;           /* 글자색 */
-    font-size: 14px;       /* 글자 크기 */
-    border-radius: 5px;    /* 모서리 둥글게 */
-}
-
-.pagination-btn:hover {
-    background-color: var(--basic-hover-dark-color); /* 마우스 오버 시 배경색 */
-}
-
-.pagination-btn.active {
-    background: linear-gradient(var(--basic-color), var(--basic-hover-dark-color));
-    color: white;
-}
 
 /* 진한 파란색 버튼 스타일 2 */
 .status-nor {
     background: linear-gradient(to bottom, var(--basic-color), var(--basic-hover-dark-color));
     color: #F5F5F5;
-    font-size: 1.0rem;
-    padding: 8px 8px;
+    font-size: 0.9rem;
+    padding: 5px 8px;
     margin: 0 6px;
     border: none;
     border-radius: 5px;

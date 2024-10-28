@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -17,7 +18,9 @@ public class CashExchangeController {
     private final CashExchangeService cashExchangeService;
 
     @GetMapping("/page/manager/cash-exchange")
-    public String cashExchange() {
+    public String cashExchange(Model model) {
+        BigDecimal currentCashBalanceForManager = cashExchangeService.getCurrentCashBalanceForManager();
+        model.addAttribute("currentCashBalanceForManager", currentCashBalanceForManager);
         return "cash-exchange/cash-exchange";
     }
 
