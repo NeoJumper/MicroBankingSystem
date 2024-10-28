@@ -53,5 +53,5 @@ public interface BusinessDayCloseMapper {
 
     void deleteBranchClosing(String businessDateAndBranchId);
 
-
+    String getStatusById(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId);
 }

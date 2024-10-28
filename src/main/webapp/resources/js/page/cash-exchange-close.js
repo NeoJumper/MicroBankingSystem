@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    // 현재 상태 확인
+    isClosed();
+    
     let handoverTotal = 0;
     let receiptTotal = 0;
 
@@ -40,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         button: "닫기",
                     }
                 );
+
+                isClosed();
 
             },
             error: function (xhr, status, error) {

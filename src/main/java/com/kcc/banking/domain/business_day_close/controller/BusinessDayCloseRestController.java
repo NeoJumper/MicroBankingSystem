@@ -38,4 +38,9 @@ public class BusinessDayCloseRestController {
         ManagerClosingData managerClosingData = businessDayCloseService.getManagerClosingData();
         return managerClosingData;
     }
+
+    @GetMapping("/api/manager/business-day-close/status")
+    public String getBusinessDayCloseStatus(){
+        return businessDayCloseService.getEmployeeStatus();
+    }
 }
