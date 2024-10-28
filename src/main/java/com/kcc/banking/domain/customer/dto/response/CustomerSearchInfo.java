@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.customer.dto.response;
 
+import com.kcc.banking.domain.trade.dto.response.PageDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

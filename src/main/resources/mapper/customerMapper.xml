@@ -13,17 +13,32 @@
 
     </resultMap>
 
-    <select id="findCustomers" parameterType="CustomerSearchDTO" resultMap="CustomerSearchInfoMap">
-        SELECT id,name,birth_date,phone_number, branch_id, security_level FROM customer
+    <select id="findCustomers" parameterType="CustomerSearch" resultMap="CustomerSearchInfoMap">
+        SELECT *
+        FROM (
+        SELECT ROWNUM rn, id, name, birth_date, phone_number, branch_id, security_level
+        FROM (
+            SELECT id,name,birth_date,phone_number, branch_id, security_level
+            FROM customer
+            <where>
+                <if test="searchOption != null and !searchOption.equals('')">
+                    AND ${searchOption} LIKE '%' || #{searchValue} || '%'
+                </if>
+            </where>
+        )
+        )
+        <if test="criteria != null and !criteria.equals('')">
+        WHERE rn BETWEEN #{criteria.amount} * (#{criteria.pageNum} - 1) + 1 AND #{criteria.amount} * #{criteria.pageNum}
+        </if>
+    </select>
+
+
+    <select id="getCustomerCount" parameterType="CustomerSearch">
+        SELECT COUNT(*)
+        FROM customer
         <where>
-            <if test="customerName != null and customerName != ''">
-                name LIKE '%' || #{customerName} || '%'
-            </if>
-            <if test="customerId != null and customerId != ''">
-                id = #{customerId}
-            </if>
-            <if test="customerPhone != null and customerPhone != ''">
-                phone_number LIKE '%' || #{customerPhone} || '%'
+            <if test="searchOption != null and !searchOption.equals('')">
+                AND ${searchOption} LIKE '%' || #{searchValue} || '%'
             </if>
         </where>
     </select>
