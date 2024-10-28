@@ -32,13 +32,13 @@
                             <th>거래 후 행원 시재금</th>
                             <td><span id="resultEmpCashBalance"></span> 원</td>
                         </tr>
-                    <tr
+                        <tr>
+                            <th>거래 후 매니저 시재금</th>
+                            <td><span id="resultManagerCashBalance"></span> 원</td>
+                        </tr>
                     </tbody>
 
                 </table>
-
-                <p><strong>:</strong> </p>
-                <p><strong>거래 후 매니저 시재금:</strong> <span id="resultManagerCashBalance"></span> 원</p>
             </div>
             <div class="modal-footer">
                 <button id="cash-exchange-result-close-btn" type="button" class="basic-btn" data-bs-dismiss="modal">닫기</button>
