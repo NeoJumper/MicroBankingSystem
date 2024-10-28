@@ -17,6 +17,7 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
+
     <div>
         <h5>시재 관리 ></h5>
         <h5>&nbsp시재금 거래 마감</h5>
@@ -58,7 +59,7 @@
                     </c:choose>
                 </td>
                 <td>${cashExchange.empId}</td>
-                <td>${cashExchange.name}</td>
+                <td>${cashExchange.empName}</td>
                 <td>
                     <input type="text" value="<fmt:formatNumber value='${cashExchange.empCashBalance}' type='number'/>"
                            disabled>
@@ -102,6 +103,7 @@
         </tbody>
     </table>
     <button id="cash-exchange-close" class="basic-btn">시재금 거래 마감</button>
+    <%@ include file="/resources/components/close-overlay.jsp" %>
 </div>
 
 <script src="/resources/js/footer.js"></script>

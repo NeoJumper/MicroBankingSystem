@@ -4,6 +4,12 @@ $(document).ready(function () {
     searchModalSelectBtn();
     checkEmptyTable();
 
+    // 모달 닫기 버튼에 추가
+    $('#cash-exchange-result-close-btn').on('click', function () {
+        window.location.reload();
+    })
+
+    // 거래 승인 버튼 함수 추가
     $('#cash-exchange-accept').on('click', function () {
         // 거래 후 매니저 잔액
         let afterManagerCash = $('#afterManagerCash').val().replace(/[^0-9]/g, '') || 0;
@@ -30,14 +36,14 @@ $(document).ready(function () {
             success : function (response) {
                 // 모달 데이터 업데이트
                 $('#resultEmpId').text(response.empId);
-                $('#resultEmpName').text(response.name);
-                $('#resultAmount').text(response.amount.toLocaleString());
+                $('#resultEmpName').text($('.cash-exchnage-emp-name').text());
+                $('#resultAmount').val(response.amount.toLocaleString());
                 $('#resultEmpCashBalance').text(response.empCashBalance.toLocaleString());
                 $('#resultManagerCashBalance').text(response.managerCashBalance.toLocaleString());
 
                 // 모달 표시
-                var resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
-                resultModal.show();
+                var cashExchangeResultModal = new bootstrap.Modal(document.getElementById('cash-exchange-result-modal'));
+                cashExchangeResultModal.show();
             },
             error: function () {
                 alert('거래 처리 중 오류가 발생했습니다.');
@@ -105,6 +111,23 @@ $(document).ready(function () {
     });
 });
 
+function resetTransactionDetails() {
+    // Clear the tbody of #selected-employee-table and show the empty message
+    const tbody = document.querySelector("#selected-employee-table tbody");
+    tbody.innerHTML = `
+        <tr id="empty-message">
+            <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 250px">
+                행원 조회 버튼을 눌러 행원을 선택하여 주십시오
+            </td>
+        </tr>
+    `;
+
+    // Reset afterManagerCash to initial manager cash balance
+    const afterManagerCash = document.getElementById("afterManagerCash");
+    const initialCashBalance = document.getElementById("lastManagerCash").value;
+    afterManagerCash.value = initialCashBalance;
+}
+
 // 빈 테이블 상태 확인 함수
 function checkEmptyTable() {
     const tableBody = $('#selected-employee-table tbody');
@@ -130,7 +153,7 @@ function updateEmployeeTable(employeeDetail) {
     const newRow = `
         <tr>
             <td class="cash-exchange-emp-id">${employeeDetail.id}</td>
-            <td >${employeeDetail.name}</td>
+            <td class="cash-exchnage-emp-name">${employeeDetail.name}</td>
             <td>
                 <input
                        class="cash-exchange-emp-balance"
@@ -139,7 +162,7 @@ function updateEmployeeTable(employeeDetail) {
                        disabled>
             </td>
             <td><input type="text" class="cash-exchange-amount" /></td>
-            <td><input type="text" class="cash-exchange-after-balance" disabled></td>
+            <td><input type="text" class="cash-exchange-after-balance" value="${formattedBalance}" disabled></td>
         </tr>
     `;
 
@@ -182,11 +205,12 @@ function updateTransactionTitle() {
     const selectedValue = document.querySelector('input[name="exchangeType"]:checked').value;
     const titleElement = document.getElementById("transactionTitle");
 
-    if (selectedValue === "handover") {
+    if (selectedValue === "HANDOVER") {
         titleElement.textContent = "인도 거래";
-    } else if (selectedValue === "receive") {
+    } else if (selectedValue === "RECEIVE") {
         titleElement.textContent = "인수 거래";
     }
+    resetTransactionDetails();
 }
 
 function registerClickEventOfEmpSearchBtn() {

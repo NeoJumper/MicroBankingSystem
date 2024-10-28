@@ -6,22 +6,46 @@
     <title>Insert title here</title>
 </head>
 <body>
-<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="cash-exchange-result-modal" tabindex="-1" aria-labelledby="cash-exchange-result-modal-Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="resultModalLabel">거래 결과</h5>
+                <h5 class="modal-title" id="cash-exchange-result-modal-Label">시재금 거래 결과</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>사번:</strong> <span id="resultEmpId"></span></p>
-                <p><strong>이름:</strong> <span id="resultEmpName"></span></p>
-                <p><strong>거래금:</strong> <span id="resultAmount"></span> 원</p>
-                <p><strong>거래 후 행원 시재금:</strong> <span id="resultEmpCashBalance"></span> 원</p>
-                <p><strong>거래 후 매니저 시재금:</strong> <span id="resultManagerCashBalance"></span> 원</p>
+                <table class="common-table">
+                    <tbody>
+                    <tr>
+                        <th>사번</th>
+                        <td><span id="resultEmpId"></span></td>
+                        <th>이름</th>
+                        <td colspan="3"><span id="resultEmpName"></span></td>
+                    </tr>
+                    <tr>
+                        <th>거래금</th>
+                        <td colspan="3">
+                            <input id="resultAmount"
+                                   type="text"
+                                   disabled>
+                            원</td>
+                    </tr>
+                    <tr>
+                        <th>거래 후 행원 시재금</th>
+                        <td colspan="3">
+                            <span id="resultEmpCashBalance"></span> 원</td>
+
+                    </tr>
+                    <tr>
+                        <th>거래 후 매니저 시재금</th>
+                        <td colspan="3"><span id="resultManagerCashBalance"></span> 원</td>
+                    </tr>
+                    </tbody>
+                </table>
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button id="cash-exchange-result-close-btn" type="button" class="basic-btn" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>

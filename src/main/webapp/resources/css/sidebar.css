@@ -14,7 +14,7 @@
   width: 220px;
   height: 100%;
   transition: width 0.3s ease-in-out;
-  z-index: 5;
+  z-index: 20;
   background: white;
   border-right: 1px solid var(--basic-gray);
 }

@@ -11,7 +11,7 @@ import com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper;
 import com.kcc.banking.domain.cash_exchange.dto.request.CashExchangeCreate;
 import com.kcc.banking.domain.cash_exchange.dto.request.ManagerCashBalance;
 import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeCloseData;
-import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeData;
+import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeResultData;
 import com.kcc.banking.domain.cash_exchange.mapper.CashExchangeMapper;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
@@ -32,7 +32,7 @@ public class CashExchangeService {
 
 
     // employee
-    public List<CashExchangeData> getCashExchangeData(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId) {
+    public List<CashExchangeResultData> getCashExchangeData(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId) {
         return cashExchangeMapper.getCashExchangeData(currentBusinessDateAndEmployeeId);
     }
 
@@ -62,7 +62,7 @@ public class CashExchangeService {
     public CashExchangeCloseData getCashExchangeDataForManager() {
         BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
         // 1
-        List<CashExchangeData> cashExchangeList = cashExchangeMapper.getCashExchangeDataForManager(currentBusinessDateAndEmployeeId);
+        List<CashExchangeResultData> cashExchangeList = cashExchangeMapper.getCashExchangeDataForManager(currentBusinessDateAndEmployeeId);
         // 2
         ClosingData closingData = businessDayCloseMapper.findClosingData(currentBusinessDateAndEmployeeId);
 
@@ -123,7 +123,7 @@ public class CashExchangeService {
      * 3. 행원의 출금/입금액 변경
      */
     @Transactional(rollbackFor = Exception.class)
-    public CashExchangeData createCashExchangeAndUpdate(CashExchangeCreate cashExchangeCreate) {
+    public CashExchangeResultData createCashExchangeAndUpdate(CashExchangeCreate cashExchangeCreate) {
         // init
         CurrentData currentData = commonService.getCurrentData();
         Long cashExchangeId = cashExchangeMapper.getNextCashExchangeSeq();
@@ -150,8 +150,8 @@ public class CashExchangeService {
         //return (cashExchangeResult + managerUpdateResult + employeeUpdateResult) == 3 ? "SUCCESS" : "FAIL";
 
         if((cashExchangeResult + managerUpdateResult + employeeUpdateResult) == 3){
-            CashExchangeData cashExchangeData = cashExchangeMapper.getCashExchangeDataByID(cashExchangeId);
-            return cashExchangeData;
+            CashExchangeResultData cashExchangeResultData = cashExchangeMapper.getCashExchangeDataByID(cashExchangeId);
+            return cashExchangeResultData;
         }else{
             return null;
         }

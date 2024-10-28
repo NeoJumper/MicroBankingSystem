@@ -190,3 +190,34 @@ td.text-center {
   background: linear-gradient(var(--basic-color), var(--basic-hover-dark-color));
   color: white;
 }
+
+
+#close-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 220px); /* 사이드바 폭만큼 줄이기 */
+  height: 100%;
+  margin-left: 220px; /* 사이드바 폭만큼 오른쪽으로 밀기 */
+  background-color: rgba(0, 0, 0, 0.65); /* 어두운 반투명 배경 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5; /* main-area 내용 위로 오도록 설정 */
+}
+
+#close-message {
+  color: black;
+  font-size: 2rem;
+  background: linear-gradient(var(--light-gray), var(--basic-gray));
+  padding: 40px 100px;
+  text-align: center;
+  font-weight: bold;
+  border: 1.5px solid var(--little-dark-gray);
+}
+
+#close-message-sub {
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.2rem;
+}

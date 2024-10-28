@@ -34,3 +34,19 @@ function convertNumber(str) {
     }
     return str;
 }
+
+// 페이지 로드 시 개인 마감 상태 확인
+function isClosed(){
+    $.ajax({
+        url: '/api/manager/business-day-close/status',
+        type: 'GET',
+        success: function (response) {
+            if(response == "CLOSED"){
+                document.getElementById("close-overlay").style.display = "flex";
+            }else if(response =="OPEN"){
+                document.getElementById("close-overlay").style.display = "none";
+            }
+
+        }
+    })
+}
