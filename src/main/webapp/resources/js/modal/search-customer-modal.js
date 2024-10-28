@@ -1,75 +1,81 @@
 $(document).ready(function () {
     $("#customer-id-search-btn").on("click", function () {
 
-        customerSearchModalEvent();
+        customerSearchInputEnterEvent();
+        customerSearchBtnClickEvent();
         insertCustomerId();
 
     });
 });
 
 // ------------------------------- START customerSearchModalEvent()------------------------------------------
+// 모달 내 고객 검색 버튼 클릭시 함수
+function customerSearchInputEnterEvent() {
+
+    $('#search-modal-search-btn').keypress(function(event) {
+
+        if (event.which === 13) {
+            const searchOption = $('#search-modal-select').val(); // 드롭다운에서 선택된 값
+            const searchValue = $('#search-modal-input').val(); // 입력 필드의 값 가져오기
+            searchCustomer(searchOption, searchValue);
+        }
+    });
+}
 
 // 모달 내 고객 검색 버튼 클릭시 함수
-function customerSearchModalEvent() {
-    // 셀렉트 요소 가져오기
-    $('#search-modal-customer-information').empty();
+function customerSearchBtnClickEvent() {
 
     $('#search-modal-search-btn').on('click', function () {
-        // 드롭다운에서 선택된 값
-        const searchType = $('#search-modal-select').val();
-        // 입력 필드의 값 가져오기
-        const searchInput = $('#search-modal-input').val();
 
+        const searchOption = $('#search-modal-select').val(); // 드롭다운에서 선택된 값
 
-        let queryParam = '';
-        if (searchType === 'customer-id') {
-            queryParam = 'customerId=' + searchInput;
+        const searchValue = $('#search-modal-input').val(); // 입력 필드의 값 가져오기
 
-        } else if (searchType === 'customer-name') {
-            queryParam = 'customerName=' + searchInput;
-
-        } else if (searchType === 'customer-phone') {
-            queryParam = 'customerPhone=' + searchInput;
-
-        }
-
-
-        $.ajax({
-            url: '/api/employee/customer?' + queryParam,
-            method: 'GET',
-            success: function (response) {
-                var customerTableBody = $("#search-modal-customer-information");
-                customerTableBody.empty();
-
-                $.each(response, function(index, customer){
-                    var row = $('<tr class="customer-element">')
-                        .append($('<td style="width: 10%">').append($('<input class="form-check-input row-radio" type="radio" name="selected-customer">')))
-                        .append($('<td style="width: 10%">').text(customer.customerId))
-                        .append($('<td style="width: 10%">').text(customer.customerName))
-                        .append($('<td style="width: 20%">').text(customer.phoneNumber))
-                        .append($('<td style="width: 15%">').text(customer.securityLevel))
-                        .append($('<td style="width: 15%">').text(customer.branchId));
-
-                    customerTableBody.append(row);
-                })
-
-                $('.customer-element').on('click', function() {
-                    // 해당 tr 안의 라디오 버튼을 체크
-                    $(this).find('.row-radio').prop('checked', true);
-                });
-
-                // 라디오 버튼이 클릭되었을 때도 체크되도록 설정
-                $('.row-radio').on('click', function(e) {
-                    e.stopPropagation();  // 이벤트 전파 중단 (tr 클릭이 중복 처리되지 않도록)
-                });
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-
-                console.error('검색 실패:', errorThrown);
-                alert('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
-            }
-        });
+        searchCustomer(searchOption, searchValue);
     });
+}
+
+function searchCustomer(searchOption, searchValue) {
+    $.ajax({
+        url: '/api/employee/customer',
+        type: 'GET',
+        data: {
+            searchOption: searchOption,
+            searchValue: searchValue,
+        },
+        success: function (response) {
+            var customerTableBody = $("#search-modal-customer-information");
+            customerTableBody.empty();
+
+            $.each(response.customerSearchInfoList, function(index, customer){
+                var row = $('<tr class="customer-element">')
+                    .append($('<td style="width: 10%">').append($('<input class="form-check-input row-radio" type="radio" name="selected-customer">')))
+                    .append($('<td style="width: 10%">').text(customer.customerId))
+                    .append($('<td style="width: 10%">').text(customer.customerName))
+                    .append($('<td style="width: 20%">').text(customer.phoneNumber))
+                    .append($('<td style="width: 15%">').text(customer.securityLevel))
+                    .append($('<td style="width: 15%">').text(customer.branchId));
+
+                customerTableBody.append(row);
+            })
+
+            $('.customer-element').on('click', function() {
+                // 해당 tr 안의 라디오 버튼을 체크
+                $(this).find('.row-radio').prop('checked', true);
+            });
+
+            // 라디오 버튼이 클릭되었을 때도 체크되도록 설정
+            $('.row-radio').on('click', function(e) {
+                e.stopPropagation();  // 이벤트 전파 중단 (tr 클릭이 중복 처리되지 않도록)
+            });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+
+            console.error('검색 실패:', errorThrown);
+            alert('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
+        }
+    });
+
 }
 
 // ------------------------------- END customerSearchModalEvent()------------------------------------------

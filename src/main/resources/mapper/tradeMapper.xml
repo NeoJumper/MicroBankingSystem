@@ -18,48 +18,38 @@
     <select id="findTradeListOfAccId" parameterType="TradeSearch" resultMap="TradeOfListMap">
         SELECT *
         FROM (
-        SELECT ROWNUM rn, trade_date, acc_id, target_acc_id, trade_type, cash_indicator, amount, balance, status, trade_number
-        FROM (
-        SELECT
-        trade_date,
-        acc_id,
-        target_acc_id,
-        trade_type,
-        cash_indicator,
-        amount,
-        balance,
-        status,
-        trade_number
-        FROM Trade
-        <where>
-            <!-- 계좌번호 조회 -->
-            <if test="accId != null and accId != ''">
-                acc_id LIKE #{accId} || '%'
-            </if>
+            SELECT ROWNUM rn, trade_date, acc_id, target_acc_id, trade_type, cash_indicator, amount, balance, status, trade_number
+            FROM (
+                SELECT trade_date, acc_id, target_acc_id, trade_type, cash_indicator, amount, balance, status, trade_number
+                FROM Trade
+                <where>
+                    <!-- 계좌번호 조회 -->
+                    <if test="accId != null and accId != ''">
+                        acc_id LIKE #{accId} || '%'
+                    </if>
 
-            <!-- 거래유형 조회 -->
-            <if test="tradeType != null and tradeType != ''">
-                AND trade_type LIKE #{tradeType}
-            </if>
+                    <!-- 거래유형 조회 -->
+                    <if test="tradeType != null and tradeType != ''">
+                        AND trade_type LIKE #{tradeType}
+                    </if>
 
-            <!-- 날짜 직접 입력 검색 -->
-            <if test="startDate != null and endDate != null">
-                AND trade_date BETWEEN #{startDate} AND #{endDate}
-            </if>
-        </where>
-        <!-- 정렬 기준 -->
-        <choose>
-            <when test="sortOrder == 'latest'">
-                ORDER BY trade_date DESC
-            </when>
-            <when test="sortOrder == 'oldest'">
-                ORDER BY trade_date ASC
-            </when>
-        </choose>
-        )
+                    <!-- 날짜 직접 입력 검색 -->
+                    <if test="startDate != null and endDate != null">
+                        AND trade_date BETWEEN #{startDate} AND #{endDate}
+                    </if>
+                </where>
+                <!-- 정렬 기준 -->
+                <choose>
+                    <when test="sortOrder == 'latest'">
+                        ORDER BY trade_date DESC
+                    </when>
+                    <when test="sortOrder == 'oldest'">
+                        ORDER BY trade_date ASC
+                    </when>
+                </choose>
+            )
         )
         WHERE rn BETWEEN #{criteria.amount} * (#{criteria.pageNum} - 1) + 1 AND #{criteria.amount} * #{criteria.pageNum}
-
     </select>
 
     <resultMap id="TradeInfoOfPerAccountMap" type="TradeInfoOfPerAccount">

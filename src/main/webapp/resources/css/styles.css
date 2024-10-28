@@ -161,6 +161,35 @@ td.text-center {
 .no-margin{
   margin: 0 !important;
 }
+#pagination {
+  display: flex;             /* 내부 요소들을 가로로 배치 */
+  justify-content: center;   /* 가로 가운데 정렬 */
+  align-items: center;       /* 세로 가운데 정렬 */
+  list-style-type: none;     /* 리스트 스타일 제거 */
+  padding: 0;
+  margin: 20px 0;
+}
+
+.pagination-btn {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 10px 15px;
+  text-decoration: none; /* 밑줄 제거 */
+  background: white;
+  color: #333;           /* 글자색 */
+  font-size: 14px;       /* 글자 크기 */
+  border: 1px solid var(--basic-color);
+  border-radius: 5px;     /* 모서리 둥글게 */
+}
+
+.pagination-btn:hover {
+  background-color: var(--basic-hover-dark-color); /* 마우스 오버 시 배경색 */
+}
+
+.pagination-btn.active {
+  background: linear-gradient(var(--basic-color), var(--basic-hover-dark-color));
+  color: white;
+}
 
 
 #close-overlay {

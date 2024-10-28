@@ -40,7 +40,6 @@ CREATE TABLE Employee (
                           phone_number VARCHAR(13) NULL,
                           roles VARCHAR(20) NULL,
                           registration_date TIMESTAMP NULL,
-                          registrant VARCHAR(100) NULL,
                           modification_date TIMESTAMP NULL,
                           modifier_id NUMBER NULL,
                           version NUMBER NULL
@@ -97,6 +96,7 @@ CREATE TABLE Customer (
                           gender VARCHAR(10) NULL,
                           identification_code VARCHAR(15) NULL,
                           address VARCHAR(2000) NULL,
+                          detail_address VARCHAR(2000) NULL,
                           birth_date TIMESTAMP NULL,
                           security_level VARCHAR(10) NULL,
                           registration_date TIMESTAMP NULL,

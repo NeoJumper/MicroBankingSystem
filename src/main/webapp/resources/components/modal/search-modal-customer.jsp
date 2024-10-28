@@ -26,9 +26,9 @@
                     <tr>
                         <th>
                             <select id="search-modal-select" name="search-modal-select" style="width: 150px">
-                                <option value="customer-id">고객번호</option>
-                                <option value="customer-name">고객이름</option>
-                                <option value="customer-phone">전화번호</option>
+                                <option value="id">고객번호</option>
+                                <option value="name">이름</option>
+                                <option value="phoneNumber">전화번호</option>
                             </select>
                         </th>
                         <td>
