@@ -1,10 +1,14 @@
+var timerInterval = 0;
+
 $(document).ready(function () {
 
     customerSearchInputEnterEvent();
     customerSearchBtnClickEvent();
     insertCustomerId();
 
-
+    clickSendBtn();
+    clickResendBtn();
+    clickAuthenticateBtn();
 });
 
 // ------------------------------- START customerSearchModalEvent()------------------------------------------
@@ -102,7 +106,7 @@ function insertCustomerId() {
             const insertValueMappings = [
                 { selector: '#customer-id-input', columnIndex: 2 },
                 { selector: '#customer-name-input', columnIndex: 3 },
-                { selector: '#customer-phone-input', columnIndex: 4 },
+                { selector: '#customer-phone-number-input', columnIndex: 4 },
                 { selector: '#customer-security-level-input', columnIndex: 5},
             ];
 
@@ -134,5 +138,73 @@ function insertCustomerId() {
 
 }
 
-// ------------------------------- END insertCustomerId()------------------------------------------
+function clickSendBtn(){
+    $('#authentication-number-send-btn').click(function() {
+        swal({
+            title: "SMS 전송 성공",
+            text: "인증 번호가 성공적으로 전송되었습니다.",
+            icon: "success",
+            button: "닫기",
+        })
+        registerAuthenticationTimer();
+    });
+}
 
+function clickResendBtn(){
+    $('#authentication-number-resend-btn').click(function() {
+        swal({
+            title: "SMS 재전송 성공",
+            text: "인증 번호가 성공적으로 재전송되었습니다.",
+            icon: "success",
+            button: "닫기",
+        })
+        clearInterval(timerInterval);
+        registerAuthenticationTimer();
+    });
+
+}
+
+function registerAuthenticationTimer() {
+
+    $('#phone-authentication-number').prop('disabled', false);
+    $('#phone-authentication-number').attr('placeholder', '인증번호 6자리를 입력해주세요');
+    // 타이머 표시
+    $('#timer').show();
+    $('#authentication-number-send-btn').addClass('hidden');
+    $('#authentication-number-resend-btn').removeClass('hidden');
+    $('#authentication-number-check-btn').removeClass('hidden');
+
+
+    // 3분 타이머 설정
+    let timeLeft = 180; // 3분을 초로 표현
+    timerInterval = setInterval(function() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+
+        // 시간 표시 형식
+        $('#timer').text(`제한 시간 : ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`);
+
+        // 시간 감소
+        timeLeft--;
+
+        // 시간이 다 되었을 때
+        if (timeLeft < 0) {
+            clearInterval(timerInterval);
+            $('#timer').hide(); // 타이머 숨기기
+            $('#phone-authentication-number').prop('disabled', true); // 입력 필드 비활성화
+        }
+    }, 1000); // 1초마다 업데이트
+}
+
+function clickAuthenticateBtn() {
+    $('#authentication-number-check-btn').click(function() {
+        swal({
+            title: "SMS 인증 성공",
+            text: "SMS 인증이 성공적으로 수행되었습니다.",
+            icon: "success",
+            button: "닫기",
+        })
+        $('#otp-register-btn').prop('disabled', false);
+
+    });
+}
