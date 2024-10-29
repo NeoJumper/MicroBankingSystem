@@ -49,7 +49,12 @@
             <th>사번</th>
             <th>이름</th>
             <th>현재 시재금</th>
-            <th>거래금</th>
+            <th>
+                <div class="input-wrapper">
+                    거래금
+                    <label id="is-over-balance"></label>
+                </div>
+            </th>
             <th>거래 후 시재금</th>
         </tr>
         </thead>

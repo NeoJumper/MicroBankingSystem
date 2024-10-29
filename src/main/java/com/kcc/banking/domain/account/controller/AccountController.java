@@ -45,7 +45,6 @@ public class AccountController {
 
     @GetMapping("/page/employee/account-close-cancel")
     public String getAccountCloseCancelPage() {
-
         return "account/account-close-cancel";
     }
 
