@@ -11,7 +11,7 @@ $(document).ready(function() {
         const selectedEmployee = $('input[name="selected-employee"]:checked');
 
         if (selectedEmployee.length > 0) {
-
+            $('#employee-search-modal').modal('hide');
             const selectedRow = selectedEmployee.closest('tr');
             const customerId = selectedRow.find('td:nth-child(2)').text();
 

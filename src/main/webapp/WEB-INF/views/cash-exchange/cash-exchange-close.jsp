@@ -102,7 +102,9 @@
         </tr>
         </tbody>
     </table>
-    <button id="cash-exchange-close" class="basic-btn">시재금 거래 마감</button>
+    <div style="display: flex; justify-content: center">
+        <button id="cash-exchange-close" class="basic-btn">시재금 거래 마감</button>
+    </div>
     <%@ include file="/resources/components/close-overlay.jsp" %>
 </div>
 
