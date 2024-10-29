@@ -144,29 +144,153 @@ function insertCustomerId() {
 
 function clickSendBtn(){
     $('#authentication-number-send-btn').click(function() {
-        swal({
-            title: "SMS 전송 성공",
-            text: "인증 번호가 성공적으로 전송되었습니다.",
-            icon: "success",
-            button: "닫기",
-        })
-        registerAuthenticationTimer();
+
+        var number = $('#customer-phone-number-input').val();
+        $.ajax({
+            url: "/api/common/sms/send",
+            data: {
+                number : number.replace(/-/g, '')
+            },
+            type: "POST",
+            success: function(data) {
+
+                swal({
+                    title: "SMS 전송 성공",
+                    text: "인증 번호가 성공적으로 전송되었습니다.",
+                    icon: "success",
+                    button: "닫기",
+                })
+                registerAuthenticationTimer();
+
+            },
+            error: function(error) {
+                swal({
+                    title: "SMS 전송 실패",
+                    text: "인증 번호 전송에 실패했습니다. 잠시 후 재시도 해주세요",
+                    icon: "success",
+                    button: "닫기",
+                })
+                registerAuthenticationTimer();
+            }
+        });
+
     });
 }
 
 function clickResendBtn(){
     $('#authentication-number-resend-btn').click(function() {
-        swal({
-            title: "SMS 재전송 성공",
-            text: "인증 번호가 성공적으로 재전송되었습니다.",
-            icon: "success",
-            button: "닫기",
-        })
-        clearInterval(timerInterval);
-        registerAuthenticationTimer();
+
+        var number = $('#customer-phone-number-input').val();
+        $.ajax({
+            url: "/api/common/sms/send",
+            data: {
+                number : number.replace(/-/g, '')
+            },
+            type: "POST",
+            success: function(data) {
+
+                swal({
+                    title: "SMS 재전송 성공",
+                    text: "인증 번호가 성공적으로 재전송되었습니다.",
+                    icon: "success",
+                    button: "닫기",
+                })
+                clearInterval(timerInterval);
+                registerAuthenticationTimer();
+
+            },
+            error: function(error) {
+                swal({
+                    title: "SMS 전송 실패",
+                    text: "인증 번호 전송에 실패했습니다. 잠시 후 재시도 해주세요",
+                    icon: "success",
+                    button: "닫기",
+                })
+                registerAuthenticationTimer();
+            }
+        });
+
     });
 
 }
+
+
+function clickAuthenticateBtn() {
+    $('#authentication-number-check-btn').click(function() {
+
+
+        var number = $('#customer-phone-number-input').val();
+        var certificationNumber = $('#phone-authentication-number').val();
+        $.ajax({
+            url: "/api/common/sms/verify",
+            data: {
+                number : number.replace(/-/g, ''),
+                certificationNumber : certificationNumber
+            },
+            type: "GET",
+            success: function(data) {
+
+                swal({
+                    title: "SMS 인증 성공",
+                    text: "SMS 인증이 성공적으로 수행되었습니다.",
+                    icon: "success",
+                    button: "닫기",
+                })
+
+                /**
+                 * 본인 인증 폼 원상복구
+                 */
+                $('#phone-authentication-number').prop('disabled', true);
+                $('#phone-authentication-number').attr('placeholder', '');
+                $('#phone-authentication-number').val( '');
+
+                clearInterval(timerInterval);
+                $('#timer').hide();
+
+
+                $('#authentication-number-send-btn').removeClass('hidden');
+                $('#authentication-number-resend-btn').addClass('hidden');
+                $('#authentication-number-check-btn').addClass('hidden');
+
+
+                // OTP 발급 버튼 활성화
+                $('#otp-register-btn').prop('disabled', false);
+
+
+            },
+            error: function(xhr, status, error) {
+                swal({
+                    title: "SMS 전송 실패",
+                    text: xhr.responseText,
+                    icon: "error",
+                    button: "닫기",
+                })
+                registerAuthenticationTimer();
+            }
+        });
+
+
+
+    });
+}
+
+function clickOtpRegisterBtn()
+{
+
+    $('#otp-register-btn').click(function() {
+        swal({
+            title: "OTP 발급/재발급 완료",
+            text: "OTP 발급이 성공적으로 수행되었습니다.",
+            icon: "success",
+            button: "닫기",
+        })
+        var otpDetailModal = new bootstrap.Modal(document.getElementById('otp-detail-modal'));
+        otpDetailModal.show();
+
+    });
+
+}
+
 
 function registerAuthenticationTimer() {
 
@@ -199,34 +323,4 @@ function registerAuthenticationTimer() {
             $('#phone-authentication-number').prop('disabled', true); // 입력 필드 비활성화
         }
     }, 1000); // 1초마다 업데이트
-}
-
-function clickAuthenticateBtn() {
-    $('#authentication-number-check-btn').click(function() {
-        swal({
-            title: "SMS 인증 성공",
-            text: "SMS 인증이 성공적으로 수행되었습니다.",
-            icon: "success",
-            button: "닫기",
-        })
-        $('#otp-register-btn').prop('disabled', false);
-
-    });
-}
-
-function clickOtpRegisterBtn()
-{
-
-    $('#otp-register-btn').click(function() {
-        swal({
-            title: "OTP 발급/재발급 완료",
-            text: "OTP 발급이 성공적으로 수행되었습니다.",
-            icon: "success",
-            button: "닫기",
-        })
-        var otpDetailModal = new bootstrap.Modal(document.getElementById('otp-detail-modal'));
-        otpDetailModal.show();
-
-    });
-
 }
