@@ -179,7 +179,7 @@
 
 </div>
 
-<%@ include file="/resources/components/modal/search-modal-customer.jsp" %>
+<%@ include file="/resources/components/modal/otp-detail-modal.jsp" %>
 <script src="/resources/js/page/otp-register.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>

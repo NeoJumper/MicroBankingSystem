@@ -6,9 +6,13 @@ $(document).ready(function () {
     customerSearchBtnClickEvent();
     insertCustomerId();
 
+    var otpDetailModal = new bootstrap.Modal(document.getElementById('otp-detail-modal'));
+    otpDetailModal.show();
+
     clickSendBtn();
     clickResendBtn();
     clickAuthenticateBtn();
+    clickOtpRegisterBtn();
 });
 
 // ------------------------------- START customerSearchModalEvent()------------------------------------------
@@ -191,6 +195,7 @@ function registerAuthenticationTimer() {
         if (timeLeft < 0) {
             clearInterval(timerInterval);
             $('#timer').hide(); // 타이머 숨기기
+            $('#authentication-number-resend-btn').addClass('hidden'); // 재전송 버튼 숨기기
             $('#phone-authentication-number').prop('disabled', true); // 입력 필드 비활성화
         }
     }, 1000); // 1초마다 업데이트
@@ -207,4 +212,21 @@ function clickAuthenticateBtn() {
         $('#otp-register-btn').prop('disabled', false);
 
     });
+}
+
+function clickOtpRegisterBtn()
+{
+
+    $('#otp-register-btn').click(function() {
+        swal({
+            title: "OTP 발급/재발급 완료",
+            text: "OTP 발급이 성공적으로 수행되었습니다.",
+            icon: "success",
+            button: "닫기",
+        })
+        var otpDetailModal = new bootstrap.Modal(document.getElementById('otp-detail-modal'));
+        otpDetailModal.show();
+
+    });
+
 }

@@ -17,9 +17,9 @@ public class OtpController {
     @GetMapping(value = "/page/common/otp-register")
     public String registerOtp(HttpServletRequest request, ModelMap model) throws Exception {
         // OtpServlet을 사용하여 OTP 키를 생성하고 URL을 얻어옵니다.
-        return "customer/otp-register";
 
-        /*
+
+
         String encodedKey = OtpServlet.generateOtpAndGetKey();
 
         String user = "newJumper";
@@ -35,8 +35,8 @@ public class OtpController {
         // 생성된 정보를 세션에 저장하여 필요에 따라 ModelMap에 추가합니다.
         request.getSession().setAttribute("encodedKey", encodedKey);
         model.addAttribute("url", qrCodeUrl);
-        */
 
+        return "customer/otp-register";
     }
 
     /**
