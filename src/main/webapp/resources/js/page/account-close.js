@@ -38,14 +38,12 @@ function getAccountDetail() {
                     return;
                 }else{
                     accountData = data;
-                    console.log(data)
 
                     const textAfterInter = Number(data.amountSum) * (1-Number(data.productTaxRate));
                     const totalPayment = data.accountBal + textAfterInter;
                     accountData.textAfterInter = textAfterInter;
                     accountData.totalPayment = totalPayment;
-                    console.log("=========================accountDataTotalPaymemt");
-                    console.log(accountData.totalPayment, "==============총 지급 금액")
+
                     console.log(data.accountId);
                     $('#table-content tbody').append(
                         '<tr>' +
