@@ -36,8 +36,7 @@
                 <table class="common-table">
                     <tr>
                         <th style="text-align: center; align-items: center">QR코드 스캔</th>
-                        <td style="text-align: center; align-items: center">
-                            <img src="data:image/jpeg;base64, ${qr}" alt="QR Code">
+                        <td id="qr-code-td" style="text-align: center; align-items: center">
                         </td>
                     </tr>
 

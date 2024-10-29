@@ -99,6 +99,7 @@ CREATE TABLE Customer (
                           detail_address VARCHAR(2000) NULL,
                           birth_date TIMESTAMP NULL,
                           security_level VARCHAR(10) NULL,
+                          otp_key VARCHAR(20) NULL,
                           registration_date TIMESTAMP NULL,
                           registrant VARCHAR(100) NULL,
                           modification_date TIMESTAMP NULL,

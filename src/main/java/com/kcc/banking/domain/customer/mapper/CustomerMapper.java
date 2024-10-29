@@ -20,4 +20,6 @@ public interface CustomerMapper {
     CustomerDetail findCustomer(Long customerId);
 
     void updateCustomer(CustomerUpdate customerUpdate);
+
+    void updateSecurityLevelAndOtpCode(Long customerId, String encodedKey);
 }
