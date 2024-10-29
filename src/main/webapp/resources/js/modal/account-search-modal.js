@@ -95,8 +95,8 @@ function checkAccount(status,period) {
             $.each(data, function(index, account) {
                 var openDateOnly = account.openDate.split(' ')[0];
 
-                var row = "<tr>" +
-                    "<td style='width: 5%;'><input type='radio' name='select-account' value='" + account.accId + "' class='select-account-radio'></td>" +
+                var row = "<tr class='account-element'>" +
+                    "<td style='width: 5%;'><input type='radio' name='select-account' value='" + account.accId + "' class='select-account-radio row-radio'></td>" +
                     "<td style='width: 20%;'>" + account.accId + "</td>" +
                     "<td style='width: 15%;'>" + openDateOnly + "</td>" +
                     "<td style='width: 20%;'>" + account.customerName + " 님</td>" +
@@ -105,6 +105,17 @@ function checkAccount(status,period) {
                     "</tr>";
                 accountTableBody.append(row);
             });
+
+            $('.account-element').on('click', function() {
+                // 해당 tr 안의 라디오 버튼을 체크
+                $(this).find('.row-radio').prop('checked', true);
+            });
+
+            // 라디오 버튼이 클릭되었을 때도 체크되도록 설정
+            $('.row-radio').on('click', function(e) {
+                e.stopPropagation();  // 이벤트 전파 중단 (tr 클릭이 중복 처리되지 않도록)
+            });
+
         },
         error: function(error) {
             console.log("Error while fetching accounts", error);

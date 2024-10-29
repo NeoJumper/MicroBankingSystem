@@ -171,6 +171,7 @@
         <result property="accId" column="acc_id" />
         <result property="password" column="password" />
         <result property="customerName" column="customer_name" />
+        <result property="securityLevel" column="security_level" />
         <result property="customerId" column="customer_id" />
         <result property="phoneNumber" column="phone_number" />
         <result property="productName" column="product_name" />
@@ -188,6 +189,7 @@
             a.id AS acc_id,
             a.password AS password,
             c.name AS customer_name,
+            c.security_level,
             c.id AS customer_id,
             c.phone_number AS phone_number,
             p.name AS product_name,

@@ -17,6 +17,7 @@ public class AccountOpenResultOfModal {
     private String accId;
     private String password;
     private String customerName;
+    private String securityLevel;
     private int customerId;
     private String phoneNumber;
 
@@ -39,12 +40,13 @@ public class AccountOpenResultOfModal {
 
 
     @Builder
-    public AccountOpenResultOfModal(String accId, String password, String customerName, int customerId, String phoneNumber, String productName, String startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal perTradeLimit, BigDecimal dailyLimit, BigDecimal preferentialInterestRate, BigDecimal interestRate, BigDecimal totalInterestRate, BigDecimal transferAmountOfToday) {
+    public AccountOpenResultOfModal(String accId, String password, String customerName,String securityLevel, int customerId, String phoneNumber, String productName, String startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal perTradeLimit, BigDecimal dailyLimit, BigDecimal preferentialInterestRate, BigDecimal interestRate, BigDecimal totalInterestRate, BigDecimal transferAmountOfToday) {
         this.accId = accId;
         this.password = password;
         this.customerName = customerName;
         this.customerId = customerId;
         this.phoneNumber = phoneNumber;
+        this.securityLevel = securityLevel;
         this.productName = productName;
         this.startDate = startDate;
         this.balance = balance;
