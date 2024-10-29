@@ -185,12 +185,14 @@
 
     <div class="row justify-content-center mb-5">
         <button disabled id="account-transfer-submit" class="col-1 basic-btn">이체하기</button>
+        <button id="otp-authentication-modal-btn" class="col-1 basic-btn" style="display: none;">OTP 인증</button>
     </div>
 </div>
 
 <%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <%@ include file="/resources/components/modal/transfer-result-modal.jsp" %>
+<%@ include file="/resources/components/modal/otp-input-modal.jsp" %>
 <script src="/resources/js/page/account-transfer.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>
