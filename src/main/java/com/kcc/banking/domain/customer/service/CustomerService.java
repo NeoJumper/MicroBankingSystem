@@ -52,4 +52,8 @@ public class CustomerService {
 
         return UpdatedCustomer.of(customerUpdate, currentData);
     }
+
+    public void registerOtp(Long customerId, String encodedKey) {
+        customerMapper.updateSecurityLevelAndOtpCode(customerId, encodedKey);
+    }
 }

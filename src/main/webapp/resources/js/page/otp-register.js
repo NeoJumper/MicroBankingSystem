@@ -277,15 +277,43 @@ function clickAuthenticateBtn() {
 function clickOtpRegisterBtn()
 {
 
+
+
     $('#otp-register-btn').click(function() {
-        swal({
-            title: "OTP 발급/재발급 완료",
-            text: "OTP 발급이 성공적으로 수행되었습니다.",
-            icon: "success",
-            button: "닫기",
-        })
-        var otpDetailModal = new bootstrap.Modal(document.getElementById('otp-detail-modal'));
-        otpDetailModal.show();
+
+        var customerId = $('#customer-id-input').val();
+
+        $.ajax({
+            url: "/api/common/otp-info?customerId=" + customerId,
+            type: "GET",
+            success: function(qr) {
+
+                $("#qr-code-td").html(`<img src="data:image/jpeg;base64, ${qr}" alt="QR Code">`);
+
+                swal({
+                    title: "OTP 발급/재발급 완료",
+                    text: "OTP 발급이 성공적으로 수행되었습니다.",
+                    icon: "success",
+                    button: "닫기",
+                })
+                var otpDetailModal = new bootstrap.Modal(document.getElementById('otp-detail-modal'));
+                otpDetailModal.show();
+
+
+            },
+            error: function(xhr, status, error) {
+                swal({
+                    title: "SMS 전송 실패",
+                    text: xhr.responseText,
+                    icon: "error",
+                    button: "닫기",
+                })
+                registerAuthenticationTimer();
+            }
+        });
+
+
+
 
     });
 

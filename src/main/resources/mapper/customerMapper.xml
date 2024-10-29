@@ -91,4 +91,13 @@
             version = version + 1
         WHERE id = #{id}
     </update>
+
+    <update id="updateSecurityLevelAndOtpCode" parameterType="map">
+        UPDATE customer
+        SET
+        security_level = '1등급',
+        otp_key = #{encodedKey}
+        WHERE
+        id = #{customerId}
+    </update>
 </mapper>
