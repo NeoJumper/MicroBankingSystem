@@ -29,9 +29,18 @@ function registerClickEventOfUpdateBtn() {
 
 function redirectCustomerUpdatePage(customerId){
 
-    window.location.href = `/page/manager/customer-update?id=${customerId}`;
+    window.location.href = `/page/common/customer-update?id=${customerId}`;
 }
 
 function resultModalClose() {
-    window.location.href = `/page/employee/customer-save`;
+    let extractUrlName = extractUrl(window.location.href);
+    if(extractUrlName === 'customer-save')
+        window.location.href = `/page/common/customer-save`;
+    else if (extractUrlName === 'customer-update')
+        window.location.href = `/page/common/customer-update`;
+}
+function extractUrl(url){
+    //console.log(url);
+    const splitUrl1 = url.split("/").pop();
+    return  splitUrl1.split("?").shift();
 }

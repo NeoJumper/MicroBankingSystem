@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
-    <script src="/resources/js/modal/search-customer-modal.js"></script>
     <link rel="stylesheet" type="text/css" href="/resources/css/modal/search-modal-customer.css"/>
 </head>
 <body>
@@ -78,6 +77,7 @@
         </div>
     </div>
 </div>
-
+<script src="/resources/js/modal/search-customer-modal.js"></script>
 </body>
+
 </html>
