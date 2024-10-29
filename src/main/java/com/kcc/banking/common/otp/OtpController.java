@@ -3,6 +3,7 @@ package com.kcc.banking.common.otp;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,32 +14,29 @@ import java.util.Date;
 @Controller
 public class OtpController {
 
-    @RequestMapping(value = "/generateOtp.do")
-    public String generateOtp(HttpServletRequest request, ModelMap model) {
-        try {
-            // OtpServlet을 사용하여 OTP 키를 생성하고 URL을 얻어옵니다.
-            String encodedKey = OtpServlet.generateOtpAndGetKey();
+    @GetMapping(value = "/page/common/otp-register")
+    public String registerOtp(HttpServletRequest request, ModelMap model) throws Exception {
+        // OtpServlet을 사용하여 OTP 키를 생성하고 URL을 얻어옵니다.
 
-            String user = "gj";
-            String host = "jju_blog";
 
-            String qrCodeUrl = OtpServlet.getQRBarcodeURL(user, host, encodedKey);
 
-            // 생성된 encodedKey와 qrCodeUrl을 JSP에 전달합니다.
-            model.addAttribute("encodedKey", encodedKey);
-            model.addAttribute("qrCodeUrl", qrCodeUrl);
-            model.addAttribute("qr", OtpServlet.getQRCodeURL("jju_blog", encodedKey));
+        String encodedKey = OtpServlet.generateOtpAndGetKey();
 
-            // 생성된 정보를 세션에 저장하여 필요에 따라 ModelMap에 추가합니다.
-            request.getSession().setAttribute("encodedKey", encodedKey);
-            model.addAttribute("url", qrCodeUrl);
+        String user = "newJumper";
+        String host = "newBank";
 
-            return "otp-test"; // OTP 입력 폼이 있는 JSP 페이지로 이동
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("error", "OTP 생성 중 오류가 발생했습니다.");
-            return "errorPage"; // 오류 페이지로 이동
-        }
+        String qrCodeUrl = OtpServlet.getQRBarcodeURL(user, host, encodedKey);
+
+        // 생성된 encodedKey와 qrCodeUrl을 JSP에 전달합니다.
+        model.addAttribute("encodedKey", encodedKey);
+        model.addAttribute("qrCodeUrl", qrCodeUrl);
+        model.addAttribute("qr", OtpServlet.getQRCodeURL("NEO_Bank", encodedKey));
+
+        // 생성된 정보를 세션에 저장하여 필요에 따라 ModelMap에 추가합니다.
+        request.getSession().setAttribute("encodedKey", encodedKey);
+        model.addAttribute("url", qrCodeUrl);
+
+        return "customer/otp-register";
     }
 
     /**
