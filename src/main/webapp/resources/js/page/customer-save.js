@@ -44,7 +44,7 @@ function createCustomer(customerCreateData){
     // Ajax 요청
     $.ajax({
         type: 'POST',
-        url: '/api/employee/customer',  // 서버의 URL로 변경
+        url: '/api/common/customer',  // 서버의 URL로 변경
         contentType: 'application/json',
         data: JSON.stringify({
             ...customerCreateData

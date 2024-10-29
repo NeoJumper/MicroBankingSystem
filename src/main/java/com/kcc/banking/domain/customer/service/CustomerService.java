@@ -3,10 +3,9 @@ package com.kcc.banking.domain.customer.service;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.customer.dto.request.CustomerCreate;
-import com.kcc.banking.domain.customer.dto.response.CreatedCustomer;
+import com.kcc.banking.domain.customer.dto.request.CustomerUpdate;
+import com.kcc.banking.domain.customer.dto.response.*;
 import com.kcc.banking.domain.customer.dto.request.CustomerSearch;
-import com.kcc.banking.domain.customer.dto.response.CustomerSearchInfo;
-import com.kcc.banking.domain.customer.dto.response.CustomerSearchResult;
 import com.kcc.banking.domain.customer.mapper.CustomerMapper;
 import com.kcc.banking.domain.trade.dto.response.PageDTO;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +38,18 @@ public class CustomerService {
         customerMapper.insertCustomer(customerCreate);
 
         return CreatedCustomer.of(customerCreate, currentData);
+    }
+
+    public CustomerDetail findCustomer(Long customerId) {
+        return customerMapper.findCustomer(customerId);
+    }
+
+    public UpdatedCustomer updateCustomer(CustomerUpdate customerUpdate) {
+        CurrentData currentData = commonService.getCurrentData();
+        customerUpdate.setCommonData(currentData);
+
+        customerMapper.updateCustomer(customerUpdate);
+
+        return UpdatedCustomer.of(customerUpdate, currentData);
     }
 }

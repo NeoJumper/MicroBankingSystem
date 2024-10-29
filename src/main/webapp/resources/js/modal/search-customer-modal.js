@@ -1,11 +1,10 @@
 $(document).ready(function () {
-    $("#customer-id-search-btn").on("click", function () {
 
-        customerSearchInputEnterEvent();
-        customerSearchBtnClickEvent();
-        insertCustomerId();
+    customerSearchInputEnterEvent();
+    customerSearchBtnClickEvent();
+    insertCustomerId();
 
-    });
+
 });
 
 // ------------------------------- START customerSearchModalEvent()------------------------------------------
@@ -37,7 +36,7 @@ function customerSearchBtnClickEvent() {
 
 function searchCustomer(searchOption, searchValue) {
     $.ajax({
-        url: '/api/employee/customer',
+        url: '/api/common/customer',
         type: 'GET',
         data: {
             searchOption: searchOption,
@@ -100,7 +99,6 @@ function insertCustomerId() {
         const selectedCustomer = $('input[name="selected-customer"]:checked');
 
         if (selectedCustomer.length > 0) {
-
             const insertValueMappings = [
                 { selector: '#customer-id-input', columnIndex: 2 },
                 { selector: '#customer-name-input', columnIndex: 3 },

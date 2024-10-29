@@ -34,6 +34,11 @@
         </if>
     </select>
 
+    <select id="findCustomer" parameterType="Long">
+        SELECT *
+        FROM customer
+        WHERE id = ${customerId}
+    </select>
 
     <select id="getCustomerCount" parameterType="CustomerSearch">
         SELECT COUNT(*)
@@ -67,4 +72,23 @@
         1
         )
     </insert>
+
+
+
+    <update id="updateCustomer" parameterType="CustomerUpdate">
+        UPDATE Customer
+        SET
+            email = #{email},
+            name = #{name},
+            gender = #{gender},
+            phone_number = #{phoneNumber},
+            address = #{address},
+            detail_address = #{detailAddress},
+            identification_code = #{identificationCode},
+            birth_date = #{birthDate},
+            modifier_id = #{modifierId},
+            modification_date = SYSTIMESTAMP,
+            version = version + 1
+        WHERE id = #{id}
+    </update>
 </mapper>
