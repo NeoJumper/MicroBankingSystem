@@ -128,7 +128,7 @@ VALUES (employee_seq.NEXTVAL, '이경호', '1999-02-14', '$2a$12$KEC0twTfMAlrbch
 -- 남성
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '이준호', '010-1111-2222', 'MALE', '901125-1234567', '서울특별시 강남구 역삼동 123-45', '1990-11-25',
+VALUES (customer_seq.NEXTVAL, 1, '이준호', '010-5355-4406', 'MALE', '901125-1234567', '서울특별시 강남구 역삼동 123-45', '1990-11-25',
         '2등급', 2);
 
 -- 2번 고객
