@@ -101,19 +101,31 @@
                 </div>
 
             </div>
-            <%--계좌비밀번호 table--%>
             <table class="common-table">
-<%--                <tr>--%>
-<%--                    <th><label for="account-pw-input">계좌비밀번호</label></th>--%>
-<%--                    <td>--%>
-<%--                        <input placeholder="비밀번호 입력" type="password" id="account-pw-input">--%>
-<%--                        <button id="input-confirm" class="basic-btn" type="button">확인</button>--%>
-<%--                    </td>--%>
-<%--                </tr>--%>
                 <tr>
-                    <th><label for="withdrawal-product-name">이체일</label></th>
+                    <th><label>예약 여부</label></th>
                     <td>
-                        <input type="date">
+                        <div id="reserve-button-group" class="button-group mb-2">
+                            <input type="radio" id="immediate-transfer-btn" name="scheduled-status" checked>
+                            <label for="immediate-transfer-btn">즉시 이체</label>
+                            <input class="ms-3" type="radio" id="scheduled-transfer-btn" name="scheduled-status">
+                            <label for="scheduled-transfer-btn">예약 이체</label>
+                        </div>
+                        <div id="reserve-time-select-div" style="overflow: hidden; transition: height 0.5s ease;">
+                            <input type="date" value="1234" style="margin-right: 20px; height: 50px">
+                            <div id="time-search-container">
+                                <select id="time-search-btn">
+                                    <option value="1">9:30 ~ 10:30</option>
+                                    <option value="1">10:30 ~ 11:30</option>
+                                    <option value="1">11:30 ~ 12:30</option>
+                                    <option value="1">12:30 ~ 13:30</option>
+                                    <option value="1">13:30 ~ 14:30</option>
+                                    <option value="1">14:30 ~ 15:30</option>
+                                    <option value="1">15:30 ~ 16:00</option>
+                                </select>
+                                <img class="search-icon" type="submit" src="/resources/assets/timer.jpg">
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -129,17 +141,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label for="business-day-date-input">등록일자</label></th>
-                    <td>
-                        <input id="business-day-date-input" type="text" disabled>
-                    </td>
-                </tr>
-                <tr>
                     <th><label for="user-name-input">담당자</label></th>
                     <td>
                         <input id="user-name-input" type="text" disabled>
                     </td>
                 </tr>
+                <tr>
+                    <th><label for="business-day-date-input">등록일자</label></th>
+                    <td>
+                        <input id="business-day-date-input" type="text" disabled>
+                    </td>
+                </tr>
+
             </table>
 
             <h4>계좌 비밀번호</h4>

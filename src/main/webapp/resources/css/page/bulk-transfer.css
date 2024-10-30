@@ -326,3 +326,35 @@ p {
     text-align: right;
     display: inline-block;
 }
+
+/* 예약이체 UI CSS*/
+#reserve-time-select-div{
+    max-width: 60%;
+    display: flex;
+}
+#time-search-btn {
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url('https://example.com/custom-icon.png') no-repeat right center;
+    background-size: 16px 16px; /* 아이콘 크기 조정 */
+    padding-right: 30px; /* 아이콘 공간을 위한 패딩 */
+}
+
+#time-search-container{
+    width: 300px;
+    height: 50px;
+    position: relative;
+    display: flex;
+}
+.search-icon {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 16px;
+    bottom: 5px;
+    right: 9px;
+    border-radius: 15px;
+    background-position: center;
+}
