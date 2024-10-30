@@ -1,3 +1,7 @@
+var securityLevel = '';
+var customerId = null;
+var otpInputModal;
+
 
 $(document).ready(function () {
 
@@ -23,6 +27,14 @@ $(document).ready(function () {
 
     clickValidatePasswordBtn();
 
+    handleOtpInput(); // OTP 입력란 자동 이동
+
+    clickOtpAuthenticationModalBtn() // OTP 인증 모달 띄우는 버튼 클릭
+
+    clickOtpAuthenticationBtn() // OTP 인증 버튼 클릭
+
+    handleTransferLimitTooltip(); // 이체한도 툴팁 마우스 호버 이벤트 관리
+
     // 모달 내 계좌 검색 버튼 클릭 시 검색 처리 후 중복 계좌 비활성화
     $(document).on('ajaxSuccess', function (event, xhr, settings) {
         if (settings.url.includes("/api/employee/account")) {
@@ -30,16 +42,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#select-transfer-limit').hover(
-        function() {
-            // 마우스가 올라갔을 때
-            $('#select-transfer-limit-tooltip').css('opacity', '1');
-        },
-        function() {
-            // 마우스가 벗어났을 때
-            $('#select-transfer-limit-tooltip').css('opacity', '0');
-        }
-    );
+
 
 });
 
@@ -62,13 +65,14 @@ function convertNumber(str) {
 
 // 중복 계좌를 비활성화하는 함수
 function disableDuplicateAccounts() {
-    var withdrawalAccountId = $('#withdrawal-account-number').val();  // 출금 계좌 번호 가져오기
+    var withdrawalAccountId = $('#withdrawal-account-number').text();  // 출금 계좌 번호 가져오기
 
     if (withdrawalAccountId) {
         // 모달에 있는 모든 라디오 버튼을 순회하면서 출금 계좌와 동일한 계좌를 찾아 비활성화
         $('#search-modal-common-table tbody tr').each(function () {
             var accountId = $(this).find('td:eq(1)').text();  // 각 계좌의 계좌 번호 추출
 
+            //console.log("입금계좌 : " + accountId);
             if (accountId === withdrawalAccountId) {
                 // 동일한 계좌일 경우 라디오 버튼 비활성화
                 $(this).find('input[name="select-account"]').prop('disabled', true);
@@ -96,9 +100,10 @@ function selectAccount() {
             if (accountType === "withdrawal") {
 
                 let transferAmountOfToday = data.transferAmountOfToday || 0;
-
+                securityLevel = data.securityLevel;
+                customerId = data.customerId;
                 // 출금계좌 처리
-                $('#withdrawal-customer-name').text(data.customerName + '  |   ');
+                $('#withdrawal-customer-name').text(data.customerName +'(' + securityLevel + ')  |   ');
                 $('#withdrawal-product-name').text(data.productName);
                 $('#withdrawal-account-number').text(data.accId);
                 $('#per-trade-limit').replaceWith(`<span id="per-trade-limit" class="amount-span">${comma(data.perTradeLimit)}&nbsp; 원</span>`);
@@ -118,7 +123,7 @@ function selectAccount() {
                 var transferableAmount = currentTransferableLimit < data.balance ? currentTransferableLimit : data.balance;
 
                 $('#transferable-amount-limit-of-today').replaceWith(`<span id="transferable-amount-limit-of-today" class="amount-span">${comma(transferableAmountLimitOfToday)}&nbsp; 원</span>`);
-                $('#transferable-amount').replaceWith(`<span id="transferable-amount" class="amount-span">${comma(transferableAmount)}&nbsp;</span>`);
+                $('#transferable-amount').replaceWith(`<span id="transferable-amount" style="margin-left: 20px;">${comma(transferableAmount)}&nbsp;</span>`);
 
 
                 console.log(data);
@@ -135,6 +140,7 @@ function selectAccount() {
 
             // 모달 닫기
             $('#search-modal-account').modal('hide');
+            handleOtpBtn(); // OTP or 이체하기 버튼 활성화
         },
         error: function (error) {
             console.log("Error while fetching account details", error);
@@ -183,6 +189,7 @@ function validateAccountPassword() {
             })
 
             $('#account-transfer-submit').prop('disabled', false);
+            $('#otp-authentication-modal-btn').prop('disabled', false);
 
         }, error: function (error){
             swal({
@@ -251,6 +258,59 @@ function transferSubmit() {
     });
 
 }
+
+// 인증하기 버튼 클릭
+function clickOtpAuthenticationBtn() {
+
+    $('#otp-authenticate-btn').click(function() {
+
+        var values = $('.auth-code-input').map(function() {
+            return $(this).val();
+        }).get(); // 배열로 변환
+
+        // 배열을 문자열로 합치기
+        var combinedValue = values.join('');
+
+        $.ajax({
+            url: "/api/common/otp-authentication",
+            data:{
+                userId : customerId,
+                userCode : combinedValue
+            },
+            type: "POST",
+            success: function() {
+
+                otpInputModal.hide();
+                $('#account-transfer-submit').show();
+                $('#otp-authentication-modal-btn').hide();
+
+
+                swal({
+                    title: "OTP 인증 성공",
+                    text: "OTP 인증이 성공적으로 수행되었습니다.",
+                    icon: "success",
+                    button: "닫기",
+                })
+
+
+
+            },
+            error: function(xhr, status, error) {
+                swal({
+                    title: "OTP 인증 실패",
+                    text: "OTP 인증에 실패했습니다.",
+                    icon: "error",
+                    button: "닫기",
+                })
+            }
+        });
+
+
+
+
+    });
+}
+
 
 function showTransferResultModal(data) {
     // 출금 내역
@@ -338,6 +398,7 @@ function setAmount(button) {
 function clickAccountSelectBtn() {
     $('#search-modal-select-account-btn').click(function () {
         selectAccount();  // 선택된 계좌 처리 함수 호출
+
     });
 }
 
@@ -365,7 +426,7 @@ function removeErrorMessage() {
 
 function clickTransferBtn() {
     $('#account-transfer-submit').click( function (){
-        transferSubmit();
+            transferSubmit();
     })
 
 }
@@ -374,4 +435,64 @@ function clickValidatePasswordBtn() {
     $('#account-transfer-validate').click(function(){
         validateAccountPassword();
     })
+}
+function handleOtpInput() {
+    $('.auth-code-input').on('input', function() {
+        // 숫자 외의 입력은 제거
+        var value = $(this).val();
+        if (!/^\d$/.test(value)) {
+            $(this).val(''); // 숫자 외의 입력은 비움
+            return;
+        }
+
+        // 다음 인풋으로 자동 포커스 이동
+        var nextInput = $(this).next('.auth-code-input');
+        if (nextInput.length && value !== '') {
+            nextInput.focus();
+        }
+    });
+
+    $('.auth-code-input').on('keydown', function(e) {
+        // 백스페이스 시 이전 칸으로 이동
+        if (e.key === 'Backspace' && $(this).val() === '') {
+            var prevInput = $(this).prev('.auth-code-input');
+            if (prevInput.length) {
+                prevInput.focus();
+            }
+        }
+    });
+}
+function clickOtpAuthenticationModalBtn(){
+    $('#otp-authentication-modal-btn').click(function () {
+        showOtpInputModal();
+    });
+}
+
+function showOtpInputModal() {
+    otpInputModal = new bootstrap.Modal(document.getElementById('otp-input-modal'));
+    otpInputModal.show();
+}
+function handleTransferLimitTooltip() {
+    $('#select-transfer-limit').hover(
+        function() {
+            // 마우스가 올라갔을 때
+            $('#select-transfer-limit-tooltip').css('opacity', '1');
+        },
+        function() {
+            // 마우스가 벗어났을 때
+            $('#select-transfer-limit-tooltip').css('opacity', '0');
+        }
+    );
+}
+
+function handleOtpBtn() {
+    console.log(securityLevel);
+    if(securityLevel === '1등급'){
+        $('#account-transfer-submit').hide();
+        $('#otp-authentication-modal-btn').show();
+    }
+    else{
+        $('#account-transfer-submit').show();
+        $('#otp-authentication-modal-btn').hide();
+    }
 }

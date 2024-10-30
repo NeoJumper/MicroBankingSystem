@@ -27,7 +27,7 @@ headerMap.set("header-business-day-management", {
 });
 headerMap.set("header-customer-management", {
     sidebar: [
-        "customer-save", "customer-list", "customer-update"
+        "customer-save", "customer-list", "customer-update", "otp-register"
     ],
     sub: {}
 });
@@ -158,7 +158,9 @@ function createCustomerManagementSidebar() {
             submenu: [
                 { name: '고객 등록', url: '/page/common/customer-save' },
                 { name: '고객 목록', url: '/page/common/customer-list' },
-                { name: '고객 수정', url: '/page/common/customer-update' }
+                { name: '고객 수정', url: '/page/common/customer-update' },
+                { name: 'OTP 발급/재발급', url: '/page/common/otp-register' }
+
             ]
         }
     ];

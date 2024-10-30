@@ -20,9 +20,10 @@ public class CustomerDetail {
     private String address;
     private String detailAddress;
     private String gender;
+    private String otpKey;
 
     @Builder
-    public CustomerDetail(Long id, String name, String birthDate, String identificationCode, String phoneNumber, String email, String address, String detailAddress, String gender) {
+    public CustomerDetail(Long id, String name, String birthDate, String identificationCode, String phoneNumber, String email, String address, String detailAddress, String gender, String otpKey) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
@@ -32,5 +33,6 @@ public class CustomerDetail {
         this.address = address;
         this.detailAddress = detailAddress;
         this.gender = gender;
+        this.otpKey = otpKey;
     }
 }

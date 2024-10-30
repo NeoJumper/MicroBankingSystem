@@ -38,6 +38,7 @@
 
     </div>
 
+
     <div class="d-flex">
         <h3 id="account-info-h3">입금 계좌 정보</h3>
 
@@ -64,15 +65,35 @@
             <div class="me-2">
                 계좌잔액<span id="cash-trade-balance" style="margin-left: 20px;">0</span> 원
             </div>
-            <div class="mx-3 transfer-possible-amount" style="display: none;">|</div>
-            <div class="ms-2 transfer-possible-amount" style="display: none;">
-                 이체가능금액<span id="transferable-amount" style="margin-left: 20px">0</span>  원
-            </div>
-
         </div>
     </div>
 
-    <div>
+
+    <div class="d-flex">
+        <h3 id="employee-info-h3">담당자 정보</h3>
+
+        <hr>
+    </div>
+
+
+
+    <table class="common-table no-margin">
+        <tr>
+            <th style="width: 18%"><label for="cash-trade-employee">담당자</label></th>
+            <td><input type="text" id="cash-trade-employee" value="${employeeName}" disabled></td>
+        </tr>
+        <tr>
+            <th style="width: 18%"><label>현금 잔액</label></th>
+            <td>
+                <input class="emp-close-prev-cash-balance" type="text" value="0" disabled>
+            </td>
+        </tr>
+    </table>
+
+
+
+
+    <div class="mt-4">
         <h3>거래정보</h3>
     </div>
     <table class="common-table">
@@ -95,10 +116,7 @@
             <th><label for="description">비고</label></th>
             <td><input type="text" id="description"></td>
         </tr>
-        <tr>
-            <th><label for="cash-trade-employee">담당자</label></th>
-            <td><input type="text" id="cash-trade-employee" value="${employeeName}" disabled></td>
-        </tr>
+
 
         <tr>
             <th>등록일자</th>
@@ -125,11 +143,13 @@
 
     <div class="row justify-content-center mb-5">
         <button disabled id="cash-trade-submit" class="col-1 basic-btn">현금 거래 승인</button>
+        <button disabled id="otp-authentication-modal-btn" class="col-1 basic-btn" style="display: none;">OTP 인증</button>
     </div>
 </div>
 <%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <%@ include file="/resources/components/modal/trade-cash-result-modal.jsp" %>
+<%@ include file="/resources/components/modal/otp-input-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/trade-cash.js"></script>
 </body>
