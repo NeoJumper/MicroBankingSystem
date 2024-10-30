@@ -44,7 +44,7 @@
 
 /* 공통 css */
 .failure {
-    color: #F27474; /* 글씨 색을 흰색으로 설정 , */
+    color: var(--point-red); /* 글씨 색을 흰색으로 설정 , */
 }
 
 span {

@@ -2,7 +2,8 @@ let selectedEmpId = null;
 var securityLevel = '';
 let employeeDataForUpload = [];
 let validPassword = "";
-
+let totalTransferAmount = 0;
+let totalCount = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
     isClosed();
@@ -47,7 +48,10 @@ function initializeEventHandlers() {
     $('input[value="예금주 확인"]').click(validationExecution);
 
     // 검색어로 조회하기
-    $('#searchInput').on('input', filterEmployeeData);
+    $('#searchInput').keypress(function(event) {
+        if (event.key === 'Enter')
+            filterEmployeeData();
+    });
 
     // 초기화
     $('input[value="초기화"]').click(initExecution);
@@ -235,8 +239,8 @@ function updateEmployeeTable() {
     const tbody = $('#employeeTablePreviewBody');
     tbody.empty();
 
-    let totalTransferAmount = 0;
-    let totalCount = 0;
+    totalTransferAmount = 0;
+    totalCount = 0;
 
     $.each(employeeDataForUpload, function (index, employee) {
         totalTransferAmount += parseInt(employee.transferAmount);
@@ -331,8 +335,8 @@ function validationExecution() {
             tbody.empty();
 
             employeeDataForUpload = [];
-            let totalTransferAmount = 0;
-            let totalCount = 0;
+            totalTransferAmount = 0;
+            totalCount = 0;
 
             $.each(data.bulkTransferValidationList, function (index, employee) {
                 // 예금주 불일치 확인
@@ -417,7 +421,7 @@ function transferExecution() {
 
 
 function filterEmployeeData() {
-    const searchValue = $(this).val();
+    const searchValue = $('#searchInput').val();
     const searchCondition = $('#searchCondition').val();
     const tbody = $('#employeeTablePreviewBody');
 
@@ -425,7 +429,11 @@ function filterEmployeeData() {
 
     let filteredEmployees = employeeDataForUpload;
 
+    console.log("입력 값 : " + searchValue);
+    console.log("옵션 : " + searchCondition);
+
     if (searchValue && searchCondition) {
+
         filteredEmployees = employeeDataForUpload.filter((item) => {
             if (searchCondition === "targetAccId") {
                 return item.targetAccId.includes(searchValue);
@@ -434,23 +442,40 @@ function filterEmployeeData() {
             }
             return false;
         });
+
+        $.each(filteredEmployees, function (index, employee) {
+            console.log("예금주 : " + employee.depositor);
+            console.log("예금주 확인 : " + employee.validDepositor);
+
+
+            const isValidDepositor = employee.depositor === employee.validDepositor || employee.validDepositor === undefined;
+            const rowClass = isValidDepositor ? '' : 'failure';
+            const row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id).addClass(rowClass);
+
+            row.append($('<td>').text(index + 1));
+            row.append($('<td>').text(employee.targetAccId));
+            row.append($('<td>').text(employee.transferAmount));
+            row.append($('<td>').text(convertToKoreanNumber(employee.transferAmount)));
+            row.append($('<td>').text(employee.depositor));
+            row.append($('<td>').text(employee.validDepositor));
+            row.append($('<td>').text(employee.description));
+
+            tbody.append(row);
+        });
+
+        const totalRow = $('<tr>');
+        totalRow.append($('<td>').attr('colspan', 2).text('총 ' + totalCount + '건'));
+        totalRow.append($('<td>').text(comma(totalTransferAmount)));
+        totalRow.append($('<td>').text(convertToKoreanNumber(totalTransferAmount)));
+        totalRow.append($('<td>').attr('colspan', 3).text(''));
+        tbody.append(totalRow);
+
+    }
+    else {
+        updateEmployeeTable();
     }
 
-    $.each(filteredEmployees, function (index, employee) {
-        const isValidDepositor = employee.depositor === employee.validDepositor;
-        const rowClass = isValidDepositor ? '' : 'failure';
-        const row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id).addClass(rowClass);
 
-        row.append($('<td>').text(index + 1));
-        row.append($('<td>').text(employee.targetAccId));
-        row.append($('<td>').text(employee.transferAmount));
-        row.append($('<td>').text(employee.krw));
-        row.append($('<td>').text(employee.depositor));
-        row.append($('<td>').text(employee.validDepositor));
-        row.append($('<td>').text(employee.description));
-
-        tbody.append(row);
-    });
 }
 
 function initExecution() {
