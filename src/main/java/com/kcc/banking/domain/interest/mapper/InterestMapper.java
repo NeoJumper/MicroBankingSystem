@@ -1,17 +1,17 @@
 package com.kcc.banking.domain.interest.mapper;
 
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
-import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
-import com.kcc.banking.domain.interest.dto.request.PaymentStatusRollback;
-import com.kcc.banking.domain.interest.dto.request.PaymentStatusUpdate;
+import com.kcc.banking.domain.interest.dto.request.*;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;
-import com.kcc.banking.domain.interest.dto.request.InterestCreate;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface InterestMapper {
 
+    // 일별 이자 생성
     void createInterest(InterestCreate interestCreate);
+    // 월별 이자 생성
+    void createInterestSaving(SavingInterestCreate savingInterestCreate);
 
     // 세전 이자액 합계(해지 시 사용)
     InterestSum findInterestSum(String accountId);
@@ -27,4 +27,6 @@ public interface InterestMapper {
 
     // 영업일 되돌리기에 의한 이자 삭제
     void deleteInterest(BusinessDateAndBranchId businessDateAndBranchId);
+
+
 }

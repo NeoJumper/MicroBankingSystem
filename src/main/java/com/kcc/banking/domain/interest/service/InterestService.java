@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -29,18 +30,18 @@ public class InterestService {
     private final CommonService commonService;
 
     /**
-     * @Discription
-     * 1. 지점 마감 tradeNumber와 동일한 이자 내역 생성
+     * @param tradeNumber
+     * @param businessDateAndBranchId
+     * @Discription 1. 지점 마감 tradeNumber와 동일한 이자 내역 생성
      * 2. 보통예금 / 자율적금 분기처리
      * 2-1. 보통에금 - 매일 일자별 이자 생성
      * 3. 매월 1일인지 영업일 확인
+     * 3-1. 매월 1일이라면 복리를 위한 계좌별 이자내역 합산 가져오기
      * 4. 자율적금 단리 / 복리 분기
      * 4-1. 자율적금 단리 계산
      * 4-2. 자율적금 복리 계산
-     * @param tradeNumber
-     * @param businessDateAndBranchId
      */
-    public void createInterest(String tradeNumber, BusinessDateAndBranchId businessDateAndBranchId){
+    public void createInterest(String tradeNumber, BusinessDateAndBranchId businessDateAndBranchId) {
         CurrentData currentData = commonService.getCurrentData();
         // 지점 번호로 등록된 계좌 목록 불러오기
         List<AccountDetailForInterest> accountList = accountService.getAccountListByBranchId(currentData.getBranchId());
@@ -53,18 +54,43 @@ public class InterestService {
         // 4. 매월 1일인지 영업일 확인
         LocalDate date = LocalDate.parse(businessDateAndBranchId.getBusinessDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         // 매월 1일이라면
-        if (date.getDayOfMonth() == 1) {
-            // 자율적금
-            //List<SavingInterestCreate> intersetSavingCreateList = accountList.stream().filter(account -> account.getProductType().equals("FLEXIBLE")).map(account -> SavingInterestCreate.of(account, currentData.getEmployeeId(), businessDateAndBranchId, tradeNumber)).toList();
-        }
+//        if (date.getDayOfMonth() == 1) {
+        // 복리 계산을 위한 이자내역 합산 가져오기
+        // 복리 계좌의 이자만 합산
+
+        // interestSavingSumList가 null일 경우 빈 리스트로 초기화하고 null 항목 필터링
+        List<InterestSum> interestSavingSumList = Optional.ofNullable(
+                accountList.stream()
+                        .filter(account -> "COMPOUND".equals(account.getInterestCalculationMethod()))
+                        .map(account -> interestMapper.findInterestSum(account.getAccId()))
+                        .filter(Objects::nonNull) // null 항목 제거
+                        .toList()
+        ).orElse(List.of());
+
+// 이자 내역 합산을 param으로 넘겨 새로운 이자 내역 생성
+        List<SavingInterestCreate> interestSavingCreateList = accountList.stream()
+                .filter(account -> "FLEXIBLE".equals(account.getProductType()))
+                .map(account -> {
+                    InterestSum matchingInterestSum = interestSavingSumList.stream()
+                            .filter(interestSum -> interestSum.getAccountId().equals(account.getAccId()))
+                            .findFirst()
+                            .orElse(null); // 일치하는 InterestSum이 없을 경우 null 반환
+
+                    return SavingInterestCreate.of(account, currentData.getEmployeeId(), businessDateAndBranchId, tradeNumber, matchingInterestSum);
+                })
+                .toList();
+
+
+        // 생성한 자유적금 월별 이자 내역 INSERT
+        interestSavingCreateList.forEach(interestMapper::createInterestSaving);
+//        }
     }
 
 
     /**
-     *  @Description
-     *  세전 이자액 합계(해지 시 사용)
+     * @Description 세전 이자액 합계(해지 시 사용)
      */
-    public InterestSum getInterestSum(String accountId){
+    public InterestSum getInterestSum(String accountId) {
         Optional<InterestSum> optInterestSum = Optional.ofNullable(interestMapper.findInterestSum(accountId));
 
         return optInterestSum.orElse(InterestSum.builder()
@@ -73,16 +99,14 @@ public class InterestService {
     }
 
     /**
-     *  @Description
-     *  세전 이자액 합계(해지 취소 시 사용)
+     * @Description 세전 이자액 합계(해지 취소 시 사용)
      */
     public InterestSum getPreTaxInterestSum(AccountIdWithExpireDate awe) {
         return interestMapper.findPreTaxInterestSum(awe);
     }
 
     /**
-     *  @Description
-     *  해지에 의한 이자 테이블 상태 및 지급일 변경
+     * @Description 해지에 의한 이자 테이블 상태 및 지급일 변경
      */
     public int updateByClose(StatusWithTrade statusWithTrade, CurrentData currentData) {
         PaymentStatusUpdate paymentStatusUpdate = PaymentStatusUpdate.builder()
@@ -96,8 +120,7 @@ public class InterestService {
     }
 
     /**
-     *  @Description
-     *  해지 취소에 의한 이자 테이블 상태 및 지급일 변경
+     * @Description 해지 취소에 의한 이자 테이블 상태 및 지급일 변경
      */
     public int updateByCloseCancel(String accId, CurrentData currentData, String expireDate) {
 
