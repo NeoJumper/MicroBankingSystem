@@ -12,12 +12,18 @@ $(document).ready(function() {
                     status = 'OPN';
                     period = '00';
                     break;
-
                 case 'account-close-cancel':
                     status = 'CLS';
                     period = '00';
                     break;
-
+                case 'bulk-transfer':
+                    status = 'OPN';
+                    period = '00';
+                    break;
+                case 'account-transfer':
+                    status = 'OPN';
+                    period = '00';
+                    break;
                 case 'savings-account-close':
                     status = 'OPN';
                     period = 'SAVINGS';
@@ -43,18 +49,19 @@ $(document).ready(function() {
                 status = 'CLS';
                 period = '00';
                 break;
-
+            case 'account-transfer':
+                status = 'OPN';
+                period = '00';
+                break;
             case 'savings-account-close':
                 status = 'OPN';
                 period = 'SAVINGS';
                 break;
-
-            // case 'bulk-transfer':
-            //
-            //     break;
-
+            case 'bulk-transfer':
+                status = 'OPN';
+                period = '00';
+                 break;
             case '':
-
                 break;
 
         }
