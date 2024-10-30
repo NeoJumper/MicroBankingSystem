@@ -176,12 +176,12 @@
                 <div class="d-flex" >
 
                     <button id="uploadEmployeeBtn" type="button" class="file-btn" value="파일등록"
-                            style="height: 33px; font-weight: bold;" >
+                            style="height: 33px; font-weight: bold;" disabled>
                         파일 등록
                     </button>
 
                     <button id="uploadIndividualEmployeeBtn" type="button" class="file-btn" value="개별추가"
-                            style="height: 33px; font-weight: bold;">
+                            style="height: 33px; font-weight: bold;" disabled>
                         개별 추가
                     </button>
 
@@ -222,7 +222,7 @@
                 <div class="result-content">
                     <div>
                         총 등록건수(건) <br>
-                        <span class="total-registrations">0</span>(건)
+                        <span id="total-registrations">0</span>(건)
                     </div>
                     <div>
                         받는분 정상(건) <br>

@@ -173,6 +173,10 @@ function checkAccountId() {
         success: function () {
             swal({ title: "검증 완료", text: "비밀번호 인증 성공", icon: "success" });
             validPassword = pw;
+
+
+            $('#uploadEmployeeBtn').prop('disabled', false);
+            $('#uploadIndividualEmployeeBtn').prop('disabled', false);
             $('input[value="예금주 확인"]').prop('disabled', false);
         },
         error: function (error) {
@@ -187,6 +191,10 @@ function showModal(modalId) {
     myModal.show();
 }
 
+/**
+ * - 개별 추가 시 데이터를 채우고 기존 Body를 지운 뒤
+ * - 데이터를 기반으로 요소들을 다시 그린다.
+ */
 function uploadIndividualEmployee() {
     if (
         $('#targetAccIdModal').val() === "" ||
@@ -245,7 +253,7 @@ function updateEmployeeTable() {
         tbody.append(transferInfoRow);
     });
 
-    console.log(totalTransferAmount);
+
 
     const totalRow = $('<tr>');
     totalRow.append($('<td>').attr('colspan', 2).text('총 ' + totalCount + '건'));
@@ -297,7 +305,6 @@ function uploadEmployeePreview() {
                     accountPassword: validPassword,
                     targetAccId: employee.targetAccId,
                     transferAmount: employee.transferAmount,
-                    krw: employee.krw,
                     depositor: employee.depositor,
                     description: employee.description,
                 });
@@ -312,6 +319,84 @@ function uploadEmployeePreview() {
 
     $('#excelInput').val('');
 }
+
+function validationExecution() {
+    $.ajax({
+        type: "POST",
+        url: "/api/employee/bulk-transfer/validation",
+        contentType: 'application/json',
+        data: JSON.stringify(employeeDataForUpload),
+        success: function (data) {
+            const tbody = $('#employeeTablePreviewBody');
+            tbody.empty();
+
+            employeeDataForUpload = [];
+            let totalTransferAmount = 0;
+            let totalCount = 0;
+
+            $.each(data.bulkTransferValidationList, function (index, employee) {
+                // 예금주 불일치 확인
+                const isValidDepositor = employee.depositor === employee.validDepositor;
+                const depositorStyle = isValidDepositor ? {} : { color: '#D40000' };
+                totalTransferAmount += parseInt(employee.transferAmount);
+                totalCount += 1;
+
+                const row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+
+                row.append($('<td>').text(index + 1));
+                row.append($('<td>').text(employee.targetAccId));
+                row.append($('<td>').text(employee.transferAmount));
+                row.append($('<td>').text(convertToKoreanNumber(employee.transferAmount)));
+                row.append($('<td>').text(employee.depositor).css(depositorStyle));
+                row.append($('<td>').text(employee.validDepositor).css(depositorStyle));
+                row.append($('<td>').text(employee.description));
+
+                tbody.append(row);
+
+                employeeDataForUpload.push({
+                    accId: $('#withdrawal-account-number').text(),
+                    accountPassword: $('#account-pw-input').val(),
+                    targetAccId: employee.targetAccId,
+                    transferAmount: employee.transferAmount,
+                    krw: employee.krw,
+                    depositor: employee.depositor,
+                    validDepositor: employee.validDepositor,
+                    description: employee.description,
+                });
+            });
+
+
+            const totalRow = $('<tr>');
+            totalRow.append($('<td>').attr('colspan', 2).text('총 ' + totalCount + '건'));
+            totalRow.append($('<td>').text(comma(totalTransferAmount)));
+            totalRow.append($('<td>').text(convertToKoreanNumber(totalTransferAmount)));
+            totalRow.append($('<td>').attr('colspan', 3).text(''));
+            tbody.append(totalRow);
+
+
+            $('#total-registrations').text(data.totalCnt);
+            $('#valid-recipients').text(data.normalCnt);
+            $('#mismatch-recipients').text(data.inconsistencyCnt);
+            $('#error-recipients').text(data.errorCnt);
+
+            $('#result-content-div').show();
+            $('input[value="초기화"]').show();
+            $('input[value="이체실행"]').show();
+
+            // 프로그래스바 진행상황 업데이트
+            updateProgressIndicator();
+
+            if (data.bulkTransferValidationList.length) {
+                swal({ title: "예금주 확인", text: "예금주 확인 완료", icon: "success" });
+                $('input[value="이체실행"]').removeAttr('disabled');
+            }
+        },
+        error: function () {
+            console.log("예금주 확인 실패");
+        }
+    });
+}
+
 
 function transferExecution() {
     $.ajax({
@@ -329,66 +414,7 @@ function transferExecution() {
     });
 }
 
-function validationExecution() {
-    $.ajax({
-        type: "POST",
-        url: "/api/employee/bulk-transfer/validation",
-        contentType: 'application/json',
-        data: JSON.stringify(employeeDataForUpload),
-        success: function (data) {
-            const tbody = $('#employeeTablePreviewBody');
-            tbody.empty();
 
-            employeeDataForUpload = [];
-
-            $.each(data.bulkTransferValidationList, function (index, employee) {
-                const isValidDepositor = employee.depositor === employee.validDepositor;
-                const depositorStyle = isValidDepositor ? {} : { color: '#D40000' };
-                const row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
-
-                row.append($('<td>').text(index + 1));
-                row.append($('<td>').text(employee.targetAccId));
-                row.append($('<td>').text(employee.transferAmount));
-                row.append($('<td>').text(employee.krw));
-                row.append($('<td>').text(employee.depositor).css(depositorStyle));
-                row.append($('<td>').text(employee.validDepositor).css(depositorStyle));
-                row.append($('<td>').text(employee.description));
-
-                tbody.append(row);
-
-                employeeDataForUpload.push({
-                    accId: $('#withdrawal-account-number').text(),
-                    accountPassword: "1234",
-                    targetAccId: employee.targetAccId,
-                    transferAmount: employee.transferAmount,
-                    krw: employee.krw,
-                    depositor: employee.depositor,
-                    validDepositor: employee.validDepositor,
-                    description: employee.description,
-                });
-            });
-
-            $('#total-registrations').text(data.totalCnt);
-            $('#valid-recipients').text(data.normalCnt);
-            $('#mismatch-recipients').text(data.inconsistencyCnt);
-            $('#error-recipients').text(data.errorCnt);
-
-            $('#result-content-div').show();
-            $('input[value="초기화"]').show();
-            $('input[value="이체실행"]').show();
-
-            updateProgressIndicator();
-
-            if (data.bulkTransferValidationList.length) {
-                swal({ title: "예금주 확인", text: "예금주 확인 완료", icon: "success" });
-                $('input[value="이체실행"]').removeAttr('disabled');
-            }
-        },
-        error: function () {
-            console.log("예금주 확인 실패");
-        }
-    });
-}
 
 function filterEmployeeData() {
     const searchValue = $(this).val();
