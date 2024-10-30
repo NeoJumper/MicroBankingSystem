@@ -123,7 +123,7 @@ function selectAccount() {
                 var transferableAmount = currentTransferableLimit < data.balance ? currentTransferableLimit : data.balance;
 
                 $('#transferable-amount-limit-of-today').replaceWith(`<span id="transferable-amount-limit-of-today" class="amount-span">${comma(transferableAmountLimitOfToday)}&nbsp; 원</span>`);
-                $('#transferable-amount').replaceWith(`<span id="transferable-amount" class="amount-span">${comma(transferableAmount)}&nbsp;</span>`);
+                $('#transferable-amount').replaceWith(`<span id="transferable-amount" style="margin-left: 20px;">${comma(transferableAmount)}&nbsp;</span>`);
 
 
                 console.log(data);
