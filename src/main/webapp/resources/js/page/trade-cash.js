@@ -54,15 +54,18 @@ function handleAmount() {
     $(document).on('input', '#cash-trade-amount', function () {
         $(this).val(comma(convertNumber($(this).val())));
 
-        var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
-        var accountBalance = parseFloat(convertNumber($('#cash-trade-balance').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
+        if($('input[name="trade-type"]:checked').val() === 'withdrawal'){
+            var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+            var accountBalance = parseFloat(convertNumber($('#cash-trade-balance').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
 
-        if (inputAmount > accountBalance) {
-            $('#over-account-balance').text("계좌 잔액을 초과했습니다.");
-            $(this).val(comma(accountBalance));  // 입력된 값을 계좌 잔액으로 제한
-        } else {
-            $('#over-account-balance').text("");  // 경고 메시지 제거
+            if (inputAmount > accountBalance) {
+                $('#over-account-balance').text("계좌 잔액을 초과했습니다.");
+                $(this).val(comma(accountBalance));  // 입력된 값을 계좌 잔액으로 제한
+            } else {
+                $('#over-account-balance').text("");  // 경고 메시지 제거
+            }
         }
+
     });
 }
 

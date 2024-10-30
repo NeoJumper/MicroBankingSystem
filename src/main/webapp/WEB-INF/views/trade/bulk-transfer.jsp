@@ -176,7 +176,7 @@
                 <div class="d-flex" >
 
                     <button id="uploadEmployeeBtn" type="button" class="file-btn" value="파일등록"
-                            style="height: 33px; font-weight: bold;" >
+                            style="height: 33px; font-weight: bold;" disabled>
                         파일 등록
                     </button>
 
@@ -195,29 +195,30 @@
                     <input type="text" id="searchInput" class="select-option" style="height: 33px;" placeholder="검색어 입력">
                 </div>
             </div>
-            <table id="bulk-transfer-info" class="common-table">
-                <thead>
-                <tr>
-                    <th><label>NO.</label></th>
-                    <th><label>입금계좌번호</label></th>
-                    <th><label>이체금액(원)</label></th>
-                    <th><label>한글금액표시(원)</label></th>
-                    <th><label>등록된 예금주</label></th>
-                    <th><label>조회된 예금주</label></th>
-                    <th><label>받는분 통장표시</label></th>
-                </tr>
-                </thead>
-                <tbody id="employeeTablePreviewBody">
-                <%--  동적으로 직원계좌정보 생성됨 --%>
+            <div class="tableWrapper">
+                <table id="bulk-transfer-info" class="common-table bulk-insert-table">
+                    <thead>
+                        <tr>
+                            <th><label>NO.</label></th>
+                            <th><label>입금계좌번호</label></th>
+                            <th><label>이체금액(원)</label></th>
+                            <th><label>한글금액표시(원)</label></th>
+                            <th><label>등록된 예금주</label></th>
+                            <th><label>조회된 예금주</label></th>
+                            <th><label>받는분 통장표시</label></th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTablePreviewBody">
+                    <%--  동적으로 직원계좌정보 생성됨 --%>
                     <tr >
                         <td colspan="2">총 <span>0</span>개</td>
                         <td>0</td>
                         <td>영원</td>
                         <td colspan="3"></td>
                     </tr>
-                </tbody>
-            </table>
-
+                    </tbody>
+                </table>
+            </div>
             <div id="result-content-div" style="display: none">
                 <div class="result-content">
                     <div>
@@ -311,7 +312,7 @@
 </div>
 <!-- 개별추가 모달 -->
 <div class="modal fade" id="uploadIndividualEmployeeModal" tabindex="-1">
-    <div class="modal-dialog" style="margin-top:200px;">
+    <div class="modal-dialog modal-lg" style="margin-top:200px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title fs-5 fw-bold">직접 입력으로 직원을 추가해보세요</h2>
@@ -323,11 +324,11 @@
                     <table class="common-table" style="margin-bottom: 0px">
                         <tr>
                             <th>입금계좌번호</th>
-                            <td><input id="targetAccIdModal" placeholder=" 예) 000-0000000-0000"></td>
+                            <td><input id="targetAccIdModal" maxlength="16" placeholder=" 예) 000-0000000-0000"></td>
                         </tr>
                         <tr>
                             <th>이체금액(원)</th>
-                            <td><input id="transferAmountModal" placeholder=" 예) 3000000"></td>
+                            <td><input id="transferAmountModal" placeholder=" 예) 3,000,000"></td>
                         </tr>
                         <tr>
                             <th>한글금액표시(원)</th>

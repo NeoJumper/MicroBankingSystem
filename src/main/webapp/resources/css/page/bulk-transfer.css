@@ -44,7 +44,7 @@
 
 /* 공통 css */
 .failure {
-    color: #F27474; /* 글씨 색을 흰색으로 설정 , */
+    color: var(--point-red); /* 글씨 색을 흰색으로 설정 , */
 }
 
 span {
@@ -397,4 +397,27 @@ p {
     font-size: 18px;
     color: #212529;
     border-radius: 4px; /* for rounded corners similar to btn */
+}
+
+.tableWrapper {
+    max-height: 480px;
+    height: auto;
+    border-top: 1px solid var(--little-dark-gray);
+    overflow: auto;
+}
+.bulk-insert-table{
+    border-collapse: collapse;
+}
+
+.bulk-insert-table th{
+    position: sticky;
+    top: 0px;
+}
+#uploadIndividualEmployeeModal th, #uploadIndividualEmployeeModal td{
+    font-size: 1.2rem;
+}
+#uploadIndividualEmployeeModal input
+{
+    width: 70%;
+    padding: 10px 10px;
 }

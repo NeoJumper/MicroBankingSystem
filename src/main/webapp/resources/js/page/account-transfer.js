@@ -1,13 +1,13 @@
 var securityLevel = '';
 var customerId = null;
 var otpInputModal;
-
+var accountType = "";
 
 $(document).ready(function () {
 
     isClosed();
 
-    accountType = "";
+
 
     clickReserveTransferBtn(); // 예약이체 버튼
 
