@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/modal/otp-input-modal.css"/>
 </head>
 <body>
 <!-- Modal -->
