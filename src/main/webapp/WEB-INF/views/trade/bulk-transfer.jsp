@@ -195,29 +195,94 @@
                     <input type="text" id="searchInput" class="select-option" style="height: 33px;" placeholder="검색어 입력">
                 </div>
             </div>
-            <table id="bulk-transfer-info" class="common-table">
-                <thead>
-                <tr>
-                    <th><label>NO.</label></th>
-                    <th><label>입금계좌번호</label></th>
-                    <th><label>이체금액(원)</label></th>
-                    <th><label>한글금액표시(원)</label></th>
-                    <th><label>등록된 예금주</label></th>
-                    <th><label>조회된 예금주</label></th>
-                    <th><label>받는분 통장표시</label></th>
-                </tr>
-                </thead>
-                <tbody id="employeeTablePreviewBody">
-                <%--  동적으로 직원계좌정보 생성됨 --%>
-                    <tr >
-                        <td colspan="2">총 <span>0</span>개</td>
-                        <td>0</td>
-                        <td>영원</td>
-                        <td colspan="3"></td>
-                    </tr>
-                </tbody>
-            </table>
-
+            <div class="tableWrapper">
+                <table id="bulk-transfer-info" class="common-table bulk-insert-table">
+                    <thead>
+                        <tr>
+                            <th><label>NO.</label></th>
+                            <th><label>입금계좌번호</label></th>
+                            <th><label>이체금액(원)</label></th>
+                            <th><label>한글금액표시(원)</label></th>
+                            <th><label>등록된 예금주</label></th>
+                            <th><label>조회된 예금주</label></th>
+                            <th><label>받는분 통장표시</label></th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTablePreviewBody">
+                    <%--  동적으로 직원계좌정보 생성됨 --%>
+                        <tr >
+                            <td>''</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr >
+                            <td>''</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr >
+                            <td>''</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr >
+                            <td>''</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr >
+                            <td>''</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr >
+                            <td>''</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr >
+                            <td>''</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <%--  동적으로 직원계좌정보 생성됨 --%>
+                        <tr >
+                            <td colspan="2">총 <span>0</span>개</td>
+                            <td>0</td>
+                            <td>영원</td>
+                            <td colspan="3"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div id="result-content-div" style="display: none">
                 <div class="result-content">
                     <div>
