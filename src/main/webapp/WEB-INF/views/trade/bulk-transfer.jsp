@@ -60,7 +60,12 @@
             <%--계좌선택--%>
             <div id="select-account-form">
                 <div class="account-info">
-                    <div><span>업무계좌</span> <br> <span id="account-number">계좌를 선택해주세요.</span></div>
+                    <div>
+                        <span id="withdrawal-customer-name"></span>
+                        <span id="withdrawal-product-name"></span>
+                        <br>
+                        <span id="withdrawal-account-number">계좌를 선택해주세요.</span>
+                    </div>
                     <div>
                         <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
                                 data-account-type="withdrawal" data-bs-toggle="modal"
@@ -86,7 +91,7 @@
                 <tr>
                     <th><label for="withdrawal-product-name">이체일</label></th>
                     <td>
-                        <input type="date" id="withdrawal-product-name">
+                        <input type="date">
                     </td>
                 </tr>
                 <tr>
