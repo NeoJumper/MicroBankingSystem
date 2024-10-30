@@ -277,12 +277,17 @@ function updateEmployeeTable() {
 }
 
 function handleTransferAmountInput() {
-    const transferAmount = parseFloat($(this).val());
-    if (isNaN(transferAmount) || $(this).val() === "") {
+
+    $(this).val(comma(convertNumber($(this).val())));
+
+    var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+
+
+    if (isNaN(inputAmount) || $(this).val() === "") {
         $('#krwModal').val('');
         return;
     }
-    const convertToKoreanNumberString = convertToKoreanNumber(transferAmount) + "원";
+    const convertToKoreanNumberString = convertToKoreanNumber(inputAmount) + "원";
     $('#krwModal').val(convertToKoreanNumberString);
 }
 
@@ -502,27 +507,32 @@ function resetProgressIndicator() {
 }
 
 
+function numberFormat(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 // 숫자를 한글로 변환
-function convertToKoreanNumber(num) {
-    const digits = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
-    const units = ['', '십', '백', '천', '만', '십만', '백만', '천만', '억', '십억', '백억', '천억', '조', '십조', '백조', '천조'];
-    let result = '';
-    const numStr = num.toString();
-    const numLen = numStr.length;
+function convertToKoreanNumber(number) {
+    var inputNumber  = number < 0 ? false : number;
+    var unitWords    = ['', '만', '억', '조', '경'];
+    var splitUnit    = 10000;
+    var splitCount   = unitWords.length;
+    var resultArray  = [];
+    var resultString = '';
 
-    for (let i = 0; i < numLen; i++) {
-        const digit = parseInt(numStr.charAt(i));
-        const unit = units[numLen - i - 1];
-
-        if (i === numLen - 1 && digit === 1 && numLen !== 1) {
-            result += '일';
-        } else if (digit !== 0) {
-            result += digits[digit] + unit;
-        } else if (i === numLen - 5) {
-            result += '만';
+    for (var i = 0; i < splitCount; i++){
+        var unitResult = (inputNumber % Math.pow(splitUnit, i + 1)) / Math.pow(splitUnit, i);
+        unitResult = Math.floor(unitResult);
+        if (unitResult > 0){
+            resultArray[i] = unitResult;
         }
     }
 
-    return result;
+    for (var i = 0; i < resultArray.length; i++){
+        if(!resultArray[i]) continue;
+        resultString = String(numberFormat(resultArray[i])) + unitWords[i] + resultString;
+    }
+
+    return resultString;
 }
 
