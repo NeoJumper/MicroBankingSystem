@@ -88,6 +88,12 @@ function initializeEventHandlers() {
         }
     });
 
+    // 파일 선택 시 파일 이름을 표시
+    $('#excelInput').on('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : '선택된 파일이 없음';
+        $('#fileName').text(fileName).show();
+    });
+
 }
 
 function selectAccount() {
@@ -262,18 +268,27 @@ function updateEmployeeTable() {
     tbody.empty();
 
     $.each(employeeDataForUpload, function (index, employee) {
-        const row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+        const row1 = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+1
+        row1.append($('<td>').text(index + 1));
+        row1.append($('<td>').text(employee.targetAccId));
+        row1.append($('<td>').text(employee.transferAmount));
+        row1.append($('<td>').text(employee.krw));
+        row1.append($('<td>').text(employee.depositor));
+        row1.append($('<td>').text(''));
+        row1.append($('<td>').text(employee.description));
 
-        row.append($('<td>').text(index + 1));
-        row.append($('<td>').text(employee.targetAccId));
-        row.append($('<td>').text(employee.transferAmount));
-        row.append($('<td>').text(employee.krw));
-        row.append($('<td>').text(employee.depositor));
-        row.append($('<td>').text(''));
-        row.append($('<td>').text(employee.description));
+        tbody.append(row1);
 
-        tbody.append(row);
+
     });
+
+    const row2 = $('<tr>');
+    row2.append($('<td>').attr('colspan', 2).text(''));
+    row2.append($('<td>').text('1'));
+    row2.append($('<td>').text('2'));
+    row2.append($('<td>').attr('colspan', 3).text(''));
+    tbody.append(row2);
 }
 
 function handleTransferAmountInput() {

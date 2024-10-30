@@ -70,10 +70,11 @@ section h4 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 15px;
+    padding: 20px 5px;
     background-color: #F5F5F5;
+    border-top: 1px solid #333333;
     color: #5F5F5F;
-    height: 48px;
+    height: 60px;
 }
 
 .table-top-btns > div:nth-child(2) {
@@ -156,10 +157,18 @@ input[type="button"][value="계좌조회 >"] {
     margin-top: 12px;
 }
 
-#bulk-transfer-info td, #bulk-transfer-info th {
-    font-weight: bold;
+#bulk-transfer-info th {
+
+    font-size: 1.2rem;
     text-align: center;
+    border: 1px solid var(--little-dark-gray);
 }
+
+#bulk-transfer-info td{
+    text-align: center;
+    border: 1px solid var(--little-dark-gray);
+}
+
 
 p {
     margin: 0;
@@ -357,4 +366,35 @@ p {
     right: 9px;
     border-radius: 15px;
     background-position: center;
+}
+
+.file-btn {
+    display: flex;
+    margin-left: 8px; /* ms-2 */
+    background-color: white; /* btn-light */
+    border: 2px solid #dee2e6; /* border-2 */
+    align-items: center;
+    height: 33px;
+    padding: 0 12px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #212529;
+    border-radius: 4px; /* for rounded corners similar to btn */
+}
+
+.file-btn:hover {
+    background-color: #e2e6ea;
+}
+.select-option{
+    display: flex;
+    margin-left: 8px; /* ms-2 */
+    background-color: white; /* btn-light */
+    border: 1px solid var(--little-dark-gray);
+    align-items: center;
+    height: 33px;
+    padding: 0 12px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #212529;
+    border-radius: 4px; /* for rounded corners similar to btn */
 }
