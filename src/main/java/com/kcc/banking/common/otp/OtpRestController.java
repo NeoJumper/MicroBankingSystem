@@ -50,7 +50,10 @@ public class OtpRestController {
         long userCode = Long.parseLong(otpAuthentication.getUserCode());
 
         try {
-            OtpResultServlet.check_code(encodedKey, userCode , new Date().getTime() / 30000);
+            boolean isValid = OtpResultServlet.check_code(encodedKey, userCode, new Date().getTime() / 30000);
+            if (!isValid)
+                throw new InvalidKeyException("Invalid OTP");
+
         } catch (NoSuchAlgorithmException e) {
             throw new CustomException(ErrorCode.NO_SUCH_ALGORITHM);
         } catch (InvalidKeyException e) {

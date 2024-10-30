@@ -11,7 +11,7 @@ public enum ErrorCode {
     // 400 : 입력값이 잘못된 경우 / 문법상 오류 / 서버가 요청 구문 인식 X
     EMPTY_REFRESH_TOKEN("RefreshToken이 필요합니다.", HttpStatus.BAD_REQUEST),
     EMPTY_EMAIL("이메일이 필요합니다.", HttpStatus.BAD_REQUEST),
-    INVALID_CODE("인증코드가 일치하지 않습니다.",HttpStatus.BAD_REQUEST ),
+    INVALID_CODE("유효하지 않은 인증코드입니다.",HttpStatus.BAD_REQUEST ),
     ACCOUNT_CLOSED_FOR_TRANSFER("해지된 계좌에 대한 거래가 불가능합니다.", HttpStatus.BAD_REQUEST),
     OVER_TRANSFER_AMOUNT("계좌 잔액보다 이체 금액이 더 많습니다.", HttpStatus.BAD_REQUEST),
     INVALID_ACCOUNT_PASSWORD("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),

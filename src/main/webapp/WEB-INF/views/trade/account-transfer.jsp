@@ -185,7 +185,7 @@
 
     <div class="row justify-content-center mb-5">
         <button disabled id="account-transfer-submit" class="col-1 basic-btn">이체하기</button>
-        <button id="otp-authentication-modal-btn" class="col-1 basic-btn" style="display: none;">OTP 인증</button>
+        <button disabled id="otp-authentication-modal-btn" class="col-1 basic-btn" style="display: none;">OTP 인증</button>
     </div>
 </div>
 

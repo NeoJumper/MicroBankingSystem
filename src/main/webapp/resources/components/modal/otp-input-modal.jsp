@@ -44,6 +44,7 @@
                 <div class="my-4 d-flex justify-content-center">
                     <button class="basic-btn" id="otp-authenticate-btn">인증하기</button>
                 </div>
+           </div>
         </div>
     </div>
 </div>

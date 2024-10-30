@@ -1,6 +1,6 @@
 var securityLevel = '';
 var customerId = null;
-
+var otpInputModal;
 
 
 $(document).ready(function () {
@@ -189,6 +189,7 @@ function validateAccountPassword() {
             })
 
             $('#account-transfer-submit').prop('disabled', false);
+            $('#otp-authentication-modal-btn').prop('disabled', false);
 
         }, error: function (error){
             swal({
@@ -279,17 +280,19 @@ function clickOtpAuthenticationBtn() {
             type: "POST",
             success: function() {
 
+                otpInputModal.hide();
+                $('#account-transfer-submit').show();
+                $('#otp-authentication-modal-btn').hide();
+
+
                 swal({
                     title: "OTP 인증 성공",
                     text: "OTP 인증이 성공적으로 수행되었습니다.",
                     icon: "success",
                     button: "닫기",
                 })
-                var otpDetailModal = new bootstrap.Modal(document.getElementById('otp-detail-modal'));
-                otpDetailModal.hide();
 
-                $('#account-transfer-submit').show();
-                $('#otp-authentication-modal-btn').hide();
+
 
             },
             error: function(xhr, status, error) {
@@ -466,7 +469,7 @@ function clickOtpAuthenticationModalBtn(){
 }
 
 function showOtpInputModal() {
-    var otpInputModal = new bootstrap.Modal(document.getElementById('otp-input-modal'));
+    otpInputModal = new bootstrap.Modal(document.getElementById('otp-input-modal'));
     otpInputModal.show();
 }
 function handleTransferLimitTooltip() {
