@@ -216,7 +216,7 @@ function uploadIndividualEmployee() {
         accId: $('#withdrawal-account-number').text(),
         accountPassword: validPassword,
         targetAccId: $('#targetAccIdModal').val(),
-        transferAmount: $('#transferAmountModal').val(),
+        transferAmount: parseInt(convertNumber($('#transferAmountModal').val())),
         krw: $('#krwModal').val(),
         depositor: $('#depositorModal').val(),
         description: $('#descriptionModal').val(),
@@ -407,7 +407,7 @@ function transferExecution() {
 
     console.log("이체가능금액: "  + transferableAmount);
     console.log("총 이체 금액: " + totalTransferAmount);
-    if(parseInt(comma(totalTransferAmount)) < transferableAmount){
+    if(parseInt(comma(totalTransferAmount)) > transferableAmount){
         swal({
             title: " 대량 이체 등록 실패",
             text: "이체 총 금액이 이체 가능 금액을 초과했습니다",
