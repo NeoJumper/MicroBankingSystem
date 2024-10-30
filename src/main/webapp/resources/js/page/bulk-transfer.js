@@ -13,38 +13,14 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeEventHandlers();
 });
 
-// 숫자를 한글로 변환
-function convertToKoreanNumber(num) {
-    const digits = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
-    const units = ['', '십', '백', '천', '만', '십만', '백만', '천만', '억', '십억', '백억', '천억', '조', '십조', '백조', '천조'];
-    let result = '';
-    const numStr = num.toString();
-    const numLen = numStr.length;
-
-    for (let i = 0; i < numLen; i++) {
-        const digit = parseInt(numStr.charAt(i));
-        const unit = units[numLen - i - 1];
-
-        if (i === numLen - 1 && digit === 1 && numLen !== 1) {
-            result += '일';
-        } else if (digit !== 0) {
-            result += digits[digit] + unit;
-        } else if (i === numLen - 5) {
-            result += '만';
-        }
-    }
-
-    return result;
-}
-
-
 
 function initializeEventHandlers() {
-    // 모달 계좌선택 버튼
-    $('#search-modal-select-account-btn').click(selectAccount);
 
     // 계좌 조회
     $('#search-modal-account').on('hidden.bs.modal', getAccountDetail);
+
+    // 모달 내 계좌선택 버튼
+    $('#search-modal-select-account-btn').click(selectAccount);
 
     // 비고란 문구 선택
     $('input[name="salaryType"]').change(handleSalaryTypeChange);
@@ -78,6 +54,18 @@ function initializeEventHandlers() {
 
     // 초기화
     $('input[value="초기화"]').click(initExecution);
+
+    // 이체한도 툴팁 마우스 호버 이벤트 관리
+    $('#select-transfer-limit').hover(
+        function() {
+            // 마우스가 올라갔을 때
+            $('#select-transfer-limit-tooltip').css('opacity', '1');
+        },
+        function() {
+            // 마우스가 벗어났을 때
+            $('#select-transfer-limit-tooltip').css('opacity', '0');
+        }
+    );
 }
 
 function selectAccount() {
@@ -90,20 +78,44 @@ function selectAccount() {
     }
 
     $.ajax({
-        url: "/api/employee/accounts",
-        data: { accId: selectedAccountId },
+        url: "/api/employee/accounts/" + selectedAccountId,
         type: "GET",
         success: function (data) {
 
-            securityLevel = data[0].securityLevel;
+            let transferAmountOfToday = data.transferAmountOfToday || 0;
+            securityLevel = data.securityLevel;
+            customerId = data.customerId;
 
-            $('#withdrawal-customer-name').text(data[0].customerName +'(' + securityLevel + ')  |   ');
-            $('#withdrawal-product-name').text(data[0].productName);
+            $('#withdrawal-customer-name').text(data.customerName +'(' + securityLevel + ')  |   ');
+            $('#withdrawal-product-name').text(data.productName);
             $('#withdrawal-account-number').text(data.accId);
+            $('#per-trade-limit').replaceWith(`<span id="per-trade-limit" class="amount-span">${comma(data.perTradeLimit)}&nbsp; 원</span>`);
+            $('#daily-limit').replaceWith(`<span id="per-trade-limit" class="amount-span">${comma(data.dailyLimit)}&nbsp; 원</span>`);
+            $('#transfer-amount-of-today').replaceWith(`<span id="transfer-amount-of-today" class="amount-span">${comma(transferAmountOfToday)}&nbsp; 원</span>`);
 
-            $('#withdrawal-account-number').text(data[0].accId);
-            $('#account-balance').text(data[0].balance.toLocaleString());
-            $('#transferable-amount').text(data[0].balance.toLocaleString());
+
+            // 금일 이체 한도
+            var transferableAmountLimitOfToday = data.dailyLimit - transferAmountOfToday;
+
+
+            // 현재 거래에서의 이체 가능 한도 = 1회 이체 한도 > 금일 이체 한도 ? 1회 이체 한도 : 금일 이체 한도;
+            var currentTransferableLimit = data.perTradeLimit < transferableAmountLimitOfToday
+                ? data.perTradeLimit : transferableAmountLimitOfToday;
+
+            // 현재 거래에서의 이체 가능 금액 = 한도와 잔액중 작은 금액을 사용
+            var transferableAmount = currentTransferableLimit < data.balance ? currentTransferableLimit : data.balance;
+
+            $('#transferable-amount-limit-of-today').replaceWith(`<span id="transferable-amount-limit-of-today" class="amount-span">${comma(transferableAmountLimitOfToday)}&nbsp; 원</span>`);
+            $('#transferable-amount').replaceWith(`<span id="transferable-amount" style="margin-left: 20px;">${comma(transferableAmount)}&nbsp;</span>`);
+
+
+            console.log(data);
+
+            // 계좌 잔액 라벨을 표시하고 금액 업데이트
+            $('#account-balance').text(data.balance.toLocaleString('ko-KR'));
+
+
+
             $('#search-modal-account').modal('hide');
         },
         error: function (error) {
@@ -465,5 +477,30 @@ function resetProgressIndicator() {
     $('.progress-container .step:nth-of-type(3)').removeClass('active');
     $('.progress-container .step:nth-of-type(3) .circle').removeClass('active');
     $('.progress-container .step:nth-of-type(3) .inner-circle').removeClass('active');
+}
+
+
+// 숫자를 한글로 변환
+function convertToKoreanNumber(num) {
+    const digits = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+    const units = ['', '십', '백', '천', '만', '십만', '백만', '천만', '억', '십억', '백억', '천억', '조', '십조', '백조', '천조'];
+    let result = '';
+    const numStr = num.toString();
+    const numLen = numStr.length;
+
+    for (let i = 0; i < numLen; i++) {
+        const digit = parseInt(numStr.charAt(i));
+        const unit = units[numLen - i - 1];
+
+        if (i === numLen - 1 && digit === 1 && numLen !== 1) {
+            result += '일';
+        } else if (digit !== 0) {
+            result += digits[digit] + unit;
+        } else if (i === numLen - 5) {
+            result += '만';
+        }
+    }
+
+    return result;
 }
 

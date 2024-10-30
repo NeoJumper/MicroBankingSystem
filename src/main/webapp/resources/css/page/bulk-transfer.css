@@ -1,3 +1,7 @@
+#registration-page{
+    position: relative;
+}
+
 #register-result-toggle-btn {
     display: flex;
     height: 55px;
@@ -263,4 +267,62 @@ p {
 #account-number{
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+/* 툴팁 option */
+#select-transfer-limit {
+    margin-left: auto;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+    padding: 8px 12px;
+    width: fit-content;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    cursor: pointer;
+}
+#select-transfer-limit:hover {
+    background-color: #ececec;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+#select-transfer-limit-tooltip {
+    border: 1px solid #073082;
+    border-radius: 6px;
+    background-color: white;
+    position: absolute;
+    color: #fff;
+    padding: 15px 15px;
+    width: auto;
+    right: 40px;
+    top: 28%;
+    opacity: 0;
+    transition: all 0.5s linear;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+#select-transfer-limit-tooltip span{
+    font-size: 1.1rem;
+    color: #212529;
+    font-weight: normal;
+}
+#select-transfer-limit-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%; /* 툴팁 위쪽에 위치 */
+    left: 83%; /* 중앙에 위치 */
+    margin-left: -6px; /* 화살표의 중앙을 맞추기 위해 좌우로 이동 */
+    border-width: 12px;
+    border-style: solid;
+    border-color: #073082 transparent transparent transparent; /* 위쪽 화살표 색상 설정 */
+}
+.amount-span{
+    color: #073082 !important;
+    font-weight: bold!important;
+    margin-left: auto;
+    width: 160px;
+    text-align: right;
+    display: inline-block;
 }
