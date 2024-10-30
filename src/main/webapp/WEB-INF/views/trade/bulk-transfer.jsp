@@ -210,76 +210,12 @@
                     </thead>
                     <tbody id="employeeTablePreviewBody">
                     <%--  동적으로 직원계좌정보 생성됨 --%>
-                        <tr >
-                            <td>''</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr >
-                            <td>''</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr >
-                            <td>''</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr >
-                            <td>''</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr >
-                            <td>''</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr >
-                            <td>''</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr >
-                            <td>''</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <%--  동적으로 직원계좌정보 생성됨 --%>
-                        <tr >
-                            <td colspan="2">총 <span>0</span>개</td>
-                            <td>0</td>
-                            <td>영원</td>
-                            <td colspan="3"></td>
-                        </tr>
+                    <tr >
+                        <td colspan="2">총 <span>0</span>개</td>
+                        <td>0</td>
+                        <td>영원</td>
+                        <td colspan="3"></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

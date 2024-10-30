@@ -403,19 +403,48 @@ function validationExecution() {
 
 
 function transferExecution() {
-    $.ajax({
-        type: "POST",
-        url: "/api/employee/bulk-transfer",
-        contentType: 'application/json',
-        data: JSON.stringify(employeeDataForUpload),
-        success: function (bulkTransferId) {
-            const url = `/page/employee/bulk-transfer-result?bulkTransferId=${encodeURIComponent(bulkTransferId)}`;
-            window.location.href = url;
-        },
-        error: function () {
-            console.log("이체 실패");
-        }
-    });
+    let transferableAmount = parseInt(convertNumber($('#transferable-amount').text()));
+
+    console.log("이체가능금액: "  + transferableAmount);
+    console.log("총 이체 금액: " + totalTransferAmount);
+    if(parseInt(comma(totalTransferAmount)) < transferableAmount){
+        swal({
+            title: " 대량 이체 등록 실패",
+            text: "이체 총 금액이 이체 가능 금액을 초과했습니다",
+            icon: "error",
+            button: "닫기",
+        }).then(() => {
+            // swal의 닫기 버튼이 클릭된 후 실행
+            $('html, body').animate({ scrollTop: 0 }, 'slow', function() {
+                // 색상 변경
+                const transferableAmount = $('#transferable-amount');
+
+                // 빨간색으로 변경
+                transferableAmount.css('color', 'red');
+
+                // 2초 후에 원래 색상으로 복구
+                setTimeout(function() {
+                    transferableAmount.css('color', '#073082');
+                }, 2500); // 2000ms = 2초
+            });
+        });
+    }
+    else{
+        $.ajax({
+            type: "POST",
+            url: "/api/employee/bulk-transfer",
+            contentType: 'application/json',
+            data: JSON.stringify(employeeDataForUpload),
+            success: function (bulkTransferId) {
+                const url = `/page/employee/bulk-transfer-result?bulkTransferId=${encodeURIComponent(bulkTransferId)}`;
+                window.location.href = url;
+            },
+            error: function () {
+                console.log("이체 실패");
+            }
+        });
+    }
+
 }
 
 
