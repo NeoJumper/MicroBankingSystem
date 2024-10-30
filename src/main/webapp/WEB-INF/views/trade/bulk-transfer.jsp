@@ -181,7 +181,7 @@
                     </button>
 
                     <button id="uploadIndividualEmployeeBtn" type="button" class="file-btn" value="개별추가"
-                            style="height: 33px; font-weight: bold;" disabled>
+                            style="height: 33px; font-weight: bold;">
                         개별 추가
                     </button>
 
@@ -312,7 +312,7 @@
 </div>
 <!-- 개별추가 모달 -->
 <div class="modal fade" id="uploadIndividualEmployeeModal" tabindex="-1">
-    <div class="modal-dialog" style="margin-top:200px;">
+    <div class="modal-dialog modal-lg" style="margin-top:200px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title fs-5 fw-bold">직접 입력으로 직원을 추가해보세요</h2>
@@ -324,11 +324,11 @@
                     <table class="common-table" style="margin-bottom: 0px">
                         <tr>
                             <th>입금계좌번호</th>
-                            <td><input id="targetAccIdModal" placeholder=" 예) 000-0000000-0000"></td>
+                            <td><input id="targetAccIdModal" maxlength="16" placeholder=" 예) 000-0000000-0000"></td>
                         </tr>
                         <tr>
                             <th>이체금액(원)</th>
-                            <td><input id="transferAmountModal" placeholder=" 예) 3000000"></td>
+                            <td><input id="transferAmountModal" placeholder=" 예) 3,000,000"></td>
                         </tr>
                         <tr>
                             <th>한글금액표시(원)</th>

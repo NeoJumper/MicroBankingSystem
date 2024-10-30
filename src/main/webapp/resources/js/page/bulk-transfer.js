@@ -4,11 +4,48 @@ let employeeDataForUpload = [];
 let validPassword = "";
 let totalTransferAmount = 0;
 let totalCount = 0;
+let originalAccountNumber = ""; // 주민번호 원본 값 저장
+
+function handleAccountNumber() {
+    $('#targetAccIdModal').on('input', function(event) {
+        // 현재 입력된 전체 값
+        let currentValue = $(this).val();
+
+        // 백스페이스 처리
+        if (event.originalEvent.inputType === 'deleteContentBackward') {
+            originalAccountNumber = originalAccountNumber.slice(0, -1); // 마지막 문자 제거
+            $(this).val(originalAccountNumber); // 업데이트된 값을 입력 필드에 반영
+            hyphenAccountNumber(); // 마스킹 처리 호출
+        } else {
+            // 현재 입력된 마지막 문자
+            let inputChar = currentValue.slice(-1);
+
+            // 숫자일 경우에만 추가
+            if (/^[0-9]$/.test(inputChar)) { // 마지막 문자가 숫자인지 확인
+                originalAccountNumber += inputChar; // 숫자만 남기고 추가
+            }
+            hyphenAccountNumber(); // 마스킹 처리 호출
+        }
+    });
+}
+function hyphenAccountNumber() {
+    let displayAccountNumber = originalAccountNumber; // 화면에 표시할 값 초기화
+    if (originalAccountNumber.length > 3 && originalAccountNumber.length <= 10) {
+        displayAccountNumber = originalAccountNumber.slice(0, 3) + '-' + originalAccountNumber.slice(3); // 하이픈 추가
+    }
+    if (originalAccountNumber.length > 10) {
+        displayAccountNumber = originalAccountNumber.slice(0, 3) + '-' + originalAccountNumber.slice(3, 10) + '-' + originalAccountNumber.slice(10); // 하이픈 추가
+    }
+    $('#targetAccIdModal').val(displayAccountNumber); // 화면에 마스킹된 값만 보여주기
+
+}
+
 
 document.addEventListener("DOMContentLoaded", function () {
     isClosed();
     handleBusinessDayDateInput();
     userNameInput();
+    handleAccountNumber();
 
     // 이벤트 핸들러 초기화
     initializeEventHandlers();

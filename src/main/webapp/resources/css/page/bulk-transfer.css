@@ -413,3 +413,11 @@ p {
     position: sticky;
     top: 0px;
 }
+#uploadIndividualEmployeeModal th, #uploadIndividualEmployeeModal td{
+    font-size: 1.2rem;
+}
+#uploadIndividualEmployeeModal input
+{
+    width: 70%;
+    padding: 10px 10px;
+}
