@@ -6,13 +6,16 @@ $(document).ready(function () {
     customerSearchBtnClickEvent();
     insertCustomerId();
 
-    var otpDetailModal = new bootstrap.Modal(document.getElementById('otp-detail-modal'));
-    otpDetailModal.show();
-
     clickSendBtn();
     clickResendBtn();
     clickAuthenticateBtn();
     clickOtpRegisterBtn();
+
+    $('#otp-detail-modal').on('hide.bs.modal', function() {
+        const url = '/page/common/otp-register'; // 요청할 URL 설정
+        window.location.href = url; // 지정한 URL로 이동
+    });
+
 });
 
 // ------------------------------- START customerSearchModalEvent()------------------------------------------

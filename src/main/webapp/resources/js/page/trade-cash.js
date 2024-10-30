@@ -1,3 +1,6 @@
+var securityLevel = '';
+var customerId = null;
+
 $(document).ready(function () {
     isClosed();
 
@@ -14,6 +17,12 @@ $(document).ready(function () {
     clickTradeAmountBtn(); // 100, 50, 10, 5, 1, 전액 버튼
 
     removeErrorMessage();    // 입력 필드를 벗어났을 때 경고 메시지를 제거
+
+    clickOtpAuthenticationModalBtn() // OTP 인증 모달 띄우는 버튼 클릭
+
+    handleOtpInput() // OTP input 동작 핸들링
+
+    clickOtpAuthenticationBtn() // OTP인증하기 버튼
 
     $('.trade-amount-button-group').css({
         height: 0,
@@ -95,6 +104,7 @@ function validateAccountPassword() {
             })
 
             $('#cash-trade-submit').prop('disabled', false);
+            $('#otp-authentication-modal-btn').prop('disabled', false);
 
         }, error: function (error){
             swal({
@@ -159,7 +169,32 @@ function showCashTradeResultModal(data){
     $('#result-modal-cash-trade').modal('show');
 }
 
+function handleOtpInput() {
+    $('.auth-code-input').on('input', function() {
+        // 숫자 외의 입력은 제거
+        var value = $(this).val();
+        if (!/^\d$/.test(value)) {
+            $(this).val(''); // 숫자 외의 입력은 비움
+            return;
+        }
 
+        // 다음 인풋으로 자동 포커스 이동
+        var nextInput = $(this).next('.auth-code-input');
+        if (nextInput.length && value !== '') {
+            nextInput.focus();
+        }
+    });
+
+    $('.auth-code-input').on('keydown', function(e) {
+        // 백스페이스 시 이전 칸으로 이동
+        if (e.key === 'Backspace' && $(this).val() === '') {
+            var prevInput = $(this).prev('.auth-code-input');
+            if (prevInput.length) {
+                prevInput.focus();
+            }
+        }
+    });
+}
 
 function selectAccount() {
     var selectedRow = $('input[name="select-account"]:checked').closest('tr');  // 선택된 라디오 버튼이 속한 행을 가져옴
@@ -178,14 +213,19 @@ function selectAccount() {
         data: {accId: selectedAccountId, productName: null},
         type: "GET",
         success: function (data) {
+
+            securityLevel = data[0].securityLevel;
+            customerId = data[0].customerId;
+
             if (selectedTradeType === "withdrawal") {
                 // 출금 계좌 처리
                 $('#cash-trade-account-number').text(data[0].accId);
-                $('#cash-trade-customer-name').text(data[0].customerName + "  |  "   );
+                $('#cash-trade-customer-name').text(data[0].customerName +'(' + securityLevel + ')  |   ');
                 $('#cash-trade-product-name').text(data[0].productName);
                 $('#cash-trade-balance').text(data[0].balance.toLocaleString('ko-KR'));
 
                 // 출금일 경우, 비밀번호 인증 후에만 승인 버튼 활성화
+                handleOtpBtn();
                 $('#cash-trade-submit').prop('disabled', true); // 비밀번호 인증 전까지 비활성화
 
             } else if (selectedTradeType === "deposit") {
@@ -199,6 +239,7 @@ function selectAccount() {
                 $('#cash-trade-submit').prop('disabled', false);
             }
             enableAmountButtons(data[0].balance); // 금액 입력 버튼 활성화
+
             // 모달 닫기
             $('#search-modal-account').modal('hide');
         },
@@ -306,4 +347,76 @@ function setAmount(button) {
     }
 
     $('#cash-trade-amount').val(comma(amount));  // 쉼표가 포함된 값으로 설정
+}
+function handleOtpBtn() {
+    console.log(securityLevel);
+    if(securityLevel === '1등급'){
+        $('#cash-trade-submit').hide();
+        $('#otp-authentication-modal-btn').show();
+    }
+    else{
+        $('#cash-trade-submit').show();
+        $('#otp-authentication-modal-btn').hide();
+    }
+}
+function clickOtpAuthenticationModalBtn(){
+    $('#otp-authentication-modal-btn').click(function () {
+        showOtpInputModal();
+    });
+}
+function showOtpInputModal() {
+    otpInputModal = new bootstrap.Modal(document.getElementById('otp-input-modal'));
+    otpInputModal.show();
+}
+
+// 인증하기 버튼 클릭
+function clickOtpAuthenticationBtn() {
+
+    $('#otp-authenticate-btn').click(function() {
+
+        var values = $('.auth-code-input').map(function() {
+            return $(this).val();
+        }).get(); // 배열로 변환
+
+        // 배열을 문자열로 합치기
+        var combinedValue = values.join('');
+
+        $.ajax({
+            url: "/api/common/otp-authentication",
+            data:{
+                userId : customerId,
+                userCode : combinedValue
+            },
+            type: "POST",
+            success: function() {
+
+                otpInputModal.hide();
+                $('#cash-trade-submit').show();
+                $('#otp-authentication-modal-btn').hide();
+
+
+                swal({
+                    title: "OTP 인증 성공",
+                    text: "OTP 인증이 성공적으로 수행되었습니다.",
+                    icon: "success",
+                    button: "닫기",
+                })
+
+
+
+            },
+            error: function(xhr, status, error) {
+                swal({
+                    title: "OTP 인증 실패",
+                    text: "OTP 인증에 실패했습니다.",
+                    icon: "error",
+                    button: "닫기",
+                })
+            }
+        });
+
+
+
+
+    });
 }

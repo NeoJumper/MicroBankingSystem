@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/modal/otp-input-modal.css"/>
 </head>
 <body>
 <!-- Modal -->
@@ -44,6 +45,7 @@
                 <div class="my-4 d-flex justify-content-center">
                     <button class="basic-btn" id="otp-authenticate-btn">인증하기</button>
                 </div>
+           </div>
         </div>
     </div>
 </div>

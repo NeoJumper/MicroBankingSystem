@@ -38,6 +38,8 @@
         <result property="openDate" column="open_date" />
         <result property="status" column="status" />
         <result property="customerName" column="customer_name" />
+        <result property="customerId" column="customer_id" />
+        <result property="securityLevel" column="security_level" />
         <result property="productName" column="product_name" />
         <result property="balance" column="balance" />
     </resultMap>
@@ -108,6 +110,8 @@
         a.open_date AS open_date,
         a.status,
         c.name AS customer_name,
+        c.id AS customer_id,
+        c.security_level AS security_level,
         p.name AS product_name,
         a.balance AS balance,
         a.per_trade_limit,
