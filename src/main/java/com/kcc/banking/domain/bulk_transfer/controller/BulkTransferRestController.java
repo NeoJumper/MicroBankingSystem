@@ -45,7 +45,7 @@ public class BulkTransferRestController {
         // file 다운로드 설정
         response.setContentType("application/download");
         response.setContentLength((int)f.length());
-        response.setHeader("Content-disposition", "attachment;filename=employees-upload.xlsx");
+        response.setHeader("Content-disposition", "attachment;filename=bulk-transfer-upload.xlsx");
         // response 객체를 통해서 서버로부터 파일 다운로드
         OutputStream os = response.getOutputStream();
         // 파일 입력 객체 생성
@@ -80,9 +80,8 @@ public class BulkTransferRestController {
             BulkTransferPreview employee = BulkTransferPreview.builder()
                     .targetAccId(formatter.formatCellValue(row.getCell(0)))
                     .transferAmount(formatter.formatCellValue(row.getCell(1)))
-                    .krw(formatter.formatCellValue(row.getCell(2)))
-                    .depositor(formatter.formatCellValue(row.getCell(3)))
-                    .description(formatter.formatCellValue(row.getCell(4)))
+                    .depositor(formatter.formatCellValue(row.getCell(2)))
+                    .description(formatter.formatCellValue(row.getCell(3)))
                     .build();
 
             bulkTransferPreviewList.add(employee);
