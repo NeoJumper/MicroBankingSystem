@@ -12,6 +12,10 @@ $(document).ready(function() {
                     status = 'OPN';
                     period = '00';
                     break;
+                case 'cash-trade':
+                    period = '';
+                    status = 'OPN';
+                    break;
                 case 'account-close-cancel':
                     status = 'CLS';
                     period = '00';
@@ -30,6 +34,13 @@ $(document).ready(function() {
                     break;
             }
 
+            if(currentUrl === 'cash-trade'){
+                var selectedValue = $('input[name="trade-type"]:checked').val();
+                console.log(selectedValue);
+                if (selectedValue === 'withdrawal')
+                    period = '00';
+            }
+
             checkAccount(status,period);  // 계좌 조회 함수 호출
         }
     });
@@ -44,7 +55,10 @@ $(document).ready(function() {
                 status = 'OPN';
                 period = '00';
                 break;
-
+            case 'cash-trade':
+                period = '';
+                status = 'OPN';
+                break;
             case 'account-close-cancel':
                 status = 'CLS';
                 period = '00';
@@ -64,6 +78,12 @@ $(document).ready(function() {
             case '':
                 break;
 
+        }
+        if(currentUrl === 'cash-trade'){
+            var selectedValue = $('input[name="trade-type"]:checked').val();
+            console.log(selectedValue);
+            if (selectedValue === 'withdrawal')
+                period = '00';
         }
 
         checkAccount(status,period);  // 계좌 조회 함수 호출
