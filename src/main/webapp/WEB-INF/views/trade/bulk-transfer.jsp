@@ -222,7 +222,7 @@
                 <div class="result-content">
                     <div>
                         총 등록건수(건) <br>
-                        <span id="total-registrations">0</span>(건)
+                        <span class="total-registrations">0</span>(건)
                     </div>
                     <div>
                         받는분 정상(건) <br>

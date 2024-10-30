@@ -16,9 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function initializeEventHandlers() {
 
-    // 계좌 조회
-    $('#search-modal-account').on('hidden.bs.modal', getAccountDetail);
-
     // 모달 내 계좌선택 버튼
     $('#search-modal-select-account-btn').click(selectAccount);
 
@@ -152,44 +149,7 @@ function selectAccount() {
     });
 }
 
-function getAccountDetail() {
-    const accountNumber = $('#withdrawal-account-number').val();
 
-    if (accountNumber) {
-        $.ajax({
-            url: `/api/employee/account-close-details/${accountNumber}`,
-            type: 'GET',
-            success: function (data) {
-                $('#table-content tbody').empty();
-
-                if (data.accountStatus === "CLS") {
-                    swal({ title: "해지 신청이 완료된 계좌입니다.", icon: "warning" });
-                    return;
-                }
-
-                const textAfterInter = Number(data.amountSum) * (1 - Number(data.productTaxRate));
-                const totalPayment = data.accountBal + textAfterInter;
-
-                $('#table-content tbody').append(
-                    `<tr>
-                        <td style="width: 5%;">${data.accountBal}원</td>
-                        <td style="width: 5%;">${data.productInterRate}%</td>
-                        <td style="width: 5%;">${data.accountPreInterRate}%</td>
-                        <td style="width: 10%;">${data.productTaxRate}%</td>
-                        <td style="width: 10%;">${data.amountSum}</td>
-                        <td style="width: 10%;">${textAfterInter}</td>
-                        <td style="width: 10%;">${totalPayment}</td>
-                    </tr>`
-                );
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Error fetching data:', textStatus, errorThrown);
-            }
-        });
-    } else {
-        $('#data-table tbody').empty();
-    }
-}
 
 function handleSalaryTypeChange() {
     const selectedValue = $(this).val();
@@ -267,28 +227,32 @@ function updateEmployeeTable() {
     const tbody = $('#employeeTablePreviewBody');
     tbody.empty();
 
+    let totalTransferAmount = 0;
+    let totalCount = 0;
+
     $.each(employeeDataForUpload, function (index, employee) {
-        const row1 = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
-1
-        row1.append($('<td>').text(index + 1));
-        row1.append($('<td>').text(employee.targetAccId));
-        row1.append($('<td>').text(employee.transferAmount));
-        row1.append($('<td>').text(employee.krw));
-        row1.append($('<td>').text(employee.depositor));
-        row1.append($('<td>').text(''));
-        row1.append($('<td>').text(employee.description));
+        totalTransferAmount += parseInt(employee.transferAmount);
+        totalCount += 1;
 
-        tbody.append(row1);
-
-
+        const transferInfoRow = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+        transferInfoRow.append($('<td>').text(index + 1));
+        transferInfoRow.append($('<td>').text(employee.targetAccId));
+        transferInfoRow.append($('<td>').text(employee.transferAmount));
+        transferInfoRow.append($('<td>').text(convertToKoreanNumber(employee.transferAmount)));
+        transferInfoRow.append($('<td>').text(employee.depositor));
+        transferInfoRow.append($('<td>').text(''));
+        transferInfoRow.append($('<td>').text(employee.description));
+        tbody.append(transferInfoRow);
     });
 
-    const row2 = $('<tr>');
-    row2.append($('<td>').attr('colspan', 2).text(''));
-    row2.append($('<td>').text('1'));
-    row2.append($('<td>').text('2'));
-    row2.append($('<td>').attr('colspan', 3).text(''));
-    tbody.append(row2);
+    console.log(totalTransferAmount);
+
+    const totalRow = $('<tr>');
+    totalRow.append($('<td>').attr('colspan', 2).text('총 ' + totalCount + '건'));
+    totalRow.append($('<td>').text(comma(totalTransferAmount)));
+    totalRow.append($('<td>').text(convertToKoreanNumber(totalTransferAmount)));
+    totalRow.append($('<td>').attr('colspan', 3).text(''));
+    tbody.append(totalRow);
 }
 
 function handleTransferAmountInput() {
@@ -340,9 +304,6 @@ function uploadEmployeePreview() {
             });
 
             updateEmployeeTable();
-
-            const totalRegistrations = employeeDataForUpload.length;
-            $('#total-registrations').text(totalRegistrations);
         },
         error: function (xhr, status, error) {
             console.error('Upload failed!', error);
