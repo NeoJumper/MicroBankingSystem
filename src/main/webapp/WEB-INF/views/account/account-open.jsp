@@ -23,7 +23,7 @@
 
 <div id="main-area">
 
-    <div>
+    <div id="title">
         <h5>예금 관리 ></h5>
         <h5>&nbsp계좌 개설 </h5>
     </div>

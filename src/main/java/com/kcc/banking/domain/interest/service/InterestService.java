@@ -8,6 +8,7 @@ import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmpl
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.request.*;
+import com.kcc.banking.domain.interest.dto.response.InterestDetails;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.interest.mapper.InterestMapper;
@@ -141,4 +142,7 @@ public class InterestService {
         interestMapper.deleteInterest(businessDateAndBranchId);
     }
 
+    public List<InterestDetails> getInterestDetailsByAccountId(String accountId) {
+        return interestMapper.findInterestDetails(accountId);
+    }
 }

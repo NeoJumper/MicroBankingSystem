@@ -273,11 +273,6 @@ function changeBusinessDay() {
         businessDateToChange: $('#next-business-day').val()
     }
 
-
-    console.log("CLOSING TESETSET", data);
-    alert("CLOSING TESETSET", data);
-    console.log("DATE TESET", businessDayUpdate);
-
     $.ajax({
         url: '/api/manager/business-day-change',
         type: 'PATCH',

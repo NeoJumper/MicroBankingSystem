@@ -35,7 +35,7 @@ public class AccountRestController {
 
     /**
      * @Description
-     * 계좌 이체, 현금 입출금, 해지 거래 등 계좌를 찾는검색하는 모달에서 사용
+     * 계좌 이체, 현금 입출금, 해지 거래 등 계좌를 검색하는 모달에서 사용
      */
     @GetMapping("/api/employee/accounts")
     public ResponseEntity<List<AccountOfModal>> getAccountsBySearchOption(@ModelAttribute SearchAccountOfModal searchAccountOfModal) {
@@ -104,7 +104,7 @@ public class AccountRestController {
         return ResponseEntity.status(HttpStatus.OK).body(cat);
     }
 
-    // 한고객의 개설상태의 입출금 통장 조회
+    // 한 고객의 개설 상태의 입출금 통장 조회
     @GetMapping("/api/employee/transfer-accounts/{customerId}")
     public ResponseEntity<List<AccountOfModal>> getAllAccountOfOneCustomer(@PathVariable String customerId){
         System.out.println("getAllAccountOfOneCustomer >>>>> customerId" + customerId);
@@ -112,7 +112,7 @@ public class AccountRestController {
         return ResponseEntity.ok(accountsOfPerPerson);
     }
 
-    // 예금/ 적금별 상품 전체 조회
+    // 예금/적금별 상품 전체 조회
     @GetMapping("/api/employee/products")
     public ResponseEntity<List<ProductOfModal>> getAllProductByAccountType(@ModelAttribute SearchProductOfModal searchProductOfModal){
         System.out.println("예금/ 적금별 상품 전체 조회 getAllProductByAccountType >>>>>>>>>>");

@@ -31,8 +31,8 @@ function getAccountDetail() {
                 // 취소신청이 완료된 계좌는 alert로 알림
                 if (data.accountStatus === "CLS") {
                     swal({
-                        title: "해지 신청이 완료된 계좌입니다.",
-                        // text: "비밀번호 인증 성공",
+                        title: "해지 신청된 계좌",
+                        text: "이미 해지가 신청된 계좌입니다.",
                         icon: "warning",
                     });
                     return;

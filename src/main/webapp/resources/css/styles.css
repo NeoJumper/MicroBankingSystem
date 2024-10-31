@@ -56,22 +56,22 @@ body{
   background: var(#FBFBFB);
 }
 
-#main-area > div:first-child{
+#main-area > #title:first-child{
   display: flex;
   align-items: center;
   margin-bottom: 30px;
 }
-#main-area > div:first-child h5 {
+#main-area > #title:first-child h5 {
   opacity: 0.5;
   color: var(--deep-dark-gray);
   margin-bottom: 0;
 }
 
-#main-area > div:first-child h5:last-child {
+#main-area > #title:first-child h5:last-child {
   opacity: 1;
   font-size: 1.5rem;
 }
-#main-area > div > h3 {
+#main-area > #title > h3 {
   color: initial; /* 마지막 h3는 기본 스타일로 설정 */
   font-weight: bold;
 }

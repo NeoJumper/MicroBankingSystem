@@ -20,7 +20,7 @@
 <%@ include file="/resources/components/sidebar.jsp" %>
 
 <div id="main-area">
-    <div>
+    <div id="title">
         <h5>계좌 관리 > </h5>
         <h5>&nbsp 계좌 수정 </h5>
     </div>
