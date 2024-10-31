@@ -16,10 +16,10 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
-    <div>
+    <div id="title">
         <h5>계좌 관리 > </h5>
         <h5>&nbsp 정기 적금 ></h5>
-        <h3>&nbsp 계좌 해지 </h3>
+        <h5>&nbsp 계좌 해지 </h5>
     </div>
 
     <h3>계좌 정보</h3>
@@ -41,6 +41,21 @@
             <td><input disabled type="text" id="customer-name"></td>
         </tr>
     </table>
+
+    <div class="flexible-account-area" style="display: none">
+        <h3>자유적금 상세 정보</h3>
+        <table class="common-table">
+            <tbody>
+            <tr>
+                <th>상품 종류</th>
+                <td id="savings-account-flexible-product-type"></td>
+                <th>적용 금리</th>
+                <td id="savings-account-flexible-interest-calculation-method"></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
 
     <div id="close-savings-account-interest">
         <h3>해지 적용 이율</h3>
@@ -89,7 +104,7 @@
         </table>
     </div>
 
-    <div id="fixed-account-area">
+    <div id="common-account-area">
         <h3>계좌 해지 정보</h3>
 
         <table class="common-table">
@@ -105,20 +120,21 @@
             </tr>
             </thead>
             <tbody id="savings-account-close-info">
-           <%-- <tr>
-                <td style="background-color: red; color: white;">중도 해지</td>
-                <td>200일</td>
-                <td>2024-10-01</td>
-                <td>2025-10-01</td>
-                <td>2025-01-15</td>
-                <td>1.2%</td>
-                <td>100,010,000</td>
-            </tr>--%>
+            <%-- <tr>
+                 <td style="background-color: red; color: white;">중도 해지</td>
+                 <td>200일</td>
+                 <td>2024-10-01</td>
+                 <td>2025-10-01</td>
+                 <td>2025-01-15</td>
+                 <td>1.2%</td>
+                 <td>100,010,000</td>
+             </tr>--%>
             </tbody>
         </table>
 
+        <div>
         <h3>예금 예상 이자 및 총 금액</h3>
-        <table class="common-table" >
+        <table class="common-table">
             <thead>
             <tr>
                 <th>이자 계산 방식</th>
@@ -133,10 +149,27 @@
             </tr>
             </thead>
             <tbody id="savings-account-total-cash">
+            <%--동적으로 총 금액 생성--%>
+            </tbody>
+        </table>
+        </div>
+    </div>
 
+    <div class="flexible-account-area" style="display: none">
+        <h3>월별 이자 내역</h3>
+        <table class="common-table" id="savings-account-flexible-monthly-interest-list">
+            <thead>
+                <th>생성일자</th>
+                <th>계좌 잔액</th>
+                <th>기본이율</th>
+                <th>우대이율</th>
+                <th>이자 금액</th>
+            </thead>
+            <tbody>
 
             </tbody>
         </table>
+
     </div>
 
     <table class="common-table">

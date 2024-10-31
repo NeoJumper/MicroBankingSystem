@@ -2,8 +2,11 @@ package com.kcc.banking.domain.interest.mapper;
 
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.interest.dto.request.*;
+import com.kcc.banking.domain.interest.dto.response.InterestDetails;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface InterestMapper {
@@ -28,5 +31,6 @@ public interface InterestMapper {
     // 영업일 되돌리기에 의한 이자 삭제
     void deleteInterest(BusinessDateAndBranchId businessDateAndBranchId);
 
-
+    // 계좌번호로 이자내역 목록 불러오기
+    List<InterestDetails> findInterestDetails(String accountId);
 }

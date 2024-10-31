@@ -25,6 +25,12 @@
         GROUP BY acc_id
     </select>
 
+    <select id="findInterestDetails" parameterType="java.lang.String">
+        SELECT creation_date, balance, interest_rate, preferential_interest_rate, amount
+        FROM Interest
+        WHERE acc_id = #{accountId}
+    </select>
+
 
     <insert id="save" parameterType="EmployeeCreate">
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
@@ -46,6 +52,7 @@
         acc_id,
         branch_id,
         amount,
+        balance,
         interest_rate,
         preferential_interest_rate,
         payment_status,
@@ -60,6 +67,7 @@
         #{accId, jdbcType=VARCHAR},
         #{branchId, jdbcType=BIGINT},
         #{amount, jdbcType=DECIMAL},
+        #{balance, jdbcType=DECIMAL},
         #{interestRate, jdbcType=FLOAT},
         #{preferentialInterestRate, jdbcType=FLOAT},
         #{paymentStatus, jdbcType=VARCHAR},
@@ -82,6 +90,7 @@
         acc_id,
         branch_id,
         amount,
+        balance,
         interest_rate,
         preferential_interest_rate,
         payment_status,
@@ -96,6 +105,7 @@
         #{accId, jdbcType=VARCHAR},
         #{branchId, jdbcType=BIGINT},
         #{amount, jdbcType=DECIMAL},
+        #{balance, jdbcType=DECIMAL},
         #{interestRate, jdbcType=FLOAT},
         #{preferentialInterestRate, jdbcType=FLOAT},
         #{paymentStatus, jdbcType=VARCHAR},

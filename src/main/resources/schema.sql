@@ -156,6 +156,7 @@ CREATE TABLE Interest (
                           payment_date TIMESTAMP NULL,
                           creation_date TIMESTAMP NULL,
                           amount DECIMAL NULL,
+                          balance DECIMAL NULL,
                           interest_rate NUMBER NULL,
                           preferential_interest_rate NUMBER NULL,
                           payment_status VARCHAR(1) NULL,

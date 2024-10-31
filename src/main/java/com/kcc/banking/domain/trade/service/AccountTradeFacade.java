@@ -162,11 +162,23 @@ public class AccountTradeFacade {
 //        return closeSavingsAccountTotal;
 //    }
 
+    //---------------------------------------------------------
+    /**
+     *   @Description - 자유적금 계좌 해지
+     *
+     *   1. 계좌 해지 거래 내역 생성
+     *   2. 계좌 잔액 및 상태 변경
+     *   3. 이자 지급일 및 상태 변경
+     */
 
+
+
+    
+    
 
     //---------------------------------------------------------
     /**
-     *   @Description - 계좌 해지
+     *   @Description - 보통예금 계좌 해지
      *
      *   1. 계좌 해지 거래 내역 생성
      *   2. 계좌 잔액 및 상태 변경
@@ -211,7 +223,7 @@ public class AccountTradeFacade {
 
 
     /**
-     *   @Description - 계좌 해지 취소
+     *   @Description - 보통예금 해지 취소
      *
      *   1. 계좌 해지 취소 거래 내역 생성
      *   2. 계좌 잔액 및 상태 변경(Rollback)

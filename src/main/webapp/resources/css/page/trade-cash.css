@@ -71,7 +71,7 @@ span {
 
 /* 등록 페이지 css */
 #select-account-form {
-    border: 2px solid black;
+    border: 2px solid #adb5bd;
     border-radius: 10px;
     overflow: hidden;
 

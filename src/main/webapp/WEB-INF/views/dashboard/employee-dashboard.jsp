@@ -22,7 +22,7 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
-    <div>
+    <div id="title">
     <h5>실적 관리 ></h5>
         <h5>&nbsp 행원 실적 관리 </h5>
     </div>

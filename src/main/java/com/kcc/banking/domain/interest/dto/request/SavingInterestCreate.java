@@ -18,7 +18,8 @@ import java.util.List;
 public class SavingInterestCreate {
     private Long id; // sequence
     private String accId; // 대상계좌
-    private BigDecimal amount; // 금액
+    private BigDecimal amount; // 이자
+    private BigDecimal balance; // 잔액
     private BigDecimal interestRate; // 기본이율
     private BigDecimal preferentialInterestRate; // 우대이율
     private String paymentStatus; // 지금상태
@@ -29,10 +30,11 @@ public class SavingInterestCreate {
     private Long version;
 
     @Builder
-    public SavingInterestCreate(Long id, String accId, BigDecimal amount, BigDecimal interestRate, BigDecimal preferentialInterestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, String creationDate, Long version) {
+    public SavingInterestCreate(Long id, String accId, BigDecimal amount, BigDecimal balance,BigDecimal interestRate, BigDecimal preferentialInterestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, String creationDate, Long version) {
         this.id = id;
         this.accId = accId;
         this.amount = amount;
+        this.balance = balance;
         this.interestRate = interestRate;
         this.preferentialInterestRate = preferentialInterestRate;
         this.paymentStatus = paymentStatus;
@@ -89,6 +91,7 @@ public class SavingInterestCreate {
         return SavingInterestCreate.builder()
                 .accId(accountDetail.getAccId())
                 .amount(interestAmount)
+                .balance(accountDetail.getBalance())
                 .interestRate(accountDetail.getInterestRate())
                 .preferentialInterestRate(accountDetail.getPreferentialInterestRate())
                 .paymentStatus("N")

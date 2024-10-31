@@ -16,7 +16,7 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
-    <div>
+    <div id="title">
         <h5>예금 관리 >&nbsp</h5>
         <h5>계좌 해지 취소 완료</h5>
     </div>

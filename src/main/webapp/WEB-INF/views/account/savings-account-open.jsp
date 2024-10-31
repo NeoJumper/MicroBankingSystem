@@ -21,10 +21,10 @@
 <%@ include file="/resources/components/sidebar.jsp" %>
 
 <div id="main-area">
-    <div>
+    <div id="title">
         <h5>계좌 관리 > </h5>
         <h5>&nbsp 정기 적금 ></h5>
-        <h3>&nbsp 계좌 개설 </h3>
+        <h5>&nbsp 계좌 개설 </h5>
     </div>
     <br>
 
