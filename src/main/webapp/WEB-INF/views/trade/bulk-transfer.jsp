@@ -356,6 +356,55 @@
         </div>
     </div>
 </div>
+
+<!-- 수정/삭제 모달 -->
+<div class="modal fade" id="transfer-info-detail-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg" style="margin-top:200px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5 fw-bold">직접 입력으로 직원 정보를 수정해보세요</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
+
+                <div class="modal-body">
+                    <table class="common-table" style="margin-bottom: 0px">
+                        <tr>
+                            <th>입금계좌번호</th>
+                            <td><input id="update-target-acc-id" maxlength="16" placeholder=" 예) 000-0000000-0000"></td>
+                        </tr>
+                        <tr>
+                            <th>이체금액(원)</th>
+                            <td><input id="update-transfer-amount" placeholder=" 예) 3,000,000"></td>
+                        </tr>
+                        <tr>
+                            <th>한글금액표시(원)</th>
+                            <td><input id="update-krw" placeholder=" 예) 삼백만원" disabled></td>
+                        </tr>
+                        <tr>
+                            <th>받는분</th>
+                            <td><input id="update-depositor" placeholder=" 예) 홍길동 "></td>
+                        </tr>
+                        <tr>
+                            <th>받는분 통장표시</th>
+                            <td><input id="update-description" placeholder=" 예) 월급"></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="transfer-info-update-btn" type="button" data-bs-dismiss="modal"
+                        class="btn btn-primary">수정
+                </button>
+                <button id="transfer-info-delete-btn" type="button" data-bs-dismiss="modal"
+                        class="btn cancel-btn">삭제
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
