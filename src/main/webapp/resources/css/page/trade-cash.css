@@ -55,8 +55,7 @@ span {
     font-weight: bold;
 }
 #over-account-balance {
-    font-weight: bold;
-    color: #FF0000;
+    color: var(--point-red);
 }
 
 .amount-btn.active {
