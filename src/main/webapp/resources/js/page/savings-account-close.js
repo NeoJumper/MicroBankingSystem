@@ -533,5 +533,4 @@ function savingAccountFixedCloseRequest() {
 // 자유적금 해지 프로세스
 function savingAccountFlexibleCloseRequest() {
 
-
 }
