@@ -161,6 +161,10 @@
         </tr>
         </tbody>
     </table>
+
+    <div id="submit" class="row justify-content-center mb-5">
+        <input id="submit-btn" class="basic-btn col-1" type="submit" value="해지 신청" disabled>
+    </div>
 </div>
 <script src="/resources/js/footer.js"></script>
 

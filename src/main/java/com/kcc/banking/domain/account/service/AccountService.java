@@ -101,7 +101,14 @@ public class AccountService {
      * 
      */
     public CloseSavingsAccountTotal getCloseSavingsAccount(String accountId){
+
         CloseSavingsAccountTotal csat =  accountMapper.findCloseSavingsAccountDetail(accountId);
+        // csat가 null인지 확인
+        if (csat == null) {
+            // 적절한 예외 처리 또는 기본값 설정
+            throw new IllegalArgumentException("계좌 ID에 대한 정보를 찾을 수 없습니다: " + accountId);
+        }
+
         // 이체 횟수조회(거래내역조회)
         csat.setAutoTransferCount(accountMapper.findMonthlyPaidOfSavingsAccount(accountId));
 
