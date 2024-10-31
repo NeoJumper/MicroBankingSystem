@@ -20,9 +20,11 @@ $(document).ready(function () {
 
     clickOtpAuthenticationModalBtn() // OTP 인증 모달 띄우는 버튼 클릭
 
-    handleOtpInput() // OTP input 동작 핸들링
+    handleOtpInput(); // OTP input 동작 핸들링
 
-    clickOtpAuthenticationBtn() // OTP인증하기 버튼
+    clickOtpAuthenticationBtn(); // OTP인증하기 버튼
+
+    getEmployeeCashBalance();
 
     $('.trade-amount-button-group').css({
         height: 0,
@@ -57,13 +59,22 @@ function handleAmount() {
         if($('input[name="trade-type"]:checked').val() === 'withdrawal'){
             var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
             var accountBalance = parseFloat(convertNumber($('#cash-trade-balance').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
+            var employeeCashBalance =  parseFloat(convertNumber($('.emp-close-prev-cash-balance').val()));
 
-            if (inputAmount > accountBalance) {
-                $('#over-account-balance').text("계좌 잔액을 초과했습니다.");
-                $(this).val(comma(accountBalance));  // 입력된 값을 계좌 잔액으로 제한
-            } else {
-                $('#over-account-balance').text("");  // 경고 메시지 제거
+            if(accountBalance < employeeCashBalance){ // 계좌잔액이 행원의 현금 잔액보다 작다면
+                if (accountBalance < inputAmount) {
+                    $('#over-account-balance').text("계좌 잔액을 초과했습니다.");
+                    $(this).val(comma(accountBalance));  // 입력된 값을 계좌 잔액으로 제한
+                }
             }
+            else
+            {
+                if (employeeCashBalance < inputAmount ) {
+                    $('#over-account-balance').text("현금 잔액을 초과했습니다. 시재금 거래를 진행해주세요!");
+                    $(this).val(comma(employeeCashBalance));  // 입력된 값을 계좌 잔액으로 제한
+                }
+            }
+
         }
 
     });
@@ -418,8 +429,18 @@ function clickOtpAuthenticationBtn() {
             }
         });
 
+    });
+}
+function getEmployeeCashBalance() {
+    $.ajax({
+        url: "/api/employee/cash-balance",
 
-
-
+        type: "GET",
+        success: function(employeeCashBalance) {
+            $('.emp-close-prev-cash-balance').val(comma(employeeCashBalance));
+        },
+        error: function(xhr, status, error) {
+            console.log('행원 마감 데이터 조회 실패');
+        }
     });
 }

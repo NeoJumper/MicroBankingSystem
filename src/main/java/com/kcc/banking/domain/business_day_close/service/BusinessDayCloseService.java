@@ -197,4 +197,9 @@ public class BusinessDayCloseService {
         BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
         return businessDayCloseMapper.getStatusById(currentBusinessDateAndEmployeeId);
     }
+
+    public BigDecimal getEmployeeCashBalance() {
+        ClosingData closingData = businessDayCloseMapper.findClosingData(commonService.getCurrentBusinessDateAndEmployeeId());
+        return closingData.getPrevCashBalance().add(closingData.getTotalDeposit()).subtract(closingData.getTotalWithdrawal());
+    }
 }

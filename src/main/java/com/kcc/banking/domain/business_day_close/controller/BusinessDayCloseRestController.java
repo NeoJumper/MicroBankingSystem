@@ -3,11 +3,9 @@ package com.kcc.banking.domain.business_day_close.controller;
 
 import com.kcc.banking.domain.business_day.service.BusinessDayManagementFacade;
 import com.kcc.banking.domain.business_day_close.dto.request.VaultCashRequest;
-import com.kcc.banking.domain.business_day_close.dto.response.EmployeeClosingData;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +35,12 @@ public class BusinessDayCloseRestController {
     {
         ManagerClosingData managerClosingData = businessDayCloseService.getManagerClosingData();
         return managerClosingData;
+    }
+    @GetMapping("/api/employee/cash-balance")
+    public BigDecimal getEmployeeCashBalanceOfCurrent()
+    {
+        BigDecimal employeeCashBalance = businessDayCloseService.getEmployeeCashBalance();
+        return employeeCashBalance;
     }
 
     @GetMapping("/api/common/business-day-close/status")
