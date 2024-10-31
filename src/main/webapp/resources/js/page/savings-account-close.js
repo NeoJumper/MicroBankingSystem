@@ -3,11 +3,11 @@ $(document).ready(function () {
         selectSavingsAccount();
     });
 
-    $('#savings-account-close-validate').click(function(){
+    $('#savings-account-close-validate').click(function () {
         checkAccountId();
     });
 
-    $('#saving-account-close-submit-btn').click(function(){
+    $('#saving-account-close-submit-btn').click(function () {
         submitSavingAccountClose();
     })
 
@@ -75,21 +75,183 @@ function selectSavingsAccount() {
     });
 }
 
+// 최종 이율 계산 함수
+function calculateTerminationRate(openDate, businessDate, period, interestRateSum) {
+    const open = new Date(openDate.split(' ')[0]); // openDate에서 날짜 부분만 추출
+    const business = new Date(businessDate);
+
+    // 계약일수 계산
+    const periodMonths = parseInt(period.replace(/[^0-9]/g, ''));
+    let contractDays = 0;
+    let current = new Date(open);
+
+    // 만기일까지의 일수 계산
+    for (let i = 0; i < periodMonths; i++) {
+        const nextMonth = new Date(current.getFullYear(), current.getMonth() + 1, current.getDate());
+        const daysInMonth = (nextMonth - current) / (1000 * 60 * 60 * 24);
+        contractDays += daysInMonth;
+        current = nextMonth;
+    }
+
+    // 경과일수: openDate로부터 businessDate까지의 일 수
+    const diffDays = Math.floor((business - open) / (1000 * 60 * 60 * 24));
+
+    // 최종 이율
+    let finalInterestRate;
+    // 소수 변환
+    const baseInterestRate = interestRateSum / 100
+
+    // 만기일 이전 해지 (중도 해지)
+    if (business < current) {
+        if (diffDays < 30) {
+            finalInterestRate = 0.001; // 연 0.1%
+        } else if (diffDays < 90) {
+            finalInterestRate = 0.0015; // 연 0.15%
+        } else if (diffDays < 180) {
+            finalInterestRate = 0.002; // 연 0.2%
+        } else if (diffDays < 270) {
+            finalInterestRate = Math.max(0.002, 0.6 * (diffDays / contractDays) * baseInterestRate); // Ensure minimum 0.2%
+        } else if (diffDays < 330) {
+            finalInterestRate = Math.max(0.002, 0.7 * (diffDays / contractDays) * baseInterestRate); // Ensure minimum 0.2%
+        } else {
+            finalInterestRate = Math.max(0.002, 0.9 * (diffDays / contractDays) * baseInterestRate); // Ensure minimum 0.2%
+        }
+    }
+    // 만기일 해지
+    else if (business.getTime() === current.getTime()) {
+        finalInterestRate = baseInterestRate;
+    }
+    // 만기 후 해지
+    else {
+        const diffDaysAfterMaturity = Math.floor((business - current) / (1000 * 60 * 60 * 24));
+        if (diffDaysAfterMaturity <= 30) {
+            finalInterestRate = baseInterestRate * 0.5; // 기본금리의 1/2
+        } else {
+            finalInterestRate = baseInterestRate * 0.25; // 기본금리의 1/4
+        }
+    }
+
+    return finalInterestRate;
+}
+
+// 경과일수 구하는 함수
+function calculateElapsedDays(openDate, months) {
+    const open = new Date(openDate.split(' ')[0]); // openDate에서 날짜 부분만 추출
+    const targetDate = new Date(open.getFullYear(), open.getMonth() + months, open.getDate());
+
+    // targetDate가 openDate보다 미래 날짜인 경우에만 경과일수 계산
+    if (targetDate > open) {
+        return Math.floor((targetDate - open) / (1000 * 60 * 60 * 24));
+    } else {
+        return 0; // 이 경우는 계산이 무의미하거나 잘못된 입력일 수 있음
+    }
+}
+
+function calculateRateData(openDate, businessDate, period, interestRateSum) {
+    const open = new Date(openDate.split(' ')[0]); // openDate에서 날짜 부분만 추출
+    const business = new Date(businessDate);
+
+    // 계약일수 계산
+    const periodMonths = parseInt(period.replace(/[^0-9]/g, ''));
+    let contractDays = 0;
+    let current = new Date(open);
+
+    // 만기일까지의 일수 계산
+    for (let i = 0; i < periodMonths; i++) {
+        const nextMonth = new Date(current.getFullYear(), current.getMonth() + 1, current.getDate());
+        const daysInMonth = (nextMonth - current) / (1000 * 60 * 60 * 24);
+        contractDays += daysInMonth;
+        current = nextMonth;
+    }
+    
+    const elapsedDays6Months = calculateElapsedDays(openDate, 6);  // 6개월 동안의 경과일수
+    const elapsedDays9Months = calculateElapsedDays(openDate, 9);  // 9개월 동안의 경과일수
+    const elapsedDays11Months = calculateElapsedDays(openDate, 11);  // 11개월 동안의 경과일수
+
+    // 소수 변환
+    const baseInterestRate = interestRateSum / 100;
+
+    // 각 케이스별 이율 계산
+    const rateData = {
+        "under-1m": "0.1 %", // 1개월 미만 연 0.1%
+        "under-3m": "0.15 %", // 1개월 이상 ~ 3개월 미만 연 0.15%
+        "under-6m": "0.2 %", // 3개월 이상 ~ 6개월 미만 연 0.2%
+        "over-6m": `${(Math.max(0.002, 0.7 * (elapsedDays6Months / contractDays) * baseInterestRate)* 100).toFixed(4)} % ~`, // 6개월 이상 ~ 9개월 미만 60% 차등율, 최소 0.2%
+        "between-9-11m": `${(Math.max(0.002, 0.7 * (elapsedDays9Months / contractDays) * baseInterestRate)* 100).toFixed(4)} % ~`, // 9개월 이상 ~ 11개월 미만 70% 차등율, 최소 0.2%
+        "over-11m": `${(Math.max(0.002, 0.9 * (elapsedDays11Months / contractDays) * baseInterestRate)* 100).toFixed(4)} % ~`, // 11개월 이상 90% 차등율, 최소 0.2%
+        "maturity": `${interestRateSum}%`,
+        "post-maturity-1m": `${(0.5 * baseInterestRate * 100).toFixed(4)} %`, // 만기 후 1개월 이내 기본금리의 1/2
+        "post-maturity-1m-plus": `${(0.25 * baseInterestRate * 100).toFixed(4)} %` // 만기 후 1개월 초과 기본금리의 1/4
+    };
+
+    return rateData;
+}
+
+
+
 // 자유적금 해지 프로세스
 function getSavingsFlexibleAccount(data, accountId) {
-
+    // 오늘 영업일
+    const businessDate = $('#business-day-date').val();
+    // 자유적금 해지를 위한 계좌 세부 정보
+    // return CloseSavingsFlexibleAccountTotal
     $.ajax({
-        url: ""
+        url: "/api/employee/savings-flexible-account-close-total-info/" + accountId,
+        type: "GET",
+        success: function (data) {
+            console.log("SELECT FLEXIBLE ACCOUNT", data);
+
+            const interestSum = data.interestRate + data.preferentialInterestRate;
+
+            // 해지 이율 계산
+            const finalInterestRate = calculateTerminationRate(
+                data.openDate,
+                businessDate,
+                data.period,
+                interestSum
+            );
+
+            const rateData = calculateRateData(
+                data.openDate,
+                businessDate,
+                data.period,
+                interestSum
+            );
+
+            let highlightedKey = ""; // 해당 케이스 키
+
+            // 이율 데이터에 대해 반복하며 적용 이율과 일치하는 키 찾기
+            for (const [key, rate] of Object.entries(rateData)) {
+                if (parseFloat(rate) === finalInterestRate * 100) { // 금리를 퍼센트로 변환하여 비교
+                    highlightedKey = key;
+                    break; // 일치하는 키를 찾으면 반복 중단
+                }
+            }
+
+            for (const [key, rate] of Object.entries(rateData)) {
+                const rateElement = $(`#${key} .dynamic-rate`);
+                rateElement.text(rate);
+
+                // 해당하는 키의 <td>에만 배경색 적용
+                if (key === highlightedKey) {
+                    rateElement.closest('tr').css('background-color', '#f6f9fc'); // 하이라이트 색상 설정
+                    rateElement.closest('tr').css('color', '#3f5ba9');
+                }
+            }
+
+            console.log("FINAL INTEREST::" ,finalInterestRate);
+
+        }
     })
 
-    // 만기 시 / 만기 후 해지 시 이자내역 추가
+/*    // 만기 시 / 만기 후 해지 시 이자내역 추가
     $.ajax({
         url: "/api/employee/interest-details/" + accountId,
         type: "GET",
         success: function (data) {
             console.log("account close flexible", data);
         }
-    })
+    })*/
 }
 
 
@@ -107,7 +269,7 @@ function getSavingsAccount(data) {
     }
     // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
     $.ajax({
-        url: "/api/employee/savings-account-close-total-info/"+accountId,
+        url: "/api/employee/savings-account-close-total-info/" + accountId,
         type: "GET",
         success: function (data) {
             console.log("======!!!", data);
@@ -118,10 +280,10 @@ function getSavingsAccount(data) {
             let period = data.productPeriod;
             let productRate = data.productInterestRate;
             let accountRate = data.accountInterestRate;
-            console.log("accountRate"+accountRate+"productRate"+productRate);
+            console.log("accountRate" + accountRate + "productRate" + productRate);
             let startDate = data.startDate;
 
-            const result = calculateSavingsMonths("2024-08-01",startDate);
+            const result = calculateSavingsMonths("2024-08-01", startDate);
             console.log(`총 일수: ${result.totalDays}, 적금 넣은 개월 수: ${result.monthsSaved}`);
 
             let savingsDays = result.totalDays;
@@ -133,7 +295,7 @@ function getSavingsAccount(data) {
             console.log("만기일" + calculateEndDate(startDate, period));
 
             // 적금 계약일수 구하기
-            let productTotalDays = calculateContractDays(startDate,period).contractDays;
+            let productTotalDays = calculateContractDays(startDate, period).contractDays;
 
             // 적금 이율 구하기
             calculateRate(accountRate, productRate, savingsDays, productTotalDays);
@@ -147,30 +309,28 @@ function getSavingsAccount(data) {
             $('#savings-account-total-cash').empty();
 
             $('#savings-account-close-info').append(
-
                 '<tr>' +
-                '<td style="width: 5%;">' +  + '</td>' +
+                '<td style="width: 5%;">' + +'</td>' +
                 '<td style="width: 5%;">' + data.productInterestRate + '%' + '</td>' +
                 '<td style="width: 5%;">' + data.accountInterestRate + '%' + '</td>' +
                 '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
-                '<td style="width: 5%;">' + '세전 이자'+   + '</td>' +
-                '<td style="width: 5%;">' + '세후 이자' + 'data.productTaxRate'+ '원' + '</td>' +
-                '<td style="width: 10%;">' + '계산 완료된 이자금액'  + '</td>' +
+                '<td style="width: 5%;">' + '세전 이자' + +'</td>' +
+                '<td style="width: 5%;">' + '세후 이자' + 'data.productTaxRate' + '원' + '</td>' +
+                '<td style="width: 10%;">' + '계산 완료된 이자금액' + '</td>' +
                 /* 이자가 포함된 총 지급 금액*/
                 '<td style="width: 10%;">' + data.amountSum + '</td>' +
                 '</tr>'
-
             );
 
             $('#savings-account-total-cash').append(
                 '<tr>' +
-                '<td style="width: 5%;">' + data.productType  + '</td>' +
+                '<td style="width: 5%;">' + data.productType + '</td>' +
                 '<td style="width: 5%;">' + data.productInterestRate + '%' + '</td>' +
                 '<td style="width: 5%;">' + data.accountInterestRate + '%' + '</td>' +
                 '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
-                '<td style="width: 5%;">' + '세전 이자'+   + '</td>' +
-                '<td style="width: 5%;">' + '세후 이자' + 'data.productTaxRate'+ '원' + '</td>' +
-                '<td style="width: 10%;">' + '계산 완료된 이자금액'  + '</td>' +
+                '<td style="width: 5%;">' + '세전 이자' + +'</td>' +
+                '<td style="width: 5%;">' + '세후 이자' + 'data.productTaxRate' + '원' + '</td>' +
+                '<td style="width: 10%;">' + '계산 완료된 이자금액' + '</td>' +
                 /* 이자가 포함된 총 지급 금액*/
                 '<td style="width: 10%;">' + data.amountSum + '</td>' +
                 '</tr>'
@@ -210,7 +370,7 @@ function calculateContractDays(contractStartDate, months) {
     const startDate = new Date(contractStartDate);
     const endDateString = calculateEndDate(contractStartDate, months); // 종료일을 문자열로 받아옴
     const endDate = new Date(endDateString); // 종료일을 Date 객체로 변환
-    console.log(endDateString+"endDateString");
+    console.log(endDateString + "endDateString");
 
     // 두 날짜 사이의 일수 계산
     const differenceInTime = endDate - startDate;
@@ -226,7 +386,7 @@ function checkAccountId() {
     const inputId = $('#savings-account-close-password').val();
     var accountNumber = $('#acco unt-number').val();
 
-    $.ajax( {
+    $.ajax({
         url: '/api/employee/account-validate',
         contentType: "application/x-www-form-urlencoded",
         type: "POST",
@@ -245,7 +405,7 @@ function checkAccountId() {
             $('#submit-btn').removeAttr('style');
             $('#submit-btn').prop('disabled', false);
 
-        }, error: function (error){
+        }, error: function (error) {
             swal({
                 title: "검증 실패",
                 text: error.responseText,
@@ -263,7 +423,7 @@ function checkAccountId() {
 
 
 // 기간별 이율 계산
-function calculateRate( productRate, savingsDays, productTotalDays) {
+function calculateRate(productRate, savingsDays, productTotalDays) {
     const rates = {
         'under-1m': productRate * 0.001, // 연 0.1%
         'under-3m': productRate * 0.0015, // 연 0.15%
@@ -280,7 +440,7 @@ function calculateRate( productRate, savingsDays, productTotalDays) {
     if (savingsDays < 9 * 30) {
         rates['over-6m'] = productRate * 0.6 * (savingsDays / productTotalDays); // 6개월 이상 ~ 9개월 미만
     } else if (savingsDays < 11 * 30) {
-       rates['between-9-11m'] = productRate * 0.7 * (savingsDays / productTotalDays); // 9개월 이상 ~ 11개월 미만
+        rates['between-9-11m'] = productRate * 0.7 * (savingsDays / productTotalDays); // 9개월 이상 ~ 11개월 미만
     } else {
         rates['over-11m'] = productRate * 0.9 * (savingsDays / productTotalDays); // 11개월 이상
     }
@@ -354,23 +514,23 @@ function calculateSavingsMonths(nowDate, startDate) {
 }
 
 
-function submitSavingAccountClose () {
+function submitSavingAccountClose() {
     // 정기적금 해지 프로세스
-    if($('#savings-account-product-type').val("FIXED")){
+    if ($('#savings-account-product-type').val("FIXED")) {
         savingAccountFixedCloseRequest();
     }
     // 자유적금 해지 프로세스
-    else if($('#savings-account-product-type').val("FLEXIBLE")){
+    else if ($('#savings-account-product-type').val("FLEXIBLE")) {
         savingAccountFlexibleCloseRequest();
     }
 }
 
 // 정기적금 해지 프로세스
-function savingAccountFixedCloseRequest(){
+function savingAccountFixedCloseRequest() {
 
 }
 
 // 자유적금 해지 프로세스
-function savingAccountFlexibleCloseRequest(){
+function savingAccountFlexibleCloseRequest() {
 
 }

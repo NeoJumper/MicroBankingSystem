@@ -250,4 +250,15 @@ public class AccountService {
         return accountMapper.findAccountProductList(searchProductOfModal);
     }
 
+    /**
+     * @Discription
+     * 계좌번호로 기본 계좌 정보, 고객 정보, 상품의 기간과 이름 조회
+     * 자유적금 해지를 위한 기본 정보 불러오기
+     * @param accountId
+     * @return
+     */
+    public CloseSavingsFlexibleAccountTotal getCloseSavingsFlexibleAccount(String accountId) {
+        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountMapper.findCloseSavingsFlexibleAccountById(accountId);
+        return closeSavingsFlexibleAccountTotal;
+    }
 }
