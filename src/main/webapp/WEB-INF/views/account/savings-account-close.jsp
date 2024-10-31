@@ -42,71 +42,76 @@
         </tr>
     </table>
 
-    <div class="flexible-account-area" style="display: none">
-        <h3>자유적금 상세 정보</h3>
+    <div class="common-account-detail" style="display:none;">
+        <h3>적금 상세 정보</h3>
         <table class="common-table">
             <tbody>
             <tr>
                 <th>상품 종류</th>
-                <td id="savings-account-flexible-product-type"></td>
+                <td id="savings-account-product-type"></td>
                 <th>적용 금리</th>
-                <td id="savings-account-flexible-interest-calculation-method"></td>
+                <td id="savings-account-interest-calculation-method"></td>
             </tr>
-
             </tbody>
         </table>
     </div>
 
     <div id="close-savings-account-interest">
-        <h3>해지 적용 이율</h3>
-
+        <h3>해지 이율표</h3>
         <table class="common-table">
+            <thead>
             <tr>
+                <th>해지 종류</th>
                 <th>예치 기간</th>
                 <th>해지 이율</th>
-                <th>가입 상품 적용 이율</th>
+                <th>가입상품 적용 이율</th>
             </tr>
-            <tr id="under-1m">
+            </thead>
+            <tbody>
+            <tr>
+                <th rowspan="4" style="border-right: 1px solid var(--little-dark-gray)">중도 해지</th>
                 <td>1개월 미만</td>
                 <td>연 0.1%</td>
-                <td class="rate">약정 금리</td>
+                <td>약정 금리</td>
             </tr>
-            <tr id="under-3m">
+            <tr>
                 <td>1개월 이상 ~ 3개월 미만</td>
                 <td>연 0.15%</td>
-                <td class="rate">약정 금리</td>
+                <td>약정 금리</td>
             </tr>
-            <tr id="under-6m">
+            <tr>
                 <td>3개월 이상 ~ 6개월 미만</td>
                 <td>연 0.2%</td>
-                <td class="rate">약정 금리</td>
+                <td>약정 금리</td>
             </tr>
-            <tr id="over-6m">
+            <tr>
                 <td>6개월 이상</td>
                 <td>기본금리 x 차등율 x 경과일수 / 계약일수</td>
-                <td class="rate">가입 당시 기본금리</td>
+                <td>가입 당시 기본금리</td>
             </tr>
-            <tr id="maturity">
+            <tr>
+                <th style="border-right: 1px solid var(--little-dark-gray)">만기 해지</th>
                 <td>만기 시</td>
                 <td>약정 당시의 정기 적금 금리 + 우대 이율</td>
-                <td class="rate">약정 금리</td>
+                <td>약정 금리</td>
             </tr>
-            <tr id="post-maturity-1m">
+            <tr>
+                <th rowspan="2" style="border-right: 1px solid var(--little-dark-gray)">만기 후 해지</th>
                 <td>만기 후 1개월 이내</td>
                 <td>지급 당시 기본금리의 1/2</td>
-                <td class="rate">약정 금리</td>
+                <td>약정 금리</td>
             </tr>
-            <tr id="post-maturity-1m-plus">
+            <tr>
                 <td>만기 후 1개월 초과</td>
                 <td>지급 당시 기본금리의 1/4</td>
-                <td class="rate">약정 금리</td>
+                <td>약정 금리</td>
             </tr>
+            </tbody>
         </table>
     </div>
 
     <div id="common-account-area">
         <h3>계좌 해지 정보</h3>
-
         <table class="common-table">
             <thead>
             <tr>
@@ -120,19 +125,16 @@
             </tr>
             </thead>
             <tbody id="savings-account-close-info">
-            <%-- <tr>
-                 <td style="background-color: red; color: white;">중도 해지</td>
-                 <td>200일</td>
-                 <td>2024-10-01</td>
-                 <td>2025-10-01</td>
-                 <td>2025-01-15</td>
-                 <td>1.2%</td>
-                 <td>100,010,000</td>
-             </tr>--%>
+            <tr class="saving-account-close-empty-message">
+                <td colspan="7" style="text-align: center; color: gray; border-bottom: none; height: 100px">
+                    해지할 계좌를 선택해 주십시오
+                </td>
+            </tr>
             </tbody>
         </table>
+    </div>
 
-        <div>
+    <div class="fixed-account-area" style="display: none">
         <h3>예금 예상 이자 및 총 금액</h3>
         <table class="common-table">
             <thead>
@@ -149,24 +151,31 @@
             </tr>
             </thead>
             <tbody id="savings-account-total-cash">
-            <%--동적으로 총 금액 생성--%>
+            <tr class="saving-account-close-empty-message">
+                <td colspan="9" style="text-align: center; color: gray; border-bottom: none; height: 100px">
+                    해지할 계좌를 선택해 주십시오
+                </td>
+            </tr>
             </tbody>
         </table>
-        </div>
     </div>
 
     <div class="flexible-account-area" style="display: none">
         <h3>월별 이자 내역</h3>
         <table class="common-table" id="savings-account-flexible-monthly-interest-list">
             <thead>
-                <th>생성일자</th>
-                <th>계좌 잔액</th>
-                <th>기본이율</th>
-                <th>우대이율</th>
-                <th>이자 금액</th>
+            <th>생성일자</th>
+            <th>계좌 잔액</th>
+            <th>기본이율</th>
+            <th>우대이율</th>
+            <th>이자 금액</th>
             </thead>
             <tbody>
-
+            <tr class="saving-account-close-empty-message">
+                <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 100px">
+                    해지할 계좌를 선택해 주십시오
+                </td>
+            </tr>
             </tbody>
         </table>
 
