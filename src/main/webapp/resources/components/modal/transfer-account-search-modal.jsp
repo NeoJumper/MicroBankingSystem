@@ -19,18 +19,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-<%--                <h5>계좌정보 입력</h5>--%>
-<%--                <hr>--%>
-
-<%--                <div id="search-modal-input-box">--%>
-<%--                    <input id="modal-search-input" type="text" placeholder="입력하시오.">--%>
-<%--                </div>--%>
-<%--                <hr>--%>
-<%--                <div id="search-modal-center-box">--%>
-<%--                    <button id="modal-check-account-btn" class="btn update-btn" type="button">계좌 검색</button> <!-- Added "btn" class -->--%>
-<%--                    <button id="modal-check-account-reset-btn" class="btn reset-btn" type="button">초기화</button> <!-- Added "btn" class -->--%>
-<%--                </div>--%>
-
                 <h5>계좌정보</h5>
                 <hr>
                 <table id="search-modal-common-table" class="common-table">

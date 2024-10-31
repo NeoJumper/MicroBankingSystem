@@ -1,6 +1,8 @@
-let accountData = {};
+let accountCloseCancelData = {};
 
 $(document).ready(function () {
+    isClosed();
+
     $('#search-modal-account').on('hidden.bs.modal', function () {
         getAccountDetail();
     });
@@ -37,7 +39,7 @@ function getAccountDetail() {
                     });
                     return;
                 }else{
-                    accountData = data;
+                    accountCloseCancelData = data;
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -52,7 +54,7 @@ function getAccountDetail() {
 
 function cancelCloseAccount(){
     var accountNumber = $('#account-number').val();
-    var totalAmount = Number(accountData.accountBal) - Number(accountData.amountSum);
+    var totalAmount = Number(accountCloseCancelData.accountBal) - Number(accountCloseCancelData.amountSum);
 
     if (accountNumber) {
         $.ajax({
@@ -95,7 +97,7 @@ function cancelCloseAccount(){
                 // 오류 처리 로직
             }
         }).always(function () {
-            accountData = {};
+            accountCloseCancelData = {};
             $('#account-number').val("");
             $('#product-name').val("");
             $('#customer-name').val("");

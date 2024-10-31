@@ -32,7 +32,7 @@ function searchCustomer(searchOption, searchValue,pageNum = 1){
 
     // Ajax 요청
     $.ajax({
-        url: '/api/employee/customer',
+        url: '/api/common/customer',
         type: 'GET',
         data: {
             searchOption: searchOption,

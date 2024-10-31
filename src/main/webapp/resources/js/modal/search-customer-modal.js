@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    $("#customer-id-search-btn").on("click", function () {
 
-        customerSearchInputEnterEvent();
-        customerSearchBtnClickEvent();
-        insertCustomerId();
-    });
+    customerSearchInputEnterEvent();
+    customerSearchBtnClickEvent();
+    insertCustomerId();
+
+
 });
 
 // ------------------------------- START customerSearchModalEvent()------------------------------------------
@@ -36,7 +36,7 @@ function customerSearchBtnClickEvent() {
 
 function searchCustomer(searchOption, searchValue) {
     $.ajax({
-        url: '/api/employee/customer',
+        url: '/api/common/customer',
         type: 'GET',
         data: {
             searchOption: searchOption,
@@ -121,19 +121,6 @@ function insertCustomerId() {
             });
 
             $('#search-customer-modal').modal('hide');
-
-            var selectedAccountType =  $('input[name="major-category"]:checked').val();
-            var selectedCustomerSecurityLevel = $('#customer-security-level-input').val();
-            if(selectedAccountType === "CORPORATION"){ // 법인 계좌
-                if(selectedCustomerSecurityLevel === "2등급")
-                {
-                    swal({
-                        text: "보안등급이 낮아 법인 계좌를 개설할 수 없습니다.\n OTP 설정을 통해 보안등급을 높여주세요! ",
-                        icon: "warning",
-                    });
-                    return;
-                }
-            }
             $('#account-open-info').fadeIn();
 
 

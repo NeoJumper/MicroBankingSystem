@@ -22,3 +22,17 @@
     color: #fff; /* 선택된 글자색 */
     border: none; /* 선택된 상태에서 테두리 제거 */
 }
+
+.input-wrapper {
+    position: relative;
+    display: inline-block; /* inline-block으로 표 안에서 크기에 맞게 조정 */
+    width: 100%;
+}
+
+#is-over-balance {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    color: var(--point-red);
+    margin-left: 2px
+}

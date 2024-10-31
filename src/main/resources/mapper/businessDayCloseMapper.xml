@@ -119,6 +119,10 @@
 
     </insert>
 
+    <select id="getStatusById"  parameterType="BusinessDateAndEmployeeId">
+        select status from employee_closing where registrant_id = #{employeeId} AND closing_date = #{businessDate}
+    </select>
+
     <!-- ****************************** UPDATE ****************************** -->
 
     <update id="updateEmployeeClosing" parameterType="EmployeeClosingUpdate" >

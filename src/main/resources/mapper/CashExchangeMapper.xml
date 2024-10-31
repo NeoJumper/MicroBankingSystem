@@ -12,7 +12,7 @@
     </select>
 
     <select id="getCashExchangeDataForManager" parameterType="BusinessDateAndEmployeeId">
-        select ex.id, ex.amount, ex.exchange_type, ex.emp_id, e.name, ex.emp_cash_balance, ex.manager_cash_balance
+        select ex.id, ex.amount, ex.exchange_type, ex.emp_id, e.name AS emp_name, ex.emp_cash_balance, ex.manager_cash_balance
         from cash_exchange ex
                  JOIN Employee e ON e.id = ex.emp_id
         where ex.registrant_id = #{employeeId}

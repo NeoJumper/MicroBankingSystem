@@ -192,4 +192,9 @@ public class BusinessDayCloseService {
 
         businessDayCloseMapper.updateBranchClosing(branchClosingUpdate);
     }
+
+    public String getEmployeeStatus() {
+        BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
+        return businessDayCloseMapper.getStatusById(currentBusinessDateAndEmployeeId);
+    }
 }

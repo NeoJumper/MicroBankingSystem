@@ -3,7 +3,7 @@ package com.kcc.banking.domain.cash_exchange.controller;
 import com.kcc.banking.domain.business_day_close.dto.response.ClosingData;
 import com.kcc.banking.domain.cash_exchange.dto.request.CashExchangeCreate;
 import com.kcc.banking.domain.cash_exchange.dto.request.ManagerCashBalance;
-import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeData;
+import com.kcc.banking.domain.cash_exchange.dto.response.CashExchangeResultData;
 import com.kcc.banking.domain.cash_exchange.service.CashExchangeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,9 +28,9 @@ public class CashExchangeRestController {
 
     @PostMapping("/api/manager/cash-exchange")
     public ResponseEntity<?> cashExchange(@RequestBody CashExchangeCreate cashExchangeCreate){
-        CashExchangeData cashExchangeDataResult = cashExchangeService.createCashExchangeAndUpdate(cashExchangeCreate);
-        if(cashExchangeDataResult != null){
-            return ResponseEntity.status(HttpStatus.OK).body(cashExchangeDataResult);
+        CashExchangeResultData cashExchangeResultDataResult = cashExchangeService.createCashExchangeAndUpdate(cashExchangeCreate);
+        if(cashExchangeResultDataResult != null){
+            return ResponseEntity.status(HttpStatus.OK).body(cashExchangeResultDataResult);
         }else{
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("인수도 거래 실패");
         }

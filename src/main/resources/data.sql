@@ -128,7 +128,7 @@ VALUES (employee_seq.NEXTVAL, '이경호', '1999-02-14', '$2a$12$KEC0twTfMAlrbch
 -- 남성
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '이준호', '010-1111-2222', 'MALE', '901125-1234567', '서울특별시 강남구 역삼동 123-45', '1990-11-25',
+VALUES (customer_seq.NEXTVAL, 1, '이준호', '010-5355-4406', 'MALE', '901125-1234567', '서울특별시 강남구 역삼동 123-45', '1990-11-25',
         '2등급', 2);
 
 -- 2번 고객
@@ -268,11 +268,69 @@ INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period,
                      product_type)
 VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.15, 1, 'PRIVATE', 'FIXED');
 
+-- 자율적금 단리
+-- 12
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
-                     product_type)
-VALUES (product_seq.NEXTVAL, 1, '1년만기자유적금', 3.5, TO_TIMESTAMP('2024-02-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), '12',
-        0.15, 1, 'PRIVATE', 'FLEXIBLE');
+                     product_type, interest_calculation_method)
+VALUES (product_seq.NEXTVAL, 1, '네오자유행복적금', 2.5, SYSDATE, '12',
+        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
+--13
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
+                     product_type, interest_calculation_method)
+VALUES (product_seq.NEXTVAL, 1, '네오자유청년행복적금', 3.5, SYSDATE, '12',
+        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
 
+
+-- 자율적금 복리
+--14
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
+                     product_type, interest_calculation_method)
+VALUES (product_seq.NEXTVAL, 1, '다달이더하는자유적금', 0.4, SYSDATE, '12',
+        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
+--15
+INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
+                     product_type, interest_calculation_method)
+VALUES (product_seq.NEXTVAL, 1, '다달이행복청년자유적금', 0.6, SYSDATE, '12',
+        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
+
+---------- 단리 자율 적금 생성 ----------
+-- 12번 상품
+INSERT INTO Account(id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
+                    expire_date, password, balance, account_type, open_date, status,
+                    version)
+VALUES ('001-0000071-7171', 1, 2, 12, 2, TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+        0.1, TO_TIMESTAMP('2025-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+        100000, 'PRIVATE', TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- 13번 상품
+INSERT INTO Account(id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
+                        expire_date, password, balance, account_type, open_date, status,
+                        version)
+VALUES ('001-0000072-7272', 1, 2, 13, 2, TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+    0.1, TO_TIMESTAMP('2025-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+    '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+    120000, 'PRIVATE', TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+
+---------- 복리 자율 적금 생성 ----------
+--14번 상품
+INSERT INTO Account(id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
+                    expire_date, password, balance, account_type, open_date, status,
+                    version)
+VALUES ('001-0000073-7373', 1, 2, 14, 2, TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+    0.1, TO_TIMESTAMP('2025-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+    '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+    120000, 'PRIVATE', TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+--15번 상품
+INSERT INTO Account(id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
+                    expire_date, password, balance, account_type, open_date, status,
+                    version)
+VALUES ('001-0000074-7474', 1, 2, 14, 2, TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+    0.1, TO_TIMESTAMP('2025-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+    '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+    140000, 'PRIVATE', TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 ---------- 계좌 생성 ----------
 -- 지점

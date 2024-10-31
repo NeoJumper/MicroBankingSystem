@@ -49,14 +49,19 @@
             <th>사번</th>
             <th>이름</th>
             <th>현재 시재금</th>
-            <th>거래금</th>
+            <th>
+                <div class="input-wrapper">
+                    거래금
+                    <label id="is-over-balance"></label>
+                </div>
+            </th>
             <th>거래 후 시재금</th>
         </tr>
         </thead>
         <tbody>
         <tr id="empty-message">
             <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 250px">
-                행원 검색 버튼을 눌러 행원을 선택하여 주십시오
+                행원 조회 버튼을 눌러 행원을 선택하여 주십시오
             </td>
         </tr>
         </tbody>
@@ -89,6 +94,7 @@
         <button id="cash-exchange-accept" class="basic-btn">시재금 거래 승인</button>
     </div>
 </div>
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/employee-search-modal.jsp" %>
 <%@ include file="/resources/components/modal/cash-exchange-result-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>

@@ -48,11 +48,11 @@
                         <table class="common-table no-margin" id="deposit-product-search-modal-table">
                             <thead>
                             <tr>
-                                <th style="width: 10%"><label>선택</label></th>
-                                <th style="width: 20%"><label id="deposit-product-search-modal-product-id">상품번호</label></th>
-                                <th style="width: 25%"><label id="deposit-product-search-modal-product-name">상품명</label></th>
-                                <th style="width: 20%"><label id="deposit-product-search-modal-product-interest-rate">상품이율</label></th>
-                                <th style="width: 20%"><label id="deposit-product-search-modal-product-tax-rate">상품세율</label></th>
+                                <th style="text-align: center; width: 12%"><label>선택</label></th>
+                                <th style="text-align: center; width: 20%"><label id="deposit-product-search-modal-product-id">상품번호</label></th>
+                                <th style="text-align: center; width: 30%"><label id="deposit-product-search-modal-product-name">상품명</label></th>
+                                <th style="text-align: center; width: 20%"><label id="deposit-product-search-modal-product-interest-rate">상품이율</label></th>
+                                <th style="text-align: center; width: 20%"><label id="deposit-product-search-modal-product-tax-rate">상품세율</label></th>
                             </tr>
                             </thead>
                         </table>

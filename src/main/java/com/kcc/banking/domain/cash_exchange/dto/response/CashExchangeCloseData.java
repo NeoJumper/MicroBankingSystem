@@ -12,11 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 public class CashExchangeCloseData {
-    private List<CashExchangeData> cashExchangeList;
+    private List<CashExchangeResultData> cashExchangeList;
     private BigDecimal lastManagerCash;
 
     @Builder
-    public CashExchangeCloseData(List<CashExchangeData> cashExchangeList, BigDecimal lastManagerCash) {
+    public CashExchangeCloseData(List<CashExchangeResultData> cashExchangeList, BigDecimal lastManagerCash) {
         this.cashExchangeList = cashExchangeList;
         this.lastManagerCash = lastManagerCash;
     }

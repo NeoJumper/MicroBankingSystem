@@ -70,7 +70,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" id="search-modal-select-btn" class="basic-btn" data-bs-dismiss="modal">선택</button>
+                <button type="button" id="search-modal-select-btn" class="basic-btn">선택</button>
                 <button type="button" id="search-modal-close-btn" class="closed-btn" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>

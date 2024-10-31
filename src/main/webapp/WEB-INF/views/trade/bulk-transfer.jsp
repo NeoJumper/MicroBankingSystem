@@ -60,7 +60,12 @@
             <%--계좌선택--%>
             <div id="select-account-form">
                 <div class="account-info">
-                    <div><span>업무계좌</span> <br> <span id="account-number">계좌를 선택해주세요.</span></div>
+                    <div>
+                        <span id="withdrawal-customer-name"></span>
+                        <span id="withdrawal-product-name"></span>
+                        <br>
+                        <span id="withdrawal-account-number">계좌를 선택해주세요.</span>
+                    </div>
                     <div>
                         <button id="check-withdrawal-account-btn" class="basic-btn" type="button"
                                 data-account-type="withdrawal" data-bs-toggle="modal"
@@ -69,24 +74,58 @@
                         </button>
                     </div>
                 </div>
-                <div class="account-balance">
-                    계좌잔액 <span id="account-balance"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원 | 이체가능금액 <span
-                        id="transferable-amount"> &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 0</span> 원
+                <div class="account-balance d-flex align-items-center">
+                    <div class="me-2">
+                        계좌잔액<span id="account-balance" style="margin-left: 20px;">0</span> 원
+                    </div>
+                    <div class="mx-3 transfer-possible-amount">|</div>
+                    <div class="ms-2 transfer-possible-amount">
+                        이체가능금액<span id="transferable-amount" style="margin-left: 20px">0</span> 원
+                    </div>
+                    <div id="select-transfer-limit">
+                        <span class="tooltip-link">이체한도조회
+                        </span>
+                    </div>
+                    <div id="select-transfer-limit-tooltip">
+                        <div><span
+                                style="width: 110px; display: inline-block">1회 이체 한도  </span><span>:&nbsp &nbsp </span><span
+                                id="per-trade-limit" class="amount-span">0 &nbsp 원</span></div>
+                        <div><span
+                                style="width: 110px; display: inline-block">1일 이체 한도  </span><span>:&nbsp &nbsp </span><span
+                                id="daily-limit" class="amount-span">0 &nbsp 원</span></div>
+                        <div><span style="width: 110px; display: inline-block">금일 출금액  </span><span>:&nbsp &nbsp </span><span
+                                id="transfer-amount-of-today" class="amount-span">0 &nbsp 원</span></div>
+                        <div><span style="width: 110px; display: inline-block">금일 이체 한도</span><span>:&nbsp &nbsp </span><span
+                                id="transferable-amount-limit-of-today" class="amount-span">0 &nbsp 원</span></div>
+                    </div>
                 </div>
+
             </div>
-            <%--계좌비밀번호 table--%>
             <table class="common-table">
-<%--                <tr>--%>
-<%--                    <th><label for="account-pw-input">계좌비밀번호</label></th>--%>
-<%--                    <td>--%>
-<%--                        <input placeholder="비밀번호 입력" type="password" id="account-pw-input">--%>
-<%--                        <button id="input-confirm" class="basic-btn" type="button">확인</button>--%>
-<%--                    </td>--%>
-<%--                </tr>--%>
                 <tr>
-                    <th><label for="withdrawal-product-name">이체일</label></th>
+                    <th><label>예약 여부</label></th>
                     <td>
-                        <input type="date" id="withdrawal-product-name">
+                        <div id="reserve-button-group" class="button-group mb-2">
+                            <input type="radio" id="immediate-transfer-btn" name="scheduled-status" checked>
+                            <label for="immediate-transfer-btn">즉시 이체</label>
+                            <input class="ms-3" type="radio" id="scheduled-transfer-btn" name="scheduled-status">
+                            <label for="scheduled-transfer-btn">예약 이체</label>
+                        </div>
+                        <div id="reserve-time-select-div" style="overflow: hidden; transition: height 0.5s ease;">
+                            <input type="date" value="1234" style="margin-right: 20px; height: 50px">
+                            <div id="time-search-container">
+                                <select id="time-search-btn">
+                                    <option value="1">9:30 ~ 10:30</option>
+                                    <option value="1">10:30 ~ 11:30</option>
+                                    <option value="1">11:30 ~ 12:30</option>
+                                    <option value="1">12:30 ~ 13:30</option>
+                                    <option value="1">13:30 ~ 14:30</option>
+                                    <option value="1">14:30 ~ 15:30</option>
+                                    <option value="1">15:30 ~ 16:00</option>
+                                </select>
+                                <img class="search-icon" type="submit" src="/resources/assets/timer.jpg">
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -102,17 +141,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label for="business-day-date-input">등록일자</label></th>
-                    <td>
-                        <input id="business-day-date-input" type="text" disabled>
-                    </td>
-                </tr>
-                <tr>
                     <th><label for="user-name-input">담당자</label></th>
                     <td>
                         <input id="user-name-input" type="text" disabled>
                     </td>
                 </tr>
+                <tr>
+                    <th><label for="business-day-date-input">등록일자</label></th>
+                    <td>
+                        <input id="business-day-date-input" type="text" disabled>
+                    </td>
+                </tr>
+
             </table>
 
             <h4>계좌 비밀번호</h4>
@@ -133,36 +173,52 @@
         <section>
             <h4>입금계좌정보</h4>
             <div class="table-top-btns">
-                <div>
-                    <input id="uploadEmployeeBtn" type="button" value="파일등록">
-                    <input id="uploadIndividualEmployeeBtn" type="button" value="개별추가">
+                <div class="d-flex" >
+
+                    <button id="uploadEmployeeBtn" type="button" class="file-btn" value="파일등록"
+                            style="height: 33px; font-weight: bold;" disabled>
+                        파일 등록
+                    </button>
+
+                    <button id="uploadIndividualEmployeeBtn" type="button" class="file-btn" value="개별추가"
+                            style="height: 33px; font-weight: bold;">
+                        개별 추가
+                    </button>
+
                 </div>
                 <div>
-                    <select id="searchCondition">
+                    <select id="searchCondition" class="select-option" style="height: 33px;">
                         <option value="" disabled selected>검색조건</option>
                         <option value="targetAccId">입금계좌번호</option>
                         <option value="depositor">등록된 예금주</option>
                     </select>
-                    <input type="text" id="searchInput" placeholder="검색어 입력">
+                    <input type="text" id="searchInput" class="select-option" style="height: 33px;" placeholder="검색어 입력">
                 </div>
             </div>
-            <table id="bulk-transfer-info" class="common-table">
-                <thead>
-                <tr>
-                    <th><label>NO.</label></th>
-                    <th><label>입금계좌번호</label></th>
-                    <th><label>이체금액(원)</label></th>
-                    <th><label>한글금액표시(원)</label></th>
-                    <th><label>등록된 예금주</label></th>
-                    <th><label>조회된 예금주</label></th>
-                    <th><label>받는분 통장표시</label></th>
-                </tr>
-                </thead>
-                <tbody id="employeeTablePreviewBody">
-                <%--  동적으로 직원계좌정보 생성됨 --%>
-                </tbody>
-            </table>
-
+            <div class="tableWrapper">
+                <table id="bulk-transfer-info" class="common-table bulk-insert-table">
+                    <thead>
+                        <tr>
+                            <th><label>NO.</label></th>
+                            <th><label>입금계좌번호</label></th>
+                            <th><label>이체금액(원)</label></th>
+                            <th><label>한글금액표시(원)</label></th>
+                            <th><label>등록된 예금주</label></th>
+                            <th><label>조회된 예금주</label></th>
+                            <th><label>받는분 통장표시</label></th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTablePreviewBody">
+                    <%--  동적으로 직원계좌정보 생성됨 --%>
+                    <tr >
+                        <td colspan="2">총 <span>0</span>개</td>
+                        <td>0</td>
+                        <td>영원</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <div id="result-content-div" style="display: none">
                 <div class="result-content">
                     <div>
@@ -197,12 +253,12 @@
     </container>
 </div>
 
-<!-- 직원업로드 모달 -->
+<!-- 파일업로드 모달 -->
 <div class="modal fade" id="uploadEmployeeModal" tabindex="-1">
     <div class="modal-dialog" style="margin-top:200px;">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title fs-5 fw-bold">엑셀을 이용해 직원을 추가해보세요</h2>
+                <h2 class="modal-title fs-5 fw-bold">엑셀을 이용해 대량이체 목록을 추가해보세요</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex flex-column">
@@ -210,9 +266,9 @@
                 <div class="d-flex mb-3">
                     <div class="d-flex align-items-center"><p style="margin-bottom: 0; padding-bottom: 2px;">
                         <p>
-                            직원 일괄추가 템플릿을 다운로드한 후,
+                            대량이체 템플릿을 다운로드한 후,
                             <br>
-                            템플릿 형식에 맞춰 직원정보를 입력한 뒤 업로드해주세요
+                            템플릿 형식에 맞춰 이체정보들을 입력한 뒤 업로드해주세요
                         </p>
 
                     </div>
@@ -222,11 +278,10 @@
                          style="background-color: #E6EFFA">
 
                         <div>
-                            <p class="text-color-gray1" style="font-size: 15px; margin: 0px;">employees-upload.xlsx</p>
+                            <p class="text-color-gray1" style="font-size: 15px; margin: 0px;">대량이체양식.xlsx</p>
                         </div>
-                        <button type="button" class="d-flex ms-2 btn btn-light border border-2 align-items-center"
-                                style="height: 27px;">
-                            <a class="text-color-gray1" style="font-size: 15px; text-decoration-line: none;"
+                        <button type="button" class="file-btn" style="height: 33px;">
+                            <a class="text-color-gray1" style="font-size: 18px; text-decoration-line: none;"
                                href="/api/employee/bulk-transfer/file-download">다운로드</a><br>
                         </button>
                     </div>
@@ -234,9 +289,14 @@
                 <div class="d-flex mt-4">
                     <div class="d-flex col-12 justify-content-center align-items-center p-4"
                          style="background-color: #E6EFFA">
-                        <div>
-                            <input id="excelInput" type="file" style="width: 250px;">
-                        </div>
+                            <div>
+                                <p id="fileName" style="font-size: 15px;" >선택된 파일이 없음</p>
+                            </div>
+                            <button type="button" class="file-btn"
+                                    style="height: 33px;" onclick="document.getElementById('excelInput').click()">
+                                파일 선택
+                            </button>
+                            <input id="excelInput" type="file" style="display: none">
                     </div>
                 </div>
             </div>
@@ -252,7 +312,7 @@
 </div>
 <!-- 개별추가 모달 -->
 <div class="modal fade" id="uploadIndividualEmployeeModal" tabindex="-1">
-    <div class="modal-dialog" style="margin-top:200px;">
+    <div class="modal-dialog modal-lg" style="margin-top:200px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title fs-5 fw-bold">직접 입력으로 직원을 추가해보세요</h2>
@@ -264,11 +324,11 @@
                     <table class="common-table" style="margin-bottom: 0px">
                         <tr>
                             <th>입금계좌번호</th>
-                            <td><input id="targetAccIdModal" placeholder=" 예) 000-0000000-0000"></td>
+                            <td><input id="targetAccIdModal" maxlength="16" placeholder=" 예) 000-0000000-0000"></td>
                         </tr>
                         <tr>
                             <th>이체금액(원)</th>
-                            <td><input id="transferAmountModal" placeholder=" 예) 3000000"></td>
+                            <td><input id="transferAmountModal" placeholder=" 예) 3,000,000"></td>
                         </tr>
                         <tr>
                             <th>한글금액표시(원)</th>
@@ -296,6 +356,59 @@
         </div>
     </div>
 </div>
+
+<!-- 수정/삭제 모달 -->
+<div class="modal fade" id="transfer-info-detail-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg" style="margin-top:200px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5 fw-bold">직접 입력으로 직원 정보를 수정해보세요</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
+
+                <div class="modal-body">
+                    <table class="common-table" style="margin-bottom: 0px">
+                        <tr style="display: none;">
+                            <td><input id="update-target-index"></td>
+                        </tr>
+                        <tr>
+                            <th>입금계좌번호</th>
+                            <td><input id="update-target-acc-id" maxlength="16" placeholder=" 예) 000-0000000-0000"></td>
+                        </tr>
+                        <tr>
+                            <th>이체금액(원)</th>
+                            <td><input id="update-transfer-amount" placeholder=" 예) 3,000,000"></td>
+                        </tr>
+                        <tr>
+                            <th>한글금액표시(원)</th>
+                            <td><input id="update-krw" placeholder=" 예) 삼백만원" disabled></td>
+                        </tr>
+                        <tr>
+                            <th>받는분</th>
+                            <td><input id="update-depositor" placeholder=" 예) 홍길동 "></td>
+                        </tr>
+                        <tr>
+                            <th>받는분 통장표시</th>
+                            <td><input id="update-description" placeholder=" 예) 월급"></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="individual-transfer-info-update-btn" type="button" data-bs-dismiss="modal"
+                        class="btn btn-primary">수정
+                </button>
+                <button id="individual-transfer-info-delete-btn" type="button" data-bs-dismiss="modal"
+                        class="btn cancel-btn">삭제
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/bulk-transfer.js"></script>

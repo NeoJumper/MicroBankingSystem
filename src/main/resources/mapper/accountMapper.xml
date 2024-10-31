@@ -38,6 +38,8 @@
         <result property="openDate" column="open_date" />
         <result property="status" column="status" />
         <result property="customerName" column="customer_name" />
+        <result property="customerId" column="customer_id" />
+        <result property="securityLevel" column="security_level" />
         <result property="productName" column="product_name" />
         <result property="balance" column="balance" />
     </resultMap>
@@ -108,6 +110,8 @@
         a.open_date AS open_date,
         a.status,
         c.name AS customer_name,
+        c.id AS customer_id,
+        c.security_level AS security_level,
         p.name AS product_name,
         a.balance AS balance,
         a.per_trade_limit,
@@ -171,6 +175,7 @@
         <result property="accId" column="acc_id" />
         <result property="password" column="password" />
         <result property="customerName" column="customer_name" />
+        <result property="securityLevel" column="security_level" />
         <result property="customerId" column="customer_id" />
         <result property="phoneNumber" column="phone_number" />
         <result property="productName" column="product_name" />
@@ -188,6 +193,7 @@
             a.id AS acc_id,
             a.password AS password,
             c.name AS customer_name,
+            c.security_level,
             c.id AS customer_id,
             c.phone_number AS phone_number,
             p.name AS product_name,
@@ -249,7 +255,11 @@
         ac.registrant_id,
         ac.preferential_interest_rate as preferential_interest_rate,
         p.interest_rate as interest_rate,
-        ac.balance
+        ac.balance,
+        p.account_type,
+        p.product_type,
+        p.interest_calculation_method,
+        p.period
         FROM account ac
         JOIN product p ON ac.product_id = p.id
         WHERE ac.branch_id = #{branchId}

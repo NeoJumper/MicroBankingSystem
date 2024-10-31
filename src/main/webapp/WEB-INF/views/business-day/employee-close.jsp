@@ -221,6 +221,7 @@
     </div>
 
 </div>
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/employee-close.js"></script>
 
