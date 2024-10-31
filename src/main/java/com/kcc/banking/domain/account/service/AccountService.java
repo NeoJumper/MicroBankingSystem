@@ -96,11 +96,17 @@ public class AccountService {
     }
     /**
      * @Description
-     * 정기적금 계좌 해지 / (예금 제외)
+     * 정기적금 계좌 해지 정보/ (예금 제외)
+     * 
      * 
      */
     public CloseSavingsAccountTotal getCloseSavingsAccount(String accountId){
-        return accountMapper.findCloseSavingsAccountDetail(accountId);
+        CloseSavingsAccountTotal csat =  accountMapper.findCloseSavingsAccountDetail(accountId);
+        // 이체 횟수조회(거래내역조회)
+        csat.setAutoTransferCount(accountMapper.findMonthlyPaidOfSavingsAccount(accountId));
+
+        // 현재날짜
+        return csat;
     }
 
     public String getExpireDateById(String accId) {

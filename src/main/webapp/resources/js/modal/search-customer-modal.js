@@ -4,7 +4,6 @@ $(document).ready(function () {
         customerSearchInputEnterEvent();
         customerSearchBtnClickEvent();
         insertCustomerId();
-
     });
 });
 
