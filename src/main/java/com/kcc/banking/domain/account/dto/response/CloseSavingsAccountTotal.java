@@ -34,7 +34,7 @@ public class CloseSavingsAccountTotal {
     // 총 이자액
     private BigDecimal amountSum;
     // 자동이체 횟수
-    private BigDecimal autoTransferCount;
+    private String autoTransferCount;
 
     // 자동이체 정보
     private BigDecimal fixedAmount;
@@ -47,7 +47,7 @@ public class CloseSavingsAccountTotal {
     private BigDecimal totalBalanceSum;
 
     @Builder
-    public CloseSavingsAccountTotal(String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp amountDate, BigDecimal accountInterestRate, BigDecimal productInterestRate, BigDecimal accountBalance, BigDecimal productTaxRate, BigDecimal amountSum, AutoTransferClose autoTransferClose, String productType) {
+    public CloseSavingsAccountTotal(String autoTransferCount, String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp amountDate, BigDecimal accountInterestRate, BigDecimal productInterestRate, BigDecimal accountBalance, BigDecimal productTaxRate, BigDecimal amountSum, AutoTransferClose autoTransferClose, String productType) {
         this.accountId = accountId;
         this.accountStatus = accountStatus;
         this.customerName = customerName;
@@ -59,6 +59,7 @@ public class CloseSavingsAccountTotal {
         this.productTaxRate = productTaxRate;
         this.amountSum = amountSum;
         this.productType = productType;
+        this.autoTransferCount =autoTransferCount;
 
 
     }

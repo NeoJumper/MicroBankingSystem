@@ -127,6 +127,7 @@ public class AccountRestController {
 //        return ResponseEntity.status(HttpStatus.OK).body(savingsInfo);
 //    }
 
+    // 001-0000013-3687 번에 거래내역 존재
     @GetMapping("/api/employee/savings-account-close-total-info/{accountId}")
     public ResponseEntity<CloseSavingsAccountTotal> getCloseAccountInfo(@PathVariable("accountId") String accountId){
 

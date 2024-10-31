@@ -109,7 +109,9 @@ CREATE TABLE Customer (
 
 CREATE TABLE Auto_transfer (
                          id NUMBER NOT NULL,
+                        -- 출금할 계좌
                          acc_id  VARCHAR(20) NOT NULL,
+                        -- 입금할 계좌
                          target_acc_id  VARCHAR(20) NOT NULL,
                          amount NUMBER NOT NULL,
                          auto_transfer_start_date TIMESTAMP NULL,

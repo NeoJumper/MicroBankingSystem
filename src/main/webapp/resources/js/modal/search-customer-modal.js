@@ -99,6 +99,7 @@ function insertCustomerId() {
         const selectedCustomer = $('input[name="selected-customer"]:checked');
 
         if (selectedCustomer.length > 0) {
+
             const insertValueMappings = [
                 { selector: '#customer-id-input', columnIndex: 2 },
                 { selector: '#customer-name-input', columnIndex: 3 },
