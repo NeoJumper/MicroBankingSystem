@@ -56,72 +56,19 @@
         </table>
     </div>
 
-    <div id="flexible-account-interest" style="display: none">
-        <h3>해지 이율표</h3>
+
+    <div id="account-interest-table">
+        <h3>정기적금 해지 이율표</h3>
         <table class="common-table">
             <thead>
             <tr>
                 <th>해지 종류</th>
                 <th>예치 기간</th>
-                <th>해지 이율</th>
-                <th>가입상품 적용 이율</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th rowspan="4" style="border-right: 1px solid var(--little-dark-gray)">중도 해지</th>
-                <td>1개월 미만</td>
-                <td>연 0.1%</td>
-                <td>약정 금리</td>
-            </tr>
-            <tr>
-                <td>1개월 이상 ~ 3개월 미만</td>
-                <td>연 0.15%</td>
-                <td>약정 금리</td>
-            </tr>
-            <tr>
-                <td>3개월 이상 ~ 6개월 미만</td>
-                <td>연 0.2%</td>
-                <td>약정 금리</td>
-            </tr>
-            <tr>
-                <td>6개월 이상</td>
-                <td>기본금리 x 차등율 x 경과일수 / 계약일수</td>
-                <td>가입 당시 기본금리</td>
-            </tr>
-            <tr>
-                <th style="border-right: 1px solid var(--little-dark-gray)">만기 해지</th>
-                <td>만기 시</td>
-                <td>약정 당시의 정기 적금 금리 + 우대 이율</td>
-                <td>약정 금리</td>
-            </tr>
-            <tr>
-                <th rowspan="2" style="border-right: 1px solid var(--little-dark-gray)">만기 후 해지</th>
-                <td>만기 후 1개월 이내</td>
-                <td>지급 당시 기본금리의 1/2</td>
-                <td>약정 금리</td>
-            </tr>
-            <tr>
-                <td>만기 후 1개월 초과</td>
-                <td>지급 당시 기본금리의 1/4</td>
-                <td>약정 금리</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-
-
-    <div id="fixed-account-interest" style="display: none">
-        <h3>정기적금 해지 이율표</h3>
-        <table class="common-table">
-            <thead>
-            <tr>
-                <th>예치 기간</th>
                 <th>해지 이율(차등율)</th>
                 <th>가입 상품 적용 이율(경과율)</th>
             </tr>
             <tr id="under-1m">
+                <th rowspan="6" style="border-right: 1px solid var(--little-dark-gray)">중도 해지</th>
                 <td>1개월 미만</td>
                 <td>연 0.1%</td>
                 <td class="rate"><span class="dynamic-rate"></span></td>
@@ -152,11 +99,13 @@
                 <td class="rate"><span class="dynamic-rate"></span></td>
             </tr>
             <tr id="maturity">
+                <th style="border-right: 1px solid var(--little-dark-gray)">만기 해지</th>
                 <td>만기 시</td>
                 <td>약정 당시의 정기 적금 금리 + 우대 이율</td>
                 <td class="rate"><span class="dynamic-rate"></span></td>
             </tr>
             <tr id="post-maturity-1m">
+                <th rowspan="2" style="border-right: 1px solid var(--little-dark-gray)">만기 후 해지</th>
                 <td>만기 후 1개월 이내</td>
                 <td>지급 당시 기본금리의 1/2</td>
                 <td class="rate"><span class="dynamic-rate"></span></td>

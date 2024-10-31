@@ -19,7 +19,6 @@ public class AccountOfModal {
     private BigDecimal balance;
     private BigDecimal dailyLimit;
     private BigDecimal perTradeLimit;
-    // 적금 계좌 해지
     private String productType;
     private String interestCalculationMethod;
 
