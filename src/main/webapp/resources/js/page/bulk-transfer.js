@@ -4,48 +4,18 @@ let employeeDataForUpload = [];
 let validPassword = "";
 let totalTransferAmount = 0;
 let totalCount = 0;
-let originalAccountNumber = ""; // 주민번호 원본 값 저장
+let originalAccountNumber = ""; // 계좌 원본 값 저장
 
-function handleAccountNumber() {
-    $('#targetAccIdModal').on('input', function(event) {
-        // 현재 입력된 전체 값
-        let currentValue = $(this).val();
-
-        // 백스페이스 처리
-        if (event.originalEvent.inputType === 'deleteContentBackward') {
-            originalAccountNumber = originalAccountNumber.slice(0, -1); // 마지막 문자 제거
-            $(this).val(originalAccountNumber); // 업데이트된 값을 입력 필드에 반영
-            hyphenAccountNumber(); // 마스킹 처리 호출
-        } else {
-            // 현재 입력된 마지막 문자
-            let inputChar = currentValue.slice(-1);
-
-            // 숫자일 경우에만 추가
-            if (/^[0-9]$/.test(inputChar)) { // 마지막 문자가 숫자인지 확인
-                originalAccountNumber += inputChar; // 숫자만 남기고 추가
-            }
-            hyphenAccountNumber(); // 마스킹 처리 호출
-        }
-    });
-}
-function hyphenAccountNumber() {
-    let displayAccountNumber = originalAccountNumber; // 화면에 표시할 값 초기화
-    if (originalAccountNumber.length > 3 && originalAccountNumber.length <= 10) {
-        displayAccountNumber = originalAccountNumber.slice(0, 3) + '-' + originalAccountNumber.slice(3); // 하이픈 추가
-    }
-    if (originalAccountNumber.length > 10) {
-        displayAccountNumber = originalAccountNumber.slice(0, 3) + '-' + originalAccountNumber.slice(3, 10) + '-' + originalAccountNumber.slice(10); // 하이픈 추가
-    }
-    $('#targetAccIdModal').val(displayAccountNumber); // 화면에 마스킹된 값만 보여주기
-
-}
 
 
 document.addEventListener("DOMContentLoaded", function () {
     isClosed();
     handleBusinessDayDateInput();
     userNameInput();
-    handleAccountNumber();
+    registerInputEventOfAccountNumber('#targetAccIdModal');
+    registerInputEventOfAccountNumber('#update-target-acc-id');
+
+
 
     // 이벤트 핸들러 초기화
     initializeEventHandlers();
@@ -74,6 +44,14 @@ function initializeEventHandlers() {
 
     // 개별추가 모달 금액입력(숫자) -> 한글로 채움
     $('#transferAmountModal').on('input', handleTransferAmountInput);
+    $('#update-transfer-amount').on('input', handleTransferAmountInput);
+
+    // 개별항목 수정 버튼
+    $('#individual-transfer-info-update-btn').click(updateIndividualTransferInfo);
+
+    // 개별항목 삭제 버튼
+    $('#individual-transfer-info-delete-btn').click(deleteIndividualTransferInfo);
+
 
     // 엑셀 업로드
     $('#uploadEmployeePreviewBtnOfTable').click(uploadEmployeePreview);
@@ -261,8 +239,53 @@ function uploadIndividualEmployee() {
 
     updateEmployeeTable();
 
+
     resetIndividualEmployeeModal();
 }
+
+function updateIndividualTransferInfo() {
+    if (
+        $('#update-target-acc-id').val() === "" ||
+        $('#update-transfer-amount').val() === "" ||
+        $('#update-krw').val() === "" ||
+        $('#update-depositor').val() === "" ||
+        $('#update-description').val() === ""
+    ) {
+        resetIndividualEmployeeModal();
+        swal({ title: "개별 추가 실패", text: "모든 입력창을 채워주세요.", icon: "error", buttons: { cancel: true, confirm: false } });
+        return;
+    }
+
+    let targetIndex =  $('#update-target-index').val();
+    console.log("목표 번호 : " + targetIndex)
+    employeeDataForUpload[targetIndex] = {
+        accId: $('#withdrawal-account-number').text(),
+        accountPassword: validPassword,
+        targetAccId: $('#update-target-acc-id').val(),
+        transferAmount: parseInt(convertNumber($('#update-transfer-amount').val())),
+        krw: $('#update-krw').val(),
+        depositor: $('#update-depositor').val(),
+        description: $('#update-description').val(),
+    };
+
+    updateEmployeeTable();
+
+    resetIndividualTransferInfoUpdateModal();
+}
+
+
+function deleteIndividualTransferInfo() {
+
+    let targetIndex =  $('#update-target-index').val();
+    console.log("목표 번호 : " + targetIndex)
+    employeeDataForUpload.splice(targetIndex, 1);
+
+    updateEmployeeTable();
+
+    resetIndividualTransferInfoUpdateModal();
+}
+
+
 
 function resetIndividualEmployeeModal() {
     $('#targetAccIdModal').val("");
@@ -270,6 +293,13 @@ function resetIndividualEmployeeModal() {
     $('#krwModal').val("");
     $('#depositorModal').val("");
     $('#descriptionModal').val("");
+}
+function resetIndividualTransferInfoUpdateModal() {
+    $('#update-target-acc-id').val("");
+    $('#update-transfer-amount').val("");
+    $('#update-krw').val("");
+    $('#update-depositor').val("");
+    $('#update-description').val("");
 }
 
 function updateEmployeeTable() {
@@ -291,6 +321,20 @@ function updateEmployeeTable() {
         transferInfoRow.append($('<td>').text(employee.depositor));
         transferInfoRow.append($('<td>').text(''));
         transferInfoRow.append($('<td>').text(employee.description));
+
+        transferInfoRow.on('click', function() {
+            originalAccountNumber = employee.targetAccId.replace(/-/g, '');
+            console.log('입력된 계좌번호 : ' + originalAccountNumber);
+            hyphenAccountNumber();
+            $('#update-target-index').val(index);
+            $('#update-transfer-amount').val(employee.transferAmount);
+            $('#update-krw').val(convertToKoreanNumber(employee.transferAmount));
+            $('#update-depositor').val(employee.depositor);
+            $('#update-description').val(employee.description);
+            showModal('transfer-info-detail-modal');
+        });
+
+
         tbody.append(transferInfoRow);
     });
 
@@ -302,21 +346,35 @@ function updateEmployeeTable() {
     totalRow.append($('<td>').text(convertToKoreanNumber(totalTransferAmount)));
     totalRow.append($('<td>').attr('colspan', 3).text(''));
     tbody.append(totalRow);
+
+    $('#result-content-div').hide();
+    $('input[value="초기화"]').hide();
+    $('input[value="이체실행"]').hide();
 }
 
-function handleTransferAmountInput() {
+function handleTransferAmountInput(event) {
 
     $(this).val(comma(convertNumber($(this).val())));
-
     var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
 
 
+    let elementId = event.target.id;
+    console.log(elementId);
+    let targetId = '';
+    if(elementId === 'transferAmountModal'){
+        targetId = '#krwModal';
+    }
+    else{
+        targetId = '#update-krw';
+    }
+
+
     if (isNaN(inputAmount) || $(this).val() === "") {
-        $('#krwModal').val('');
+        $(targetId).val('');
         return;
     }
     const convertToKoreanNumberString = convertToKoreanNumber(inputAmount) + "원";
-    $('#krwModal').val(convertToKoreanNumberString);
+    $(targetId).val(convertToKoreanNumberString);
 }
 
 function uploadEmployeePreview() {
@@ -338,7 +396,6 @@ function uploadEmployeePreview() {
         processData: false,
         contentType: false,
         success: function (employees) {
-            employeeDataForUpload = [];
 
             $.each(employees, function (index, employee) {
                 employeeDataForUpload.push({
@@ -352,6 +409,7 @@ function uploadEmployeePreview() {
             });
 
             updateEmployeeTable();
+            console.log(employeeDataForUpload);
         },
         error: function (xhr, status, error) {
             console.error('Upload failed!', error);
@@ -391,6 +449,11 @@ function validationExecution() {
                 row.append($('<td>').text(employee.depositor).css(depositorStyle));
                 row.append($('<td>').text(employee.validDepositor).css(depositorStyle));
                 row.append($('<td>').text(employee.description));
+
+                row.on('click', function() {
+                    showModal('transfer-info-detail-modal');
+                });
+
 
                 tbody.append(row);
 
@@ -629,3 +692,37 @@ function convertToKoreanNumber(number) {
     return resultString;
 }
 
+function registerInputEventOfAccountNumber(modalId) {
+    $(modalId).on('input', function(event) {
+        // 현재 입력된 전체 값
+        let currentValue = $(this).val();
+
+        // 백스페이스 처리
+        if (event.originalEvent.inputType === 'deleteContentBackward') {
+            originalAccountNumber = originalAccountNumber.slice(0, -1); // 마지막 문자 제거
+            $(this).val(originalAccountNumber); // 업데이트된 값을 입력 필드에 반영
+            hyphenAccountNumber(); // 마스킹 처리 호출
+        } else {
+            // 현재 입력된 마지막 문자
+            let inputChar = currentValue.slice(-1);
+
+            // 숫자일 경우에만 추가
+            if (/^[0-9]$/.test(inputChar)) { // 마지막 문자가 숫자인지 확인
+                originalAccountNumber += inputChar; // 숫자만 남기고 추가
+            }
+            hyphenAccountNumber(); // 마스킹 처리 호출
+        }
+    });
+}
+function hyphenAccountNumber() {
+    let displayAccountNumber = originalAccountNumber; // 화면에 표시할 값 초기화
+    if (originalAccountNumber.length > 3 && originalAccountNumber.length <= 10) {
+        displayAccountNumber = originalAccountNumber.slice(0, 3) + '-' + originalAccountNumber.slice(3); // 하이픈 추가
+    }
+    if (originalAccountNumber.length > 10) {
+        displayAccountNumber = originalAccountNumber.slice(0, 3) + '-' + originalAccountNumber.slice(3, 10) + '-' + originalAccountNumber.slice(10); // 하이픈 추가
+    }
+    $('#targetAccIdModal').val(displayAccountNumber); // 화면에 마스킹된 값만 보여주기
+    $('#update-target-acc-id').val(displayAccountNumber); // 화면에 마스킹된 값만 보여주기
+
+}
