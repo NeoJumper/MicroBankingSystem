@@ -5,10 +5,11 @@ let validPassword = "";
 let totalTransferAmount = 0;
 let totalCount = 0;
 let originalAccountNumber = ""; // 계좌 원본 값 저장
-
-
+let url;
 
 document.addEventListener("DOMContentLoaded", function () {
+    url = window.location.href;
+    checkRetry();
     isClosed();
     handleBusinessDayDateInput();
     userNameInput();
@@ -22,10 +23,22 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
 function initializeEventHandlers() {
 
     // 모달 내 계좌선택 버튼
-    $('#search-modal-select-account-btn').click(selectAccount);
+    $('#search-modal-select-account-btn').click(function() {
+
+        const selectedRow = $('input[name="select-account"]:checked').closest('tr');
+        const selectedAccountId = selectedRow.find('td:eq(1)').text();
+
+        if (!selectedAccountId) {
+            swal({ title: "계좌를 선택해 주세요.", icon: "warning" });
+            return;
+        }
+        selectAccount(selectedAccountId);
+
+    });
 
     // 비고란 문구 선택
     $('input[name="salaryType"]').change(handleSalaryTypeChange);
@@ -112,15 +125,7 @@ function initializeEventHandlers() {
 
 }
 
-function selectAccount() {
-    const selectedRow = $('input[name="select-account"]:checked').closest('tr');
-    const selectedAccountId = selectedRow.find('td:eq(1)').text();
-
-    if (!selectedAccountId) {
-        swal({ title: "계좌를 선택해 주세요.", icon: "warning" });
-        return;
-    }
-
+function selectAccount(selectedAccountId) {
     $.ajax({
         url: "/api/employee/accounts/" + selectedAccountId,
         type: "GET",
@@ -725,4 +730,62 @@ function hyphenAccountNumber() {
     $('#targetAccIdModal').val(displayAccountNumber); // 화면에 마스킹된 값만 보여주기
     $('#update-target-acc-id').val(displayAccountNumber); // 화면에 마스킹된 값만 보여주기
 
+}
+
+function checkRetry() {
+    const bulkTransferId = getParameterByName('bulkTransferId', url);
+
+    if (bulkTransferId !== null)
+    {
+        handleRetryProcess(bulkTransferId);
+    }
+}
+function handleRetryProcess(bulkTransferId) {
+
+// Promise 사용
+    console.log('대량이체 ID : ' + bulkTransferId);
+    getAndFillFailTradeList(bulkTransferId)
+        .then(accId => {
+            console.log("Received accId:", accId);
+            selectAccount(accId);
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+
+}
+function getAndFillFailTradeList(bulkTransferId) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/api/employee/bulk-transfer/fail-trades?bulkTransferId=' + bulkTransferId,
+            type: 'GET',
+            success: function (trades) {
+                let accId = '';
+                $.each(trades, function (index, trade) {
+                    accId = trade.accId;
+                    employeeDataForUpload.push({
+                        accId: trade.accId,
+                        targetAccId: trade.targetAccId,
+                        transferAmount: trade.amount,
+                        depositor: trade.targetCustomerName,
+                        description: trade.description,
+                    });
+                });
+                updateEmployeeTable();
+                resolve(accId); // Promise resolve
+            },
+            error: function (xhr, status, error) {
+                console.error('Upload failed!', error);
+                reject(error); // Promise reject
+            }
+        });
+    });
+}
+
+
+
+function getParameterByName(name, url) {
+    // URL에서 쿼리 파라미터를 찾기 위한 정규식 생성
+    const urlParams = new URLSearchParams(new URL(url).search);
+    return urlParams.get(name); // 해당 파라미터의 값을 반환
 }
