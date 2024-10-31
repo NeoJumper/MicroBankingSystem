@@ -56,7 +56,7 @@
         </table>
     </div>
 
-    <div id="close-savings-account-interest">
+    <div id="flexible-account-interest" style="display: none">
         <h3>해지 이율표</h3>
         <table class="common-table">
             <thead>
@@ -108,6 +108,66 @@
             </tr>
             </tbody>
         </table>
+    </div>
+
+
+
+    <div id="fixed-account-interest" style="display: none">
+        <h3>정기적금 해지 이율표</h3>
+        <table class="common-table">
+            <thead>
+            <tr>
+                <th>예치 기간</th>
+                <th>해지 이율(차등율)</th>
+                <th>가입 상품 적용 이율(경과율)</th>
+            </tr>
+            <tr id="under-1m">
+                <td>1개월 미만</td>
+                <td>연 0.1%</td>
+                <td class="rate"><span class="dynamic-rate"></span></td>
+            </tr>
+            <tr id="under-3m">
+                <td>1개월 이상 ~ 3개월 미만</td>
+                <td>연 0.15%</td>
+                <td class="rate"><span class="dynamic-rate"></span></td>
+            </tr>
+            <tr id="under-6m">
+                <td>3개월 이상 ~ 6개월 미만</td>
+                <td>연 0.2%</td>
+                <td class="rate"><span class="dynamic-rate"></span></td>
+            </tr>
+            <tr id="over-6m">
+                <td>6개월 이상 ~ 9개월 미만</td>
+                <td>60% (기본금리 x 차등율 x 경과일수 / 계약일수)</td>
+                <td class="rate"><span class="dynamic-rate"></span></td>
+            </tr>
+            <tr id="between-9-11m">
+                <td>9개월 이상 ~ 11개월 미만</td>
+                <td>70% (기본금리 x 차등율 x 경과일수 / 계약일수)</td>
+                <td class="rate"><span class="dynamic-rate"></span></td>
+            </tr>
+            <tr id="over-11m">
+                <td>11개월 이상</td>
+                <td>90% (기본금리 x 차등율 x 경과일수 / 계약일수)</td>
+                <td class="rate"><span class="dynamic-rate"></span></td>
+            </tr>
+            <tr id="maturity">
+                <td>만기 시</td>
+                <td>약정 당시의 정기 적금 금리 + 우대 이율</td>
+                <td class="rate"><span class="dynamic-rate"></span></td>
+            </tr>
+            <tr id="post-maturity-1m">
+                <td>만기 후 1개월 이내</td>
+                <td>지급 당시 기본금리의 1/2</td>
+                <td class="rate"><span class="dynamic-rate"></span></td>
+            </tr>
+            <tr id="post-maturity-1m-plus">
+                <td>만기 후 1개월 초과</td>
+                <td>지급 당시 기본금리의 1/4</td>
+                <td class="rate"><span class="dynamic-rate"></span></td>
+            </tr>
+        </table>
+
     </div>
 
     <div id="common-account-area">
@@ -192,6 +252,10 @@
         </tr>
         </tbody>
     </table>
+
+    <div class="row justify-content-center mb-5">
+        <button id="saving-account-close-submit-btn" class ="basic-btn col-1" disabled>해지 신청</button>
+    </div>
 </div>
 <script src="/resources/js/footer.js"></script>
 
