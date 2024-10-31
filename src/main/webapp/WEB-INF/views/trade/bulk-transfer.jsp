@@ -369,6 +369,9 @@
 
                 <div class="modal-body">
                     <table class="common-table" style="margin-bottom: 0px">
+                        <tr style="display: none;">
+                            <td><input id="update-target-index"></td>
+                        </tr>
                         <tr>
                             <th>입금계좌번호</th>
                             <td><input id="update-target-acc-id" maxlength="16" placeholder=" 예) 000-0000000-0000"></td>
@@ -394,10 +397,10 @@
 
             </div>
             <div class="modal-footer">
-                <button id="transfer-info-update-btn" type="button" data-bs-dismiss="modal"
+                <button id="individual-transfer-info-update-btn" type="button" data-bs-dismiss="modal"
                         class="btn btn-primary">수정
                 </button>
-                <button id="transfer-info-delete-btn" type="button" data-bs-dismiss="modal"
+                <button id="individual-transfer-info-delete-btn" type="button" data-bs-dismiss="modal"
                         class="btn cancel-btn">삭제
                 </button>
             </div>
