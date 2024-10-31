@@ -253,8 +253,8 @@
         </tbody>
     </table>
 
-    <div id="submit" class="row justify-content-center mb-5">
-        <input id="submit-btn" class="basic-btn col-1" type="submit" value="해지 신청" disabled>
+    <div class="row justify-content-center mb-5">
+        <button id="saving-account-close-submit-btn" class ="basic-btn col-1" disabled>해지 신청</button>
     </div>
 </div>
 <script src="/resources/js/footer.js"></script>

@@ -7,7 +7,12 @@ $(document).ready(function () {
         checkAccountId();
     });
 
+    $('#saving-account-close-submit-btn').click(function(){
+        submitSavingAccountClose();
+    })
+
 });
+
 
 function selectSavingsAccount() {
     var selectedRow = $('input[name="select-account"]:checked').closest('tr');
@@ -36,7 +41,9 @@ function selectSavingsAccount() {
             $('#customer-name').val(data[0].customerName);
 
             $('#savings-account-product-type').text(data[0].productType);
+            $('#savings-account-product-type').val(data[0].productType);
             $('#savings-account-interest-calculation-method').text(data[0].interestCalculationMethod);
+            $('#savings-account-interest-calculation-method').val(data[0].interestCalculationMethod);
             $('#search-modal-account').modal('hide');
 
 
@@ -344,3 +351,24 @@ function calculateSavingsMonths(nowDate, startDate) {
     };
 }
 
+
+function submitSavingAccountClose () {
+    // 정기적금 해지 프로세스
+    if($('#savings-account-product-type').val("FIXED")){
+        savingAccountFixedCloseRequest();
+    }
+    // 자유적금 해지 프로세스
+    else if($('#savings-account-product-type').val("FLEXIBLE")){
+        savingAccountFlexibleCloseRequest();
+    }
+}
+
+// 정기적금 해지 프로세스
+function savingAccountFixedCloseRequest(){
+
+}
+
+// 자유적금 해지 프로세스
+function savingAccountFlexibleCloseRequest(){
+
+}
