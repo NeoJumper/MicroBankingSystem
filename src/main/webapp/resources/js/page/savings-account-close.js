@@ -75,6 +75,7 @@ function selectSavingsAccount() {
     });
 }
 
+// 최종 이율 계산 함수
 function calculateTerminationRate(openDate, businessDate, period, interestRateSum) {
     const open = new Date(openDate.split(' ')[0]); // openDate에서 날짜 부분만 추출
     const business = new Date(businessDate);
@@ -95,41 +96,97 @@ function calculateTerminationRate(openDate, businessDate, period, interestRateSu
     // 경과일수: openDate로부터 businessDate까지의 일 수
     const diffDays = Math.floor((business - open) / (1000 * 60 * 60 * 24));
 
-    let terminationRate = 0;
-    let baseInterestRate = interestRateSum / 100; // Convert to a decimal
+    // 최종 이율
+    let finalInterestRate;
+    // 소수 변환
+    const baseInterestRate = interestRateSum / 100
 
     // 만기일 이전 해지 (중도 해지)
     if (business < current) {
         if (diffDays < 30) {
-            baseInterestRate = 0.001; // 연 0.1%
+            finalInterestRate = 0.001; // 연 0.1%
         } else if (diffDays < 90) {
-            baseInterestRate = 0.0015; // 연 0.15%
+            finalInterestRate = 0.0015; // 연 0.15%
         } else if (diffDays < 180) {
-            baseInterestRate = 0.002; // 연 0.2%
+            finalInterestRate = 0.002; // 연 0.2%
         } else if (diffDays < 270) {
-            terminationRate = Math.max(0.002, 0.6 * (diffDays / contractDays) * baseInterestRate); // Ensure minimum 0.2%
+            finalInterestRate = Math.max(0.002, 0.6 * (diffDays / contractDays) * baseInterestRate); // Ensure minimum 0.2%
         } else if (diffDays < 330) {
-            terminationRate = Math.max(0.002, 0.7 * (diffDays / contractDays) * baseInterestRate); // Ensure minimum 0.2%
+            finalInterestRate = Math.max(0.002, 0.7 * (diffDays / contractDays) * baseInterestRate); // Ensure minimum 0.2%
         } else {
-            terminationRate = Math.max(0.002, 0.9 * (diffDays / contractDays) * baseInterestRate); // Ensure minimum 0.2%
+            finalInterestRate = Math.max(0.002, 0.9 * (diffDays / contractDays) * baseInterestRate); // Ensure minimum 0.2%
         }
     }
     // 만기일 해지
     else if (business.getTime() === current.getTime()) {
-        terminationRate = 1; // 만기 시 기본금리 + 우대 이율 적용
+        finalInterestRate = baseInterestRate;
     }
     // 만기 후 해지
     else {
         const diffDaysAfterMaturity = Math.floor((business - current) / (1000 * 60 * 60 * 24));
         if (diffDaysAfterMaturity <= 30) {
-            terminationRate = 0.5; // 기본금리의 1/2
+            finalInterestRate = baseInterestRate * 0.5; // 기본금리의 1/2
         } else {
-            terminationRate = 0.25; // 기본금리의 1/4
+            finalInterestRate = baseInterestRate * 0.25; // 기본금리의 1/4
         }
     }
 
-    return {terminationRate, baseInterestRate, diffDays, contractDays};
+    return finalInterestRate;
 }
+
+// 경과일수 구하는 함수
+function calculateElapsedDays(openDate, months) {
+    const open = new Date(openDate.split(' ')[0]); // openDate에서 날짜 부분만 추출
+    const targetDate = new Date(open.getFullYear(), open.getMonth() + months, open.getDate());
+
+    // targetDate가 openDate보다 미래 날짜인 경우에만 경과일수 계산
+    if (targetDate > open) {
+        return Math.floor((targetDate - open) / (1000 * 60 * 60 * 24));
+    } else {
+        return 0; // 이 경우는 계산이 무의미하거나 잘못된 입력일 수 있음
+    }
+}
+
+function calculateRateData(openDate, businessDate, period, interestRateSum) {
+    const open = new Date(openDate.split(' ')[0]); // openDate에서 날짜 부분만 추출
+    const business = new Date(businessDate);
+
+    // 계약일수 계산
+    const periodMonths = parseInt(period.replace(/[^0-9]/g, ''));
+    let contractDays = 0;
+    let current = new Date(open);
+
+    // 만기일까지의 일수 계산
+    for (let i = 0; i < periodMonths; i++) {
+        const nextMonth = new Date(current.getFullYear(), current.getMonth() + 1, current.getDate());
+        const daysInMonth = (nextMonth - current) / (1000 * 60 * 60 * 24);
+        contractDays += daysInMonth;
+        current = nextMonth;
+    }
+    
+    const elapsedDays6Months = calculateElapsedDays(openDate, 6);  // 6개월 동안의 경과일수
+    const elapsedDays9Months = calculateElapsedDays(openDate, 9);  // 9개월 동안의 경과일수
+    const elapsedDays11Months = calculateElapsedDays(openDate, 11);  // 11개월 동안의 경과일수
+
+    // 소수 변환
+    const baseInterestRate = interestRateSum / 100;
+
+    // 각 케이스별 이율 계산
+    const rateData = {
+        "under-1m": "0.1 %", // 1개월 미만 연 0.1%
+        "under-3m": "0.15 %", // 1개월 이상 ~ 3개월 미만 연 0.15%
+        "under-6m": "0.2 %", // 3개월 이상 ~ 6개월 미만 연 0.2%
+        "over-6m": `${(Math.max(0.002, 0.7 * (elapsedDays6Months / contractDays) * baseInterestRate)* 100).toFixed(4)} % ~`, // 6개월 이상 ~ 9개월 미만 60% 차등율, 최소 0.2%
+        "between-9-11m": `${(Math.max(0.002, 0.7 * (elapsedDays9Months / contractDays) * baseInterestRate)* 100).toFixed(4)} % ~`, // 9개월 이상 ~ 11개월 미만 70% 차등율, 최소 0.2%
+        "over-11m": `${(Math.max(0.002, 0.9 * (elapsedDays11Months / contractDays) * baseInterestRate)* 100).toFixed(4)} % ~`, // 11개월 이상 90% 차등율, 최소 0.2%
+        "maturity": `${interestRateSum}%`,
+        "post-maturity-1m": `${(0.5 * baseInterestRate * 100).toFixed(4)} %`, // 만기 후 1개월 이내 기본금리의 1/2
+        "post-maturity-1m-plus": `${(0.25 * baseInterestRate * 100).toFixed(4)} %` // 만기 후 1개월 초과 기본금리의 1/4
+    };
+
+    return rateData;
+}
+
 
 
 // 자유적금 해지 프로세스
@@ -144,47 +201,57 @@ function getSavingsFlexibleAccount(data, accountId) {
         success: function (data) {
             console.log("SELECT FLEXIBLE ACCOUNT", data);
 
+            const interestSum = data.interestRate + data.preferentialInterestRate;
+
             // 해지 이율 계산
-            const {terminationRate, baseInterestRate, diffDays, contractDays} = calculateTerminationRate(
+            const finalInterestRate = calculateTerminationRate(
                 data.openDate,
                 businessDate,
                 data.period,
-                (data.interestRate + data.preferentialInterestRate)
+                interestSum
             );
 
-            console.log("해지 이율: ", terminationRate);
-            console.log("기본 금리: ", baseInterestRate);
+            const rateData = calculateRateData(
+                data.openDate,
+                businessDate,
+                data.period,
+                interestSum
+            );
 
-            // 각 케이스별 이율 계산
-            const rateData = {
-                "under-1m": `${(0.001 * 100).toFixed(2)}%`, // 1개월 미만 연 0.1%
-                "under-3m": `${(0.0015 * 100).toFixed(2)}%`, // 1개월 이상 ~ 3개월 미만 연 0.15%
-                "under-6m": `${(0.002 * 100).toFixed(2)}%`, // 3개월 이상 ~ 6개월 미만 연 0.2%
-                "over-6m": `${Math.max(0.2, (0.6 * baseInterestRate * (diffDays / contractDays)) * 100).toFixed(2)}%`, // 6개월 이상 ~ 9개월 미만 60% 차등율, 최소 0.2%
-                "between-9-11m": `${Math.max(0.2, (0.7 * baseInterestRate * (diffDays / contractDays)) * 100).toFixed(2)}%`, // 9개월 이상 ~ 11개월 미만 70% 차등율, 최소 0.2%
-                "over-11m": `${Math.max(0.2, (0.9 * baseInterestRate * (diffDays / contractDays)) * 100).toFixed(2)}%`, // 11개월 이상 90% 차등율, 최소 0.2%
-                "maturity": `${(baseInterestRate * 100).toFixed(2)}%`, // 만기 시 기본금리 + 우대 이율
-                "post-maturity-1m": `${(0.5 * baseInterestRate * 100).toFixed(2)}%`, // 만기 후 1개월 이내 기본금리의 1/2
-                "post-maturity-1m-plus": `${(0.25 * baseInterestRate * 100).toFixed(2)}%` // 만기 후 1개월 초과 기본금리의 1/4
-            };
+            let highlightedKey = ""; // 해당 케이스 키
 
-
-            // 각 케이스별로 동적으로 이율 값 설정
+            // 이율 데이터에 대해 반복하며 적용 이율과 일치하는 키 찾기
             for (const [key, rate] of Object.entries(rateData)) {
-                $(`#${key} .dynamic-rate`).text(rate);
+                if (parseFloat(rate) === finalInterestRate * 100) { // 금리를 퍼센트로 변환하여 비교
+                    highlightedKey = key;
+                    break; // 일치하는 키를 찾으면 반복 중단
+                }
             }
+
+            for (const [key, rate] of Object.entries(rateData)) {
+                const rateElement = $(`#${key} .dynamic-rate`);
+                rateElement.text(rate);
+
+                // 해당하는 키의 <td>에만 배경색 적용
+                if (key === highlightedKey) {
+                    rateElement.closest('tr').css('background-color', '#f6f9fc'); // 하이라이트 색상 설정
+                    rateElement.closest('tr').css('color', '#3f5ba9');
+                }
+            }
+
+            console.log("FINAL INTEREST::" ,finalInterestRate);
 
         }
     })
 
-    // 만기 시 / 만기 후 해지 시 이자내역 추가
+/*    // 만기 시 / 만기 후 해지 시 이자내역 추가
     $.ajax({
         url: "/api/employee/interest-details/" + accountId,
         type: "GET",
         success: function (data) {
             console.log("account close flexible", data);
         }
-    })
+    })*/
 }
 
 
