@@ -56,8 +56,7 @@ function selectSavingsAccount() {
                 $('.common-account-detail').show();
                 $('.fixed-account-area').show();
                 $('.flexible-account-area').hide();
-                $('#flexible-account-interest').hide();
-                $('#fixed-account-interest').show();
+
 
             }
             // 2-2. 자유적금일 경우
@@ -67,8 +66,6 @@ function selectSavingsAccount() {
                 $('.common-account-detail').show();
                 $('.fixed-account-area').hide();
                 $('.flexible-account-area').show();
-                $('#flexible-account-interest').show();
-                $('#fixed-account-interest').hide();
             }
 
         },
@@ -80,7 +77,12 @@ function selectSavingsAccount() {
 
 // 자유적금 해지 프로세스
 function getSavingsFlexibleAccount(data, accountId) {
-    // 3. 월별 이자내역 출력
+
+    $.ajax({
+        url: ""
+    })
+
+    // 만기 시 / 만기 후 해지 시 이자내역 추가
     $.ajax({
         url: "/api/employee/interest-details/" + accountId,
         type: "GET",

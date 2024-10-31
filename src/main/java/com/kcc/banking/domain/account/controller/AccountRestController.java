@@ -130,10 +130,14 @@ public class AccountRestController {
     // 001-0000013-3687 번에 거래내역 존재
     @GetMapping("/api/employee/savings-account-close-total-info/{accountId}")
     public ResponseEntity<CloseSavingsAccountTotal> getCloseAccountInfo(@PathVariable("accountId") String accountId){
-
         CloseSavingsAccountTotal closeSavingsAccountInfo = accountService.getCloseSavingsAccount(accountId);
         return ResponseEntity.ok(closeSavingsAccountInfo);
     }
 
+    // 자유적금 해지
+    @GetMapping("/api/employee/savings-flexible-account-close-total-info/{accountId}")
+    public ResponseEntity<CloseSavingsFlexibleAccountTotal> getCloseFlexibleAccountInfo(@PathVariable("accountId") String accountId){
+        return ResponseEntity.ok(null);
+    }
 }
 
