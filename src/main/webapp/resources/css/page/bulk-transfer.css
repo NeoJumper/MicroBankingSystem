@@ -421,3 +421,18 @@ p {
     width: 70%;
     padding: 10px 10px;
 }
+
+#transfer-info-detail-modal th, #transfer-info-detail-modal td{
+    font-size: 1.2rem;
+}
+#transfer-info-detail-modal input
+{
+    width: 70%;
+    padding: 10px 10px;
+}
+
+.employee-element:hover {
+    background-color: #f0f8ff; /* 연한 파란색 배경 */
+    color: #333; /* 텍스트 색상 */
+    cursor: pointer; /* 클릭 가능한 커서 모양 */
+}

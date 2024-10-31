@@ -18,6 +18,7 @@ public class TradeDetail {
     private Long registrantId;
     private String accId;
     private String targetAccId;
+    private String targetCustomerName;
     private Long branchId;
     private String tradeDate;
     private BigDecimal amount;

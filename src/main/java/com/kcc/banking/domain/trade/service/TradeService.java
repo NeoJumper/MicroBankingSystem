@@ -4,7 +4,6 @@ import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.AccountOpen;
 import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
-import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.trade.dto.request.*;
@@ -12,7 +11,6 @@ import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 
 import com.kcc.banking.domain.trade.dto.response.*;
-import com.kcc.banking.domain.employee.service.EmployeeService;
 import com.kcc.banking.domain.trade.dto.response.TradeByCash;
 
 import com.kcc.banking.domain.trade.dto.response.TradeOfList;
@@ -281,6 +279,10 @@ public class TradeService {
 
     public List<TradeByBulkTransfer> getTradeListByBulkTransfer(Long bulkTransferId) {
         return tradeMapper.findTradeListByBulkTransfer(bulkTransferId);
+    }
+
+    public List<TradeDetail> bulkTransferFailTradeList(Long bulkTransferId) {
+        return tradeMapper.findBulkTransferFailTradeList(bulkTransferId);
     }
 }
 
