@@ -137,7 +137,8 @@ public class AccountRestController {
     // 자유적금 해지
     @GetMapping("/api/employee/savings-flexible-account-close-total-info/{accountId}")
     public ResponseEntity<CloseSavingsFlexibleAccountTotal> getCloseFlexibleAccountInfo(@PathVariable("accountId") String accountId){
-        return ResponseEntity.ok(null);
+        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountService.getCloseSavingsFlexibleAccount(accountId);
+        return ResponseEntity.ok(closeSavingsFlexibleAccountTotal);
     }
 }
 

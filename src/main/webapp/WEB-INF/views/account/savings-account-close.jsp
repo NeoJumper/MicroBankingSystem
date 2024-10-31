@@ -58,7 +58,7 @@
 
 
     <div id="account-interest-table">
-        <h3>정기적금 해지 이율표</h3>
+        <h3>적금 해지 이율표</h3>
         <table class="common-table">
             <thead>
             <tr>
@@ -116,7 +116,6 @@
                 <td class="rate"><span class="dynamic-rate"></span></td>
             </tr>
         </table>
-
     </div>
 
     <div id="common-account-area">

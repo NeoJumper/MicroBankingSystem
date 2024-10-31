@@ -399,9 +399,30 @@
     </select>
 
     <!-- 자동이체 납일 횟수 계산 -->
-    <select id="findMonthlyPaidOfSavingsAccount" parameterType="String" >
+    <select id="findMonthlyPaidOfSavingsAccount" parameterType="java.lang.String" >
         select count(*) from trade
         where acc_id = #{accountId}
+    </select>
+
+    <select id="findCloseSavingsFlexibleAccountById" parameterType="java.lang.String">
+       SELECT
+            a.id,
+            a.open_date,
+            a.balance,
+            a.status,
+            a.preferential_interest_rate,
+            c.id AS customerId,
+            c.name AS customerName,
+            c.security_level,
+            p.name AS productName,
+            p.product_type,
+            p.interest_calculation_method,
+            p.period,
+            p.interest_rate
+            FROM Account a
+                JOIN Customer c ON a.customer_id = c.id
+                JOIN Product p ON a.product_id = p.id
+            WHERE a.id = #{accountId}
     </select>
 
 </mapper>

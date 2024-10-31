@@ -38,6 +38,7 @@ function handleBusinessDay(){
             var formattedDate = response.businessDate.substring(0, 10);
 
             $('#business-day-date').text(formattedDate);
+            $('#business-day-date').val(formattedDate);
             currentBusinessDayStatus = response.status;
             $('#business-day-status > span').text(currentBusinessDayStatus);
         },
