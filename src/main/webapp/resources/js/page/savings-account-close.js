@@ -1,11 +1,6 @@
 $(document).ready(function () {
     $('#search-modal-select-account-btn').click(function () {
-
-        // 적금 검색 결과 정보
         selectSavingsAccount();
-        // 검색한 적금계좌의 해지 종합 정보 api
-        getSavingsAccount();
-
     });
 
     $('#savings-account-close-validate').click(function(){
@@ -14,45 +9,85 @@ $(document).ready(function () {
 
 });
 
-
 function selectSavingsAccount() {
-
     var selectedRow = $('input[name="select-account"]:checked').closest('tr');
     var accountId = selectedRow.find('td:eq(1)').text();
 
     if (!accountId) {
         swal({
-            title: "계좌를 선택해 주세요.",
+            title: "선택된 계좌 없음",
+            text: "계좌를 선택해 주세요.",
             icon: "warning",
         });
         return;
     }
 
+    // 1. 선택 계좌 정보
+    // 1-1. 계좌 번호, 고객 이름, 제품명
     // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
     $.ajax({
         url: "/api/employee/accounts",
-        data: {accId: accountId, },
+        data: {accId: accountId},
         type: "GET",
         success: function (data) {
-            console.log("======!!!", data);
-            console.log(data);
+            console.log("saving-account-close DATA TEST", data)
             $('#savings-account-close-number').val(data[0].accId);
             $('#savings-account-product-name').val(data[0].productName);
             $('#customer-name').val(data[0].customerName);
-            // 모달 닫기
+
+            $('#savings-account-product-type').text(data[0].productType);
+            $('#savings-account-interest-calculation-method').text(data[0].interestCalculationMethod);
             $('#search-modal-account').modal('hide');
+
+
+            // 2. 정기 적금 / 자유 적금 분기처리
+            // 2-1. 정기적금일 경우
+            if (data[0].productType == "FIXED") {
+                // 3. 선택 계좌 세부 정보
+                getSavingsAccount(data);
+                // 적금 세부정보 표시
+                $('.common-account-detail').show();
+                $('.fixed-account-area').show();
+                $('.flexible-account-area').hide();
+                $('#flexible-account-interest').hide();
+                $('#fixed-account-interest').show();
+
+            }
+            // 2-2. 자유적금일 경우
+            else if (data[0].productType == "FLEXIBLE") {
+                getSavingsFlexibleAccount(data, accountId);
+                // 적금 세부정보 표시
+                $('.common-account-detail').show();
+                $('.fixed-account-area').hide();
+                $('.flexible-account-area').show();
+                $('#flexible-account-interest').show();
+                $('#fixed-account-interest').hide();
+            }
+
         },
         error: function (error) {
             console.log("Error while fetching account details", error);
         }
     });
-
 }
 
-function getSavingsAccount() {
+// 자유적금 해지 프로세스
+function getSavingsFlexibleAccount(data, accountId) {
+    // 3. 월별 이자내역 출력
+    $.ajax({
+        url: "/api/employee/interest-details/" + accountId,
+        type: "GET",
+        success: function (data) {
+            console.log("account close flexible", data);
+        }
+    })
+}
 
-    var selectedRow = $('input[name="select-account"]:checked').closest('tr');
-    var accountId = selectedRow.find('td:eq(1)').text();
+
+// 정기적금 해지 프로세스
+function getSavingsAccount(data) {
+
+    var accountId = data[0].accId;
 
     if (!accountId) {
         swal({
@@ -74,8 +109,7 @@ function getSavingsAccount() {
             let period = data.productPeriod;
             let productRate = data.productInterestRate;
             let accountRate = data.accountInterestRate;
-            console.log("accountRate"+a
-            ccountRate+"productRate"+productRate);
+            console.log("accountRate"+accountRate+"productRate"+productRate);
             let startDate = data.startDate;
 
             const result = calculateSavingsMonths("2024-08-01",startDate);
@@ -94,7 +128,7 @@ function getSavingsAccount() {
 
             // 적금 이율 구하기
             calculateRate(accountRate, productRate, savingsDays, productTotalDays);
-            
+
             // 경과일 대비 이율 계산
             const rates = calculateRate(productRate, savingsDays, productTotalDays);
 

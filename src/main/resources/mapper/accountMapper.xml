@@ -115,7 +115,9 @@
         p.name AS product_name,
         a.balance AS balance,
         a.per_trade_limit,
-        a.daily_limit
+        a.daily_limit,
+        p.product_type,
+        p.interest_calculation_method
         FROM
         Account a
         JOIN

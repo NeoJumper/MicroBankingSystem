@@ -111,10 +111,4 @@ public class BulkTransferRestController {
         PageDTO pageDTO = new PageDTO(bulkTransferSearch.getCriteria(), bulkTransferList.size());
         return ResponseEntity.ok().body(BulkTransferSearchResult.of(bulkTransferList, pageDTO));
     }
-
-    // 대량 이체 오류건 재전송
-    @PutMapping("/api/employee/bulk-transfer/{bulkTransferId}")
-    public void resendErrors (@RequestBody List<TransferTradeUpdate> transferTradeUpdateList, @PathVariable Long bulkTransferId) {
-        accountTradeFacade.processBulkTransferRetryErrors(transferTradeUpdateList, bulkTransferId);
-    }
 }

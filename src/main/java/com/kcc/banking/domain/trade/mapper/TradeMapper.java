@@ -44,4 +44,6 @@ public interface TradeMapper {
 
     // trade 테이블 업데이트
     int updateAllTrade(TradeUpdate tradeUpdate);
+
+    List<TradeDetail> findBulkTransferFailTradeList(Long bulkTransferId);
 }

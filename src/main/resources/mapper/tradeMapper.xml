@@ -264,4 +264,32 @@
         WHERE id = #{id, jdbcType=BIGINT}
     </update>
 
+    <select id="findBulkTransferFailTradeList" parameterType="java.lang.Long" resultType="TransferDetail">
+        SELECT
+        t.id,
+        t.registrant_id,
+        t.acc_id,
+        t.target_acc_id,
+        t.branch_id,
+        t.trade_date,
+        t.amount,
+        t.balance,
+        t.trade_type,
+        t.status,
+        t.cash_indicator,
+        t.description,
+        t.trade_number,
+        t.registration_date,
+        t.modification_date,
+        t.modifier_id,
+        t.version,
+        target_customer.name AS targetCustomerName
+        FROM Trade t
+        LEFT JOIN Account target_acc ON t.target_acc_id = target_acc.id
+        LEFT JOIN Customer target_customer ON target_acc.customer_id = target_customer.id
+        WHERE
+        t.bulk_transfer_id = #{bulkTransferId} AND
+        t.status = 'FAIL'
+    </select>
+
 </mapper>

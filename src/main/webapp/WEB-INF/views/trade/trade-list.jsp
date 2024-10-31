@@ -17,7 +17,7 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
-    <div>
+    <div id="title">
         <h5>계좌 조회 > </h5>
         <h5>&nbsp 거래 내역 조회 </h5>
     </div>

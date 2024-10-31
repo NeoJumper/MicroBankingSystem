@@ -15,7 +15,7 @@
 <%@ include file="/resources/components/header.jsp" %>
 <%@ include file="/resources/components/sidebar.jsp" %>
 <div id="main-area">
-    <div>
+    <div id="title">
         <h5>고객 관리 > </h5>
         <h5>&nbsp 고객 등록 </h5>
     </div>

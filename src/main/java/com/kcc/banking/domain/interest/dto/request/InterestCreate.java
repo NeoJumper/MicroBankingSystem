@@ -16,7 +16,8 @@ public class InterestCreate {
 
     private Long id; // sequence
     private String accId; // 대상계좌
-    private BigDecimal amount; // 금액
+    private BigDecimal amount; // 이자금액
+    private BigDecimal balance; // 잔액
     private BigDecimal interestRate; // 기본이율
     private BigDecimal preferentialInterestRate; // 우대이율
     private String paymentStatus; // 지금상태
@@ -27,10 +28,11 @@ public class InterestCreate {
     private Long version;
 
     @Builder
-    public InterestCreate(Long id, String accId, BigDecimal amount, BigDecimal interestRate, BigDecimal preferentialInterestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, String creationDate, Long version) {
+    public InterestCreate(Long id, String accId, BigDecimal amount, BigDecimal balance,BigDecimal interestRate, BigDecimal preferentialInterestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, String creationDate, Long version) {
         this.id = id;
         this.accId = accId;
         this.amount = amount;
+        this.balance = balance;
         this.interestRate = interestRate;
         this.preferentialInterestRate = preferentialInterestRate;
         this.paymentStatus = paymentStatus;
@@ -64,6 +66,7 @@ public class InterestCreate {
         return InterestCreate.builder()
                 .accId(accountDetail.getAccId())
                 .amount(dailyInterest)
+                .balance(balance)
                 .interestRate(accountDetail.getInterestRate())
                 .preferentialInterestRate(accountDetail.getPreferentialInterestRate())
                 .paymentStatus("N")

@@ -1,5 +1,6 @@
 package com.kcc.banking.domain.trade.controller;
 
+import com.beust.jcommander.Parameter;
 import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResult;
@@ -39,6 +40,12 @@ public class TradeRestController {
         PagingInfoOfTradeList tradeCashOfPerAccount = tradeService.findTradeListOfAccId(tradeSearch);
 
         return  ResponseEntity.ok(tradeCashOfPerAccount);
+    }
+    @GetMapping("/bulk-transfer/fail-trades")
+    public ResponseEntity<List<TradeDetail>> getFailTradeList(@RequestParam("bulkTransferId") Long bulkTransferId){
+        List<TradeDetail> failTradeDetailList = tradeService.bulkTransferFailTradeList(bulkTransferId);
+
+        return  ResponseEntity.ok(failTradeDetailList);
     }
 
     // 현금 거래 생성

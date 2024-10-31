@@ -162,11 +162,23 @@ public class AccountTradeFacade {
 //        return closeSavingsAccountTotal;
 //    }
 
+    //---------------------------------------------------------
+    /**
+     *   @Description - 자유적금 계좌 해지
+     *
+     *   1. 계좌 해지 거래 내역 생성
+     *   2. 계좌 잔액 및 상태 변경
+     *   3. 이자 지급일 및 상태 변경
+     */
 
+
+
+    
+    
 
     //---------------------------------------------------------
     /**
-     *   @Description - 계좌 해지
+     *   @Description - 보통예금 계좌 해지
      *
      *   1. 계좌 해지 거래 내역 생성
      *   2. 계좌 잔액 및 상태 변경
@@ -211,7 +223,7 @@ public class AccountTradeFacade {
 
 
     /**
-     *   @Description - 계좌 해지 취소
+     *   @Description - 보통예금 해지 취소
      *
      *   1. 계좌 해지 취소 거래 내역 생성
      *   2. 계좌 잔액 및 상태 변경(Rollback)
@@ -646,71 +658,6 @@ public class AccountTradeFacade {
                 .build();
 
         return result;
-    }
-
-    /**
-     * @Description - 대량이체 오류건 재전송
-     * 1- 대량이체 테이블 수정: bulkTransferService.updateAllBulkTransfer(BulkTransferUpdate)
-     * 2- 거래 테이블 수정: tradeMapper.updateAllTrade(TradeUpdate)
-     * **/
-    public Long processBulkTransferRetryErrors(List<TransferTradeUpdate> transferTradeUpdateList, Long bulkTransferId){
-        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
-        CurrentData currentData = commonService.getCurrentData();
-        // OPEN 상태가 아니라면
-        if (!currentBusinessDay.getStatus().equals("OPEN")) {
-            throw new BadRequestException(ErrorCode.NOT_OPEN);
-        }
-
-        // 기존 대량거래 정보
-        BulkTransferDetail bulkTransfer = bulkTransferService.getBulkTransfer(bulkTransferId);
-
-        int successCnt = bulkTransfer.getSuccessCnt(); // 기존 successCnt로 초기화
-        int failureCnt = bulkTransfer.getFailureCnt(); // 기존 failureCnt로 초기화
-        BigDecimal totalAmount = bulkTransfer.getAmount(); // 기존 총금액으로 초기화
-
-        for (TransferTradeUpdate transferTradeUpdate : transferTradeUpdateList){
-            try {
-                // 거래내역 업데이트
-                successCnt++;
-            }catch (CustomException e){
-                transferTradeUpdate.setFailureReason(e.getErrorCode().getMessage());
-                failureCnt++;
-            }
-        }
-
-        BulkTransferUpdate bulkTransferUpdate = BulkTransferUpdate.builder()
-                .id(bulkTransferId)
-                .registrantId(bulkTransfer.getRegistrantId())
-                .accId(transferTradeUpdateList.get(0).getAccId())
-                .branchId(currentData.getBranchId())
-                .tradeDate(currentData.getCurrentBusinessDate())
-                .amount(totalAmount) //기존 amount + totalAmount
-                .successCnt(successCnt)
-                .failureCnt(failureCnt)
-                .status("NOR")
-                .description(bulkTransfer.getDescription()) // 기존
-                .modifierId(currentData.getEmployeeId()).build();
-
-        // 대량이체 테이블 update
-        bulkTransferService.updateAllBulkTransfer(bulkTransferUpdate);
-
-        return 1L;
-    }
-
-    /**
-     * @Description - 대량이체 오류건 재전송 수정
-     * **/
-    @Transactional(rollbackFor = {Exception.class})  // 모든 예외 발생 시 롤백
-    public List<TransferDetail> processTransferUpdate(TransferTradeUpdate transferTradeUpdate){
-
-        return new LinkedList<>();
-    }
-
-    /**
-     * @Description - 대량이체 오류건 재전송 수정 실패
-     * **/
-    public void processFailTransferUpdate(TransferTradeUpdate transferTradeUpdate) {
-
     }
 
 }
