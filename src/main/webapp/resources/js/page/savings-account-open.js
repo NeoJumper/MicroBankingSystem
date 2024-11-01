@@ -84,12 +84,6 @@ $(document).ready(function () {
 
 
 
-// 적금 자동이체 생성 함수
-function createAutoTransferInfo() {
-
-
-}
-
 // 잔액 부족 알림 띄우기
 function checkBalance() {
     const transferAmount = parseInt($('#auto-transfer-amount-input').val()) || 0; // 자동이체 금액
@@ -150,16 +144,7 @@ function calculateTotalInterest() {
     const totalInterest = productInterest + preferredInterest;
     $('#total-interest-input').val(totalInterest.toFixed(2)); // 소수점 2자리까지 출력
 }
-// 적금 계좌 개설 함수
-function createSavingAccount() {
 
-    swal({
-        title: " 계좌 생성 성공",
-        text: "계좌가 성공적으로 개설되었습니다.",
-        icon: "success",
-        button: "닫기",
-    });
-}
 
 // 만기 예상 이자 계산 함수
 function calculateExpectedInterest() {
@@ -397,4 +382,83 @@ function AddInfoOfAutoTransferAccount(result) {
     addTransferAccountInfo.style.display = result ? "block" : "none";
 }
 
+// 적금 계좌 개설 함수
+// function createSavingAccount() {
+//
+//     swal({
+//         title: " 계좌 생성 성공",
+//         text: "계좌가 성공적으로 개설되었습니다.",
+//         icon: "success",
+//         button: "닫기",
+//     });
+// }
 
+function createSavingAccount(){
+
+    const customerId = $('#customer-id-input').val();
+    const productId = $('#product-id-input').val();
+    const preferentialInterestRate = $('#savings-interest-input').val();
+    const password = $('#savings-account-password-input').val();
+    const balance = $('#auto-transfer-amount-input').val();
+    const empId = $('#emp-id-hidden').val();
+    const branchId = $('#branch-id-hidden').val();
+    const accountType = "PRIVATE";
+
+    var savingsAccount = {
+        branchId: branchId,
+        customerId: customerId,
+        registerId: empId,
+        productId: productId,
+        preferentialInterestRate: preferentialInterestRate,
+        password: password,
+        balance: removeCommas(balance),
+        accountType: accountType,
+        tradeType: "OPEN"
+    };
+
+    const create_date = $('#savings-account-start-date-input').val(formattedDate);
+
+    var savingsAutoTransfer ={
+        target_acc_id: branchId,
+        amount: removeCommas(balance),
+        auto_transfer_start_date: empId,
+        auto_transfer_date: productId,
+        auto_transfer_period: password,
+        create_date: create_date
+    }
+
+    var savingsAccountTotalInfo = [savingsAccount, savingsAutoTransfer];
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/employee/savings-accounts',
+        contentType: 'application/json',
+        data: JSON.stringify(savingsAccountTotalInfo),
+        success: function (accountId) {
+            swal({
+                title: " 계좌 생성 성공",
+                text: "계좌가 성공적으로 개설되었습니다.",
+                icon: "success",
+                button: "닫기",
+            }).then(() => {
+                // swal의 닫기 버튼이 클릭된 후 실행
+                alert("finish");
+               // accountOpenResult(accountId); // 개설된 계좌 정보 성공 모달 호출
+            });
+
+        },
+        error: function (error) {
+            swal({
+                title: "검증 실패",
+                text: error.responseText,
+                icon: "error",
+                buttons: {
+                    cancel: true,
+                    confirm: false,
+                },
+            });
+        }
+
+    });
+
+}

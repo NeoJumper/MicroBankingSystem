@@ -9,6 +9,7 @@ import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsAccount;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
+import com.kcc.banking.domain.auto_transfer.dto.request.AutoTransferCreate;
 import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferUpdate;
@@ -99,7 +100,30 @@ public class AccountTradeFacade {
      *      6. 성공 여부
      */
 
+    public String openSavingsAccount(AccountOpen accountOpen, AutoTransferCreate autoTransferCreate) {
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+        // 계좌 개설
+        accountService.createAccount(accountOpen, tradeNumber, currentData);
+
+        // 계좌 개설 거래내역 생성
+        tradeService.createOpenTrade(accountOpen,currentData, tradeNumber);
+
+        // 행원 마감 입금액 변경
+        businessDayCloseService.updateTradeAmount(accountOpen.getBalance(), currentData, accountOpen.getTradeType());
+
+        // 자동이체 등록시
+        autoTransferService.createAutoTransferInfo(autoTransferCreate);
+
+        return accountOpen.getId();
+    }
     /**
      *   @Description - 정기적금 예금계좌 해지
      *      1. 계좌 해지 거래 내역 생성

@@ -77,14 +77,14 @@ public class AccountRestController {
     }
 
     // 적금 계좌 개설
-    @Transactional
-    @PostMapping("/api/employee/savings-account/open")
-    public ResponseEntity<String> savingsOpenAccount(@RequestBody AccountOpen accountOpen) {
-
-        String accId = accountTradeFacade.openAccount(accountOpen);
-        return ResponseEntity.ok(accId);
-
-    }
+//    @Transactional
+//    @PostMapping("/api/employee/savings-account/open")
+//    public ResponseEntity<String> savingsOpenAccount(@RequestBody AccountOpen accountOpen) {
+//
+//        String accId = accountTradeFacade.openSavingsAccount(accountOpen);
+//        return ResponseEntity.ok(accId);
+//
+//    }
 
     // 정기적금 계좌 정보 조회 API
 //    @GetMapping("/api/employee/savings-account/open/{accountId}")
