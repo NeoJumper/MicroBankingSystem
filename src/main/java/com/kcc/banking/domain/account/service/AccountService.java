@@ -5,6 +5,7 @@ import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.common.exception.custom_exception.NotFoundException;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.*;
+import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
@@ -118,6 +119,18 @@ public class AccountService {
 
     public String getExpireDateById(String accId) {
         return accountMapper.findExpireDateById(accId);
+    }
+
+    /**
+     * @Description
+     * 잔액만을 변경
+     * 이체 거래에 사용
+     */
+    public void updateByTransferLimitUpdate(AccountUpdate accountUpdate) {
+        BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
+        accountUpdate.setModifierId(currentBusinessDateAndEmployeeId.getEmployeeId());
+
+        accountMapper.partialUpdateAccount(accountUpdate);
     }
 
     /**

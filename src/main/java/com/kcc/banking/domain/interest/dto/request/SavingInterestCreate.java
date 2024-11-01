@@ -73,17 +73,17 @@ public class SavingInterestCreate {
         BigDecimal interestAmount = null;
         if (accountDetail.getInterestCalculationMethod().equals("SIMPLE")) {
             // 단리 계산
-            interestAmount = balance.multiply(monthlyInterestRate);
+            interestAmount = balance.multiply(monthlyInterestRate).setScale(4, RoundingMode.DOWN);
         } else if (accountDetail.getInterestCalculationMethod().equals("COMPOUND")) {
             // 1. 복리 계산
             // 1-1. 복리인데 첫 달이라면 단리와 동일하게 원금에 대한 이자 계산
             if (interestSavingSum == null) {
-                interestAmount = balance.multiply(monthlyInterestRate);
+                interestAmount = balance.multiply(monthlyInterestRate).setScale(4, RoundingMode.DOWN);
             }
             // 1-2. 첫 달이 아니라면 원금과 이자를 합산한 금액에 대한 이자 계산
             else {
                 BigDecimal balanceWithInterest = balance.add(interestSavingSum.getAmountSum());
-                interestAmount = balanceWithInterest.multiply(monthlyInterestRate);
+                interestAmount = balanceWithInterest.multiply(monthlyInterestRate).setScale(4, RoundingMode.DOWN);
             }
         }
 

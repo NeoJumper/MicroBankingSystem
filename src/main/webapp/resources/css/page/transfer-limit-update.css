@@ -1,0 +1,31 @@
+
+.transfer-limit-table td{
+    border-left: 1px solid var(--little-dark-gray);
+}
+
+.hidden {
+    display: none !important;
+}
+#authentication-number-resend-btn{
+    all: unset; /* 기본 스타일 초기화 */
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: bold;
+    text-decoration: underline #333333;
+    text-underline-offset: 5px; /* 밑줄과 텍스트 사이의 간격 설정 */
+    color: #333333;
+}
+#authentication-number-resend-btn:hover{
+    color: #666666;
+}
+
+#comment-area{
+    background-color: rgba(231, 240, 255, 0.5);
+    padding: 8px 8px;
+    font-size: 15px;
+}
+
+#over-per-trade-limit-amount, #over-daily-limit-amount {
+    font-weight: bold;
+    color: var(--point-red);
+}

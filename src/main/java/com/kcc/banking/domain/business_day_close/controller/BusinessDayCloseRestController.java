@@ -5,6 +5,7 @@ import com.kcc.banking.domain.business_day.service.BusinessDayManagementFacade;
 import com.kcc.banking.domain.business_day_close.dto.request.VaultCashRequest;
 import com.kcc.banking.domain.business_day_close.dto.response.ManagerClosingData;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
+import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +31,13 @@ public class BusinessDayCloseRestController {
     {
         businessDayManagementFacade.closeByManager(vaultCashRequest);
     }
+
+    @PatchMapping("/api/manager/business-day-close-test")
+    public void businessDayCloseOfManagerForTest(@RequestBody VaultCashRequest vaultCashRequest, BusinessDateAndBranchId businessDateAndBranchId)
+    {
+        businessDayManagementFacade.closeByManagerForTest(vaultCashRequest, businessDateAndBranchId);
+    }
+
     @GetMapping("/api/manager/business-day-close")
     public ManagerClosingData getBusinessDayChangeDataOfManager()
     {

@@ -75,86 +75,10 @@
         <button class="basic-btn px-2" id="otp-register-btn" disabled>OTP 발급</button>
     </div>
 
+
     <div>
-        <h3>이체한도 안내</h3>
+    <h3 class="my-2">보안등급별 거래이용수단</h3>
     </div>
-    <h6 class="my-2" style="font-weight: bold">1일 이체한도</h6>
-    <table class="common-table transfer-limit-table">
-        <thead>
-        <tr>
-            <th rowspan="2">구분</th>
-            <th style="text-align: center; border-left: 1px solid var(--little-dark-gray);" colspan="2">보안등급</th>
-            <th style="border-left: 1px solid var(--little-dark-gray);" rowspan="2">1일 이체한도</th>
-        </tr>
-        <tr>
-            <th style="width: 16%; border-left: 1px solid var(--little-dark-gray);">1등급</th>
-            <th style="width: 16%; border-left: 1px solid var(--little-dark-gray);">2등급</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th>개인</th>
-            <td>5억원 이하</td>
-            <td>1천만원</td>
-            <td>
-                <ul>
-                    <li>미지정시 1천만원 이하</li>
-                    <li>추가약정시 5억원 이하 지정 가능</li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <th>기업</th>
-            <td>50억원 이하</td>
-            <td>-</td>
-            <td>
-                <ul>
-                    <li>추가약정시 50억원 이하 지정 가능</li>
-                </ul>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <h6 class="my-2" style="font-weight: bold">1회 이체한도</h6>
-    <table class="common-table transfer-limit-table">
-        <thead>
-        <tr>
-            <th rowspan="2">구분</th>
-            <th style="text-align: center; border-left: 1px solid var(--little-dark-gray);" colspan="2">보안등급</th>
-            <th style="border-left: 1px solid var(--little-dark-gray);" rowspan="2">1회 이체한도</th>
-        </tr>
-        <tr>
-            <th style="width: 16%; border-left: 1px solid var(--little-dark-gray);" >1등급</th>
-            <th style="width: 16%; border-left: 1px solid var(--little-dark-gray);">2등급</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th>개인</th>
-            <td>1억원 이하</td>
-            <td>5백만원</td>
-            <td>
-                <ul>
-                    <li>미지정시 5백만원 이하</li>
-                    <li>추가약정시 1억원 이하 지정 가능</li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <th>기업</th>
-            <td>10억원 이하</td>
-            <td>-</td>
-            <td>
-                <ul>
-                    <li>추가약정시 10억원 이하 지정 가능</li>
-                </ul>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <h6 class="my-2" style="font-weight: bold">보안등급별 거래이용수단</h6>
     <table class="common-table transfer-limit-table">
         <thead>
         <tr>

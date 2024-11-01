@@ -100,10 +100,15 @@ function calculateTerminationRate(openDate, businessDate, period, interestRateSu
     // 최종 이율
     let finalInterestRate;
     // 소수 변환
-    const baseInterestRate = interestRateSum / 100
+    const baseInterestRate = interestRateSum / 100;
+    // 해지 유형 분기처리
+    let isEarlyTermination = false;
 
     // 만기일 이전 해지 (중도 해지)
     if (business < current) {
+        // 중도 해지
+        isEarlyTermination = true;
+
         if (diffDays < 30) {
             finalInterestRate = 0.001; // 연 0.1%
         } else if (diffDays < 90) {
@@ -132,7 +137,7 @@ function calculateTerminationRate(openDate, businessDate, period, interestRateSu
         }
     }
 
-    return finalInterestRate;
+    return {finalInterestRate, isEarlyTermination};
 }
 
 // 경과일수 구하는 함수
@@ -164,7 +169,7 @@ function calculateRateData(openDate, businessDate, period, interestRateSum) {
         contractDays += daysInMonth;
         current = nextMonth;
     }
-    
+
     const elapsedDays6Months = calculateElapsedDays(openDate, 6);  // 6개월 동안의 경과일수
     const elapsedDays9Months = calculateElapsedDays(openDate, 9);  // 9개월 동안의 경과일수
     const elapsedDays11Months = calculateElapsedDays(openDate, 11);  // 11개월 동안의 경과일수
@@ -177,9 +182,9 @@ function calculateRateData(openDate, businessDate, period, interestRateSum) {
         "under-1m": "0.1 %", // 1개월 미만 연 0.1%
         "under-3m": "0.15 %", // 1개월 이상 ~ 3개월 미만 연 0.15%
         "under-6m": "0.2 %", // 3개월 이상 ~ 6개월 미만 연 0.2%
-        "over-6m": `${(Math.max(0.002, 0.7 * (elapsedDays6Months / contractDays) * baseInterestRate)* 100).toFixed(4)} % ~`, // 6개월 이상 ~ 9개월 미만 60% 차등율, 최소 0.2%
-        "between-9-11m": `${(Math.max(0.002, 0.7 * (elapsedDays9Months / contractDays) * baseInterestRate)* 100).toFixed(4)} % ~`, // 9개월 이상 ~ 11개월 미만 70% 차등율, 최소 0.2%
-        "over-11m": `${(Math.max(0.002, 0.9 * (elapsedDays11Months / contractDays) * baseInterestRate)* 100).toFixed(4)} % ~`, // 11개월 이상 90% 차등율, 최소 0.2%
+        "over-6m": `${(Math.max(0.002, 0.7 * (elapsedDays6Months / contractDays) * baseInterestRate) * 100).toFixed(4)} % ~`, // 6개월 이상 ~ 9개월 미만 60% 차등율, 최소 0.2%
+        "between-9-11m": `${(Math.max(0.002, 0.7 * (elapsedDays9Months / contractDays) * baseInterestRate) * 100).toFixed(4)} % ~`, // 9개월 이상 ~ 11개월 미만 70% 차등율, 최소 0.2%
+        "over-11m": `${(Math.max(0.002, 0.9 * (elapsedDays11Months / contractDays) * baseInterestRate) * 100).toFixed(4)} % ~`, // 11개월 이상 90% 차등율, 최소 0.2%
         "maturity": `${interestRateSum}%`,
         "post-maturity-1m": `${(0.5 * baseInterestRate * 100).toFixed(4)} %`, // 만기 후 1개월 이내 기본금리의 1/2
         "post-maturity-1m-plus": `${(0.25 * baseInterestRate * 100).toFixed(4)} %` // 만기 후 1개월 초과 기본금리의 1/4
@@ -187,7 +192,6 @@ function calculateRateData(openDate, businessDate, period, interestRateSum) {
 
     return rateData;
 }
-
 
 
 // 자유적금 해지 프로세스
@@ -205,7 +209,7 @@ function getSavingsFlexibleAccount(data, accountId) {
             const interestSum = data.interestRate + data.preferentialInterestRate;
 
             // 해지 이율 계산
-            const finalInterestRate = calculateTerminationRate(
+            const {finalInterestRate, isEarlyTermination} = calculateTerminationRate(
                 data.openDate,
                 businessDate,
                 data.period,
@@ -240,19 +244,64 @@ function getSavingsFlexibleAccount(data, accountId) {
                 }
             }
 
-            console.log("FINAL INTEREST::" ,finalInterestRate);
+            addInterestList(finalInterestRate, isEarlyTermination, accountId);
+            console.log("FINAL INTEREST::", finalInterestRate);
 
         }
     })
+}
 
-/*    // 만기 시 / 만기 후 해지 시 이자내역 추가
-    $.ajax({
-        url: "/api/employee/interest-details/" + accountId,
-        type: "GET",
-        success: function (data) {
-            console.log("account close flexible", data);
-        }
-    })*/
+function addInterestList(finalInterestRate, isEarlyTermination, accountId) {
+
+    // 중도 해지
+    // if (isEarlyTermination) {
+    //
+    // }
+    // 만기 해지 / 만기 후 해지
+    // else
+        if(true) {
+        // 만기 시 / 만기 후 해지 시 이자내역 추가
+            $.ajax({
+                url: "/api/employee/interest-details/" + accountId,
+                type: "GET",
+                success: function (data) {
+                    console.log("account close flexible", data);
+
+                    // tbody 요소를 찾고 기존 내용을 비웁니다.
+                    let tbody = $('#savings-account-flexible-monthly-interest-list').find('tbody');
+                    tbody.empty();
+
+                    // 데이터가 없을 경우 기본 메시지를 추가
+                    if (data.length === 0) {
+                        tbody.append(`
+                <tr class="saving-account-close-empty-message">
+                    <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 100px">
+                        해지할 계좌를 선택해 주십시오
+                    </td>
+                </tr>
+            `);
+                    } else {
+                        // data 리스트의 각 항목을 tbody에 추가
+                        $.each(data, function(index, item) {
+                            let row = `
+                    <tr>
+                        <td>${item.creationDate.split(" ")[0]}</td>
+                        <td><input type="text" value="${item.balance.toLocaleString()}" disabled/> 원</td>
+                        <td>${item.interestRate} %</td>
+                        <td>${item.preferentialInterestRate} %</td>
+                        <td><input type="text" value="${item.amount.toLocaleString()}" disabled /> 원</td>
+                    </tr>
+                `;
+                            tbody.append(row);
+                        });
+                    }
+                },
+                error: function () {
+                    console.log("데이터를 불러오는 중 오류가 발생했습니다.");
+                }
+            });
+    }
+
 }
 
 

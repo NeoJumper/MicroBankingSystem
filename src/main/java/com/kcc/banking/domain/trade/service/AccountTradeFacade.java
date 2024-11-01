@@ -553,6 +553,7 @@ public class AccountTradeFacade {
      * 3. 거래내역 추가 + 계좌 잔액 변경
      * 4. 상세보기 모달을 위한 거래내역 결과 데이터 반환
      */
+    @Transactional(rollbackFor = {Exception.class})
     public TradeDetail createCashTrade(CashTradeCreate cashTradeCreate){
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
@@ -684,4 +685,38 @@ public class AccountTradeFacade {
         return result;
     }
 
+    /**
+     * @Description
+     * - 스케줄러가 돌았을 때 처리해야하는 작업내역을 해당 메서드로 받아온다
+     * - 성공했을 때는 예약 이체의 상태를 SUCCESS로 변경한다.
+     * - 실패했을 때는 예약 이체의 상태는 FAIL로 변경하고 실패거래를 생성한다.
+     * - 자동이체는 실패했을 때 시도 횟수를 카운팅하여 새로운 예약이체를 생성한다.(여기를 정하가 짜면 돼!)
+     */
+    public void processReserveTransfer(List<TransferTradeCreate> transferTradeCreateList){
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+        CurrentData currentData = commonService.getCurrentData();
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+
+        for(TransferTradeCreate transferTradeCreate : transferTradeCreateList){
+            try{
+                processTransfer(transferTradeCreate); // 이체거래 시도
+                // 성공을 했으니 해당 예약이체의 상태를 SUCCESS로 변경
+            }catch (CustomException e){
+                // 실패했을 때 여기로 들어옴
+                // 실패거래를 만들어준다. 아래 로직을 사용하되 추가로 들어가야할 데이터가 있는지 고민해보기!
+                transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
+                processFailTransfer(transferTradeCreate);
+                // 실패 했으니 해당 예약이체의 상태를 FAIL로 변경 failReason도 변경
+
+                // 자동이체인 경우 retryCount가 원하는 횟수 이하면 새로운 예약이체를 만들어야함
+                // ReserveTransferCreate.build에 필요한 정보 넣고 transferService.createReserveTransfer(...) 실행
+                // 이 때 retryCount += 1, 같은거
+
+            }
+        }
+    }
 }

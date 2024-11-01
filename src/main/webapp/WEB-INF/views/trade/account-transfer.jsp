@@ -107,7 +107,7 @@
                             <label for="scheduled-transfer-btn">예약 이체</label>
                         </div>
                         <div id="reserve-time-select-div" style="overflow: hidden; transition: height 0.5s ease;">
-                            <input type="date" value="1234" style="margin-right: 20px; height: 50px">
+                            <input id="reserve-date-input" type="date" value="1234" style="margin-right: 20px; height: 50px">
                             <div id="time-search-container">
                                 <select id="time-search-btn">
                                     <option value="1">9:30 ~ 10:30</option>
@@ -184,7 +184,9 @@
 
 
     <div class="row justify-content-center mb-5">
+
         <button disabled id="account-transfer-submit" class="col-1 basic-btn">이체하기</button>
+        <button disabled id="account-transfer-reserve" class="col-1 basic-btn" style="display: none;">예약하기</button>
         <button disabled id="otp-authentication-modal-btn" class="col-1 basic-btn" style="display: none;">OTP 인증</button>
     </div>
 </div>

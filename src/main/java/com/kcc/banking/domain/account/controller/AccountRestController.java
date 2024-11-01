@@ -76,6 +76,18 @@ public class AccountRestController {
         return ResponseEntity.ok().body(accountInfo);
     }
 
+    /**
+     * @Description
+     * - 이체한도 변경 시 이용
+     */
+    @PatchMapping("/api/employee/accounts/{accountId}/transfer-limit")
+    public ResponseEntity<Void> partialUpdateAccount(@PathVariable String accountId, @RequestBody AccountUpdate accountUpdate) {
+        accountService.updateByTransferLimitUpdate(accountUpdate);
+
+        return ResponseEntity.ok().body(null);
+    }
+
+
     // 적금 계좌 개설
 //    @Transactional
 //    @PostMapping("/api/employee/savings-account/open")
