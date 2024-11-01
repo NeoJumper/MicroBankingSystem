@@ -15,6 +15,7 @@ import java.util.Date;
 public class AccountOpenResultOfModal {
 
     private String accId;
+    private String accountType;
     private String password;
     private String customerName;
     private String securityLevel;
@@ -40,8 +41,9 @@ public class AccountOpenResultOfModal {
 
 
     @Builder
-    public AccountOpenResultOfModal(String accId, String password, String customerName,String securityLevel, int customerId, String phoneNumber, String productName, String startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal perTradeLimit, BigDecimal dailyLimit, BigDecimal preferentialInterestRate, BigDecimal interestRate, BigDecimal totalInterestRate, BigDecimal transferAmountOfToday) {
+    public AccountOpenResultOfModal(String accId,String accountType, String password, String customerName,String securityLevel, int customerId, String phoneNumber, String productName, String startDate, BigDecimal balance, String branchName, String registrantName, BigDecimal perTradeLimit, BigDecimal dailyLimit, BigDecimal preferentialInterestRate, BigDecimal interestRate, BigDecimal totalInterestRate, BigDecimal transferAmountOfToday) {
         this.accId = accId;
+        this.accountType = accountType;
         this.password = password;
         this.customerName = customerName;
         this.customerId = customerId;
