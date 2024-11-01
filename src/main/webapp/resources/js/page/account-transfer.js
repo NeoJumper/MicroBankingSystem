@@ -272,6 +272,7 @@ function transferReserve() {
     var description = $('#description').val();
     const timeText = $('#time-search-btn option:selected').text();
     const [startTime, endTime] = timeText.split(" ~ ");
+    const transferDate = $('#reserve-date-input').val();
 
     $.ajax({
         url: "/api/employee/reserve-transfer",
@@ -281,7 +282,7 @@ function transferReserve() {
             accId: withdrawalAccountId,
             targetAccId: depositAccountId,
             amount: transferAmount,
-            transferDate: $('#reserve-date-input').val(),
+            transferDate: transferDate,
             transferStartTime: startTime,
             transferEndTime: endTime,
             retryCount: 0,
@@ -294,9 +295,12 @@ function transferReserve() {
             console.log(data);
             swal({
                 title: "이체 등록 완료",
-                text: "이체 예약에 성공했습니다.",
+                text: `${transferDate}일 ${startTime} ~ ${endTime} 사이에 예약하신 이체가 실행됩니다.`,
                 icon: "success",
-            })
+            }).then(() => {
+                // swal 경고창이 닫힌 후에 리다이렉트
+                window.location.href = '/page/employee/account-transfer';
+            });
             // 이체 성공 후 모달에 데이터를 채움
             showTransferResultModal(data);
 
@@ -560,13 +564,22 @@ function handleTransferLimitTooltip() {
 }
 
 function handleOtpBtn() {
+    let selectedBtn;
+    if ($('#scheduled-transfer-btn').is(':checked')) {
+        selectedBtn = $('#account-transfer-reserve');
+    } else {
+        selectedBtn = $('#account-transfer-submit').show();
+    }
+
+
     console.log(securityLevel);
     if(securityLevel === '1등급'){
-        $('#account-transfer-submit').hide();
+
+        selectedBtn.hide();
         $('#otp-authentication-modal-btn').show();
     }
     else{
-        $('#account-transfer-submit').show();
+        selectedBtn.show();
         $('#otp-authentication-modal-btn').hide();
     }
 }
