@@ -2,8 +2,8 @@ var securityLevel = '';
 var customerId = null;
 var otpInputModal;
 var accountType = "";
-var perTradeLimit = 5000000;
-var dailyLimit = 10000000;
+var perTradeLimit = 0;
+var dailyLimit = 0;
 
 $(document).ready(function () {
 
@@ -25,6 +25,8 @@ $(document).ready(function () {
     clickOtpAuthenticationModalBtn() // OTP 인증 모달 띄우는 버튼 클릭
 
     clickOtpAuthenticationBtn() // OTP 인증 버튼 클릭
+
+    clickAccountUpdateBtn()
 
 });
 
@@ -73,6 +75,8 @@ function selectAccount() {
                 $('#per-trade-limit-input').val(comma(data.perTradeLimit));
                 $('#daily-limit-input').val(comma(data.dailyLimit));
 
+                perTradeLimit = data.perTradeLimit;
+                dailyLimit = data.dailyLimit;
 
             }
             // 모달 닫기
@@ -128,43 +132,44 @@ function validateAccountPassword() {
 
 }
 
+function clickAccountUpdateBtn(){
+
+    $('#account-update-btn').click(function() {
+        updateAccount();
+
+    });
+}
 
 // 이체하기 버튼 클릭 시
-function transferSubmit() {
-    var withdrawalAccountId = $('#withdrawal-account-number').text();
-    var depositAccountId = $('#deposit-account-number').val();
-    var transferAmount = parseInt(convertNumber($('#transfer-amount').val()));
-    var description = $('#description').val();
-    var accountPassword = $('#transfer-account-password').val();
+function updateAccount() {
+    var accountId = $('#account-number-input').val();
 
     $.ajax({
-        url: "/api/employee/account-transfer",
+        url: "/api/employee/accounts/" + accountId + "/transfer-limit",
         contentType: "application/json",
-        type: "POST",
+        type: "PATCH",
         data: JSON.stringify({
-            accId: withdrawalAccountId,
-            targetAccId: depositAccountId,
-            transferAmount: transferAmount,
-            description: description,
-            accountPassword: accountPassword
+            targetAccId: accountId,
+            perTradeLimit : perTradeLimit,
+            dailyLimit : dailyLimit
         }),
 
         success: function (data) {
             console.log(data);
             swal({
-                title: "이체 완료",
-                text: "계좌 이체 성공",
+                title: "이체 한도 변경 성공",
+                text: "이체 한도 변경 작업이 성공적으로 처리되었습니다.",
                 icon: "success",
-            })
-            // 이체 성공 후 모달에 데이터를 채움
-            showTransferResultModal(data);
+            }).then(() => {
+                // swal의 닫기 버튼이 클릭된 후 실행
+                window.location.href = '/page/employee/transfer-limit-update';
+            });
 
         },
         error: function (error) {
             // 예외 처리 알림
-
             swal({
-                title: "계좌 이체 실패",
+                title: "이체 한도 변경 실패",
                 text: error.responseText,
                 icon: "error",
                 buttons: {

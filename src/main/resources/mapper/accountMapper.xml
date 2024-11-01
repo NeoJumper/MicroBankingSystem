@@ -310,7 +310,15 @@
     <update id="partialUpdateAccount" parameterType="AccountUpdate">
         UPDATE Account
         SET
-        balance = #{balance},
+        <if test="balance != null and !balance.equals('')">
+            balance =  = #{balance},
+        </if>
+        <if test="perTradeLimit != null and !perTradeLimit.equals('')">
+            per_trade_limit =  #{perTradeLimit},
+        </if>
+        <if test="dailyLimit != null and !dailyLimit.equals('')">
+            daily_limit =  #{dailyLimit},
+        </if>
         <if test="status != null and !status.equals('')">
             status =  #{status},
         </if>
