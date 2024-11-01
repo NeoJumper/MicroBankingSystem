@@ -53,7 +53,7 @@
         <tr>
             <th>1회 이체한도</th>
             <td>
-                <div><span id="over-per-trade-limit"></span></div>
+                <div><span id="over-per-trade-limit-amount"></span></div>
                 <input type="text" id="per-trade-limit-input" value="0" style="text-align: right;" class="balance-input">&nbsp원<span class="max-amount-span" style="color: #5F5F5F"></span>
 
             </td>
@@ -61,7 +61,7 @@
 
             <th>1일 이체한도</th>
             <td>
-                <div><span id="over-daily-limit"></span></div>
+                <div><span id="over-daily-limit-amount"></span></div>
                 <input type="text" id="daily-limit-input" value="0" style="text-align: right;" class="balance-input">&nbsp원<span class="max-amount-span" style="text-align: right; color: #5F5F5F"></span>
             </td>
         </tr>
@@ -156,6 +156,7 @@
 
 
 </div>
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
 <%@ include file="/resources/components/modal/otp-input-modal.jsp" %>
 <script src="/resources/js/page/transfer-limit-update.js"></script>

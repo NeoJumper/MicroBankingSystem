@@ -2,6 +2,8 @@ var securityLevel = '';
 var customerId = null;
 var otpInputModal;
 var accountType = "";
+var perTradeLimit = 5000000;
+var dailyLimit = 10000000;
 
 $(document).ready(function () {
 
@@ -11,7 +13,8 @@ $(document).ready(function () {
 
     clickAccountSelectBtn(); // 계좌 선택 버튼
 
-    handleAmount(); // 입력 시 숫자 제외한 문자 모두 제거, 계좌 잔액 초과하는 입력 제거, 0 이상은 입력못함(00000 등)
+    handleDailyLimitInput() // 입력 시 숫자 제외한 문자 모두 제거, 계좌 잔액 초과하는 입력 제거, 0 이상은 입력못함(00000 등)
+    handlePerTradeLimitInput();
 
     removeErrorMessage();    // 입력 필드를 벗어났을 때 경고 메시지를 제거
 
@@ -262,25 +265,43 @@ function clickAccountSelectBtn() {
     });
 }
 
-function handleAmount() {
-    $(document).on('input', '#transfer-amount', function () {
+function handleDailyLimitInput() {
+    $(document).on('input', '#daily-limit-input', function () {
         $(this).val(comma(convertNumber($(this).val())));
 
         var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
-        var transferableAmount = parseFloat(convertNumber($('#transferable-amount').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
 
-        if (inputAmount > transferableAmount) {
-            $('#over-account-balance').text("이체 가능 금액을 초과했습니다.");
-            $(this).val(comma(transferableAmount));  // 입력된 값을 계좌 잔액으로 제한
+        if (inputAmount > dailyLimit) {
+            $('#over-daily-limit-amount').text("최대 이체 한도 내 금액을 입력해주세요.");
+            $(this).val(comma(dailyLimit));  // 입력된 값을 계좌 잔액으로 제한
         } else {
-            $('#over-account-balance').text("");  // 경고 메시지 제거
+            $('#over-daily-limit-amount').text("");  // 경고 메시지 제거
+        }
+    });
+}
+function handlePerTradeLimitInput() {
+    $(document).on('input', '#per-trade-limit-input', function () {
+        $(this).val(comma(convertNumber($(this).val())));
+
+        var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+
+
+        if (inputAmount > perTradeLimit) {
+            $('#over-per-trade-limit-amount').text("최대 이체 한도 내 금액을 입력해주세요.");
+            $(this).val(comma(perTradeLimit));  // 입력된 값을 계좌 잔액으로 제한
+        } else {
+            $('#over-per-trade-limit-amount').text("");  // 경고 메시지 제거
         }
     });
 }
 
 function removeErrorMessage() {
-    $(document).on('blur', '#transfer-amount', function () {
-        $('#over-account-balance').text("");
+    $(document).on('blur', '#daily-limit-input', function () {
+        $('#over-daily-limit-amount').text("");
+    });
+
+    $(document).on('blur', '#per-trade-limit-input', function () {
+        $('#over-per-trade-limit-amount').text("");
     });
 }
 
