@@ -313,7 +313,7 @@
         UPDATE Account
         SET
         <if test="balance != null and !balance.equals('')">
-            balance =  = #{balance},
+            balance = #{balance},
         </if>
         <if test="perTradeLimit != null and !perTradeLimit.equals('')">
             per_trade_limit =  #{perTradeLimit},
