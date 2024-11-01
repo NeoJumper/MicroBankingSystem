@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.reserve_transfer.mapper.ReserveTransferMapper">
+
+
+
+    <insert id="createReserveTransfer" parameterType="ReserveTransferCreate">
+
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+        SELECT reserve_transfer_seq.nextval FROM dual
+        </selectKey>
+
+        INSERT INTO Reserve_transfer (
+            id,
+            acc_id,
+            target_acc_id,
+            bulk_transfer_id,
+            amount,
+            transfer_date,
+            transfer_start_time,
+            transfer_end_time,
+            retry_count,
+            transfer_type,
+            description,
+            status,
+            failure_reason,
+            registrant_id,
+            branch_id,
+            registration_date,
+            version
+
+        ) VALUES (
+            #{id},
+            #{accId},
+            #{targetAccId},
+            #{bulkTransferId},
+            #{amount},
+            #{transferDate},
+            #{transferStartTime},
+            #{transferEndTime},
+            #{retryCount},
+            #{transferType},
+            #{description},
+            #{status},
+            #{failureReason},
+            #{registrantId},
+            #{branchId},
+            SYSTIMESTAMP,
+            1
+        )
+    </insert>
+
+</mapper>
