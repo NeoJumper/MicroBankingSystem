@@ -29,6 +29,7 @@ public class CloseSavingsAccountTotal {
     // 상품기간
     private String productPeriod;
     // 적금 가입 날짜
+    // - ! openDate로 변경
     private String startDate;
 
     // 총 이자액
