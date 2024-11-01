@@ -53,9 +53,9 @@ public class InterestService {
         // 이자 생성
         interestCreateList.forEach(interestMapper::createInterest);
         // 4. 매월 1일인지 영업일 확인
-        LocalDate date = LocalDate.parse(businessDateAndBranchId.getBusinessDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDate date = LocalDate.parse(businessDateAndBranchId.getBusinessDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         // 매월 1일이라면
-//        if (date.getDayOfMonth() == 1) {
+        if (date.getDayOfMonth() == 1) {
         // 복리 계산을 위한 이자내역 합산 가져오기
         // 복리 계좌의 이자만 합산
 
@@ -84,7 +84,7 @@ public class InterestService {
 
         // 생성한 자유적금 월별 이자 내역 INSERT
         interestSavingCreateList.forEach(interestMapper::createInterestSaving);
-//        }
+        }
     }
 
 

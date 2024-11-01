@@ -12,6 +12,7 @@ drop sequence customer_seq;
 drop sequence account_seq;
 drop sequence auto_transfer_seq;
 drop sequence bulk_transfer_seq;
+drop sequence cash_exchange_seq;
 
 -- 테이블 삭제
 DROP TABLE BRANCH_CLOSING CASCADE CONSTRAINTS PURGE;
@@ -26,6 +27,7 @@ DROP TABLE CUSTOMER CASCADE CONSTRAINTS PURGE;
 DROP TABLE ACCOUNT CASCADE CONSTRAINTS PURGE;
 DROP TABLE AUTO_TRANSFER CASCADE CONSTRAINTS PURGE;
 DROP TABLE BULK_TRANSFER CASCADE CONSTRAINTS PURGE;
+DROP TABLE Cash_exchange CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Employee (
                           id NUMBER NOT NULL,
@@ -38,7 +40,6 @@ CREATE TABLE Employee (
                           phone_number VARCHAR(13) NULL,
                           roles VARCHAR(20) NULL,
                           registration_date TIMESTAMP NULL,
-                          registrant VARCHAR(100) NULL,
                           modification_date TIMESTAMP NULL,
                           modifier_id NUMBER NULL,
                           version NUMBER NULL
@@ -67,20 +68,20 @@ CREATE TABLE Trade (
 );
 
 CREATE TABLE Bulk_transfer (
-                       id NUMBER NOT NULL,
-                       acc_id VARCHAR(20) NOT NULL,
-                       branch_id NUMBER NOT NULL,
-                       trade_date TIMESTAMP NULL,
-                       amount NUMBER NULL,
-                       status VARCHAR(10) NULL,
-                       description VARCHAR(1000) NULL,
-                       success_cnt NUMBER NOT NULL ,
-                       failure_cnt NUMBER NOT NULL ,
-                       registrant_id NUMBER NOT NULL,
-                       registration_date TIMESTAMP NULL,
-                       modification_date TIMESTAMP NULL,
-                       modifier_id NUMBER NULL,
-                       version NUMBER NULL
+                               id NUMBER NOT NULL,
+                               acc_id VARCHAR(20) NOT NULL,
+                               branch_id NUMBER NOT NULL,
+                               trade_date TIMESTAMP NULL,
+                               amount NUMBER NULL,
+                               status VARCHAR(10) NULL,
+                               description VARCHAR(1000) NULL,
+                               success_cnt NUMBER NOT NULL ,
+                               failure_cnt NUMBER NOT NULL ,
+                               registrant_id NUMBER NOT NULL,
+                               registration_date TIMESTAMP NULL,
+                               modification_date TIMESTAMP NULL,
+                               modifier_id NUMBER NULL,
+                               version NUMBER NULL
 );
 
 
@@ -95,8 +96,10 @@ CREATE TABLE Customer (
                           gender VARCHAR(10) NULL,
                           identification_code VARCHAR(15) NULL,
                           address VARCHAR(2000) NULL,
+                          detail_address VARCHAR(2000) NULL,
                           birth_date TIMESTAMP NULL,
                           security_level VARCHAR(10) NULL,
+                          otp_key VARCHAR(20) NULL,
                           registration_date TIMESTAMP NULL,
                           registrant VARCHAR(100) NULL,
                           modification_date TIMESTAMP NULL,
@@ -105,20 +108,22 @@ CREATE TABLE Customer (
 );
 
 CREATE TABLE Auto_transfer (
-                         id NUMBER NOT NULL,
-                         acc_id  VARCHAR(20) NOT NULL,
-                         target_acc_id  VARCHAR(20) NOT NULL,
-                         amount NUMBER NOT NULL,
-                         auto_transfer_start_date TIMESTAMP NULL,
-                         auto_transfer_date TIMESTAMP NULL,
-                         auto_transfer_end_date TIMESTAMP NULL,
-                         auto_transfer_period NUMBER NULL,
-                         create_date TIMESTAMP NULL,
-                         registration_date TIMESTAMP NULL,
-                         registrant_id NUMBER NULL,
-                         modification_date TIMESTAMP NULL,
-                         modifier_id NUMBER NULL,
-                         version NUMBER NULL
+                               id NUMBER NOT NULL,
+    -- 출금할 계좌
+                               acc_id  VARCHAR(20) NOT NULL,
+    -- 입금할 계좌
+                               target_acc_id  VARCHAR(20) NOT NULL,
+                               amount NUMBER NOT NULL,
+                               auto_transfer_start_date TIMESTAMP NULL,
+                               auto_transfer_date TIMESTAMP NULL,
+                               auto_transfer_end_date TIMESTAMP NULL,
+                               auto_transfer_period NUMBER NULL,
+                               create_date TIMESTAMP NULL,
+                               registration_date TIMESTAMP NULL,
+                               registrant_id NUMBER NULL,
+                               modification_date TIMESTAMP NULL,
+                               modifier_id NUMBER NULL,
+                               version NUMBER NULL
 );
 
 CREATE TABLE Account (
@@ -128,16 +133,17 @@ CREATE TABLE Account (
                          customer_id NUMBER NOT NULL,
                          product_id NUMBER NOT NULL,
                          start_date TIMESTAMP NULL,
+                         open_date TIMESTAMP NULL,
+                         expected_expire_date TIMESTAMP NULL,
                          preferential_interest_rate NUMBER NULL,
                          expire_date TIMESTAMP NULL,
                          password VARCHAR(1000) NULL,
                          balance DECIMAL NULL,
-                         open_date TIMESTAMP NULL,
                          per_trade_limit DECIMAL NULL,
                          daily_limit DECIMAL NULL,
                          account_type VARCHAR(20) NULL,
                          status VARCHAR(6) NULL,
-                         trade_number VARCHAR(100) NULL,
+                         trade_number NUMBER NULL,
                          registration_date TIMESTAMP NULL,
                          modification_date TIMESTAMP NULL,
                          modifier_id NUMBER NULL,
@@ -152,10 +158,12 @@ CREATE TABLE Interest (
                           branch_id NUMBER NOT NULL,
                           payment_date TIMESTAMP NULL,
                           creation_date TIMESTAMP NULL,
-                          amount DECIMAL NULL,
+                          amount DECIMAL(15,4) NULL,
+                          balance DECIMAL NULL,
                           interest_rate NUMBER NULL,
+                          preferential_interest_rate NUMBER NULL,
                           payment_status VARCHAR(1) NULL,
-                          trade_number VARCHAR(20) NULL,
+                          trade_number NUMBER NULL,
                           registration_date TIMESTAMP NULL,
                           modifier_date TIMESTAMP NULL,
                           modifier_id NUMBER NULL,
@@ -198,7 +206,9 @@ CREATE TABLE Product (
                          registration_date TIMESTAMP NULL,
                          modification_date TIMESTAMP NULL,
                          modifier_id NUMBER NULL,
-                         version NUMBER NULL
+                         version NUMBER NULL,
+                         product_type VARCHAR(10) NULL,
+                         interest_calculation_method VARCHAR(20) NULL
 );
 
 CREATE TABLE Branch_closing (
@@ -208,7 +218,7 @@ CREATE TABLE Branch_closing (
                                 status VARCHAR(6) NULL,
                                 prev_cash_balance DECIMAL NULL,
                                 vault_cash DECIMAL NULL,
-                                trade_number VARCHAR(20) NULL,
+                                trade_number NUMBER NULL,
                                 registration_date TIMESTAMP NULL,
                                 modification_date TIMESTAMP NULL,
                                 modifier_id NUMBER NULL,
@@ -224,12 +234,30 @@ CREATE TABLE Employee_closing (
                                   total_deposit DECIMAL NULL,
                                   total_withdrawal DECIMAL NULL,
                                   vault_cash DECIMAL NULL,
-                                  trade_number VARCHAR(20) NULL,
+                                  trade_number NUMBER NULL,
                                   registration_date TIMESTAMP NULL,
                                   modification_date TIMESTAMP NULL,
                                   modifier_id NUMBER NULL,
                                   version NUMBER NULL
 );
+
+
+CREATE TABLE Cash_exchange (
+                               id NUMBER NOT NULL,
+                               registrant_id NUMBER NOT NULL,
+                               emp_id NUMBER NOT NULL,
+                               branch_id NUMBER NOT NULL,
+                               amount DECIMAL NOT NULL,
+                               emp_cash_balance DECIMAL,
+                               manager_cash_balance DECIMAL,
+                               exchange_type VARCHAR(10) NOT NULL,
+                               exchange_date TIMESTAMP NULL,
+                               registration_date TIMESTAMP NULL,
+                               modification_date TIMESTAMP NULL,
+                               modifier_id NUMBER NULL,
+                               version NUMBER NULL
+);
+
 
 -- Primary Keys
 ALTER TABLE Employee ADD CONSTRAINT PK_EMPLOYEE PRIMARY KEY (id);
@@ -242,6 +270,7 @@ ALTER TABLE Branch ADD CONSTRAINT PK_BRANCH PRIMARY KEY (id);
 ALTER TABLE Product ADD CONSTRAINT PK_PRODUCT PRIMARY KEY (id);
 ALTER TABLE Branch_closing ADD CONSTRAINT PK_BRANCH_CLOSING PRIMARY KEY (closing_date, registrant_id);
 ALTER TABLE Employee_closing ADD CONSTRAINT PK_EMPLOYEE_CLOSING PRIMARY KEY (closing_date, registrant_id);
+ALTER TABLE Cash_exchange ADD CONSTRAINT PK_CASH_EXCHANGE PRIMARY KEY (id);
 
 -- Foreign Keys
 -- 1. Employee
@@ -411,6 +440,19 @@ ALTER TABLE Auto_transfer
     ADD CONSTRAINT FK_AUTO_TRANSFER_REG_ID
         FOREIGN KEY (registrant_id) REFERENCES EMPLOYEE(id);
 
+-- cash_exchange 테이블 fk 생성
+ALTER TABLE Cash_exchange
+    ADD CONSTRAINT FK_CE_REG_ID
+        FOREIGN KEY (registrant_id) REFERENCES Employee(id);
+
+ALTER TABLE Cash_exchange
+    ADD CONSTRAINT FK_CE_EMP_ID
+        FOREIGN KEY (emp_id) REFERENCES Employee(id);
+
+ALTER TABLE Cash_exchange
+    ADD CONSTRAINT FK_CE_BRANCH_ID
+        FOREIGN KEY (branch_id) REFERENCES Branch(id);
+
 -- 시퀀스 생성
 create sequence branch_cls_seq;
 create sequence emp_cls_seq;
@@ -425,3 +467,4 @@ create sequence customer_seq;
 create sequence account_seq;
 create sequence auto_transfer_seq;
 create sequence bulk_transfer_seq;
+create sequence cash_exchange_seq;
