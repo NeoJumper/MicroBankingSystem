@@ -529,6 +529,7 @@ public class AccountTradeFacade {
      * 3. 거래내역 추가 + 계좌 잔액 변경
      * 4. 상세보기 모달을 위한 거래내역 결과 데이터 반환
      */
+    @Transactional(rollbackFor = {Exception.class})
     public TradeDetail createCashTrade(CashTradeCreate cashTradeCreate){
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
