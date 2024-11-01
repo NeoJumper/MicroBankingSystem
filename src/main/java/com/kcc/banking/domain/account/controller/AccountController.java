@@ -53,4 +53,9 @@ public class AccountController {
         return "account/savings-account-close";
     }
 
+    @GetMapping("/page/employee/transfer-limit-update")
+    public String getTransferLimitUpdatePage() {
+        return "account/transfer-limit-update";
+    }
+
 }

@@ -12,7 +12,8 @@ headerMap.set("header-account-management", {
         "bulk-transfer",
         "savings-account-open",
         "savings-account-close",
-        "reserve-list"
+        "reserve-list",
+        "transfer-limit-update"
     ],
     sub: {
         "bulk-transfer" : ["bulk-transfer-result"],
@@ -125,6 +126,7 @@ function createAccountManagementSidebar(selectedSidebarMenu) {
             submenu: [
                 { name: '계좌 개설', url: '/page/employee/account-open' },
                 { name: '계좌 해지', url: '/page/employee/account-close' },
+                { name: '이체한도 조회/변경', url : '/page/employee/transfer-limit-update'}
             ]
         },
         {
