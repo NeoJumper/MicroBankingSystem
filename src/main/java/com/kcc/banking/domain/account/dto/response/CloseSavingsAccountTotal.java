@@ -31,6 +31,7 @@ public class CloseSavingsAccountTotal {
     // 적금 가입 날짜
     // - ! openDate로 변경
     private String startDate;
+    private String openDate;
 
     // 총 이자액
     private BigDecimal amountSum;
