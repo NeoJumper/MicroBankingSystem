@@ -3,6 +3,8 @@ var customerId = null;
 var otpInputModal;
 var accountType = "";
 
+
+
 $(document).ready(function () {
 
     isClosed();
@@ -25,7 +27,9 @@ $(document).ready(function () {
 
     clickTransferBtn();    // 이체하기 버튼 클릭 시
 
-    clickValidatePasswordBtn();
+    clickTransferReserveBtn();    // 이체하기 버튼 클릭 시
+
+    clickValidatePasswordBtn(); // 비밀번호 검증 버튼 클릭 시
 
     handleOtpInput(); // OTP 입력란 자동 이동
 
@@ -188,6 +192,7 @@ function validateAccountPassword() {
                 icon: "success",
             })
 
+            $('#account-transfer-reserve').prop('disabled', false);
             $('#account-transfer-submit').prop('disabled', false);
             $('#otp-authentication-modal-btn').prop('disabled', false);
 
@@ -258,6 +263,63 @@ function transferSubmit() {
     });
 
 }
+
+// 예약하기 버튼 클릭 시
+function transferReserve() {
+    var withdrawalAccountId = $('#withdrawal-account-number').text();
+    var depositAccountId = $('#deposit-account-number').val();
+    var transferAmount = parseInt(convertNumber($('#transfer-amount').val()));
+    var description = $('#description').val();
+    const timeText = $('#time-search-btn option:selected').text();
+    const [startTime, endTime] = timeText.split(" ~ ");
+
+    $.ajax({
+        url: "/api/employee/reserve-transfer",
+        contentType: "application/json",
+        type: "POST",
+        data: JSON.stringify({
+            accId: withdrawalAccountId,
+            targetAccId: depositAccountId,
+            amount: transferAmount,
+            transferDate: $('#reserve-date-input').val(),
+            transferStartTime: startTime,
+            transferEndTime: endTime,
+            retryCount: 0,
+            transferType: 'NORMAL',
+            description: description,
+            status: 'WAIT'
+        }),
+
+        success: function (data) {
+            console.log(data);
+            swal({
+                title: "이체 등록 완료",
+                text: "이체 예약에 성공했습니다.",
+                icon: "success",
+            })
+            // 이체 성공 후 모달에 데이터를 채움
+            showTransferResultModal(data);
+
+        },
+        error: function (error) {
+            // 예외 처리 알림
+
+            swal({
+                title: "계좌 이체 실패",
+                text: error.responseText,
+                icon: "error",
+                buttons: {
+                    cancel: true,
+                    confirm: false,
+                },
+            });
+
+            console.log("Transfer failed", error);
+        }
+    });
+
+}
+
 
 // 인증하기 버튼 클릭
 function clickOtpAuthenticationBtn() {
@@ -350,11 +412,17 @@ function clickReserveTransferBtn() {
             $('#reserve-time-select-div').css({
                 height: $('#reserve-time-select-div')[0].scrollHeight + 'px'
             });
+
+            $('#account-transfer-submit').hide();
+            $('#account-transfer-reserve').show();
+
         } else {
             // 즉시 이체가 체크됐을 때 height를 0으로 변경하여 숨김
             $('#reserve-time-select-div').css({
                 height: 0
             });
+            $('#account-transfer-submit').show();
+            $('#account-transfer-reserve').hide();
         }
     });
 }
@@ -429,6 +497,12 @@ function clickTransferBtn() {
             transferSubmit();
     })
 
+}
+
+function clickTransferReserveBtn() {
+    $('#account-transfer-reserve').click( function (){
+        transferReserve();
+    })
 }
 
 function clickValidatePasswordBtn() {

@@ -1,5 +1,7 @@
 package com.kcc.banking.domain.reserve_transfer.service;
 
+import com.kcc.banking.domain.common.dto.request.CurrentData;
+import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.reserve_transfer.dto.request.ReserveTransferCreate;
 import com.kcc.banking.domain.reserve_transfer.mapper.ReserveTransferMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class ReserveTransferService {
 
     private final ReserveTransferMapper reserveTransferMapper;
+    private final CommonService commonService;
 
     /**
      * @Description
@@ -18,6 +21,11 @@ public class ReserveTransferService {
      *
      */
     public void createReserveTransfer(ReserveTransferCreate reserveTransferCreate){
+        CurrentData currentData = commonService.getCurrentData();
+
+        reserveTransferCreate.setRegistrantId(currentData.getEmployeeId());
+        reserveTransferCreate.setBranchId(currentData.getBranchId());
+
         reserveTransferMapper.createReserveTransfer(reserveTransferCreate);
     }
 }

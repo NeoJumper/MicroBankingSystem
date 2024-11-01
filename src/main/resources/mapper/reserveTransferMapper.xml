@@ -16,7 +16,9 @@
             id,
             acc_id,
             target_acc_id,
-            bulk_transfer_id,
+            <if test="bulkTransferId != null and !bulkTransferId.equals('')">
+                bulk_transfer_id,
+            </if>
             amount,
             transfer_date,
             transfer_start_time,
@@ -25,7 +27,9 @@
             transfer_type,
             description,
             status,
-            failure_reason,
+            <if test="failureReason != null and !failureReason.equals('')">
+                failure_reason,
+            </if>
             registrant_id,
             branch_id,
             registration_date,
@@ -35,7 +39,9 @@
             #{id},
             #{accId},
             #{targetAccId},
-            #{bulkTransferId},
+            <if test="bulkTransferId != null and !bulkTransferId.equals('')">
+                #{bulkTransferId},
+            </if>
             #{amount},
             #{transferDate},
             #{transferStartTime},
@@ -44,7 +50,9 @@
             #{transferType},
             #{description},
             #{status},
-            #{failureReason},
+            <if test="failureReason != null and !failureReason.equals('')">
+                #{failureReason},
+            </if>
             #{registrantId},
             #{branchId},
             SYSTIMESTAMP,
