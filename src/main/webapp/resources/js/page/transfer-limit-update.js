@@ -61,7 +61,6 @@ function selectAccount() {
         success: function (data) {
             if (accountType === "withdrawal") {
 
-                let transferAmountOfToday = data.transferAmountOfToday || 0;
                 securityLevel = data.securityLevel;
                 customerId = data.customerId;
                 // 출금계좌 처리
@@ -75,6 +74,7 @@ function selectAccount() {
             }
             // 모달 닫기
             $('#search-modal-account').modal('hide');
+            console.log("OTP 레벨 : " + securityLevel);
             handleOtpBtn(); // OTP or 이체하기 버튼 활성화
         },
         error: function (error) {
@@ -86,8 +86,8 @@ function selectAccount() {
 
 // 비밀번호 검증 클릭 시
 function validateAccountPassword() {
-    var accountNumber = $('#withdrawal-account-number').text();
-    var accountPassword = $('#transfer-account-password').val();
+    var accountNumber = $('#account-number-input').val();
+    var accountPassword = $('#account-password').val();
 
 
     $.ajax( {
@@ -105,7 +105,7 @@ function validateAccountPassword() {
                 icon: "success",
             })
 
-            $('#account-transfer-submit').prop('disabled', false);
+            $('#account-update-btn').prop('disabled', false);
             $('#otp-authentication-modal-btn').prop('disabled', false);
 
         }, error: function (error){
@@ -198,7 +198,7 @@ function clickOtpAuthenticationBtn() {
             success: function() {
 
                 otpInputModal.hide();
-                $('#account-transfer-submit').show();
+                $('#account-update-btn').show();
                 $('#otp-authentication-modal-btn').hide();
 
 
@@ -329,11 +329,11 @@ function showOtpInputModal() {
 function handleOtpBtn() {
     console.log(securityLevel);
     if(securityLevel === '1등급'){
-        $('#account-transfer-submit').hide();
+        $('#account-update-btn').hide();
         $('#otp-authentication-modal-btn').show();
     }
     else{
-        $('#account-transfer-submit').show();
+        $('#account-update-btn').show();
         $('#otp-authentication-modal-btn').hide();
     }
 }

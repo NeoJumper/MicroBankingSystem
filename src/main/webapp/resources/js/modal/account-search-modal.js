@@ -12,6 +12,10 @@ $(document).ready(function() {
                     status = 'OPN';
                     period = '00';
                     break;
+                case 'transfer-limit-update':
+                    status = 'OPN';
+                    period = '00';
+                    break;
                 case 'cash-trade':
                     period = '';
                     status = 'OPN';
@@ -52,6 +56,10 @@ $(document).ready(function() {
         console.log(currentUrl,"currentUrl=======!!!!")
         switch (currentUrl) {
             case 'account-close':
+                status = 'OPN';
+                period = '00';
+                break;
+            case 'transfer-limit-update':
                 status = 'OPN';
                 period = '00';
                 break;

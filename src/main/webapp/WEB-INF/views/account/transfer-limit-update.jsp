@@ -74,9 +74,9 @@
     <table class="common-table account-transfer-page-table">
         <tbody>
             <tr>
-                <th><label for="transfer-account-password">출금계좌 비밀번호</label></th>
+                <th><label for="account-password">계좌 비밀번호</label></th>
                 <td>
-                    <input id="transfer-account-password" type="password">
+                    <input id="account-password" style="text-align: right" type="password">
                     <button class="basic-btn" id="account-transfer-validate">비밀번호 인증</button>
                 </td>
 
@@ -85,7 +85,8 @@
     </table>
 
     <div  style="text-align:center;">
-        <button class="basic-btn" id="account-create-btn">한도 변경</button>
+        <button class="basic-btn col-1" id="account-update-btn" disabled>변경하기</button>
+        <button id="otp-authentication-modal-btn" class="col-1 basic-btn" style="display: none;" disabled >OTP 인증</button>
     </div>
 
 
@@ -156,6 +157,7 @@
 
 </div>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
+<%@ include file="/resources/components/modal/otp-input-modal.jsp" %>
 <script src="/resources/js/page/transfer-limit-update.js"></script>
 <script src="/resources/js/footer.js"></script>
 
