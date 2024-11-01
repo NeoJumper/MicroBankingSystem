@@ -11,6 +11,12 @@ public class ReserveTransferService {
 
     private final ReserveTransferMapper reserveTransferMapper;
 
+    /**
+     * @Description
+     * - 즉시이체, 대량이체 시 예약이체 등록 시 사용
+     * - 금일 자동이체 등록 시 사용
+     *
+     */
     public void createReserveTransfer(ReserveTransferCreate reserveTransferCreate){
         reserveTransferMapper.createReserveTransfer(reserveTransferCreate);
     }
