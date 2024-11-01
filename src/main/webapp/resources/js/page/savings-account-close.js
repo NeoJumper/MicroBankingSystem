@@ -51,7 +51,7 @@ function selectSavingsAccount() {
             // 2-1. 정기적금일 경우
             if (data[0].productType == "FIXED") {
                 // 3. 선택 계좌 세부 정보
-                getSavingsAccount(data);
+                getSavingsAccount(data, accountId);
                 // 적금 세부정보 표시
                 $('.common-account-detail').show();
                 $('.fixed-account-area').show();
@@ -256,87 +256,54 @@ function getSavingsFlexibleAccount(data, accountId) {
 
 
 // 정기적금 해지 프로세스
-function getSavingsAccount(data) {
+function getSavingsAccount(data, accountId) {
 
-    var accountId = data[0].accId;
-
-    if (!accountId) {
-        swal({
-            title: "계좌를 선택해 주세요.",
-            icon: "warning",
-        });
-        return;
-    }
     // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
     $.ajax({
         url: "/api/employee/savings-account-close-total-info/" + accountId,
         type: "GET",
         success: function (data) {
             console.log("======!!!", data);
-            console.log(data.productType);
 
-            $('#product-type').val(data.productType);
+            // 적용 이율(이율 합) = 우대 이율 + 기본 이율 ex) 0.1+3.5 = 3.6
+            const interestSum = data.accountInterestRate + data.productInterestRate;
 
-            let period = data.productPeriod;
-            let productRate = data.productInterestRate;
-            let accountRate = data.accountInterestRate;
-            console.log("accountRate" + accountRate + "productRate" + productRate);
-            let startDate = data.startDate;
-
-            const result = calculateSavingsMonths("2024-08-01", startDate);
-            console.log(`총 일수: ${result.totalDays}, 적금 넣은 개월 수: ${result.monthsSaved}`);
-
-            let savingsDays = result.totalDays;
-
-            // 적금 만기일 구하기
-            calculateEndDate(startDate, period);
-            console.log("시작일" + startDate);
-
-            console.log("만기일" + calculateEndDate(startDate, period));
-
-            // 적금 계약일수 구하기
-            let productTotalDays = calculateContractDays(startDate, period).contractDays;
-
-            // 적금 이율 구하기
-            calculateRate(accountRate, productRate, savingsDays, productTotalDays);
-
-            // 경과일 대비 이율 계산
-            const rates = calculateRate(productRate, savingsDays, productTotalDays);
-
-            // 조건별 이율 계산 결과 입력
-            calculationResultInterest(rates);
-            $('#savings-account-close-info').empty();
-            $('#savings-account-total-cash').empty();
-
-            $('#savings-account-close-info').append(
-                '<tr>' +
-                '<td style="width: 5%;">' + +'</td>' +
-                '<td style="width: 5%;">' + data.productInterestRate + '%' + '</td>' +
-                '<td style="width: 5%;">' + data.accountInterestRate + '%' + '</td>' +
-                '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
-                '<td style="width: 5%;">' + '세전 이자' + +'</td>' +
-                '<td style="width: 5%;">' + '세후 이자' + 'data.productTaxRate' + '원' + '</td>' +
-                '<td style="width: 10%;">' + '계산 완료된 이자금액' + '</td>' +
-                /* 이자가 포함된 총 지급 금액*/
-                '<td style="width: 10%;">' + data.amountSum + '</td>' +
-                '</tr>'
+            // - ! 지금 startDate로 받아와지는거 openDate로 받아와야 함
+            // 해지 이율 계산
+            const finalInterestRate = calculateTerminationRate(
+                data.openDate,
+                businessDate,
+                data.productPeriod,
+                interestSum
             );
 
-            $('#savings-account-total-cash').append(
-                '<tr>' +
-                '<td style="width: 5%;">' + data.productType + '</td>' +
-                '<td style="width: 5%;">' + data.productInterestRate + '%' + '</td>' +
-                '<td style="width: 5%;">' + data.accountInterestRate + '%' + '</td>' +
-                '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +
-                '<td style="width: 5%;">' + '세전 이자' + +'</td>' +
-                '<td style="width: 5%;">' + '세후 이자' + 'data.productTaxRate' + '원' + '</td>' +
-                '<td style="width: 10%;">' + '계산 완료된 이자금액' + '</td>' +
-                /* 이자가 포함된 총 지급 금액*/
-                '<td style="width: 10%;">' + data.amountSum + '</td>' +
-                '</tr>'
+            const rateData = calculateRateData(
+                data.openDate,
+                businessDate,
+                data.productPeriod,
+                interestSum
             );
-            // 모달 닫기
-            $('#search-modal-account').modal('hide');
+
+            let highlightedKey = ""; // 해당 케이스 키
+
+            // 이율 데이터에 대해 반복하며 적용 이율과 일치하는 키 찾기
+            for (const [key, rate] of Object.entries(rateData)) {
+                if (parseFloat(rate) === finalInterestRate * 100) { // 금리를 퍼센트로 변환하여 비교
+                    highlightedKey = key;
+                    break; // 일치하는 키를 찾으면 반복 중단
+                }
+            }
+
+            for (const [key, rate] of Object.entries(rateData)) {
+                const rateElement = $(`#${key} .dynamic-rate`);
+                rateElement.text(rate);
+
+                // 해당하는 키의 <td>에만 배경색 적용
+                if (key === highlightedKey) {
+                    rateElement.closest('tr').css('background-color', '#f6f9fc'); // 하이라이트 색상 설정
+                    rateElement.closest('tr').css('color', '#3f5ba9');
+                }
+            }
         },
         error: function (error) {
             console.log("Error while fetching account details", error);
@@ -346,7 +313,7 @@ function getSavingsAccount(data) {
 }
 
 
-// 적금 종료일 구하기
+/*// 적금 종료일 구하기
 function calculateEndDate(startDateString, months) {
     const startDate = new Date(startDateString); // 시작일을 Date 객체로 변환
 
@@ -380,45 +347,6 @@ function calculateContractDays(contractStartDate, months) {
         endDate: endDate.toISOString().split('T')[0], // 종료일
         contractDays: differenceInDays // 계약일수
     };
-}
-
-function checkAccountId() {
-    const inputId = $('#savings-account-close-password').val();
-    var accountNumber = $('#acco unt-number').val();
-
-    $.ajax({
-        url: '/api/employee/account-validate',
-        contentType: "application/x-www-form-urlencoded",
-        type: "POST",
-        data: {
-            accountNumber: accountNumber,
-            password: inputId
-        },
-        success: function (response) {
-            swal({
-                title: "검증 완료",
-                text: "비밀번호 인증 성공",
-                icon: "success",
-            })
-
-            //비밀번호 성공시 opacity 스타일 제거
-            $('#submit-btn').removeAttr('style');
-            $('#submit-btn').prop('disabled', false);
-
-        }, error: function (error) {
-            swal({
-                title: "검증 실패",
-                text: error.responseText,
-                icon: "error",
-                buttons: {
-                    cancel: true,
-                    confirm: false,
-                },
-            });
-
-            console.log("Transfer failed", error);
-        }
-    })
 }
 
 
@@ -513,6 +441,46 @@ function calculateSavingsMonths(nowDate, startDate) {
     };
 }
 
+*/
+
+function checkAccountId() {
+    const inputId = $('#savings-account-close-password').val();
+    var accountNumber = $('#acco unt-number').val();
+
+    $.ajax({
+        url: '/api/employee/account-validate',
+        contentType: "application/x-www-form-urlencoded",
+        type: "POST",
+        data: {
+            accountNumber: accountNumber,
+            password: inputId
+        },
+        success: function (response) {
+            swal({
+                title: "검증 완료",
+                text: "비밀번호 인증 성공",
+                icon: "success",
+            })
+
+            //비밀번호 성공시 opacity 스타일 제거
+            $('#submit-btn').removeAttr('style');
+            $('#submit-btn').prop('disabled', false);
+
+        }, error: function (error) {
+            swal({
+                title: "검증 실패",
+                text: error.responseText,
+                icon: "error",
+                buttons: {
+                    cancel: true,
+                    confirm: false,
+                },
+            });
+
+            console.log("Transfer failed", error);
+        }
+    })
+}
 
 function submitSavingAccountClose() {
     // 정기적금 해지 프로세스
