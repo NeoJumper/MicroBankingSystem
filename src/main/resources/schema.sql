@@ -13,6 +13,7 @@ drop sequence account_seq;
 drop sequence auto_transfer_seq;
 drop sequence bulk_transfer_seq;
 drop sequence cash_exchange_seq;
+drop sequence reserve_transfer_seq;
 
 -- 테이블 삭제
 DROP TABLE BRANCH_CLOSING CASCADE CONSTRAINTS PURGE;
@@ -28,6 +29,7 @@ DROP TABLE ACCOUNT CASCADE CONSTRAINTS PURGE;
 DROP TABLE AUTO_TRANSFER CASCADE CONSTRAINTS PURGE;
 DROP TABLE BULK_TRANSFER CASCADE CONSTRAINTS PURGE;
 DROP TABLE Cash_exchange CASCADE CONSTRAINTS PURGE;
+DROP TABLE Reserve_transfer CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Employee (
                           id NUMBER NOT NULL,
@@ -107,6 +109,29 @@ CREATE TABLE Customer (
                           version NUMBER NULL
 );
 
+CREATE TABLE Reserve_transfer (
+                               id NUMBER NOT NULL,
+                               acc_id  VARCHAR(20) NOT NULL,
+                               target_acc_id  VARCHAR(20) NOT NULL,
+                               amount NUMBER NOT NULL,
+                               bulk_transfer_id VARCHAR(20) NULL,
+                               transfer_start_time  VARCHAR(20) NOT NULL,
+                               transfer_end_time  VARCHAR(20) NOT NULL,
+                               transfer_date TIMESTAMP NULL, -- 이체 지정일(지정 영업일)
+                               retry_count NUMBER,
+                               transfer_type VARCHAR(10),
+                               status VARCHAR(20),
+                               failure_reason VARCHAR(100) NULL,
+                               description VARCHAR(1000) NULL,
+                               create_date TIMESTAMP NULL, -- 등록일(영업일)
+                               registration_date TIMESTAMP NULL, -- 등록일(실제시간)
+                               registrant_id NUMBER NULL,
+                               branch_id NUMBER NULL,
+                               modification_date TIMESTAMP NULL,
+                               modifier_id NUMBER NULL,
+                               version NUMBER NULL
+);
+
 CREATE TABLE Auto_transfer (
                          id NUMBER NOT NULL,
                         -- 출금할 계좌
@@ -120,6 +145,7 @@ CREATE TABLE Auto_transfer (
                          auto_transfer_period NUMBER NULL,
                          create_date TIMESTAMP NULL,
                          registration_date TIMESTAMP NULL,
+                         branch_id NUMBER NULL,
                          registrant_id NUMBER NULL,
                          modification_date TIMESTAMP NULL,
                          modifier_id NUMBER NULL,
@@ -421,22 +447,38 @@ ALTER TABLE Bulk_transfer
     ADD CONSTRAINT FK_BT_BRANCH_ID
         FOREIGN KEY (branch_id) REFERENCES Branch(id);
 
-
--- 자동이체 테이블 생성
+--11. Auto_Transfer
 ALTER TABLE Auto_transfer
-    ADD CONSTRAINT FK_AUTO_TRANSFER_ACC_ID
-        FOREIGN KEY (acc_id) REFERENCES Account(id);
-
-ALTER TABLE Auto_transfer
-    ADD CONSTRAINT FK_AUTO_TRANSFER_TARG_ID
-        FOREIGN KEY (target_acc_id) REFERENCES Account(id);
+    ADD CONSTRAINT FK_AT_REG_ID
+        FOREIGN KEY (registrant_id) REFERENCES Employee(id);
 
 ALTER TABLE Auto_transfer
-    ADD CONSTRAINT FK_AUTO_TRANSFER_MOD_ID
+    ADD CONSTRAINT FK_AT_MOD_ID
         FOREIGN KEY (modifier_id) REFERENCES Employee(id);
 
 ALTER TABLE Auto_transfer
-    ADD CONSTRAINT FK_AUTO_TRANSFER_REG_ID
+    ADD CONSTRAINT FK_AT_ACC_ID
+        FOREIGN KEY (acc_id) REFERENCES Account(id);
+
+ALTER TABLE Auto_transfer
+    ADD CONSTRAINT FK_AT_BRANCH_ID
+        FOREIGN KEY (branch_id) REFERENCES Branch(id);
+
+-- 예약이체 테이블 생성
+ALTER TABLE Reserve_transfer
+    ADD CONSTRAINT FK_RS_TRANSFER_ACC_ID
+        FOREIGN KEY (acc_id) REFERENCES Account(id);
+
+ALTER TABLE Reserve_transfer
+    ADD CONSTRAINT FK_RS_TRANSFER_TARG_ID
+        FOREIGN KEY (target_acc_id) REFERENCES Account(id);
+
+ALTER TABLE Reserve_transfer
+    ADD CONSTRAINT FK_RS_TRANSFER_MOD_ID
+        FOREIGN KEY (modifier_id) REFERENCES Employee(id);
+
+ALTER TABLE Reserve_transfer
+    ADD CONSTRAINT FK_RS_TRANSFER_REG_ID
         FOREIGN KEY (registrant_id) REFERENCES EMPLOYEE(id);
 
 -- cash_exchange 테이블 fk 생성
@@ -467,3 +509,4 @@ create sequence account_seq;
 create sequence auto_transfer_seq;
 create sequence bulk_transfer_seq;
 create sequence cash_exchange_seq;
+create sequence reserve_transfer_seq;
