@@ -13,6 +13,7 @@ drop sequence account_seq;
 drop sequence auto_transfer_seq;
 drop sequence bulk_transfer_seq;
 drop sequence cash_exchange_seq;
+drop sequence reserve_transfer_seq;
 
 -- 테이블 삭제
 DROP TABLE BRANCH_CLOSING CASCADE CONSTRAINTS PURGE;
@@ -28,6 +29,7 @@ DROP TABLE ACCOUNT CASCADE CONSTRAINTS PURGE;
 DROP TABLE AUTO_TRANSFER CASCADE CONSTRAINTS PURGE;
 DROP TABLE BULK_TRANSFER CASCADE CONSTRAINTS PURGE;
 DROP TABLE Cash_exchange CASCADE CONSTRAINTS PURGE;
+DROP TABLE Reserve_transfer CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Employee (
                           id NUMBER NOT NULL,
@@ -105,6 +107,22 @@ CREATE TABLE Customer (
                           modification_date TIMESTAMP NULL,
                           modifier_id NUMBER NULL,
                           version NUMBER NULL
+);
+
+CREATE TABLE Reserve_transfer (
+                               id NUMBER NOT NULL,
+                               acc_id  VARCHAR(20) NOT NULL,
+                               target_acc_id  VARCHAR(20) NOT NULL,
+                               amount NUMBER NOT NULL,
+                               transfer_start_time  VARCHAR(20) NOT NULL,
+                               transfer_end_time  VARCHAR(20) NOT NULL,
+                               transfer_date TIMESTAMP NULL, -- 이체 지정일(지정 영업일)
+                               create_date TIMESTAMP NULL, -- 등록일(영업일)
+                               registration_date TIMESTAMP NULL, -- 등록일(실제시간)
+                               registrant_id NUMBER NULL,
+                               modification_date TIMESTAMP NULL,
+                               modifier_id NUMBER NULL,
+                               version NUMBER NULL
 );
 
 CREATE TABLE Auto_transfer (
@@ -467,3 +485,4 @@ create sequence account_seq;
 create sequence auto_transfer_seq;
 create sequence bulk_transfer_seq;
 create sequence cash_exchange_seq;
+create sequence reserve_transfer_seq;
