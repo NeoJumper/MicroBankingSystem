@@ -5,6 +5,9 @@ var accountType = "";
 var perTradeLimit = 0;
 var dailyLimit = 0;
 
+var perTradeLimitMax = 0;
+var dailyLimitMAX = 0;
+
 $(document).ready(function () {
 
     isClosed();
@@ -22,11 +25,11 @@ $(document).ready(function () {
 
     handleOtpInput(); // OTP 입력란 자동 이동
 
-    clickOtpAuthenticationModalBtn() // OTP 인증 모달 띄우는 버튼 클릭
+    clickOtpAuthenticationModalBtn(); // OTP 인증 모달 띄우는 버튼 클릭
 
-    clickOtpAuthenticationBtn() // OTP 인증 버튼 클릭
+    clickOtpAuthenticationBtn(); // OTP 인증 버튼 클릭
 
-    clickAccountUpdateBtn()
+    clickAccountUpdateBtn(); // 변경하기 버튼 클릭
 
 });
 
@@ -64,21 +67,23 @@ function selectAccount() {
         url: "/api/employee/accounts/" + selectedAccountId,
         type: "GET",
         success: function (data) {
-            if (accountType === "withdrawal") {
 
-                securityLevel = data.securityLevel;
-                customerId = data.customerId;
-                // 출금계좌 처리
+            securityLevel = data.securityLevel;
+            customerId = data.customerId;
+            // 출금계좌 처리
 
-                $('#account-number-input').val(data.accId);
-                $('#customer-name-input').val(data.customerName);
-                $('#per-trade-limit-input').val(comma(data.perTradeLimit));
-                $('#daily-limit-input').val(comma(data.dailyLimit));
+            $('#account-number-input').val(data.accId);
+            $('#customer-name-input').val(data.customerName);
+            $('#per-trade-limit-input').val(comma(data.perTradeLimit));
+            $('#daily-limit-input').val(comma(data.dailyLimit));
 
-                perTradeLimit = data.perTradeLimit;
-                dailyLimit = data.dailyLimit;
+            perTradeLimit = data.perTradeLimit;
+            dailyLimit = data.dailyLimit;
+            accountType = data.accountType;
 
-            }
+            highlightTransferLimit();
+            setTransferLimits();
+
             // 모달 닫기
             $('#search-modal-account').modal('hide');
             console.log("OTP 레벨 : " + securityLevel);
@@ -88,6 +93,39 @@ function selectAccount() {
             console.log("Error while fetching account details", error);
         }
     });
+}
+
+function highlightTransferLimit() {
+    // 구분에 따른 row 인덱스 설정
+    console.log("계좌유형 : " + accountType);
+    console.log("보안등급 : " + securityLevel);
+    let rowIndex = accountType === "PRIVATE" ? 1 : 2;
+    // 보안등급에 따른 column 인덱스 설정
+    let colIndex = securityLevel === "1등급" ? 2 : 3;
+
+    // 색칠할 셀 선택 및 강조 스타일 적용
+    $(".transfer-limit-table tbody tr:nth-child(" + rowIndex + ") td:nth-child(" + colIndex + ")")
+        .css("background-color", "#dfe6fd");  // 원하는 색상으로 변경 가능
+}
+
+function setTransferLimits() {
+
+    if (accountType === "PRIVATE" && securityLevel === "1등급") {
+        dailyLimitMAX = 500000000;      // 개인 1등급: 1일 이체한도 5억원
+        perTradeLimitMax = 100000000;   // 개인 1등급: 1회 이체한도 1억원
+    } else if (accountType === "PRIVATE" && securityLevel === "2등급") {
+        dailyLimitMAX = 10000000;       // 개인 2등급: 1일 이체한도 1천만원
+        perTradeLimitMax = 5000000;     // 개인 2등급: 1회 이체한도 5백만원
+    } else if (accountType === "CORPORATION" && securityLevel === "1등급") {
+        dailyLimitMAX = 5000000000;     // 기업 1등급: 1일 이체한도 50억원
+        perTradeLimitMax = 1000000000;  // 기업 1등급: 1회 이체한도 10억원
+    } else if (accountType === "CORPORATION" && securityLevel === "2등급") {
+        dailyLimitMAX = 3000000;        // 기업 2등급: 1일 이체한도 3백만원
+        perTradeLimitMax = 3000000;     // 기업 2등급: 1회 이체한도 3백만원
+    }
+
+    console.log("1일 이체한도 MAX:", dailyLimitMAX);
+    console.log("1회 이체한도 MAX:", perTradeLimitMax);
 }
 
 
@@ -150,8 +188,8 @@ function updateAccount() {
         type: "PATCH",
         data: JSON.stringify({
             targetAccId: accountId,
-            perTradeLimit : perTradeLimit,
-            dailyLimit : dailyLimit
+            perTradeLimit : convertNumber($('#per-trade-limit-input').val()),
+            dailyLimit : convertNumber($('#daily-limit-input').val()),
         }),
 
         success: function (data) {
@@ -236,26 +274,6 @@ function clickOtpAuthenticationBtn() {
     });
 }
 
-
-function showTransferResultModal(data) {
-    // 출금 내역
-    var withdrawal = data[0];
-    $('#modal-result-withdrawal-account').text(withdrawal.accId);
-    $('#modal-result-withdrawal-customer-name').text(withdrawal.customerName);
-    $('#modal-result-withdrawal-amount').text(comma(withdrawal.amount));
-    $('#modal-result-withdrawal-balance').text(comma(withdrawal.balance));
-
-    // 입금 내역
-    var deposit = data[1];
-    $('#modal-result-deposit-account').text(deposit.accId);
-    $('#modal-result-deposit-customer-name').text(deposit.customerName);
-    $('#modal-result-deposit-amount').text(comma(deposit.amount));
-    $('#modal-result-deposit-balance').text(comma(deposit.balance));
-
-    // 모달 띄우기
-    $('#transfer-result-modal').modal('show');
-}
-
 function clickWithdrawalAccountCheckBtn() {
     // 출금계좌 조회 버튼 클릭 시
     $('#withdrawal-account-check-btn').click(function () {
@@ -276,9 +294,9 @@ function handleDailyLimitInput() {
 
         var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
 
-        if (inputAmount > dailyLimit) {
+        if (inputAmount > dailyLimitMAX) {
             $('#over-daily-limit-amount').text("최대 이체 한도 내 금액을 입력해주세요.");
-            $(this).val(comma(dailyLimit));  // 입력된 값을 계좌 잔액으로 제한
+            $(this).val(comma(dailyLimitMAX));  // 입력된 값을 계좌 잔액으로 제한
         } else {
             $('#over-daily-limit-amount').text("");  // 경고 메시지 제거
         }
@@ -291,9 +309,9 @@ function handlePerTradeLimitInput() {
         var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
 
 
-        if (inputAmount > perTradeLimit) {
+        if (inputAmount > perTradeLimitMax) {
             $('#over-per-trade-limit-amount').text("최대 이체 한도 내 금액을 입력해주세요.");
-            $(this).val(comma(perTradeLimit));  // 입력된 값을 계좌 잔액으로 제한
+            $(this).val(comma(perTradeLimitMax));  // 입력된 값을 계좌 잔액으로 제한
         } else {
             $('#over-per-trade-limit-amount').text("");  // 경고 메시지 제거
         }
@@ -363,3 +381,4 @@ function handleOtpBtn() {
         $('#otp-authentication-modal-btn').hide();
     }
 }
+

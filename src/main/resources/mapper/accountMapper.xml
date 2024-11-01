@@ -175,6 +175,7 @@
 
     <resultMap id="AccountOpenModalResultMap" type="AccountOpenResultOfModal">
         <result property="accId" column="acc_id" />
+        <result property="accountType" column="account_type" />
         <result property="password" column="password" />
         <result property="customerName" column="customer_name" />
         <result property="securityLevel" column="security_level" />
@@ -193,6 +194,7 @@
     <select id="findAccountOpenResultOfModal" resultMap="AccountOpenModalResultMap">
         SELECT
             a.id AS acc_id,
+            a.account_type AS account_type,
             a.password AS password,
             c.name AS customer_name,
             c.security_level,

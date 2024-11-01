@@ -117,7 +117,7 @@
                 <tr>
                     <th>기업</th>
                     <td>50억원 이하</td>
-                    <td>-</td>
+                    <td>3백만원 이하</td>
                 </tr>
                 </tbody>
             </table>
@@ -144,7 +144,7 @@
                 <tr>
                     <th>기업</th>
                     <td>10억원 이하</td>
-                    <td>-</td>
+                    <td>3백만원 이하</td>
                 </tr>
                 </tbody>
             </table>
