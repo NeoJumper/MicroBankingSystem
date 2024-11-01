@@ -150,6 +150,32 @@ public class BusinessDayManagementFacade {
         interestService.createInterest(tradeNumber, businessDateAndBranchId);
     }
 
+    public void closeByManagerForTest(VaultCashRequest vaultCashRequest, BusinessDateAndBranchId businessDateAndBranchId) {
+
+        // 1
+        //BusinessDateAndBranchId businessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
+        String currentBusinessDate = businessDateAndBranchId.getBusinessDate();
+
+        ManagerClosingData managerClosingData =  businessDayCloseService.getManagerClosingData();
+
+
+/*        // 2
+        if (managerClosingData.getClosingDataList().stream().map(ClosingData::getStatus).anyMatch("OPEN"::equals))
+            throw new BadRequestException(ErrorCode.REQUIRED_EMPLOYEE_CLOSING);
+        if(businessDayCloseService.getBranchClosingStatusByDateAndId(businessDateAndBranchId).equals("CLOSED"))
+            throw new BadRequestException(ErrorCode.ALREADY_CLOSED_BUSINESS_DAY);
+
+        // 3
+        businessDayCloseService.closeBranchBusinessDay(businessDateAndBranchId, vaultCashRequest);
+
+        // 4
+        businessDayService.businessDayStatusToClosed(currentBusinessDate);*/
+
+        // 5 - 보통예금, 자율적금 단복리 이자 내역 추가
+        String tradeNumber = businessDayCloseService.getClosingTradeNumber(businessDateAndBranchId);
+        interestService.createInterest(tradeNumber, businessDateAndBranchId);
+    }
+
     /**
      * @Description
      * 1. 현재 영업일의 마감 데이터(행원, 지점) 삭제
