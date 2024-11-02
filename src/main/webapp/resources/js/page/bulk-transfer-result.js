@@ -9,11 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
     fillBulkTransferInfoListBody(bulkTransferId);
 
     registerClickEventOfSelectAllCheckbox();
+    registerClickEventOfBack();
+    registerClickEventOfResendErrorItems();
+
     registerClickEventOfSearch();
     registerClickEventOfFileUpload();
     registerClickEventOfPrint();
-    registerClickEventOfBack();
-    registerClickEventOfResendErrorItems();
 });
 
 function registerClickEventOfSelectAllCheckbox() {

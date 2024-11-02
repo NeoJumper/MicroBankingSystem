@@ -3,6 +3,7 @@ package com.kcc.banking.domain.trade.service;
 import com.kcc.banking.common.exception.CustomException;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
+import com.kcc.banking.common.util.Transaction;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
@@ -30,6 +31,9 @@ import com.kcc.banking.domain.trade.dto.response.TransferDetail;
 import com.kcc.banking.domain.trade.mapper.TradeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -38,10 +42,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -54,8 +57,7 @@ public class AccountTradeFacade {
     private final BusinessDayCloseService businessDayCloseService;
     private final BulkTransferService bulkTransferService;
     private final CommonService commonService;
-    private final AutoTransferService autoTransferService;
-    private final TradeMapper tradeMapper;
+    private final Transaction transaction;
 
     /**
      *   @Description - 보통 예금계좌 개설
@@ -577,40 +579,62 @@ public class AccountTradeFacade {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
 
-        Long bulkTransferId = bulkTransferService.getNextId();
-        int successCnt = 0;
-        int failureCnt = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
 
-        for(TransferTradeCreate transferTradeCreate : transferTradeCreateList){
-            try{
-                transferTradeCreate.setBulkTransferId(bulkTransferId);
-                processTransfer(transferTradeCreate);
-                successCnt++;
-                BigDecimal transferAmount = transferTradeCreate.getTransferAmount();
-                totalAmount = totalAmount.add(transferAmount);
-            }catch (CustomException e){
-                transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
-                processFailTransfer(transferTradeCreate);
-                failureCnt++;
-            }
-        }
+        Long bulkTransferId = bulkTransferService.getNextId();
 
         BulkTransferCreate bulkTransferCreate = BulkTransferCreate.builder()
                 .id(bulkTransferId)
                 .registrantId(currentData.getEmployeeId())
+                .amount(BigDecimal.ZERO)
                 .branchId(currentData.getBranchId())
                 .accId(transferTradeCreateList.get(0).getAccId())
                 .tradeDate(currentData.getCurrentBusinessDate())
-                .amount(totalAmount)
                 .status("NOR")
-                .successCnt(successCnt)
-                .failureCnt(failureCnt)
+                .successCnt(0)
+                .failureCnt(0)
                 .description(transferTradeCreateList.get(0).getDescription())
                 .build();
 
 
         bulkTransferService.createBulkTransfer(bulkTransferCreate);
+
+
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        transferTradeCreateList.forEach(transferTradeCreate -> {
+            CompletableFuture<Void> future = transaction.invokeAsync(() -> {
+                try {
+                    transferTradeCreate.setBulkTransferId(bulkTransferId);
+                    processTransfer(transferTradeCreate);
+
+                    BulkTransferUpdate bulkTransferUpdate = BulkTransferUpdate.builder()
+                            .id(bulkTransferId)
+                            .status("SUCCESS")
+                            .amount(transferTradeCreate.getTransferAmount())
+                            .modifierId(currentData.getEmployeeId())
+                            .build();
+                    bulkTransferService.updateAllBulkTransfer(bulkTransferUpdate);
+                } catch (CustomException e) {
+                    transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
+                    processFailTransfer(transferTradeCreate);
+
+                    BulkTransferUpdate bulkTransferUpdate = BulkTransferUpdate.builder()
+                            .id(bulkTransferId)
+                            .status("FAIL")
+                            .modifierId(currentData.getEmployeeId())
+                            .build();
+                    bulkTransferService.updateAllBulkTransfer(bulkTransferUpdate);
+                }
+                return null;
+            });
+
+            //futures.add(future);
+        });
+
+        // 모든 비동기 작업이 완료될 때까지 기다림
+        //CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+        //allOf.join(); // 또는 allOf.get()을 사용할 수 있습니다.
+
         return bulkTransferId;
     }
 

@@ -33,6 +33,6 @@ public class BulkTransferService {
     }
 
     public int updateAllBulkTransfer(BulkTransferUpdate bulkTransferUpdate) {
-        return bulkTransferMapper.updateAllBulkTransfer(bulkTransferUpdate);
+        return bulkTransferMapper.updateBulkTransfer(bulkTransferUpdate);
     }
 }

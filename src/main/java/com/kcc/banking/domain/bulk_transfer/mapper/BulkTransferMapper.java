@@ -19,5 +19,5 @@ public interface BulkTransferMapper {
 
     BulkTransferDetail findBulkTransfer(Long bulkTransferId);
 
-    int updateAllBulkTransfer(BulkTransferUpdate bulkTransferUpdate);
+    int updateBulkTransfer(BulkTransferUpdate bulkTransferUpdate);
 }
