@@ -147,18 +147,16 @@
         <table class="common-table">
             <thead>
             <tr>
-                <th>이자 계산 방식</th>
-                <th>이율</th>
-                <th>우대 이율</th>
-                <th>세율</th>
-                <th>이자 (세전)</th>
-                <th>이자 (세후)</th>
-                <th>지급 총 이자</th>
-                <th>잔액</th>
-                <th>지급 총 금액</th>
+                <th>자동이체 출금 계좌</th>
+                <th>원금</th>
+                <th>자동이체 총 횟수</th>
+                <th>자동이체 시작일</th>
+                <th>자동이체 종료일</th>
+
+
             </tr>
             </thead>
-            <tbody id="savings-account-total-cash">
+            <tbody id="savings-account-auto-transfer">
             <tr class="saving-account-close-empty-message">
                 <td colspan="9" style="text-align: center; color: gray; border-bottom: none; height: 100px">
                     해지할 계좌를 선택해 주십시오
@@ -166,6 +164,7 @@
             </tr>
             </tbody>
         </table>
+
         <h3>예금 예상 금액 정보</h3>
         <table class="common-table">
             <thead>
@@ -181,7 +180,7 @@
                 <th>지급 총 금액</th>
             </tr>
             </thead>
-            <tbody id="savings-account-auto-transfer">
+            <tbody id="savings-account-total-cash">
             <tr class="saving-account-close-empty-message">
                 <td colspan="9" style="text-align: center; color: gray; border-bottom: none; height: 100px">
                     해지할 계좌를 선택해 주십시오

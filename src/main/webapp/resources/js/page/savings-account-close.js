@@ -359,7 +359,7 @@ function getSavingsAccount(data, accountId) {
             }
 
             console.log("FINAL INTEREST::" ,finalInterestRate);
-
+            savingAccountFlexibleCloseRequest(data);
 
         },
         error: function (error) {
@@ -473,11 +473,12 @@ function savingAccountFixedCloseRequest() {
 }
 
 // 자유적금 해지 프로세스
-function savingAccountFlexibleCloseRequest() {
-    $('#savings-account-close-info').append(
+function savingAccountFlexibleCloseRequest(data) {
+
+    $('#savings-account-auto-transfer').append(
         '<tr>' +'<td style="width: 5%;">' + +'</td>' +
         '<td style="width: 5%;">' + data.productInterestRate + '%' + '</td>' +
-        '<td style="width: 5%;">' + data.accountInterestRate + '%' + '</td>' +
+        '<td style="width: 5%;">' + data.fixedAmount + '%' + '</td>' +
         '<td style="width: 10%;">' + data.productTaxRate + '%' + '</td>' +                '<td style="width: 5%;">' + '세전 이자' + +'</td>' +
         '<td style="width: 5%;">' + '세후 이자' + 'data.productTaxRate' + '원' + '</td>' +
         '<td style="width: 10%;">' + '계산 완료된 이자금액' + '</td>' +
