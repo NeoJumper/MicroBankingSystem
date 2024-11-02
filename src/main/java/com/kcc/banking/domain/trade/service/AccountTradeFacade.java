@@ -3,18 +3,14 @@ package com.kcc.banking.domain.trade.service;
 import com.kcc.banking.common.exception.CustomException;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
-import com.kcc.banking.common.util.Transaction;
+import com.kcc.banking.common.util.TransactionService;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
-import com.kcc.banking.domain.account.dto.response.CloseSavingsAccount;
-import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
-import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferUpdate;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferValidation;
-import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferValidationResult;
 import com.kcc.banking.domain.bulk_transfer.service.BulkTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
@@ -28,23 +24,13 @@ import com.kcc.banking.domain.trade.dto.request.*;
 import com.kcc.banking.domain.trade.dto.response.CloseCancelDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TransferDetail;
-import com.kcc.banking.domain.trade.mapper.TradeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.task.AsyncTaskExecutor;
-import org.springframework.dao.DataAccessException;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -57,7 +43,7 @@ public class AccountTradeFacade {
     private final BusinessDayCloseService businessDayCloseService;
     private final BulkTransferService bulkTransferService;
     private final CommonService commonService;
-    private final Transaction transaction;
+    private final TransactionService transactionService;
 
     /**
      *   @Description - 보통 예금계좌 개설
@@ -599,10 +585,9 @@ public class AccountTradeFacade {
         bulkTransferService.createBulkTransfer(bulkTransferCreate);
 
 
-        List<CompletableFuture<Void>> futures = new ArrayList<>();
 
         transferTradeCreateList.forEach(transferTradeCreate -> {
-            CompletableFuture<Void> future = transaction.invokeAsync(() -> {
+            transactionService.invokeAsync(() -> {
                 try {
                     transferTradeCreate.setBulkTransferId(bulkTransferId);
                     processTransfer(transferTradeCreate);
@@ -628,12 +613,8 @@ public class AccountTradeFacade {
                 return null;
             });
 
-            //futures.add(future);
         });
 
-        // 모든 비동기 작업이 완료될 때까지 기다림
-        //CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
-        //allOf.join(); // 또는 allOf.get()을 사용할 수 있습니다.
 
         return bulkTransferId;
     }
