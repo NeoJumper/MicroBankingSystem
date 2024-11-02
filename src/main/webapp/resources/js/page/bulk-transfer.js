@@ -415,6 +415,8 @@ function uploadEmployeePreview() {
 
             updateEmployeeTable();
             console.log(employeeDataForUpload);
+            $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
+            });
         },
         error: function (xhr, status, error) {
             console.error('Upload failed!', error);
@@ -499,6 +501,8 @@ function validationExecution() {
                 swal({ title: "예금주 확인", text: "예금주 확인 완료", icon: "success" });
                 $('input[value="이체실행"]').removeAttr('disabled');
             }
+            $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
+            });
         },
         error: function () {
             console.log("예금주 확인 실패");

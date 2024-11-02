@@ -10,7 +10,6 @@ var bulkTransferId;
 document.addEventListener("DOMContentLoaded", function () {
     url = window.location.href;
     bulkTransferId = getParameterByName('bulkTransferId', url);
-    fillBulkTransferInfoListBody(bulkTransferId);
 
     registerClickEventOfSelectAllCheckbox();
     registerClickEventOfBack();
@@ -37,6 +36,8 @@ function animateNumber(element, target) {
     });
 }
 
+
+
 // 진행 상태 확인 함수
 function checkProgressStatus() {
 
@@ -51,17 +52,12 @@ function checkProgressStatus() {
             // 진행이 완료되었는지 확인
             if (response.status !== 'WAIT') { // 상태가 완료된 경우
                 clearInterval(progressInterval); // 주기적인 호출 중단
+                fillBulkTransferInfoListBody(bulkTransferId);
+
                 $('#sectionB').show();
                 $('#back-btn').prop('disabled', false);
                 if(response.failureCnt > 0)
                     $('#resend-error-item').prop('disabled', false);
-
-
-                swal({
-                    title: "대량 이체 완료",
-                    text: "대량 이체가 완료되었습니다.",
-                    icon: "success",
-                });
 
             }
         },
@@ -70,7 +66,6 @@ function checkProgressStatus() {
         }
     });
 }
-
 function registerClickEventOfSelectAllCheckbox() {
     $('#bulk-transfer-info thead input[type="checkbox"]').click(function () {
         toggleAllCheckboxes($(this).is(':checked'));
@@ -224,6 +219,16 @@ function fillBulkTransferInfoListBody(bulkTransferId) {
             $.each(bulkTransferInfoList, function (index, bulkTransferInfo) {
                 tbody.append(createRow(bulkTransferInfo, ++index));
             });
+
+            swal({
+                    title: "대량 이체 완료",
+                    text: "대량 이체가 완료되었습니다.",
+                    icon: "success"
+            });
+
+            $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
+            });
+
         },
         error: function (xhr, status, error) {
             console.error('Upload failed!');

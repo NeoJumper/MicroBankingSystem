@@ -1,0 +1,450 @@
+#registration-page{
+    position: relative;
+}
+
+#register-result-toggle-btn {
+    display: flex;
+    height: 55px;
+    border: 3px solid #093378;
+    border-radius: 5px;
+    margin-bottom: 16px;
+}
+
+/*등록, 결과확인 toggle css*/
+.active-toggle-btn {
+    width: 50%;
+    border: 0;
+    background-color: #093378;
+    color: white;
+    font-weight: bolder;
+}
+.off-toggle-btn {
+    width: 50%;
+    border: 0;
+    background-color: white;
+    font-weight: bolder;
+}
+.active-toggle-btn:hover{
+    opacity: 0.8;
+    background-color: rgb(0, 102, 212); /* hover 시 배경색 어둡게 */
+}
+.off-toggle-btn:hover{
+    opacity: 0.8;
+    background-color: rgba(121, 121, 121, 0.47); /* hover 시 배경색 어둡게 */
+}
+
+/*등록, 결과확인 container toggle*/
+.display-container-on {
+    display: block;
+}
+
+.display-container-off {
+    display: none;
+}
+
+/* 공통 css */
+.failure {
+    color: var(--point-red); /* 글씨 색을 흰색으로 설정 , */
+}
+
+
+a, a:visited, a:active {
+    display: block;
+    color: inherit;
+    text-decoration-line: none;
+}
+
+section h4 {
+    font-weight: bold;
+}
+
+.common-table input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+    max-width: 60%;
+}
+
+.table-top-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5px;
+    background-color: #F5F5F5;
+    border-top: 1px solid #333333;
+    color: #5F5F5F;
+    height: 60px;
+}
+
+.table-top-btns > div:nth-child(2) {
+    display: flex;
+    gap: 5px;
+    box-sizing: border-box;
+    height: 145%;
+}
+
+.result-content{
+    justify-content: center;
+    display: flex;
+    /*justify-content: space-around;*/
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 1.0rem;
+    color: white;
+    background-color: #093378;
+    padding: 30px 0px;
+}
+.result-content > div {
+    padding: 0px 188px 0px 23px;
+    border-right: 1px solid white; /* 아래 경계선 추가 */
+}
+.result-content > div:last-child {
+    border-right: none; /* 마지막 div는 경계선 제거 */
+}
+
+.warning-writer{
+    font-size: smaller;
+    font-weight: bold;
+
+    padding-left: 17px;
+    padding-top: 10px;
+    line-height: 18px;
+}
+
+.submit-btns{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 17px;
+}
+
+.submit-btns > input[type="button"]{
+    width: 200px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+/* 등록 페이지 css */
+#select-account-form {
+    border: 2px solid #adb5bd;
+    border-radius: 10px;
+    overflow: hidden;
+
+    margin-bottom: 30px;
+}
+
+.account-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 40px;
+}
+
+.account-balance {
+    background-color: #F5F5F5;
+    padding: 20px 40px;
+}
+
+input[type="button"][value="계좌조회 >"] {
+    border: none;
+    background-color: white;
+}
+
+#description {
+    margin-top: 12px;
+}
+
+#bulk-transfer-info th {
+
+    font-size: 1.2rem;
+    text-align: center;
+    border: 1px solid var(--little-dark-gray);
+}
+
+#bulk-transfer-info td{
+    text-align: center;
+    border: 1px solid var(--little-dark-gray);
+}
+
+
+p {
+    margin: 0;
+}
+
+#total-registrations, #valid-recipients, #mismatch-recipients, #error-recipients{
+    color: white;
+}
+/* 결과확인 페이지 css */
+.account-info-result {
+    padding: 20px 40px;
+}
+.account-result-contents{
+    display: flex;
+    gap:40%;
+}
+.account-result-contents > div > div:nth-child(1){
+    padding-bottom: 10px;
+}
+
+/* 프로그레스 바 컨테이너 */
+.progress-container {
+    width: 650px;
+    min-height: 100px;
+    margin: 0 auto;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 60px;
+}
+
+/* 각 단계 */
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    gap: 0;
+    float: left;
+}
+
+/* 원형 모양 */
+.circle {
+    width: 75px;
+    height: 75px;
+    border-radius: 60px;
+    border: 3px solid #9CA3AF;
+    background-color: #F4F7FF;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 활성화된 원형 */
+.circle.active {
+    border-color: var(--basic-hover-dark-color);
+}
+
+.inner-circle{
+
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.inner-circle.active{
+    width: 20px;
+    height: 20px;
+    border-radius: 60px;
+    background-color: var(--basic-hover-dark-color);
+
+}
+
+.inner-circle.active{
+}
+
+/* 각 단계의 텍스트 */
+.step p {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* 활성화된 텍스트 */
+.step.active p {
+    color: black;
+    font-weight: 600;
+}
+
+.line {
+    width: 150px;
+    height: 3px;
+    background-color: #d0d5dd;
+    margin-top: 35px;
+    float: left;
+}
+
+
+/* 첫 번째와 마지막 단계에 라인 표시 안함 */
+.step:first-child .line,
+.step:last-child .line {
+    display: none;
+}
+
+#account-number{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* 툴팁 option */
+#select-transfer-limit {
+    margin-left: auto;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+    padding: 8px 12px;
+    width: fit-content;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    cursor: pointer;
+}
+#select-transfer-limit:hover {
+    background-color: #ececec;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+#select-transfer-limit-tooltip {
+    border: 1px solid #073082;
+    border-radius: 6px;
+    background-color: white;
+    position: absolute;
+    color: #fff;
+    padding: 15px 15px;
+    width: auto;
+    right: 40px;
+    top: 28%;
+    opacity: 0;
+    transition: all 0.5s linear;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+#select-transfer-limit-tooltip span{
+    font-size: 1.1rem;
+    color: #212529;
+    font-weight: normal;
+}
+#select-transfer-limit-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%; /* 툴팁 위쪽에 위치 */
+    left: 83%; /* 중앙에 위치 */
+    margin-left: -6px; /* 화살표의 중앙을 맞추기 위해 좌우로 이동 */
+    border-width: 12px;
+    border-style: solid;
+    border-color: #073082 transparent transparent transparent; /* 위쪽 화살표 색상 설정 */
+}
+.tooltip-amount-span{
+    color: #073082 !important;
+    font-weight: bold!important;
+    margin-left: auto;
+    width: 160px;
+    text-align: right;
+    display: inline-block;
+}
+.amount-span{
+    color: #073082 !important;
+    font-weight: bold!important;
+    text-align: right;
+}
+.text-span{
+    color: #073082 !important;
+
+}
+
+
+
+/* 예약이체 UI CSS*/
+#reserve-time-select-div{
+    max-width: 60%;
+    display: flex;
+}
+#time-search-btn {
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url('https://example.com/custom-icon.png') no-repeat right center;
+    background-size: 16px 16px; /* 아이콘 크기 조정 */
+    padding-right: 30px; /* 아이콘 공간을 위한 패딩 */
+}
+
+#time-search-container{
+    width: 300px;
+    height: 50px;
+    position: relative;
+    display: flex;
+}
+.search-icon {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 16px;
+    bottom: 5px;
+    right: 9px;
+    border-radius: 15px;
+    background-position: center;
+}
+
+.file-btn {
+    display: flex;
+    margin-left: 8px; /* ms-2 */
+    background-color: white; /* btn-light */
+    border: 2px solid #dee2e6; /* border-2 */
+    align-items: center;
+    height: 33px;
+    padding: 0 12px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #212529;
+    border-radius: 4px; /* for rounded corners similar to btn */
+}
+
+.file-btn:hover {
+    background-color: #e2e6ea;
+}
+.select-option{
+    display: flex;
+    margin-left: 8px; /* ms-2 */
+    background-color: white; /* btn-light */
+    border: 1px solid var(--little-dark-gray);
+    align-items: center;
+    height: 33px;
+    padding: 0 12px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #212529;
+    border-radius: 4px; /* for rounded corners similar to btn */
+}
+
+.tableWrapper {
+    max-height: 480px;
+    height: auto;
+    border-top: 1px solid var(--little-dark-gray);
+    overflow: auto;
+}
+.bulk-insert-table{
+    border-collapse: collapse;
+}
+
+.bulk-insert-table th{
+    position: sticky;
+    top: 0px;
+}
+#uploadIndividualEmployeeModal th, #uploadIndividualEmployeeModal td{
+    font-size: 1.2rem;
+}
+#uploadIndividualEmployeeModal input
+{
+    width: 70%;
+    padding: 10px 10px;
+}
+
+#transfer-info-detail-modal th, #transfer-info-detail-modal td{
+    font-size: 1.2rem;
+}
+#transfer-info-detail-modal input
+{
+    width: 70%;
+    padding: 10px 10px;
+}
+
+.employee-element:hover {
+    background-color: #f0f8ff; /* 연한 파란색 배경 */
+    color: #333; /* 텍스트 색상 */
+    cursor: pointer; /* 클릭 가능한 커서 모양 */
+}
+#withdrawal-account-number{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #073082;
+}

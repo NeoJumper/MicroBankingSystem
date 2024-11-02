@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/page/bulk-transfer.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/bulk-transfer-result.css"/>
 <%--    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js" integrity="sha512-dlPw+ytv/6JyepmelABrgeYgHI0O+frEwgfnPdXDTOIZz+eDgfW07QXG02/O8COfivBdGNINy+Vex+lYmJ5rxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
@@ -102,23 +103,25 @@
                     <input type="text" id="searchInput" placeholder="검색어 입력">
                 </div>
             </div>
-            <table id="bulk-transfer-info" class="common-table">
-                <thead>
-                <tr>
-                    <th><label><input type="checkbox"></label></th>
-                    <th><label>NO.</label></th>
-                    <th><label>처리결과</label></th>
-                    <th><label>입금계좌번호</label></th>
-                    <th><label>이체금액(원)</label></th>
-                    <th><label>받는분</label></th>
-                    <th><label>받는분 통장표시</label></th>
-                    <th><label>비고</label></th>
-                </tr>
-                </thead>
-                <tbody id="bulk-transfer-info-list-body">
-                <%--  동적으로 직원계좌정보 생성됨 --%>
-                </tbody>
-            </table>
+            <div class="tableWrapper">
+                <table id="bulk-transfer-info" class="common-table  bulk-insert-table">
+                    <thead>
+                    <tr>
+                        <th><label><input type="checkbox"></label></th>
+                        <th><label>NO.</label></th>
+                        <th><label>처리결과</label></th>
+                        <th><label>입금계좌번호</label></th>
+                        <th><label>이체금액(원)</label></th>
+                        <th><label>받는분</label></th>
+                        <th><label>받는분 통장표시</label></th>
+                        <th><label>비고</label></th>
+                    </tr>
+                    </thead>
+                    <tbody id="bulk-transfer-info-list-body">
+                    <%--  동적으로 직원계좌정보 생성됨 --%>
+                    </tbody>
+                </table>
+            </div>
             <div class="table-top-btns">
                 <div>
                    총 <span>${bulkTransfer.totalCnt}</span> 건
