@@ -3,9 +3,9 @@ let errorItems = [];
 let checkedData = [];
 let url;
 // 주기적으로 상태를 확인하는 인터벌
-let progressInterval = setInterval(checkProgressStatus, 1000);
+let progressInterval = setInterval(checkProgressStatus, 500);
 var bulkTransferId;
-
+let currentPercentage = 0; // 기존 퍼센티지 저장할 변수
 
 document.addEventListener("DOMContentLoaded", function () {
     url = window.location.href;
@@ -20,7 +20,36 @@ document.addEventListener("DOMContentLoaded", function () {
     registerClickEventOfPrint();
 
     checkProgressStatus();
+
 });
+
+function animateProgress(newPercentage) {
+    const progressCircleBar = document.querySelector('.progress-circle-bar');
+    const progressText = document.getElementById('progress-text');
+
+    // Calculate the offset based on the circle's radius
+    const radius = 45;
+    const circumference = 2 * Math.PI * radius;
+
+    // 목표 퍼센티지로 가는 동안 애니메이션
+    const interval = setInterval(() => {
+        if (currentPercentage < newPercentage) {
+            currentPercentage++;
+        } else if (currentPercentage > newPercentage) {
+            currentPercentage--; // 퍼센티지 감소 시
+        } else {
+            clearInterval(interval);
+        }
+
+        // Offset과 텍스트 업데이트
+        const offset = circumference - (currentPercentage / 100) * circumference;
+        progressCircleBar.style.strokeDashoffset = offset;
+        progressText.textContent = `${currentPercentage}%`;
+    }, 100); // 속도 조정
+}
+
+
+
 
 // 숫자 애니메이션 함수
 function animateNumber(element, target) {
@@ -35,9 +64,6 @@ function animateNumber(element, target) {
         }
     });
 }
-
-
-
 // 진행 상태 확인 함수
 function checkProgressStatus() {
 
@@ -45,9 +71,18 @@ function checkProgressStatus() {
         url: `/api/employee/bulk-transfers/${bulkTransferId}/progress-status`,
         type: 'GET',
         success: function(response) {
+            let successCnt = response.successCnt;
+            let failureCnt = response.failureCnt;
+            let totalCnt = response.totalCnt;
+
             // 부드럽게 successCnt와 failureCnt를 업데이트
-            animateNumber($('#success-count'), response.successCnt);
-            animateNumber($('#failure-count'), response.failureCnt);
+            animateNumber($('#success-count'), successCnt);
+            animateNumber($('#failure-count'), failureCnt);
+
+
+            const percentage = Math.floor((successCnt + failureCnt) / totalCnt * 100);
+            animateProgress(percentage);
+            currentPercentage = percentage;
 
             // 진행이 완료되었는지 확인
             if (response.status !== 'WAIT') { // 상태가 완료된 경우
@@ -56,7 +91,7 @@ function checkProgressStatus() {
 
                 $('#sectionB').show();
                 $('#back-btn').prop('disabled', false);
-                if(response.failureCnt > 0)
+                if(failureCnt > 0)
                     $('#resend-error-item').prop('disabled', false);
 
             }

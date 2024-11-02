@@ -13,7 +13,6 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/page/bulk-transfer.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/page/bulk-transfer-result.css"/>
 <%--    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js" integrity="sha512-dlPw+ytv/6JyepmelABrgeYgHI0O+frEwgfnPdXDTOIZz+eDgfW07QXG02/O8COfivBdGNINy+Vex+lYmJ5rxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
@@ -63,29 +62,60 @@
             <%--계좌선택--%>
             <div id="select-account-form">
                 <div class="account-info-result">
-                    <div><span>업무계좌</span> <br> <span id="account-number">${bulkTransfer.accId}</span></div>
-                    <hr>
+
                     <div class="account-result-contents">
-                        <div>
-                            <div>등록금액 <span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span>원</div>
-                            <div>등록자 <span>${bulkTransfer.registrantName}</span></div>
+                        <div style="width: 45%">
+                            <div><span>업무계좌</span> <br> <span id="withdrawal-account-number">${bulkTransfer.accId}</span></div>
+                            <hr>
+                            <div class="d-flex flex-column" style="height: 60%">
+
+                                <div class="d-flex">
+                                    <span style="width: 120px">등록자</span>
+                                    <span>${bulkTransfer.registrantName}</span>
+                                </div>
+                                <div class="d-flex my-3">
+                                    <span style="width: 120px">등록금액</span>
+                                    <span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span>원
+                                </div>
+                                <div class="d-flex">
+                                    <span style="width: 120px">비고</span>
+                                    <span>${bulkTransfer.description}</span>
+                                </div>
+                            </div>
+
                         </div>
-                        <div>
-                            <div>비고 <span>${bulkTransfer.description}</span></div>
-                            <div>
-                                등록건수 <span>${bulkTransfer.totalCnt}</span>건
-                                &nbsp &nbsp 성공건수 <span id="success-count" >${bulkTransfer.successCnt}</span>건
-                                &nbsp &nbsp 실패건수 <span id="failure-count" class="text-color-point-red">${bulkTransfer.failureCnt}</span>건
+                        <div style="width: 45%" class="d-flex flex-column align-items-center">
+                            <div id="progress-text-area" class="w-100 d-flex justify-content-start">
+                           </div>
+                            <div class="progress-circle">
+                                <svg width="180" height="180" viewBox="0 0 100 100">
+                                    <circle class="bg-circle" cx="50" cy="50" r="45"></circle>
+                                    <circle class="progress-circle-bar" cx="50" cy="50" r="45"></circle>
+                                </svg>
+                                <div class="progress-text" id="progress-text">0%</div>
+                            </div>
+
+                            <div id="progress-count-area" class="d-flex">
+                                <div>등록건수 <span class="fw-bold">${bulkTransfer.totalCnt}</span>&nbsp 건</div>
+                                <div>&nbsp &nbsp 성공건수 &nbsp  <span id="success-count" class="text-color-basic">${bulkTransfer.successCnt}</span>&nbsp  건</div>
+                                <div>&nbsp &nbsp 실패건수 &nbsp <span id="failure-count" class="text-color-point-red fw-bold">${bulkTransfer.failureCnt}</span>&nbsp  건</div>
+                                <div id="progress-top-text">
+                                    <span>처리 현황</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
                 <div class="account-balance">
                     등록일시 <span id="register-date">${bulkTransfer.registrationDate}</span>
                 </div>
+
             </div>
         </section>
+
+
+
         <%--    입금계좌정보 테이블    --%>
         <section id="sectionB" style="display: none;">
             <h4>대량이체 결과확인</h4>
@@ -122,6 +152,7 @@
                     </tbody>
                 </table>
             </div>
+
             <div class="table-top-btns">
                 <div>
                    총 <span>${bulkTransfer.totalCnt}</span> 건
