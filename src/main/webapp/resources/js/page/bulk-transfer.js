@@ -166,6 +166,8 @@ function selectAccount(selectedAccountId) {
 
 
             $('#search-modal-account').modal('hide');
+            $('html, body').animate({ scrollTop: $(document).height() * 0.15 }, 'slow', function() {
+            });
         },
         error: function (error) {
             console.log("Error while fetching account details", error);
@@ -202,6 +204,9 @@ function checkAccountId() {
             $('#uploadEmployeeBtn').prop('disabled', false);
             $('#uploadIndividualEmployeeBtn').prop('disabled', false);
             $('input[value="예금주 확인"]').prop('disabled', false);
+
+            $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
+            });
         },
         error: function (error) {
             swal({ title: "검증 실패", text: error.responseText, icon: "error", buttons: { cancel: true, confirm: false } });
@@ -415,6 +420,8 @@ function uploadEmployeePreview() {
 
             updateEmployeeTable();
             console.log(employeeDataForUpload);
+            $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
+            });
         },
         error: function (xhr, status, error) {
             console.error('Upload failed!', error);
@@ -499,6 +506,8 @@ function validationExecution() {
                 swal({ title: "예금주 확인", text: "예금주 확인 완료", icon: "success" });
                 $('input[value="이체실행"]').removeAttr('disabled');
             }
+            $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
+            });
         },
         error: function () {
             console.log("예금주 확인 실패");

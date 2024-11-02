@@ -55,7 +55,7 @@
     <container id="registration-page">
         <%--  계좌선택 섹션  --%>
         <section>
-            <h4>대량이체 출금정보</h4>
+            <h4>출금계좌정보</h4>
             <hr>
             <%--계좌선택--%>
             <div id="select-account-form">

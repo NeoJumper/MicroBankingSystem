@@ -19,11 +19,12 @@ public class BulkTransferCreate {
     private BigDecimal amount;
     private Integer successCnt;
     private Integer failureCnt;
+    private Integer totalCnt;
     private String status;
     private String description;
 
     @Builder
-    public BulkTransferCreate(Long id, Long registrantId, String accId, Long branchId, String tradeDate, BigDecimal amount, Integer successCnt, Integer failureCnt, String status, String description) {
+    public BulkTransferCreate(Long id, Long registrantId, String accId, Long branchId, String tradeDate, BigDecimal amount, Integer successCnt, Integer failureCnt,Integer totalCnt, String status, String description) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;
@@ -32,6 +33,7 @@ public class BulkTransferCreate {
         this.amount = amount;
         this.successCnt = successCnt;
         this.failureCnt = failureCnt;
+        this.totalCnt = totalCnt;
         this.status = status;
         this.description = description;
     }
