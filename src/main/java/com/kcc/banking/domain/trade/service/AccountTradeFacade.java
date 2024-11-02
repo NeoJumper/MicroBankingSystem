@@ -37,6 +37,7 @@ import java.util.*;
 @Slf4j
 public class AccountTradeFacade {
 
+
     private final InterestService interestService;
     private final AccountService accountService;
     private final TradeService tradeService;
@@ -575,15 +576,15 @@ public class AccountTradeFacade {
                 .branchId(currentData.getBranchId())
                 .accId(transferTradeCreateList.get(0).getAccId())
                 .tradeDate(currentData.getCurrentBusinessDate())
-                .status("NOR")
+                .status("WAIT")
                 .successCnt(0)
                 .failureCnt(0)
+                .totalCnt(transferTradeCreateList.size())
                 .description(transferTradeCreateList.get(0).getDescription())
                 .build();
 
-
         bulkTransferService.createBulkTransfer(bulkTransferCreate);
-
+        bulkTransferService.createProgress(bulkTransferId, transferTradeCreateList.size());
 
 
         transferTradeCreateList.forEach(transferTradeCreate -> {
@@ -594,21 +595,24 @@ public class AccountTradeFacade {
 
                     BulkTransferUpdate bulkTransferUpdate = BulkTransferUpdate.builder()
                             .id(bulkTransferId)
-                            .status("SUCCESS")
+                            .perTradeStatus("SUCCESS")
                             .amount(transferTradeCreate.getTransferAmount())
                             .modifierId(currentData.getEmployeeId())
                             .build();
-                    bulkTransferService.updateAllBulkTransfer(bulkTransferUpdate);
+                    bulkTransferService.updateBulkTransfer(bulkTransferUpdate);
+                    bulkTransferService.increaseSuccessCnt(bulkTransferId, currentData.getEmployeeId());
                 } catch (CustomException e) {
                     transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
                     processFailTransfer(transferTradeCreate);
 
                     BulkTransferUpdate bulkTransferUpdate = BulkTransferUpdate.builder()
                             .id(bulkTransferId)
-                            .status("FAIL")
+                            .perTradeStatus("FAIL")
                             .modifierId(currentData.getEmployeeId())
                             .build();
-                    bulkTransferService.updateAllBulkTransfer(bulkTransferUpdate);
+                    bulkTransferService.updateBulkTransfer(bulkTransferUpdate);
+                    bulkTransferService.increaseFailureCnt(bulkTransferId, currentData.getEmployeeId());
+
                 }
                 return null;
             });

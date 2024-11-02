@@ -2,10 +2,14 @@ let employeeDataForUpload = [];
 let errorItems = [];
 let checkedData = [];
 let url;
+// 주기적으로 상태를 확인하는 인터벌
+let progressInterval = setInterval(checkProgressStatus, 1000);
+var bulkTransferId;
+
 
 document.addEventListener("DOMContentLoaded", function () {
     url = window.location.href;
-    const bulkTransferId = getParameterByName('bulkTransferId', url);
+    bulkTransferId = getParameterByName('bulkTransferId', url);
     fillBulkTransferInfoListBody(bulkTransferId);
 
     registerClickEventOfSelectAllCheckbox();
@@ -15,7 +19,57 @@ document.addEventListener("DOMContentLoaded", function () {
     registerClickEventOfSearch();
     registerClickEventOfFileUpload();
     registerClickEventOfPrint();
+
+    checkProgressStatus();
 });
+
+// 숫자 애니메이션 함수
+function animateNumber(element, target) {
+    $({ value: parseInt(element.text()) }).animate({ value: target }, {
+        duration: 500, // 애니메이션 시간 (ms)
+        easing: 'swing',
+        step: function() {
+            element.text(Math.floor(this.value));
+        },
+        complete: function() {
+            element.text(this.value); // 마지막 숫자를 목표값으로 설정
+        }
+    });
+}
+
+// 진행 상태 확인 함수
+function checkProgressStatus() {
+
+    $.ajax({
+        url: `/api/employee/bulk-transfers/${bulkTransferId}/progress-status`,
+        type: 'GET',
+        success: function(response) {
+            // 부드럽게 successCnt와 failureCnt를 업데이트
+            animateNumber($('#success-count'), response.successCnt);
+            animateNumber($('#failure-count'), response.failureCnt);
+
+            // 진행이 완료되었는지 확인
+            if (response.status !== 'WAIT') { // 상태가 완료된 경우
+                clearInterval(progressInterval); // 주기적인 호출 중단
+                $('#sectionB').show();
+                $('#back-btn').prop('disabled', false);
+                if(response.failureCnt > 0)
+                    $('#resend-error-item').prop('disabled', false);
+
+
+                swal({
+                    title: "대량 이체 완료",
+                    text: "대량 이체가 완료되었습니다.",
+                    icon: "success",
+                });
+
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("진행 상태를 불러오는 중 오류 발생:", error);
+        }
+    });
+}
 
 function registerClickEventOfSelectAllCheckbox() {
     $('#bulk-transfer-info thead input[type="checkbox"]').click(function () {

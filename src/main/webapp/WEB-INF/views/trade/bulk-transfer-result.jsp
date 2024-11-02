@@ -29,7 +29,7 @@
 
     </div>
     <div>
-        <h3>대량이체</h3>
+        <h4>대량이체</h4>
     </div>
     <div class="progress-container">
         <div class="step">
@@ -57,7 +57,7 @@
     <container id="result-confirmation-page">
         <%--  계좌선택 섹션  --%>
         <section id="sectionA">
-            <h4>대량이체 결과확인</h4>
+            <h4>대량이체 등록정보 및 진행현황</h4>
             <hr>
             <%--계좌선택--%>
             <div id="select-account-form">
@@ -73,8 +73,8 @@
                             <div>비고 <span>${bulkTransfer.description}</span></div>
                             <div>
                                 등록건수 <span>${bulkTransfer.totalCnt}</span>건
-                                &nbsp &nbsp 성공건수 <span>${bulkTransfer.successCnt}</span>건
-                                &nbsp &nbsp 실패건수 <span class="text-color-point-red">${bulkTransfer.failureCnt}</span>건
+                                &nbsp &nbsp 성공건수 <span id="success-count" >${bulkTransfer.successCnt}</span>건
+                                &nbsp &nbsp 실패건수 <span id="failure-count" class="text-color-point-red">${bulkTransfer.failureCnt}</span>건
                             </div>
                         </div>
                     </div>
@@ -86,8 +86,8 @@
             </div>
         </section>
         <%--    입금계좌정보 테이블    --%>
-        <section id="sectionB">
-            <h4>입금계좌정보</h4>
+        <section id="sectionB" style="display: none;">
+            <h4>대량이체 결과확인</h4>
             <div class="table-top-btns">
                 <div>
                     <input type="button" value="파일등록">
@@ -130,8 +130,8 @@
 
         </section>
         <section class="submit-btns">
-            <input id="resend-error-item" class="basic-btn" type="button" value="오류건재전송">
-            <input id="back-btn" class="basic-btn" type="button" value="이전 페이지">
+            <input id="resend-error-item" class="basic-btn" type="button" value="오류건재전송" disabled>
+            <input id="back-btn" class="basic-btn" type="button" value="이전 페이지" disabled>
         </section>
     </container>
 </div>

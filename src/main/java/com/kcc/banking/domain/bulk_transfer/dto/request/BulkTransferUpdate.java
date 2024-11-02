@@ -19,12 +19,13 @@ public class BulkTransferUpdate {
     private BigDecimal amount;
     private Integer successCnt;
     private Integer failureCnt;
+    private String perTradeStatus;
     private String status;
     private String description;
     private Long modifierId;
 
     @Builder
-    public BulkTransferUpdate(Long id, Long registrantId, String accId, Long branchId, String tradeDate, BigDecimal amount, Integer successCnt, Integer failureCnt, String status, String description, Long modifierId) {
+    public BulkTransferUpdate(Long id, Long registrantId, String accId, Long branchId,String perTradeStatus, String tradeDate, BigDecimal amount, Integer successCnt, Integer failureCnt, String status, String description, Long modifierId) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;
@@ -34,6 +35,7 @@ public class BulkTransferUpdate {
         this.successCnt = successCnt;
         this.failureCnt = failureCnt;
         this.status = status;
+        this.perTradeStatus = perTradeStatus;
         this.description = description;
         this.modifierId = modifierId;
     }

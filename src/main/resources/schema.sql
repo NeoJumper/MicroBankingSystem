@@ -77,6 +77,7 @@ CREATE TABLE Bulk_transfer (
                        amount NUMBER NULL,
                        status VARCHAR(10) NULL,
                        description VARCHAR(1000) NULL,
+                       total_cnt NUMBER NOT NULL,
                        success_cnt NUMBER NOT NULL ,
                        failure_cnt NUMBER NOT NULL ,
                        registrant_id NUMBER NOT NULL,
