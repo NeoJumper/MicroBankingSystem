@@ -85,7 +85,7 @@ function checkProgressStatus() {
             currentPercentage = percentage;
 
             // 진행이 완료되었는지 확인
-            if (response.status !== 'WAIT') { // 상태가 완료된 경우
+            if (response.status === 'NOR' || response.status === 'WAIT') { // 상태가 완료된 경우
                 clearInterval(progressInterval); // 주기적인 호출 중단
                 fillBulkTransferInfoListBody(bulkTransferId);
 

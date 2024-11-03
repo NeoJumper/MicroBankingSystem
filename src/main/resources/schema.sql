@@ -74,6 +74,7 @@ CREATE TABLE Bulk_transfer (
                        acc_id VARCHAR(20) NOT NULL,
                        branch_id NUMBER NOT NULL,
                        trade_date TIMESTAMP NULL,
+                       registered_amount NUMBER NULL,
                        amount NUMBER NULL,
                        status VARCHAR(10) NULL,
                        description VARCHAR(1000) NULL,

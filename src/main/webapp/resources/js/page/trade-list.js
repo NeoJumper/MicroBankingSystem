@@ -441,19 +441,39 @@ function renderOfBulkTransferSearchResults(transferList){
         const transferDate = new Date(transfer.registrationDate); // ISO 8601 포맷 사용
         const formattedTransferDate = `${transferDate.toLocaleString('ko-KR')}`; // 한국 시간 포맷
 
+        var transferStatus;
+
+        switch (transfer.status) {
+            case "NOR":
+                transferStatus = "이체완료";
+                break;
+            case "WAIT":
+                transferStatus = "이체대기";
+                break;
+            case "PROCESSING":
+                transferStatus = "이체진행중";
+                break;
+            case "FAIL":
+                transferStatus = "실패";
+                break;
+            default:
+                transferStatus = "알 수 없는 상태"; // 예외 처리
+                break;
+        }
         // 행 생성
         var row = $('<tr>')
             .append($('<td>').text(transfer.rn)) // 순번
-            .append($('<td>').text(formattedTransferDate)) // 거래일시
+            .append($('<td>').text(transferStatus)) // 상태
             .append($('<td>').text(transfer.accId)) // 비고 (여기선 계좌 ID)
-            .append($('<td>').text(comma(transfer.amount) + ' 원' )) // 총 이체금액
+            .append($('<td>').text(formattedTransferDate)) // 거래일시
+            .append($('<td>').text(transfer.totalCnt)) // 총건수
             .append($('<td>').text(transfer.failureCnt)) // 실패건수
             .append($('<td>').text(transfer.successCnt)) // 성공건수
-            .append($('<td>').text(transfer.totalCnt)) // 총건수
-            .append($('<td>').text(transfer.status)) // 상태
+            .append($('<td>').text(comma(transfer.registeredAmount) + ' 원' )) // 총 등록금액
+            .append($('<td>').text(comma(transfer.amount) + ' 원' )) // 총 이체금액
             .append($('<td>').append($('<a>')
                 .text('상세보기')
-                .attr('href', '/page/employee/bulk-transfer-result?bulkTransferId=' + transfer.id) // 여기에 실제 링크를 넣으세요
+                .attr('href', '/page/employee/bulk-transfer-result?bulkTransferId=' + transfer.id)
                 .addClass('basic-btn')
                 .css({'text-decoration': 'none'})// Bootstrap 클래스 추가
             )); // 상태
