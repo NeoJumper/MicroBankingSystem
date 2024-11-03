@@ -511,6 +511,7 @@ function validationExecution() {
             if (data.bulkTransferValidationList.length) {
                 swal({ title: "예금주 확인", text: "예금주 확인 완료", icon: "success" });
                 $('input[value="이체실행"]').removeAttr('disabled');
+                $('input[value="예금주 확인"]').hide();
             }
             $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
             });
@@ -634,8 +635,10 @@ function initExecution() {
     $('#result-content-div').hide();
     $('input[value="초기화"]').hide();
     $('input[value="이체실행"]').hide();
+    $('input[value="예금주 확인"]').show();
 
     resetProgressIndicator();
+    updateEmployeeTable();
 }
 
 function handleBusinessDayDateInput() {
