@@ -1,3 +1,4 @@
+<%@ page import="java.math.BigDecimal" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -15,6 +16,8 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
 <%--    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js" integrity="sha512-dlPw+ytv/6JyepmelABrgeYgHI0O+frEwgfnPdXDTOIZz+eDgfW07QXG02/O8COfivBdGNINy+Vex+lYmJ5rxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -75,7 +78,7 @@
                                 </div>
                                 <div class="d-flex my-3">
                                     <span style="width: 120px">등록금액</span>
-                                    <span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span>원
+                                    <span><fmt:formatNumber value="${bulkTransfer.registeredAmount}" pattern="#,###"/></span>원
                                 </div>
                                 <div class="d-flex">
                                     <span style="width: 120px">비고</span>
@@ -114,7 +117,92 @@
             </div>
         </section>
 
+        <%-- 처리결과 내역서 --%>
+        <section id="sectionC" style="padding: 60px 60px">
 
+            <div>
+                <div class="d-flex justify-content-between">
+                    <span style="font-size: 60px">처리결과 내역서</span>
+                    <div id="print-img-container">
+                        <img  src="/resources/assets/neobank-logo.png" alt="Logo" id="print-logo-img"  />
+                    </div>
+                </div>
+            </div>
+            <div style="background-color:  #0079D4; height: 7px; width: 100%; margin-top: 30px; margin-bottom: 60px"></div>
+            <table class="common-table print-bulk-transfer">
+                <tr>
+                    <th>거래명</th>
+                    <td>
+                        <span>대량이체</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>계좌번호</th>
+                    <td>
+                        <span>${bulkTransfer.accId}</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>등록자</th>
+                    <td>
+                        <span>${bulkTransfer.registrantName}</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>등록일시</th>
+                    <td>
+                        <span>${bulkTransfer.registrationDate}</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>등록 금액</th>
+                    <td>
+                        <span><fmt:formatNumber value="${bulkTransfer.registeredAmount}" pattern="#,###"/></span> 원</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>입금계좌 표시</th>
+                    <td>
+                        <span>${bulkTransfer.description}</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr >
+                    <th rowspan="2" style="width: 20%">총 이체건수</th>
+                    <td rowspan="2" style="width: 30%"><span class="fw-bold">${bulkTransfer.totalCnt}</span>&nbsp 건</td>
+
+                    <th style="width: 20%">성공건수</th>
+                    <td><span class="text-color-basic">${bulkTransfer.successCnt}</span>&nbsp 건</td>
+
+                </tr>
+                <tr>
+                    <th style="width: 20%">실패건수</th>
+                    <td><span class="text-color-point-red fw-bold">${bulkTransfer.failureCnt}</span>&nbsp 건</td>
+                </tr>
+                <tr >
+                    <th rowspan="2" style="width: 20%">총 이체금액</th>
+                    <td rowspan="2" style="width: 30%"><span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
+
+                    <th style="width: 20%">정상</th>
+                    <td><span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
+
+                </tr>
+                <tr>
+                    <th style="width: 20%">오류</th>
+                    <td><span><fmt:formatNumber value="${bulkTransfer.failAmount}" pattern="#,###"/></span> 원</td>
+                </tr>
+
+
+            </table>
+
+
+
+        </section>
 
         <%--    입금계좌정보 테이블    --%>
         <section id="sectionB" style="display: none;">
@@ -158,7 +246,7 @@
                    총 <span>${bulkTransfer.totalCnt}</span> 건
                 </div>
                 <div>
-                    총 이체금액 <span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원
+                    총 이체금액 <span id="total-transfer-amount" ><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원
                 </div>
             </div>
 
@@ -169,8 +257,12 @@
         </section>
     </container>
 </div>
+
+
+</body>
+
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/bulk-transfer-result.js" ></script>
-</body>
+
 
 </html>

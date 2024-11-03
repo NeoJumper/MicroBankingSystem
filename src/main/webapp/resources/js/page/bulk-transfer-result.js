@@ -1,3 +1,4 @@
+
 let employeeDataForUpload = [];
 let errorItems = [];
 let checkedData = [];
@@ -85,7 +86,7 @@ function checkProgressStatus() {
             currentPercentage = percentage;
 
             // 진행이 완료되었는지 확인
-            if (response.status !== 'WAIT') { // 상태가 완료된 경우
+            if (response.status === 'NOR' || response.status === 'WAIT') { // 상태가 완료된 경우
                 clearInterval(progressInterval); // 주기적인 호출 중단
                 fillBulkTransferInfoListBody(bulkTransferId);
 
@@ -212,7 +213,7 @@ function handleFileUpload() {
     });
 }
 
-function handlePrint() {
+/*function handlePrint() {
     const printWindow = window.open('', '', 'height=600,width=800');
     printWindow.document.write('<html><head><title>인쇄</title>');
     printWindow.document.write('<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>');
@@ -221,13 +222,35 @@ function handlePrint() {
     printWindow.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
     printWindow.document.write('</head><body style="padding: 15px;">');
 
-    const sectionA = $('#sectionA').clone();
-    const sectionB = $('#sectionB').clone();
-    printWindow.document.write(sectionA.prop('outerHTML'));
-    printWindow.document.write(sectionB.prop('outerHTML'));
+    const sectionC = $('#sectionC').clone();
+    printWindow.document.write(sectionC.prop('outerHTML'));
     printWindow.document.write('</body></html>');
     printWindow.document.close();
     printWindow.print();
+}*/
+
+function handlePrint() {
+    const element = $('#sectionC');
+
+// 요소가 존재하는지 확인
+    if (element.length === 0) {
+        console.error("Element not found!");
+        return; // 함수 종료
+    }
+
+// html2canvas에 DOM 요소를 전달
+    html2canvas(element[0]).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save("download.pdf");
+    }).catch((error) => {
+        console.error("Error generating PDF:", error);
+    });
 }
 
 function handleBack() {
@@ -251,7 +274,10 @@ function fillBulkTransferInfoListBody(bulkTransferId) {
             const tbody = $('#bulk-transfer-info-list-body');
             tbody.empty();
 
+            let totalTransferAmount = 0;
             $.each(bulkTransferInfoList, function (index, bulkTransferInfo) {
+                if(bulkTransferInfo.status === 'NOR')
+                    totalTransferAmount += bulkTransferInfo.amount;
                 tbody.append(createRow(bulkTransferInfo, ++index));
             });
 
@@ -261,6 +287,7 @@ function fillBulkTransferInfoListBody(bulkTransferId) {
                     icon: "success"
             });
 
+            $('#total-transfer-amount').text(comma(totalTransferAmount));
             $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
             });
 

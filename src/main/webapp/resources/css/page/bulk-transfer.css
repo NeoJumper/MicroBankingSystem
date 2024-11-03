@@ -426,13 +426,16 @@ p {
     position: sticky;
     top: 0px;
 }
-#uploadIndividualEmployeeModal th, #uploadIndividualEmployeeModal td{
+#uploadIndividualEmployeeModal th{
     font-size: 1.2rem;
+}
+#uploadIndividualEmployeeModal td{
+    font-size: 1.0rem;
 }
 #uploadIndividualEmployeeModal input
 {
-    width: 70%;
-    padding: 10px 10px;
+    width: 75%;
+    padding: 8px 4px;
 }
 
 #transfer-info-detail-modal th, #transfer-info-detail-modal td{
@@ -506,4 +509,23 @@ p {
 #progress-top-text{
     position: absolute;
     bottom: 210px;
+}
+#print-img-container{
+    margin-left: 9px;
+    width: 85px;
+    justify-content: center;
+    display: flex;
+    align-items: end;
+    overflow: hidden;
+}
+#print-logo-img{
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    justify-content: center;
+    align-items: center;
+}
+.print-bulk-transfer th, .print-bulk-transfer td{
+    font-size: 2.0rem !important;
+    padding: 28px 23px !important;
 }

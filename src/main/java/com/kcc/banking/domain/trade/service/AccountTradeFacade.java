@@ -572,11 +572,12 @@ public class AccountTradeFacade {
         BulkTransferCreate bulkTransferCreate = BulkTransferCreate.builder()
                 .id(bulkTransferId)
                 .registrantId(currentData.getEmployeeId())
+                .registeredAmount(transferTradeCreateList.stream().map(TransferTradeCreate::getTransferAmount).reduce(BigDecimal.ZERO, BigDecimal::add))
                 .amount(BigDecimal.ZERO)
                 .branchId(currentData.getBranchId())
                 .accId(transferTradeCreateList.get(0).getAccId())
                 .tradeDate(currentData.getCurrentBusinessDate())
-                .status("WAIT")
+                .status("PROCESSING")
                 .successCnt(0)
                 .failureCnt(0)
                 .totalCnt(transferTradeCreateList.size())
@@ -642,7 +643,7 @@ public class AccountTradeFacade {
 
         for(BulkTransferValidation bulkTransferValidation: bulkTransferValidationList){
             AccountDetail depositAccount = accountService.getAccountDetail(bulkTransferValidation.getTargetAccId());
-            String customerName = depositAccount.getCustomerName();
+
 
 
             String status = "";
@@ -650,13 +651,19 @@ public class AccountTradeFacade {
             if(depositAccount == null || depositAccount.getStatus().equals("CLS")){
                 status = "계좌 오류";
                 errorCnt++;
+
             }
-            else if (!customerName.equals(bulkTransferValidation.getDepositor())){
+            else if (!depositAccount.getCustomerName().equals(bulkTransferValidation.getDepositor())){
                 status = "예금주 불일치";
                 inconsistencyCnt++;
+                bulkTransferValidation.setValidDepositor(depositAccount.getCustomerName());
+            }
+            else
+            {
+                status = "정상";
+                bulkTransferValidation.setValidDepositor(depositAccount.getCustomerName());
             }
             bulkTransferValidation.setStatus(status);
-            bulkTransferValidation.setValidDepositor(customerName);
         }
 
         BulkTransferValidationResult result = BulkTransferValidationResult.builder()

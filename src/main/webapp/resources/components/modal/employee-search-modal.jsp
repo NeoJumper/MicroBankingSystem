@@ -16,13 +16,14 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                    <h5 class="modal-title" id="employee-search-modal-title" style="margin-right: 10px">행원 정보 검색 모달</h5>
+                    <h5 class="modal-title" id="employee-search-modal-title" style="margin-right: 10px">행원 검색</h5>
                     <p style="margin-bottom: 0px" id="modal-search-status"></p>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                     <table class="common-table">
                         <tbody>
+                            <h5>행원정보 입력</h5>
                             <tr>
                                 <th>
                                     <label for="search-modal-select"></label>
@@ -44,7 +45,7 @@
                     <button id="search-modal-reset-btn" class="reset-btn" type="button">초기화</button>
                 </div>
                 <div id="search-modal-search-result">
-                    <h5>고객정보</h5>
+                    <h5>행원정보</h5>
                     <table class="common-table" style="margin-bottom: 0px">
                         <thead>
                             <th style="width: 6%;"><label>선택</label></th>

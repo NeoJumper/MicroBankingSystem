@@ -14,16 +14,18 @@
     <select id="findBulkTransferList" parameterType="BulkTransferSearch">
         SELECT *
         FROM (
-            SELECT ROWNUM rn, id, registration_date, amount, status, success_cnt, failure_cnt, total_cnt, description
+            SELECT ROWNUM rn, id,acc_id, registration_date, amount, registered_amount, status, success_cnt, failure_cnt, total_cnt, description
             FROM (
                 SELECT
                     id,
+                    acc_id,
                     registration_date,
+                    registered_amount,
                     amount,
                     status,
                     success_cnt,
                     failure_cnt,
-                    success_cnt + failure_cnt as total_cnt,
+                    total_cnt,
                     description
                 FROM Bulk_Transfer
                 <where>
@@ -69,6 +71,7 @@
         bt.id,
         bt.registration_date,
         e.name as registrant_name,
+        bt.registered_amount,
         bt.amount,
         bt.status,
         bt.success_cnt,
@@ -91,6 +94,7 @@
             acc_id,
             branch_id,
             trade_date,
+            registered_amount,
             amount,
             success_cnt,
             failure_cnt,
@@ -109,6 +113,7 @@
             #{accId},
             #{branchId},
             #{tradeDate},
+            #{registeredAmount},
             #{amount},
             #{successCnt},
             #{failureCnt},
