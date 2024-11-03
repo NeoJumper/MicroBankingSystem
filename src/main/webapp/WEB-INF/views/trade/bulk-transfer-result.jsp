@@ -1,3 +1,4 @@
+<%@ page import="java.math.BigDecimal" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -114,7 +115,92 @@
             </div>
         </section>
 
+        <%-- 처리결과 내역서 --%>
+        <section id="sectionC">
 
+            <div>
+                <h3>처리결과 내역서</h3>
+            </div>
+            <table class="common-table">
+                <tr>
+                    <th>거래명</th>
+                    <td>
+                        <span>대량이체</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>계좌번호</th>
+                    <td>
+                        <span>${bulkTransfer.accId}</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>등록자</th>
+                    <td>
+                        <span>${bulkTransfer.registrantName}</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>등록일시</th>
+                    <td>
+                        <span>${bulkTransfer.registrationDate}</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>등록 금액</th>
+                    <td>
+                        <span><fmt:formatNumber value="${bulkTransfer.registeredAmount}" pattern="#,###"/></span> 원</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <th>입금계좌 표시</th>
+                    <td>
+                        <span>${bulkTransfer.description}</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr >
+                    <th rowspan="2" style="width: 25%">총 이체건수</th>
+                    <td rowspan="2" style="width: 25%"><span class="fw-bold">${bulkTransfer.totalCnt}</span>&nbsp 건</td>
+
+                    <th style="width: 25%">성공건수</th>
+                    <td><span class="text-color-basic">${bulkTransfer.successCnt}</span>&nbsp 건</td>
+
+                </tr>
+                <tr>
+                    <th style="width: 25%">실패건수</th>
+                    <td><span class="text-color-point-red fw-bold">${bulkTransfer.failureCnt}</span>&nbsp 건</td>
+                </tr>
+                <tr >
+                    <th rowspan="2" style="width: 25%">총 이체금액</th>
+                    <td rowspan="2" style="width: 25%"><span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
+
+                    <th style="width: 25%">정상</th>
+                    <td><span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
+
+                </tr>
+                <%
+                    BigDecimal registeredAmount = (BigDecimal) request.getAttribute("bulkTransfer.registeredAmount");
+                    BigDecimal amount = (BigDecimal) request.getAttribute("bulkTransfer.amount");
+                    BigDecimal result = registeredAmount.subtract(amount);
+                    request.setAttribute("calculatedAmount", result);
+                %>
+                <tr>
+                    <th style="width: 25%">오류</th>
+                    <td><span><fmt:formatNumber value="${calculatedAmount}" pattern="#,###"/></span> 원</td>
+                </tr>
+
+
+            </table>
+
+
+
+            </section>
 
         <%--    입금계좌정보 테이블    --%>
         <section id="sectionB" style="display: none;">
