@@ -44,10 +44,6 @@ function registerClickEventOfCustomerSelectBtn() {
             const customerId = selectedRow.find('td:nth-child(2)').text();
 
             window.location.href = `/page/common/customer-update?id=${customerId}`;
-
-
-        } else {
-            alert('고객을 선택해 주세요.');
         }
     });
 }

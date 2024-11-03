@@ -15,7 +15,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="search-modal-title" style="margin-right: 10px">고객 정보 검색 모달</h5>
+                <h5 class="modal-title" id="search-modal-title" style="margin-right: 10px">고객 검색</h5>
                 <p style="margin-bottom: 0px" id="modal-search-status"></p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -23,6 +23,7 @@
                 <table class="common-table">
                     <tbody>
                     <tr>
+                        <h5>고객정보입력</h5>
                         <th>
                             <select id="search-modal-select" name="search-modal-select" style="width: 150px">
                                 <option value="id">고객번호</option>

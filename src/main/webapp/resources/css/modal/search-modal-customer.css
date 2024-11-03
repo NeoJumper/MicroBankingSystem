@@ -1,7 +1,9 @@
 #search-customer-modal .modal-dialog {
     min-width: 65%;
 }
-
+#search-modal-account .modal-body {
+    padding: 2% 4%;
+}
 .modal-body h5,
 .modal-header h1 {
     font-weight: bold;
@@ -40,7 +42,7 @@
 }
 
 #scrollable-tbody-wrapper {
-    max-height: 400px;
+    max-height: 250px;
     overflow-y: auto;
     display: block;
 }

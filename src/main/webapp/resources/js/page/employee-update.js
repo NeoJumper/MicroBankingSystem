@@ -19,7 +19,11 @@ $(document).ready(function() {
 
 
         } else {
-            alert('고객을 선택해 주세요.');
+            swal({
+                title: "행원을 선택해 주세요.",
+                // text: "비밀번호 인증 성공",
+                icon: "warning",
+            });
         }
     });
 });
