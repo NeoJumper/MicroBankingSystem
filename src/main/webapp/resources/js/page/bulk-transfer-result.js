@@ -251,7 +251,10 @@ function fillBulkTransferInfoListBody(bulkTransferId) {
             const tbody = $('#bulk-transfer-info-list-body');
             tbody.empty();
 
+            let totalTransferAmount = 0;
             $.each(bulkTransferInfoList, function (index, bulkTransferInfo) {
+                if(bulkTransferInfo.status === 'NOR')
+                    totalTransferAmount += bulkTransferInfo.amount;
                 tbody.append(createRow(bulkTransferInfo, ++index));
             });
 
@@ -261,6 +264,7 @@ function fillBulkTransferInfoListBody(bulkTransferId) {
                     icon: "success"
             });
 
+            $('#total-transfer-amount').text(comma(totalTransferAmount));
             $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
             });
 

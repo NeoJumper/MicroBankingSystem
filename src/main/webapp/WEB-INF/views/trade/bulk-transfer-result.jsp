@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="d-flex my-3">
                                     <span style="width: 120px">등록금액</span>
-                                    <span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span>원
+                                    <span><fmt:formatNumber value="${bulkTransfer.registeredAmount}" pattern="#,###"/></span>원
                                 </div>
                                 <div class="d-flex">
                                     <span style="width: 120px">비고</span>
@@ -158,7 +158,7 @@
                    총 <span>${bulkTransfer.totalCnt}</span> 건
                 </div>
                 <div>
-                    총 이체금액 <span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원
+                    총 이체금액 <span id="total-transfer-amount" ><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원
                 </div>
             </div>
 
