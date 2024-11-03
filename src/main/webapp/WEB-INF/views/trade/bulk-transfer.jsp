@@ -181,7 +181,7 @@
                     </button>
 
                     <button id="uploadIndividualEmployeeBtn" type="button" class="file-btn" value="개별추가"
-                            style="height: 33px; font-weight: bold;">
+                            style="height: 33px; font-weight: bold;" disabled>
                         개별 추가
                     </button>
 

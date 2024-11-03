@@ -203,7 +203,7 @@ function checkAccountId() {
 
             $('#uploadEmployeeBtn').prop('disabled', false);
             $('#uploadIndividualEmployeeBtn').prop('disabled', false);
-            $('input[value="예금주 확인"]').prop('disabled', false);
+
 
             $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
             });
@@ -346,8 +346,14 @@ function updateEmployeeTable() {
 
 
         tbody.append(transferInfoRow);
+
+
     });
 
+    if (employeeDataForUpload.length > 0)
+        $('input[value="예금주 확인"]').prop('disabled', false);
+    else
+        $('input[value="예금주 확인"]').prop('disabled', true);
 
 
     const totalRow = $('<tr>');
