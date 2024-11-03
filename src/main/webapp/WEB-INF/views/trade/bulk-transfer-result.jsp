@@ -16,6 +16,8 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
 <%--    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js" integrity="sha512-dlPw+ytv/6JyepmelABrgeYgHI0O+frEwgfnPdXDTOIZz+eDgfW07QXG02/O8COfivBdGNINy+Vex+lYmJ5rxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -116,12 +118,18 @@
         </section>
 
         <%-- 처리결과 내역서 --%>
-        <section id="sectionC">
+        <section id="sectionC" style="padding: 60px 60px">
 
             <div>
-                <h3>처리결과 내역서</h3>
+                <div class="d-flex justify-content-between">
+                    <span style="font-size: 60px">처리결과 내역서</span>
+                    <div id="print-img-container">
+                        <img  src="/resources/assets/neobank-logo.png" alt="Logo" id="print-logo-img"  />
+                    </div>
+                </div>
             </div>
-            <table class="common-table">
+            <div style="background-color:  #0079D4; height: 7px; width: 100%; margin-top: 30px; margin-bottom: 60px"></div>
+            <table class="common-table print-bulk-transfer">
                 <tr>
                     <th>거래명</th>
                     <td>
@@ -165,34 +173,28 @@
                     <td colspan="2"></td>
                 </tr>
                 <tr >
-                    <th rowspan="2" style="width: 25%">총 이체건수</th>
-                    <td rowspan="2" style="width: 25%"><span class="fw-bold">${bulkTransfer.totalCnt}</span>&nbsp 건</td>
+                    <th rowspan="2" style="width: 20%">총 이체건수</th>
+                    <td rowspan="2" style="width: 30%"><span class="fw-bold">${bulkTransfer.totalCnt}</span>&nbsp 건</td>
 
-                    <th style="width: 25%">성공건수</th>
+                    <th style="width: 20%">성공건수</th>
                     <td><span class="text-color-basic">${bulkTransfer.successCnt}</span>&nbsp 건</td>
 
                 </tr>
                 <tr>
-                    <th style="width: 25%">실패건수</th>
+                    <th style="width: 20%">실패건수</th>
                     <td><span class="text-color-point-red fw-bold">${bulkTransfer.failureCnt}</span>&nbsp 건</td>
                 </tr>
                 <tr >
-                    <th rowspan="2" style="width: 25%">총 이체금액</th>
-                    <td rowspan="2" style="width: 25%"><span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
+                    <th rowspan="2" style="width: 20%">총 이체금액</th>
+                    <td rowspan="2" style="width: 30%"><span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
 
-                    <th style="width: 25%">정상</th>
+                    <th style="width: 20%">정상</th>
                     <td><span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
 
                 </tr>
-                <%
-                    BigDecimal registeredAmount = (BigDecimal) request.getAttribute("bulkTransfer.registeredAmount");
-                    BigDecimal amount = (BigDecimal) request.getAttribute("bulkTransfer.amount");
-                    BigDecimal result = registeredAmount.subtract(amount);
-                    request.setAttribute("calculatedAmount", result);
-                %>
                 <tr>
-                    <th style="width: 25%">오류</th>
-                    <td><span><fmt:formatNumber value="${calculatedAmount}" pattern="#,###"/></span> 원</td>
+                    <th style="width: 20%">오류</th>
+                    <td><span><fmt:formatNumber value="${bulkTransfer.failAmount}" pattern="#,###"/></span> 원</td>
                 </tr>
 
 
@@ -200,7 +202,7 @@
 
 
 
-            </section>
+        </section>
 
         <%--    입금계좌정보 테이블    --%>
         <section id="sectionB" style="display: none;">
@@ -255,8 +257,12 @@
         </section>
     </container>
 </div>
+
+
+</body>
+
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/bulk-transfer-result.js" ></script>
-</body>
+
 
 </html>

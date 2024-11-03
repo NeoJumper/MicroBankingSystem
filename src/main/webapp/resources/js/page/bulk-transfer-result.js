@@ -1,3 +1,4 @@
+
 let employeeDataForUpload = [];
 let errorItems = [];
 let checkedData = [];
@@ -212,7 +213,7 @@ function handleFileUpload() {
     });
 }
 
-function handlePrint() {
+/*function handlePrint() {
     const printWindow = window.open('', '', 'height=600,width=800');
     printWindow.document.write('<html><head><title>인쇄</title>');
     printWindow.document.write('<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>');
@@ -221,13 +222,35 @@ function handlePrint() {
     printWindow.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
     printWindow.document.write('</head><body style="padding: 15px;">');
 
-    const sectionA = $('#sectionA').clone();
-    const sectionB = $('#sectionB').clone();
-    printWindow.document.write(sectionA.prop('outerHTML'));
-    printWindow.document.write(sectionB.prop('outerHTML'));
+    const sectionC = $('#sectionC').clone();
+    printWindow.document.write(sectionC.prop('outerHTML'));
     printWindow.document.write('</body></html>');
     printWindow.document.close();
     printWindow.print();
+}*/
+
+function handlePrint() {
+    const element = $('#sectionC');
+
+// 요소가 존재하는지 확인
+    if (element.length === 0) {
+        console.error("Element not found!");
+        return; // 함수 종료
+    }
+
+// html2canvas에 DOM 요소를 전달
+    html2canvas(element[0]).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save("download.pdf");
+    }).catch((error) => {
+        console.error("Error generating PDF:", error);
+    });
 }
 
 function handleBack() {

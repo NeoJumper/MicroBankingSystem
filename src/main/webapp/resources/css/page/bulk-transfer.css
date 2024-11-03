@@ -510,3 +510,22 @@ p {
     position: absolute;
     bottom: 210px;
 }
+#print-img-container{
+    margin-left: 9px;
+    width: 85px;
+    justify-content: center;
+    display: flex;
+    align-items: end;
+    overflow: hidden;
+}
+#print-logo-img{
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    justify-content: center;
+    align-items: center;
+}
+.print-bulk-transfer th, .print-bulk-transfer td{
+    font-size: 2.0rem !important;
+    padding: 28px 23px !important;
+}
