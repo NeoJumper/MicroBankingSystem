@@ -102,6 +102,7 @@ function calculateTerminationRate(openDate, businessDate, period, interestRateSu
     const baseInterestRate = interestRateSum / 100;
     // 해지 유형 분기처리
     let isEarlyTermination = false;
+    let isMaturityTermination = false;
 
     // 만기일 이전 해지 (중도 해지)
     if (business < current) {
@@ -125,6 +126,7 @@ function calculateTerminationRate(openDate, businessDate, period, interestRateSu
     // 만기일 해지
     else if (business.getTime() === current.getTime()) {
         finalInterestRate = baseInterestRate;
+        isMaturityTermination = true;
     }
     // 만기 후 해지
     else {
@@ -136,7 +138,7 @@ function calculateTerminationRate(openDate, businessDate, period, interestRateSu
         }
     }
 
-    return {finalInterestRate, isEarlyTermination};
+    return {finalInterestRate, isEarlyTermination, isMaturityTermination, diffDays};
 }
 
 // 경과일수 구하는 함수
@@ -205,21 +207,21 @@ function getSavingsFlexibleAccount(data, accountId) {
         success: function (data) {
             console.log("SELECT FLEXIBLE ACCOUNT", data);
 
-            const interestSum = data.interestRate + data.preferentialInterestRate;
+            const interestRateSum = data.interestRate + data.preferentialInterestRate;
 
             // 해지 이율 계산
-            const {finalInterestRate, isEarlyTermination} = calculateTerminationRate(
+            const {finalInterestRate, isEarlyTermination, isMaturityTermination, diffDays} = calculateTerminationRate(
                 data.openDate,
                 businessDate,
                 data.period,
-                interestSum
+                interestRateSum
             );
 
             const rateData = calculateRateData(
                 data.openDate,
                 businessDate,
                 data.period,
-                interestSum
+                interestRateSum
             );
 
             let highlightedKey = ""; // 해당 케이스 키
@@ -243,15 +245,43 @@ function getSavingsFlexibleAccount(data, accountId) {
                 }
             }
 
-            addInterestList(finalInterestRate, isEarlyTermination, accountId);
+            let interestSum = addInterestList(finalInterestRate, isEarlyTermination, accountId);
+            addCloseInfo(isEarlyTermination, isMaturityTermination, diffDays, data.openDate, data.openDate, businessDate, finalInterestRate, data.balance, interestSum);
             console.log("FINAL INTEREST::", finalInterestRate);
 
         }
     })
 }
 
-function addInterestList(finalInterestRate, isEarlyTermination, accountId) {
+function addCloseInfo(isEarlyTermination, isMaturityTermination, diffDays, openDate, expirationDate, businessDate, finalInterestRate, balance, interestSum){
+    // 계좌 해지 정보 테이블에 값 추가
+    let tbodyInfo = $('#savings-account-close-info');
+    tbodyInfo.empty();
+    let closeType = "만기 후 해지";
+    if(isEarlyTermination){
+        closeType = "중도 해지";
+    }else if(isMaturityTermination){
+        closeType = "만기 해지"
+    }
 
+    let row = `
+        <tr>
+            <td>${closeType}</td>
+            <td>${diffDays} 일</td>
+            <td>${openDate}</td>
+            <td>${expirationDate}</td>
+            <td>${businessDate}</td>
+            <td>${finalInterestRate}</td>
+            <td>${(balance + interestSum).toLocaleString()} 원</td>
+        </tr>
+    `;
+
+    tbodyInfo.append(row);
+
+}
+
+function addInterestList(finalInterestRate, isEarlyTermination, accountId) {
+    let interestSum = 0;
     // 중도 해지
     // if (isEarlyTermination) {
     //
@@ -267,6 +297,7 @@ function addInterestList(finalInterestRate, isEarlyTermination, accountId) {
                     console.log("account close flexible", data);
 
                     // tbody 요소를 찾고 기존 내용을 비웁니다.
+                    // 이자내역 테이블에 값 추가
                     let tbody = $('#savings-account-flexible-monthly-interest-list').find('tbody');
                     tbody.empty();
 
@@ -275,7 +306,7 @@ function addInterestList(finalInterestRate, isEarlyTermination, accountId) {
                         tbody.append(`
                 <tr class="saving-account-close-empty-message">
                     <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 100px">
-                        해지할 계좌를 선택해 주십시오
+                        이자 내역이 존재하지 않습니다.
                     </td>
                 </tr>
             `);
@@ -291,6 +322,7 @@ function addInterestList(finalInterestRate, isEarlyTermination, accountId) {
                         <td><input type="text" value="${item.amount.toLocaleString()}" disabled /> 원</td>
                     </tr>
                 `;
+                            interestSum += item.amount;
                             tbody.append(row);
                         });
                     }
@@ -300,7 +332,7 @@ function addInterestList(finalInterestRate, isEarlyTermination, accountId) {
                 }
             });
     }
-
+    return interestSum;
 }
 
 

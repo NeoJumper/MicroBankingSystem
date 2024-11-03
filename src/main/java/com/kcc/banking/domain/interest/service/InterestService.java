@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
@@ -53,7 +54,10 @@ public class InterestService {
         // 이자 생성
         interestCreateList.forEach(interestMapper::createInterest);
         // 4. 매월 1일인지 영업일 확인
-        LocalDate date = LocalDate.parse(businessDateAndBranchId.getBusinessDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDateTime date = LocalDateTime.parse("2024-08-02 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        // for Test
+        //  LocalDate date = LocalDate.parse(businessDateAndBranchId.getBusinessDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
         // 매월 1일이라면
         if (date.getDayOfMonth() == 1) {
         // 복리 계산을 위한 이자내역 합산 가져오기
