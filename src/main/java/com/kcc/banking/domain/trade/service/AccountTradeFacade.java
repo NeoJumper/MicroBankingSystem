@@ -876,16 +876,19 @@ public class AccountTradeFacade {
 
         for(TransferTradeCreate transferTradeCreate : transferTradeCreateList){
             try{
+                // 성공 메시지 출력
+                System.out.println("reserve success 로직 시작" +transferTradeCreate.getReserveTransferId());
                 processTransfer(transferTradeCreate); // 이체거래 시도
 
                 // 성공을 했으니 해당 예약이체의 상태를 SUCCESS로 변경
                 String reserveId = transferTradeCreate.getReserveTransferId();
                 reserveTransferService.updateTransferStatus(reserveId, "SUCCESS", null);
 
-
+                // 성공 메시지 출력
+                System.out.println("Transfer successful for Reserve ID: " + reserveId);
             }catch (CustomException e){
 
-                String reserveId= transferTradeCreate.getReserveTransferId();
+                /*String reserveId= transferTradeCreate.getReserveTransferId();
                 // 실패했을 때 거래내역 생성
                 transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
                 processFailTransfer(transferTradeCreate);
@@ -918,7 +921,7 @@ public class AccountTradeFacade {
                     // 이메일 전송 로직 추가
 
                     //sendEmailNotification(existingTransfer);
-                }
+                }*/
                 // 새로운 예약이체 다시 생성 , missed_count +1
 
                 // ReserveTransferCreate.build에 필요한 정보 넣고 transferService.createReserveTransfer(...) 실행
