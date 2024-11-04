@@ -3,9 +3,13 @@ package com.kcc.banking.domain.reserve_transfer.service;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.reserve_transfer.dto.request.ReserveTransferCreate;
+import com.kcc.banking.domain.reserve_transfer.dto.request.SearchReserve;
 import com.kcc.banking.domain.reserve_transfer.mapper.ReserveTransferMapper;
+import com.kcc.banking.domain.trade.dto.request.TransferTradeCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -28,4 +32,17 @@ public class ReserveTransferService {
 
         reserveTransferMapper.createReserveTransfer(reserveTransferCreate);
     }
+
+    public void updateTransferStatus(String reserveTransferId, String status, String failureReason) {
+        reserveTransferMapper.updateTransferStatus(reserveTransferId, status, failureReason);
+    }
+
+    public List<TransferTradeCreate> getPendingTransfers(SearchReserve searchReserve){
+        return reserveTransferMapper.getPendingTransfers(searchReserve);
+    }
+
+    public void insertScheduledAutoTransferList(List<ReserveTransferCreate> reserveTransferCreateList){
+        reserveTransferMapper.insertScheduledAutoTransferList(reserveTransferCreateList);
+    }
+
 }

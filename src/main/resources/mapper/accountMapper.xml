@@ -166,7 +166,8 @@
             auto.auto_transfer_end_date as auto_transfer_end_date,
             auto.auto_transfer_period as auto_transfer_period,
             auto.create_date as create_date,
-            a.open_date as open_date
+            a.open_date as open_date,
+            auto.acc_id as acc_id
         FROM Account a  JOIN Customer c ON a.customer_id = c.id
                         JOIN Product p ON a.product_id = p.id
                         JOIN Auto_transfer auto on a.id = auto.target_acc_id

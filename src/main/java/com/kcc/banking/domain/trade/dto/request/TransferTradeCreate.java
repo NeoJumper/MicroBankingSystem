@@ -22,14 +22,20 @@ public class TransferTradeCreate {
     private String failureReason;
 
     // 예약이체를 위한 컬럼(나머지는 위에서 찾아쓰면 됨)
-    private Long reserveTransferId;
+    private String reserveTransferId;
     private String transferStartTime;
     private String transferEndTime;
     private Long retryCount;
     private String status;
 
+
+    private int missedCount;
+
+    // 영업일
+    private String transferDate;
+
     @Builder
-    public TransferTradeCreate(String accId, String targetAccId, Long bulkTransferId, BigDecimal transferAmount, String description, String accountPassword, String krw, String depositor, String failureReason, Long reserveTransferId, String transferStartTime, String transferEndTime, Long retryCount, String status) {
+    public TransferTradeCreate(String accId, String targetAccId, Long bulkTransferId, BigDecimal transferAmount, String description, String accountPassword, String krw, String depositor, String failureReason, String reserveTransferId, String transferStartTime, String transferEndTime, Long retryCount, String status, int missedCount) {
         this.accId = accId;
         this.targetAccId = targetAccId;
         this.bulkTransferId = bulkTransferId;
@@ -44,5 +50,8 @@ public class TransferTradeCreate {
         this.transferEndTime = transferEndTime;
         this.retryCount = retryCount;
         this.status = status;
+
+        // 자동이체 실패횟수
+        this.missedCount = missedCount;
     }
 }

@@ -110,13 +110,14 @@
                             <input id="reserve-date-input" type="date" value="1234" style="margin-right: 20px; height: 50px">
                             <div id="time-search-container">
                                 <select id="time-search-btn">
-                                    <option value="1">9:30 ~ 10:30</option>
-                                    <option value="1">10:30 ~ 11:30</option>
-                                    <option value="1">11:30 ~ 12:30</option>
-                                    <option value="1">12:30 ~ 13:30</option>
-                                    <option value="1">13:30 ~ 14:30</option>
-                                    <option value="1">14:30 ~ 15:30</option>
-                                    <option value="1">15:30 ~ 16:00</option>
+                                    <option value="1">9:00 ~ 9:59</option>
+                                    <option value="1">10:00 ~ 10:59</option>
+                                    <option value="1">11:00 ~ 11:59</option>
+                                    <option value="1">12:00 ~ 12:59</option>
+                                    <option value="1">13:00 ~ 13:59</option>
+                                    <option value="1">14:00 ~ 14:59</option>
+                                    <option value="1">15:00 ~ 15:59</option>
+                                    <option value="1">16:00 ~ 16:59</option>
                                 </select>
                                 <img class="search-icon" type="submit" src="/resources/assets/timer.jpg">
                             </div>

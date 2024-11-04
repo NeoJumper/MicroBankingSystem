@@ -428,11 +428,16 @@ VALUES ('001-0000012-0726', 1, 1, 8, 2, TO_TIMESTAMP('2023-03-03 00:00:00', 'YYY
         TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 -- 가입된 적금 확인용 (2024/3/3가입)
-INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
-                     expire_date, password, balance, account_type, open_date, status, version)
-VALUES ('001-0000013-3687', 1, 1, 9, 2, TO_TIMESTAMP('2023-03-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0, NULL,
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id,
+                     start_date, preferential_interest_rate,
+                     expire_date,expected_expire_date,
+
+                     password, balance, account_type, open_date, status, version)
+VALUES ('001-0000013-3687', 1, 1, 9, 2,
+        TO_TIMESTAMP('2023-03-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1.0,
+        NULL, TO_TIMESTAMP('2024-08-01 00:00:00'),
         '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1000000, 'PRIVATE',
-        TO_TIMESTAMP('2024-07-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+        TO_TIMESTAMP('2023-03-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 -- 가입된 적금 확인용 (2024/3/3가입)
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
@@ -596,30 +601,60 @@ INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, bal
 VALUES (trade_seq.nextval, '001-0000013-3687', 2, 1, TO_TIMESTAMP('2023-09-05 00:00:01', 'YYYY-MM-DD HH24:MI:SS'),
         1000000, 7000000, 'DEPOSIT', 'NOR', 'FALSE', '7회차 13번 적금 출금', trade_num_seq.NEXTVAL, '001-0000015-7777');
 
+-- 자동이체 출금 : 001-0010000-7777
+-- 자동이체 입금 : 001-0010001-3687
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
+                     expire_date, password, balance, per_trade_limit, daily_limit, account_type, open_date, status,
+                     version)
+VALUES ('001-0010000-7777', 1, 1, 2, 5, TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.3, NULL,
+        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 10000000, 5000000, 10000000, 'PRIVATE',
+        TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
+                     expire_date, password, balance, per_trade_limit, daily_limit, account_type, open_date, status,
+                     version)
+VALUES ('001-0010001-7777', 1, 2, 2, 5, TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.3, NULL,
+        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 0, 0, 10000000, 'PRIVATE',
+        TO_TIMESTAMP('2024-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+
+-- 자동이체 출금 : 001-0010000-7777
+-- 자동이체 입금 : 001-0010001-3687
+-- 10000원 매달 15일 입금
+--
+INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
+                           auto_transfer_start_date,
+                           auto_transfer_end_date, auto_transfer_period,
+                           create_date, registration_date, registrant_id,
+                           modification_date, modifier_id, version)
+VALUES (1, '001-0010000-7777', '001-0010001-3687', 10000,
+        TO_TIMESTAMP('2024-01-15 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+
+        NULL, 1,
+        SYSTIMESTAMP, SYSTIMESTAMP, 2,
+        NULL, NULL, 1);
+
 
 -- 1회차 자동이체 설정 (고객 ID: 1)
 INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
-                           auto_transfer_start_date, auto_transfer_date,
+                           auto_transfer_start_date,
                            auto_transfer_end_date, auto_transfer_period,
                            create_date, registration_date, registrant_id,
                            modification_date, modifier_id, version)
 VALUES (1, '001-0000015-7777', '001-0000013-3687', 1000000,
         TO_TIMESTAMP('2023-04-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
-        TO_TIMESTAMP('2023-04-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
         NULL, 1,
         SYSTIMESTAMP, SYSTIMESTAMP, 2,
         NULL, NULL, 1);
 
 -- 2회차 자동이체 설정 (고객 ID: 1)
 INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
-                           auto_transfer_start_date, auto_transfer_date,
+                           auto_transfer_start_date,
                            auto_transfer_end_date, auto_transfer_period,
                            create_date, registration_date, registrant_id,
                            modification_date, modifier_id, version)
 
 VALUES (2, '001-0000015-7777', '001-0000014-8954', 100000,
         TO_TIMESTAMP('2023-04-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
-        TO_TIMESTAMP('2023-04-13 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
         NULL, 1,
         SYSTIMESTAMP, SYSTIMESTAMP, 2,
         NULL, NULL, 1);

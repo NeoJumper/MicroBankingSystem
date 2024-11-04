@@ -10,6 +10,7 @@ import com.kcc.banking.domain.account.dto.response.CloseSavingsAccount;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.auto_transfer.dto.request.AutoTransferCreate;
+import com.kcc.banking.domain.auto_transfer.dto.response.AutoTransferList;
 import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferUpdate;
@@ -24,6 +25,10 @@ import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.interest.dto.response.InterestSum;
 import com.kcc.banking.domain.interest.service.InterestService;
+import com.kcc.banking.domain.reserve_transfer.dto.request.ReserveTransferCreate;
+import com.kcc.banking.domain.reserve_transfer.dto.request.SearchReserve;
+import com.kcc.banking.domain.reserve_transfer.mapper.ReserveTransferMapper;
+import com.kcc.banking.domain.reserve_transfer.service.ReserveTransferService;
 import com.kcc.banking.domain.trade.dto.request.*;
 import com.kcc.banking.domain.trade.dto.response.CloseCancelDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;
@@ -34,19 +39,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 @Slf4j
+@EnableScheduling
 public class AccountTradeFacade {
 
     private final InterestService interestService;
@@ -57,6 +62,8 @@ public class AccountTradeFacade {
     private final CommonService commonService;
     private final AutoTransferService autoTransferService;
     private final TradeMapper tradeMapper;
+    private final ReserveTransferService reserveTransferService;
+    private final ReserveTransferMapper reserveTransferMapper;
 
     /**
      *   @Description - 보통 예금계좌 개설
@@ -685,38 +692,197 @@ public class AccountTradeFacade {
         return result;
     }
 
+
+
+
+
     /**
      * @Description
-     * - 스케줄러가 돌았을 때 처리해야하는 작업내역을 해당 메서드로 받아온다
-     * - 성공했을 때는 예약 이체의 상태를 SUCCESS로 변경한다.
+     *  자동이체 관련 : 동일한 금액을 동일한 계좌에 이체하는 거래 서비스
+     *  주말 x : 자동이체는 주말에 안나감
+     *
+     *  크론 표현식 @Scheduled(cron = "0 0 0 * * MON-FRI")
+     *  0 0 9: 매일 자정 (0시 0분 0초)
+     *  *: 모든 일
+     *  *: 모든 월
+     *  MON-FRI: 월요일부터 금요일까지 (주말 제외)
+     *  
+     *
+     **/
+
+    /**
+     *   자동이체
+     *  1. 잔액부족시 미납 횟수 +1 (다음 달 이체일 변경 x)
+     *  2. 다음 달에도 안내면 미납횟수 +1 (다음 달 이체일 변경 x)
+     *  3-1. 돈 몰아서 낼 수 있으면 내기 (다음 달 이체일 변경 0)
+     *  3-2. 다음 달에도 안내면 미납횟수 +1
+     *  4. 3회 초과시 status stop으로 바꾸면서 자동이체 해지
+     *  5.
+     * */
+
+    /**
+     * @Description
+     * 1. 자동이체 해당날짜(당일) 내역을 예약이체에 등록된다 -> 스케줄러 돌려서
+     *  자동이체는 영업일에만 이체됨 따라서 오픈 후 차례대로 실행
+     *  시간 설정 x -> 날짜 주기 정함 -> 자동이체됨
+     *
+     */
+
+//    @Scheduled(cron = "0 0 0 * * MON-FRI")
+    @Scheduled(fixedRate = 6000)
+    public void scheduleAutoTransfers(){
+        System.out.println("scheduleReserveTransfers >>>>>> ");
+
+        //1. 활성 상태의(wait)이고, 다음 영업일 = 영업일 당일인 자동이체 리스트 조회
+        List<AutoTransferList> todayAutoList = autoTransferService.findScheduledAutoTransferList();
+
+        //2. 조회된 자동이체 리스트 -> 예약이체 등록
+        if (!todayAutoList.isEmpty()) {
+            System.out.println("조회된 자동이체 리스트>>>>");
+            registerReserveTransfers(todayAutoList);
+        }
+    }
+
+    // 자동이체 리스트 -> 예약이체등록하기
+    // 예약이체에 자동이체거래내역 넣기,
+    private void registerReserveTransfers(List<AutoTransferList> autoTransfers) {
+        List<ReserveTransferCreate> reserveTransfers = new ArrayList<>();
+
+        for (AutoTransferList autoTransfer : autoTransfers) {
+            ReserveTransferCreate reserveTransfer = new ReserveTransferCreate();
+            reserveTransfer.setAutoTransferId(autoTransfer.getId());
+            reserveTransfer.setAccId(autoTransfer.getAccId());
+            reserveTransfer.setTargetAccId(autoTransfer.getTargetAccId());
+            reserveTransfer.setAmount(autoTransfer.getAmount());
+            reserveTransfer.setStatus("WAIT"); // 초기 상태를 대기(pending)로 설정
+            reserveTransfer.setRegistrantId(autoTransfer.getRegistrantId());
+            reserveTransfer.setTransferType("AUTO");
+            // 필요시 추가 필드 설정
+           // reserveTransfer.setTransferDate(new Timestamp(System.currentTimeMillis())); // 현재 시간을 이체 날짜로 설정
+            //reserveTransfer.setBranchId(autoTransfer.getBranchId()); // 브랜치 ID 설정 (필요한 경우)
+           // reserveTransfer.setVersion(1); // 버전 초기값 설정
+
+            reserveTransfers.add(reserveTransfer);
+        }
+
+        // 데이터베이스에 삽입
+        if (!reserveTransfers.isEmpty()) {
+            try {
+                reserveTransferMapper.insertScheduledAutoTransferList(reserveTransfers);
+            } catch (Exception e) {
+                // 로깅 또는 예외 처리
+                System.err.println("Error inserting scheduled transfers: " + e.getMessage());
+            }
+        }
+
+
+    }
+
+
+
+
+
+    /**
+     * @Description
+     * 예약 이체 :특정주기 단위가 아니라 특정일에 잊지 않고 한번 자금을 이체하는 서비스
+     * 대기 중인(wait) 예약 이체 목록을 조회
+     * 30분 마다 조회 -> 조회이유 : 예약 취소가 날수 있음. 반영해야댐
+     *
+     */
+    @Scheduled(fixedRate = 6000)// 6초마다 실행
+    public void scheduleReserveTransfers() {
+        System.out.println("scheduleReserveTransfers >>>>>> ");
+
+        SearchReserve searchReserve = new SearchReserve();
+        searchReserve.setStatus("WAIT");
+
+        /**
+         *  조건 :
+         *      현재 영업일 = 예약일
+         *      & 상태 = WAIT
+         *      & 예약 시간대 -> 현재 실행 시간
+         *  실행 해야 하는 전체 예약이체 정보 리스트 가져오기
+         */
+        List<TransferTradeCreate> transfers = reserveTransferService.getPendingTransfers(searchReserve);
+
+        if (!transfers.isEmpty()) {
+            processReserveTransfer(transfers);
+        }
+
+    }
+
+
+
+
+
+    /**
+     * @Description
+     * - 스케줄러가 돌았을 때 처리해야하는 작업내역을 해당 메서드로 받아온다 0
+     * - 성공했을 때는 예약 이체의 상태를 SUCCESS로 변경한다. 0
      * - 실패했을 때는 예약 이체의 상태는 FAIL로 변경하고 실패거래를 생성한다.
-     * - 자동이체는 실패했을 때 시도 횟수를 카운팅하여 새로운 예약이체를 생성한다.(여기를 정하가 짜면 돼!)
+     * - 자동이체는 실패했을 때 시도 횟수를 카운팅하여 새로운 예약이체를 생성한다.
      */
     public void processReserveTransfer(List<TransferTradeCreate> transferTradeCreateList){
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
-        CurrentData currentData = commonService.getCurrentData();
+
         // OPEN 상태가 아니라면
         if (!currentBusinessDay.getStatus().equals("OPEN")) {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
 
-
         for(TransferTradeCreate transferTradeCreate : transferTradeCreateList){
             try{
                 processTransfer(transferTradeCreate); // 이체거래 시도
+
                 // 성공을 했으니 해당 예약이체의 상태를 SUCCESS로 변경
+                String reserveId = transferTradeCreate.getReserveTransferId();
+                reserveTransferService.updateTransferStatus(reserveId, "SUCCESS", null);
+
+
             }catch (CustomException e){
-                // 실패했을 때 여기로 들어옴
-                // 실패거래를 만들어준다. 아래 로직을 사용하되 추가로 들어가야할 데이터가 있는지 고민해보기!
+
+                String reserveId= transferTradeCreate.getReserveTransferId();
+                // 실패했을 때 거래내역 생성
                 transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
                 processFailTransfer(transferTradeCreate);
                 // 실패 했으니 해당 예약이체의 상태를 FAIL로 변경 failReason도 변경
+                reserveTransferService.updateTransferStatus(reserveId, "FAIL", transferTradeCreate.getFailureReason());
 
-                // 자동이체인 경우 retryCount가 원하는 횟수 이하면 새로운 예약이체를 만들어야함
+                // 적금 자동이체인 경우 missed_count가 3회 이하면 새로운 예약이체를 만들어야함
+                int currentMissedCount = transferTradeCreate.getMissedCount();
+                int maxMissedCount = 3;
+
+                if (currentMissedCount < maxMissedCount) {
+                    // 새로운 예약 이체 생성
+                    ReserveTransferCreate newTransfer = new ReserveTransferCreate();
+                    newTransfer.setAccId(transferTradeCreate.getAccId());
+                    newTransfer.setTargetAccId(transferTradeCreate.getTargetAccId());
+                    newTransfer.setAmount(transferTradeCreate.getTransferAmount());
+                    newTransfer.setStatus("WAIT");
+
+                    // 새 예약 이체 등록
+                    List<ReserveTransferCreate> reserveTransfers = new ArrayList<>();
+                    reserveTransfers.add(newTransfer);
+
+                    // 미납 횟수 업데이트 : setMissedCount(currentMissedCount + 1);
+                }else {
+                    // 최대 미납 횟수 초과 시 상태를 STOP으로 변경
+                    reserveTransferService.updateTransferStatus(reserveId, "STOP", "Max missed count exceeded");
+
+                    // missed_count 4번이면 자동이체 STATUS = STOP / 메일전송
+
+
+                    // 이메일 전송 로직 추가
+
+                    //sendEmailNotification(existingTransfer);
+                }
+                // 새로운 예약이체 다시 생성 , missed_count +1
+
                 // ReserveTransferCreate.build에 필요한 정보 넣고 transferService.createReserveTransfer(...) 실행
-                // 이 때 retryCount += 1, 같은거
+
 
             }
         }
     }
+
 }

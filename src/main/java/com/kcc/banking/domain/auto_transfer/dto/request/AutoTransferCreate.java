@@ -27,6 +27,8 @@ public class AutoTransferCreate {
     private String registrantId;  // 등록자 ID
     private String modificationDate;  // 수정일
     private String modifierId;  // 수정자 ID
+    private String nextTransferDate;
+    private BigDecimal missedCount;
 
     @Builder
     public AutoTransferCreate(String id, String accId, String targetAccId, BigDecimal amount, String autoTransferStartDate,

@@ -422,7 +422,6 @@ function createSavingAccount(){
         target_acc_id: branchId,
         amount: removeCommas(balance),
         auto_transfer_start_date: empId,
-        auto_transfer_date: productId,
         auto_transfer_period: password,
         create_date: create_date
     }

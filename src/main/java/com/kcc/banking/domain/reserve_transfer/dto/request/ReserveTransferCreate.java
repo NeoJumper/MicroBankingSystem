@@ -16,20 +16,23 @@ public class ReserveTransferCreate {
     private String accId;
     private String targetAccId;
     private Long bulkTransferId;
+    private Long autoTransferId;
     private BigDecimal amount;
     private String transferDate;
     private String transferStartTime;
     private String transferEndTime;
     private Long retryCount;
-    private String transferType;
+
     private String description;
     private String status;
     private String failureReason;
     private Long registrantId;
     private Long branchId;
-
+    // 자동이체 AUTO, 일반이체 NORMAL
+    private String transferType;
+    
     @Builder
-    public ReserveTransferCreate(Long id, String accId, String targetAccId, Long bulkTransferId, BigDecimal amount, String transferDate, String transferStartTime, String transferEndTime, Long retryCount, String transferType, String description, String status, String failureReason, Long registrantId, Long branchId) {
+    public ReserveTransferCreate(Long id, String accId, String targetAccId, Long bulkTransferId, Long autoTransferId, BigDecimal amount, String transferDate, String transferStartTime, String transferEndTime, Long retryCount, String description, String status, String failureReason, Long registrantId, Long branchId, String transferType) {
         this.id = id;
         this.accId = accId;
         this.targetAccId = targetAccId;
@@ -45,5 +48,6 @@ public class ReserveTransferCreate {
         this.failureReason = failureReason;
         this.registrantId = registrantId;
         this.branchId = branchId;
+        this.autoTransferId = autoTransferId;
     }
 }
