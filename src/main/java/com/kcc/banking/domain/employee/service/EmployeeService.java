@@ -5,7 +5,6 @@ import com.kcc.banking.common.exception.custom_exception.NotFoundException;
 import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
-import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
 import com.kcc.banking.domain.employee.dto.request.EmployeeUpdate;
@@ -49,10 +48,11 @@ public class EmployeeService {
     }
 
 
-    public UpdatedEmployee updateEmployee(EmployeeUpdate employeeUpdate) {
-        employeeUpdate.setCommonColumn(commonService.getCurrentBusinessDateAndEmployeeId());
+    public Long updateEmployee(EmployeeUpdate employeeUpdate) {
+
+        employeeUpdate.setCommonColumn(commonService.getCurrentData());
         employeeMapper.update(employeeUpdate);
-        return new UpdatedEmployee(employeeUpdate, "은평 1지점", "매니저");
+        return employeeUpdate.getId();
 
     }
 
@@ -63,7 +63,12 @@ public class EmployeeService {
     }
 
     public EmployeeDetail getEmployeeDetail(Long id) {
-        return employeeMapper.findEmpDetailById(id);
+        String businessDate = commonService.getCurrentBusinessDay().getBusinessDate();
+
+        EmployeeDetail empDetail = employeeMapper.findEmpDetailById(id);
+        empDetail.setCurrentBusinessDate(businessDate);
+
+        return empDetail;
     }
 
     public AuthData getAuthData() {

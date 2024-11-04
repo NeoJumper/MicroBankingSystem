@@ -23,9 +23,10 @@ public class EmployeeDetail {
     private String email;
     private String password;
     private String roles;
+    private String currentBusinessDate;
 
     @Builder
-    public EmployeeDetail(Long id, String branchName, String registrantName,String registrationDate,String birthDate, String name, String phoneNumber, String address, String detailAddress, String identificationCode, String email, String password, String roles) {
+    public EmployeeDetail(Long id, String branchName, String registrantName,String registrationDate,String birthDate, String name, String phoneNumber, String address, String detailAddress, String identificationCode, String email, String password, String roles, String currentBusinessDate) {
         this.id = id;
         this.branchName = branchName;
         this.registrantName = registrantName;
@@ -39,5 +40,6 @@ public class EmployeeDetail {
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.currentBusinessDate = currentBusinessDate;
     }
 }

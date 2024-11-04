@@ -9,9 +9,10 @@ $(document).ready(function() {
 
     handleResidentNumber();
     clickViewResidentNumber();
+    handlePhoneNumber();
     chkPW();
 
-    handlePhoneNumber();
+
 });
 
 /**
@@ -111,12 +112,14 @@ function fillEmpDataOfDetailModal(createdEmployeeId){
             $('#detail-modal-customer-identification-code').val(createdEmployee.identificationCode);
             $('#detail-modal-emp-address').val(createdEmployee.address);
             $('#detail-modal-emp-detail-address').val(createdEmployee.detailAddress);
-            $('#detail-modal-emp-roles').val(createdEmployee.roles);
-            $('#detail-modal-emp-registrant-name').val(createdEmployee.registrantName);
-            $('#detail-modal-emp-registration-date').val(createdEmployee.registrationDate);
+            var role = createdEmployee.roles === 'ROLE_MANAGER' ? '매니저' : '행원';
+            $('#detail-modal-emp-roles').val(role);
 
-            originalValue = createdEmployee.identificationCode;
-            originalPhoneNumber = createdEmployee.phoneNumber;
+            $('#detail-modal-emp-registrant-name').val(createdEmployee.registrantName);
+            $('#detail-modal-emp-registration-date').val(createdEmployee.currentBusinessDate);
+
+            originalValue = convertNumber(createdEmployee.identificationCode);
+            originalPhoneNumber = convertNumber(createdEmployee.phoneNumber);
             maskResidentNumber();
             hyphenPhoneNumber();
 

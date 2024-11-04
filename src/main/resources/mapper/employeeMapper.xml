@@ -52,8 +52,8 @@
         #{identificationCode},
         #{roles},
         #{registrantId},
-        #{registrationDate},
-        #{version}
+        SYSTIMESTAMP,
+        1
         )
     </insert>
 
@@ -70,8 +70,8 @@
         identification_code = #{identificationCode},
         roles = #{roles},
         modifier_id = #{modifierId},
-        modification_date = #{modificationDate},
-        version = version + #{version}
+        modification_date = SYSTIMESTAMP,
+        version = version + 1
         WHERE id = #{id}
     </update>
 

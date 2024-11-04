@@ -1,7 +1,5 @@
 package com.kcc.banking.domain.employee.controller;
 
-import com.kcc.banking.common.exception.ErrorCode;
-import com.kcc.banking.common.exception.custom_exception.ForbiddenException;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
 import com.kcc.banking.domain.employee.dto.request.EmployeeUpdate;
@@ -10,7 +8,6 @@ import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -30,7 +27,7 @@ public class EmployeeRestController {
 
     }
     @PutMapping("/api/manager/employee")
-    public UpdatedEmployee updateEmployee(@RequestBody EmployeeUpdate employeeUpdate) {
+    public Long updateEmployee(@RequestBody EmployeeUpdate employeeUpdate) {
         return employeeService.updateEmployee(employeeUpdate);
 
     }
