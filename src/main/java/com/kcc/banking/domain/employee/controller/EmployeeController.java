@@ -1,5 +1,7 @@
 package com.kcc.banking.domain.employee.controller;
 
+import com.kcc.banking.domain.common.dto.request.CurrentData;
+import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class EmployeeController {
     private final EmployeeService employeeService;
+    private final CommonService commonService;
 
     @GetMapping("/page/anonymous/login-form")
     public String loginForm(@RequestParam(value = "error", required = false) String error,
@@ -21,7 +24,13 @@ public class EmployeeController {
 
     @GetMapping("/page/manager/employee-save")
     public String employeeSavePage(Model model) {
+        CurrentData currentData = commonService.getCurrentData();
 
+        model.addAttribute("branchId", currentData.getBranchId());
+        model.addAttribute("employeeName", currentData.getEmployeeName());
+        model.addAttribute("employeeId", currentData.getEmployeeId());
+        model.addAttribute("businessDate", currentData.getCurrentBusinessDate());
+        model.addAttribute("branchName", currentData.getBranchName());
         return "employee/employee-save";
     }
 

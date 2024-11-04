@@ -10,6 +10,8 @@ $(document).ready(function() {
     handleResidentNumber();
     clickViewResidentNumber();
     chkPW();
+
+    handlePhoneNumber();
 });
 
 /**
@@ -22,9 +24,11 @@ function registerClickEventOfEmpSaveBtn(){
         var employeeCreateData = {
             name: $('#emp-name').val(),
             birthDate: $('#emp-birth-date').val(),
-            email: $('#emp-email').val(),
             password: $('#emp-password').val(),
-            branchId: $('#emp-branch-id').data('branchId'),
+            residentNumber: originalValue,
+            address: $('#emp-address').val(),
+            detailAddress: $('#emp-detail-address').val(),
+            email: $('#emp-email').val(),
             phoneNumber: $('#emp-phone-number').val(),
             roles: $('#emp-roles').val()
         };
@@ -186,3 +190,38 @@ function chkPW(){
 
 }
 
+function handlePhoneNumber() {
+    $('#emp-phone-number').on('input', function(event) {
+        // 현재 입력된 전체 값
+        let currentValue = $(this).val();
+
+        // 백스페이스 처리
+        if (event.originalEvent.inputType === 'deleteContentBackward') {
+            originalPhoneNumber = originalPhoneNumber.slice(0, -1); // 마지막 문자 제거
+            $(this).val(originalPhoneNumber); // 업데이트된 값을 입력 필드에 반영
+            hyphenPhoneNumber(); // 마스킹 처리 호출
+        } else {
+            // 현재 입력된 마지막 문자
+            let inputChar = currentValue.slice(-1);
+
+            // 숫자일 경우에만 추가
+            if (/^[0-9]$/.test(inputChar)) { // 마지막 문자가 숫자인지 확인
+                originalPhoneNumber += inputChar; // 숫자만 남기고 추가
+            }
+            hyphenPhoneNumber(); // 마스킹 처리 호출
+        }
+    });
+}
+
+// 휴대전화 하이푼 처리
+function hyphenPhoneNumber() {
+    let displayPhoneNumber = originalPhoneNumber; // 화면에 표시할 값 초기화
+    if (originalPhoneNumber.length > 3 && originalPhoneNumber.length <= 7) {
+        displayPhoneNumber = originalPhoneNumber.slice(0, 3) + '-' + originalPhoneNumber.slice(3); // 하이픈 추가
+    }
+    if (originalPhoneNumber.length > 7) {
+        displayPhoneNumber = originalPhoneNumber.slice(0, 3) + '-' + originalPhoneNumber.slice(3, 7) + '-' + originalPhoneNumber.slice(7); // 하이픈 추가
+    }
+    $('#emp-phone-number').val(displayPhoneNumber); // 화면에 마스킹된 값만 보여주기
+    $('#detail-modal-emp-phone-number').val(displayPhoneNumber); // 화면에 마스킹된 값만 보여주기
+}
