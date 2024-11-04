@@ -23,6 +23,7 @@ $(document).ready(function() {
                 break;
 
         }
+        console.log('검색 버튼');
         checkProduct();
          // 계좌 조회 함수 호출
     });
@@ -69,7 +70,7 @@ function checkProduct() {
         data: requestData,
         type: "GET",
         success: function(data) {
-            var productTableBody = $("#search-product-modal-common-table tbody");
+            var productTableBody = $("#search-product-modal-body");
             productTableBody.empty();
 
             $.each(data, function(index, product) {
