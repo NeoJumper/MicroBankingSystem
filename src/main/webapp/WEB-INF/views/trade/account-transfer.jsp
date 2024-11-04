@@ -85,7 +85,8 @@
                     <th><label for="transfer-amount">이체금액</label></th>
                     <td>
                         <div><span id="over-account-balance"></span></div>
-                        <input disabled type="text" id="transfer-amount" style="text-align: right"> 원
+                        <input disabled type="text" id="transfer-amount" style="text-align: right; width: 65%" value="0"> &nbsp 원
+                        <input id = "limit-span" class="mt-1 krw-amount-input" style="display: none" disabled >
                         <div class="button-group">
                             <button type="button" class="amount-btn" disabled>100만</button>
                             <button type="button" class="amount-btn" disabled>50만</button>
@@ -100,7 +101,7 @@
                 <tr>
                     <th><label>예약 여부</label></th>
                     <td>
-                        <div id="reserve-button-group" class="button-group mb-2">
+                        <div id="reserve-button-group" class="radio-button-group mb-2">
                             <input type="radio" id="immediate-transfer-btn" name="scheduled-status" checked>
                             <label for="immediate-transfer-btn">즉시 이체</label>
                             <input class="ms-3" type="radio" id="scheduled-transfer-btn" name="scheduled-status">

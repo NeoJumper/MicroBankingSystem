@@ -4,6 +4,9 @@
 .account-open-table th{
     width: 12%;
 }
+.account-open-table td{
+    width: 30%;
+}
 /* 버튼 CSS */
 .button-group {
     display: flex;

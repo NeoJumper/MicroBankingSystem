@@ -224,16 +224,25 @@ function handleAmountFormat(){
     $('.balance-input').on('input', function() {
         // 현재 입력된 값을 가져옴
         let value = $(this).val();
+        console.log(value);
+        if(String(value) === ''){
+            $(this).siblings('.krw-amount-input').val('').hide();
+            value = 0;
+            $(this).val(value);
+            return;
+        }
+
         let elementId = $(this).attr('id');
-
-        if(elementId === 'per-trade-limit-input'){
+        if(elementId === 'per-trade-limit-input')
             value = handlePerTradeLimit(value);
-        }
-        else if(elementId === 'daily-limit-input'){
+        else if(elementId === 'daily-limit-input')
             value = handleDailyLimit(value);
+        else{
+            value = parseFloat(convertNumber(value));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
         }
 
-        $(this).siblings('.krw-amount-input').val(convertToKoreanNumber(parseInt(value)) + '원');
+
+        $(this).siblings('.krw-amount-input').val(convertToKoreanNumber(parseInt(value)) + '원').show();
 
         // 숫자를 한국 원화 형식으로 변환
         value = String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');

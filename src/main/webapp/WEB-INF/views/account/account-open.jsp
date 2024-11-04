@@ -92,7 +92,7 @@
             <tr>
                 <th>초기 예치금(KRW)</th>
                 <td>
-                    <input type="text" id="init-balance-input" class="balance-input">원
+                    <input type="text" id="init-balance-input" value="0" class="balance-input">원
                     <input id = "init-balance-span" class="mt-1 krw-amount-input">
                 </td>
 
