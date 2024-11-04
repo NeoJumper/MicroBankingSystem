@@ -85,7 +85,7 @@
         <tr>
             <th style="width: 18%"><label>현금 잔액</label></th>
             <td>
-                <input class="emp-close-prev-cash-balance" type="text" value="0" disabled>
+                <input class="emp-close-prev-cash-balance" type="text" value="0" disabled> &nbsp 원
             </td>
         </tr>
     </table>
@@ -98,10 +98,11 @@
     </div>
     <table class="common-table">
         <tr>
-            <th><label for="cash-trade-amount">입금액</label></th>
+            <th style="width: 18%"><label for="cash-trade-amount">입금액</label></th>
             <td>
                 <div><span id="over-account-balance"></span></div>
-                <input disabled type="text" style="text-align: right" id="cash-trade-amount"> 원
+                <input disabled type="text" style="text-align: right" id="cash-trade-amount" value="0"> 원
+                <input id = "limit-span" class="mt-1 krw-amount-input" style="display: none" disabled >
                 <div class="button-group trade-amount-button-group  mb-2">
                     <button type="button" class="amount-btn" disabled>100만</button>
                     <button type="button" class="amount-btn" disabled>50만</button>
@@ -113,13 +114,13 @@
             </td>
         </tr>
         <tr>
-            <th><label for="description">비고</label></th>
+            <th style="width: 18%"><label for="description">비고</label></th>
             <td><input type="text" id="description"></td>
         </tr>
 
 
         <tr>
-            <th>등록일자</th>
+            <th style="width: 18%">등록일자</th>
             <td>
                 <fmt:parseDate value="${tradeDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedTradeDate" />
                 <input type="text" id="cash-trade-registration-date" value="<fmt:formatDate value='${parsedTradeDate}' pattern='yyyy-MM-dd' />" disabled>
