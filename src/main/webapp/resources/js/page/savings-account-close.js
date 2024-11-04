@@ -203,7 +203,7 @@ function getSavingsFlexibleAccount(data, accountId) {
     // 자유적금 해지를 위한 계좌 세부 정보
     // return CloseSavingsFlexibleAccountTotal
     $.ajax({
-        url: "/api/employee/savings-flexible-account-close-total-info/" + accountId,
+        url: "/api/employee/flexible-savings-account/" + accountId,
         type: "GET",
         success: function (data) {
             console.log("SELECT FLEXIBLE ACCOUNT", data);
@@ -254,7 +254,7 @@ function addCloseInfo(data, businessDate) {
 
     let row = `
         <tr>
-            <td>${data.closeTypeDescription}</td>
+            <td id="flexible-saving-account-close-type">${data.closeTypeDescription}</td>
             <td>${data.openDate.split(" ")[0]}</td>
             <td>${data.expectedExpireDate.split(" ")[0]}</td>
             <td>${businessDate}</td>
@@ -491,32 +491,43 @@ function checkAccountId() {
 }
 
 function submitSavingAccountClose() {
+
+    console.log()
     // 정기적금 해지 프로세스
-    if ($('#savings-account-product-type').val("FIXED")) {
+    if ($('#savings-account-product-type').text() == "FIXED") {
         savingAccountFixedCloseRequest();
     }
     // 자유적금 해지 프로세스
-    else if ($('#savings-account-product-type').val("FLEXIBLE")) {
+    else if ($('#savings-account-product-type').text() == "FLEXIBLE") {
         savingAccountFlexibleCloseRequest();
     }
 }
 
 // 정기적금 해지 프로세스
 function savingAccountFixedCloseRequest() {
+
+}
+
+// 자유적금 해지 프로세스
+function savingAccountFlexibleCloseRequest() {
     var accountNumber = $('#savings-account-close-number').val();
-    var totalAmount = parseFloat($('#flexible-saving-account-total-amount').val().replace(/,/g, ''));
+    var totalAmount = parseFloat($('#flexible-saving-account-total-amount').text().replace(/,/g, ''));
+    var closeType = $('#flexible-saving-account-close-type').text();
     $.ajax({
         url: '/api/employee/close-trade',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            accid: accountNumber,
+            accId: accountNumber,
             amount: totalAmount,
             status: "CLS",
             description: "자유 적금 계좌 해지",
-            tradeType: "CLOSE"
+            tradeType: "CLOSE",
+            closeType: closeType
         }),
         success: function (response) {
+
+            console.log("자유적금 계좌 해지 DATA",response);
             swal({
                 title: "해지 성공",
                 text: "계좌 해지 완료되었습니다.",
@@ -525,9 +536,4 @@ function savingAccountFixedCloseRequest() {
 
         }
     })
-}
-
-// 자유적금 해지 프로세스
-function savingAccountFlexibleCloseRequest() {
-
 }

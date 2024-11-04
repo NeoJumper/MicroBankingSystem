@@ -1,15 +1,18 @@
 package com.kcc.banking.domain.account.service;
 
 
+import com.kcc.banking.common.exception.ErrorCode;
+import com.kcc.banking.common.exception.custom_exception.BadRequestException;
+import com.kcc.banking.domain.account.dto.request.AccountClose;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
-import com.kcc.banking.domain.account.mapper.AccountMapper;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
-import com.kcc.banking.domain.business_day.service.BusinessDayService;
+import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.response.InterestDetails;
 import com.kcc.banking.domain.interest.service.InterestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -34,10 +37,11 @@ public class AccountCloseFacade {
      * 1. 개설일 + 기간 = 만기일
      * 1-1. 만기일 이전에 해지 할 시 이자내역 다시 계산
      * 1-2. 만기일 / 만기일 이후 해지 시 그대로 반환
+     * 재계산된 이자 내역 추가
      * @param accountId
      * @return
      */
-    public CloseSavingsFlexibleAccountTotal getCloseSavingsFlexibleAccount(String accountId) {
+    public CloseSavingsFlexibleAccountTotal getFlexibleSavingsAccount(String accountId) {
         // 자유 적금 정보 불러오기
         CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountService.getCloseSavingsFlexibleAccountById(accountId);
         
@@ -177,4 +181,27 @@ public class AccountCloseFacade {
         return closeSavingsFlexibleAccountTotal.of(closeSavingsFlexibleAccountTotal, interestDetailsList);
     }
 
+
+    /**
+     * @Discription 
+     * - 자유적금 계좌 해지
+     *  1. 계좌 해지 거래 내역 생성
+     *  1-2. 행원 시재금 변경(출금)
+     *  2. 계좌 잔액 및 상태 변경
+     *  3. 이자 지급일 및 상태 변경
+     *
+     * @param accountClose
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void closeFlexibleSavingsAccount(AccountClose accountClose) {
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+
+        // OPEN 상태가 아니라면
+        if(!currentBusinessDay.getStatus().equals("OPEN")){
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+
+    }
 }

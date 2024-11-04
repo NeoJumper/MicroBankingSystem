@@ -6,7 +6,8 @@ import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.common.util.TransactionService;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
-import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
+import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
+import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.auto_transfer.dto.request.AutoTransferCreate;
 import com.kcc.banking.domain.auto_transfer.dto.response.AutoTransferList;
@@ -33,15 +34,15 @@ import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TransferDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -153,21 +154,15 @@ public class AccountTradeFacade {
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
-        int tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
-        int statusResult = accountService.updateByCloseTrade(statusWithTrade, currentData);
+        TradeCreate tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
+        AccountUpdate accountUpdate = accountService.updateByCloseTrade(statusWithTrade, currentData);
 
-
-        if (tradeResult > 0) {
-            resultText.append(" 'tradeResult' ");
-        }
-        if (statusResult > 0) {
-            resultText.append(" 'statusResult' ");
-        }
 
         // 행원 마감 출금액 변경
         businessDayCloseService.updateTradeAmount(statusWithTrade.getAmount(), currentData, statusWithTrade.getTradeType());
 
-        return (tradeResult + statusResult ) > 0 ? resultText.toString() : "FAIL";
+        // 적금 계좌 해지 정보 return
+        return null;
 
     }
 
@@ -207,47 +202,50 @@ public class AccountTradeFacade {
 
     //---------------------------------------------------------
     /**
-     *   @Description - 보통예금 계좌 해지
-     *
-     *   1. 계좌 해지 거래 내역 생성
-     *   2. 계좌 잔액 및 상태 변경
-     *   3. 이자 지급일 및 상태 변경
+     *   @Description - 계좌 해지
+     *   1. 해지 계좌 정보 조회
+     *   2. 계좌 해지 거래 내역 생성
+     *   3. 계좌 잔액 및 상태 변경
+     *   4. 이자 지급일 및 상태 변경
      */
     @Transactional(rollbackFor = Exception.class)
-    public String addCloseTrade(StatusWithTrade statusWithTrade) {
-        StringBuilder resultText = new StringBuilder("SUCCESS");
-
+    public AccountCloseResult addCloseTrade(StatusWithTrade statusWithTrade) {
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
-
+        
         // OPEN 상태가 아니라면
         if (!currentBusinessDay.getStatus().equals("OPEN")) {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
+        
+        // 해지 계좌 정보 조회
+        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountById = accountService.getCloseSavingsFlexibleAccountById(statusWithTrade.getAccId());
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
 
-        int tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
-        int statusResult = accountService.updateByCloseTrade(statusWithTrade, currentData);
+        TradeCreate tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
+        AccountUpdate accountUpdate = accountService.updateByCloseTrade(statusWithTrade, currentData);
         int paymentStatusResult = interestService.updateByClose(statusWithTrade, currentData);
 
-
-        if (tradeResult > 0) {
-            resultText.append(" 'tradeResult' ");
-        }
-        if (statusResult > 0) {
-            resultText.append(" 'statusResult' ");
-        }
-        if (paymentStatusResult > 0) {
-            resultText.append(" 'paymentStatusResult' ");
-        }
 
         // 행원 마감 출금액 변경
         businessDayCloseService.updateTradeAmount(statusWithTrade.getAmount(), currentData, statusWithTrade.getTradeType());
 
-        return (tradeResult + statusResult + paymentStatusResult) > 0 ? resultText.toString() : "FAIL";
+        return AccountCloseResult.builder()
+                .accountId(statusWithTrade.getAccId())
+                .accountStatus(accountUpdate.getStatus())
+                .openDate(Timestamp.valueOf(LocalDateTime.parse(closeSavingsFlexibleAccountById.getOpenDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                .accountPreInterRate(closeSavingsFlexibleAccountById.getPreferentialInterestRate())
+                .accountBal(accountUpdate.getBalance())
+                .customerName(closeSavingsFlexibleAccountById.getCustomerName())
+                .customerId(closeSavingsFlexibleAccountById.getCustomerId())
+                .productName(closeSavingsFlexibleAccountById.getProductName())
+                .productInterRate(closeSavingsFlexibleAccountById.getInterestRate())
+                .productTaxRate(closeSavingsFlexibleAccountById.getTaxRate())
+                .amountSum(statusWithTrade.getAmount())
+                .build();
     }
 
 
@@ -330,21 +328,20 @@ public class AccountTradeFacade {
      *   1. 해지된 계좌 정보
      *   2. 해지 계좌 이자 계산 정보
      */
-    public CloseAccountTotal findCloseAccountTotal(String accountId) {
+    public AccountCloseResult findCloseAccountTotal(String accountId) {
 
         InterestSum interestSum = interestService.getInterestSum(accountId);
-
 
         Optional<CloseAccount> optCloseAccount = Optional.ofNullable(accountService.getCloseAccount(accountId));
         CloseAccount closeAccount = optCloseAccount.orElse(new CloseAccount());
 
-        CloseAccountTotal cat = CloseAccountTotal.builder()
+        AccountCloseResult cat = AccountCloseResult.builder()
                 .accountId(closeAccount.getAccountId())
                 .accountStatus(closeAccount.getAccountStatus())
                 .customerName(closeAccount.getCustomerName())
                 .customerId(closeAccount.getCustomerId())
                 .productName(closeAccount.getProductName())
-                .amountDate(closeAccount.getAmountDate())
+                .openDate(closeAccount.getOpenDate())
                 .accountPreInterRate(closeAccount.getAccountPreInterRate())
                 .productInterRate(closeAccount.getProductInterRate())
                 .accountBal(closeAccount.getAccountBal())

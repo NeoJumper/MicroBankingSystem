@@ -5,7 +5,6 @@ import com.kcc.banking.domain.account.dto.response.*;
 import com.kcc.banking.domain.account.service.AccountCloseFacade;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.common.service.CommonService;
-import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
 import com.kcc.banking.domain.trade.service.AccountTradeFacade;
 import com.kcc.banking.domain.trade.service.TradeService;
@@ -98,7 +97,7 @@ public class AccountRestController {
      */
     @GetMapping("/api/employee/account-close-details/{accountId}")
     public ResponseEntity<?> getEmployeeDetail(@PathVariable("accountId") String accountId) {
-        CloseAccountTotal cat = accountTradeFacade.findCloseAccountTotal(accountId);
+        AccountCloseResult cat = accountTradeFacade.findCloseAccountTotal(accountId);
         return ResponseEntity.status(HttpStatus.OK).body(cat);
     }
 
@@ -171,10 +170,21 @@ public class AccountRestController {
      * @param accountId
      * @return ResponseEntity<CloseSavingsFlexibleAccountTotal>
      */
-    @GetMapping("/api/employee/savings-flexible-account-close-total-info/{accountId}")
-    public ResponseEntity<CloseSavingsFlexibleAccountTotal> getCloseFlexibleAccountInfo(@PathVariable("accountId") String accountId){
-        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountCloseFacade.getCloseSavingsFlexibleAccount(accountId);
+    @GetMapping("/api/employee/flexible-savings-account/{accountId}")
+    public ResponseEntity<CloseSavingsFlexibleAccountTotal> getFlexibleCloseAccountInfo(@PathVariable("accountId") String accountId){
+        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountCloseFacade.getFlexibleSavingsAccount(accountId);
         return ResponseEntity.ok(closeSavingsFlexibleAccountTotal);
+    }
+
+    /**
+     * @Discription 
+     * - 자유적금 해지 요청
+     * @return
+     */
+    @PostMapping("/api/employee/flexible-savings-account-close")
+    public ResponseEntity<?> closeFlexibleSavingsAccount(@RequestBody AccountClose accountClose){
+        accountCloseFacade.closeFlexibleSavingsAccount(accountClose);
+        return ResponseEntity.ok(null);
     }
 
 }

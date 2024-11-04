@@ -2,6 +2,7 @@ package com.kcc.banking.domain.trade.controller;
 
 import com.beust.jcommander.Parameter;
 import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResult;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
@@ -81,18 +82,14 @@ public class TradeRestController {
 
     /**
      * @Discription 
-     * - 보통예금 해지 거래 추가
+     * - 계좌 해지 거래 추가
      * @param statusWithTrade
-     * @return ResponseEntity<?>
+     * @return ResponseEntity<AccountCloseResult>
      */
     @PostMapping("/close-trade")
-    public ResponseEntity<?> addCloseTrade(@RequestBody StatusWithTrade statusWithTrade) {
-        String result = accountTradeFacade.addCloseTrade(statusWithTrade);
-
-        if(result.equals("FAIL")) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("계좌해지 거래 실패");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+    public ResponseEntity<AccountCloseResult> addCloseTrade(@RequestBody StatusWithTrade statusWithTrade) {
+        AccountCloseResult accountCloseResult = accountTradeFacade.addCloseTrade(statusWithTrade);
+        return ResponseEntity.status(HttpStatus.OK).body(accountCloseResult);
     }
 
     /**
@@ -103,7 +100,6 @@ public class TradeRestController {
      */
     @PostMapping("/close-cancel-trade")
     public ResponseEntity<CloseCancelDetail> cancelCloseTrade(@RequestBody AccountIdWithExpireDate accountIdWithExpireDate) {
-
         return ResponseEntity.ok().body(accountTradeFacade.rollbackAccountCancel(accountIdWithExpireDate.getAccountId()));
     }
 

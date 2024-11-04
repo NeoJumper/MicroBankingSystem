@@ -34,6 +34,7 @@ public class CloseSavingsFlexibleAccountTotal {
     private String interestCalculationMethod;
     private String period;
     private BigDecimal interestRate;
+    private BigDecimal taxRate;
 
     // 해지 시 최종 이율
     private BigDecimal finalInterestRate;

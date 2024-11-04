@@ -24,7 +24,7 @@ public class CloseSavingsAccount {
     private BigDecimal productTaxRate;
 
     @Builder
-    public CloseSavingsAccount(String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp amountDate, BigDecimal accountInterestRate, BigDecimal productInterestRate, BigDecimal accountBalance, BigDecimal productTaxRate ,AutoTransferClose autoTransferClose) {
+    public CloseSavingsAccount(String accountId, String accountStatus, String customerName, long customerId, String productName, BigDecimal accountInterestRate, BigDecimal productInterestRate, BigDecimal accountBalance, BigDecimal productTaxRate ,AutoTransferClose autoTransferClose) {
         this.accountId = accountId;
         this.accountStatus = accountStatus;
         this.customerName = customerName;

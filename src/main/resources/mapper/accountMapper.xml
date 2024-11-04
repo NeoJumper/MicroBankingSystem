@@ -279,7 +279,7 @@
         <result column="customer_name" property="customerName" />
         <result column="customer_id" property="customerId" />
         <result column="product_name" property="productName" />
-        <result column="amount_date" property="amountDate" />
+        <result column="open_date" property="openDate" />
         <result column="account_pre_inter_rate" property="accountPreInterRate" />
         <result column="product_inter_rate" property="productInterRate" />
         <result column="account_bal" property="accountBal" />
@@ -294,7 +294,7 @@
         c.name as customer_name,
         c.id as customer_id,
         p.name as product_name,
-        a.start_date as amount_date,
+        a.open_date as open_date,
         a.preferential_interest_rate as account_pre_inter_rate,
         p.interest_rate as product_inter_rate,
         a.balance as account_bal,
@@ -430,7 +430,8 @@
             p.product_type,
             p.interest_calculation_method,
             p.period,
-            p.interest_rate
+            p.interest_rate,
+            p.tax_rate
             FROM Account a
                 JOIN Customer c ON a.customer_id = c.id
                 JOIN Product p ON a.product_id = p.id

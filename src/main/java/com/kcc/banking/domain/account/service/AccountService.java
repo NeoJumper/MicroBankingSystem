@@ -154,7 +154,7 @@ public class AccountService {
      * 잔액과 상태를 변경
      * 해지 거래에 사용
      */
-    public int updateByCloseTrade(StatusWithTrade statusWithTrade, CurrentData currentData) {
+    public AccountUpdate updateByCloseTrade(StatusWithTrade statusWithTrade, CurrentData currentData) {
         AccountUpdate accountUpdate = AccountUpdate.builder()
                 .targetAccId(statusWithTrade.getAccId())
                 .status(statusWithTrade.getStatus())
@@ -163,7 +163,8 @@ public class AccountService {
                 .expireDate(currentData.getCurrentBusinessDate())
                 .build();
 
-        return accountMapper.partialUpdateAccount(accountUpdate);
+        accountMapper.partialUpdateAccount(accountUpdate);
+        return accountUpdate;
     }
 
     /**
