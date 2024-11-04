@@ -103,14 +103,15 @@ function disableDuplicateAccounts() {
     var withdrawalAccountId = $('#withdrawal-account-number').text();  // 출금 계좌 번호 가져오기
 
     if (withdrawalAccountId) {
-        // 모달에 있는 모든 라디오 버튼을 순회하면서 출금 계좌와 동일한 계좌를 찾아 비활성화
+        // 모달에 있는 모든 라디오 버튼을 순회하면서 출금 계좌와 동일한 계좌를 찾아 삭제
         $('#search-modal-common-table tbody tr').each(function () {
             var accountId = $(this).find('td:eq(1)').text();  // 각 계좌의 계좌 번호 추출
 
             //console.log("입금계좌 : " + accountId);
             if (accountId === withdrawalAccountId) {
-                // 동일한 계좌일 경우 라디오 버튼 비활성화
-                $(this).find('input[name="select-account"]').prop('disabled', true);
+                // 선택된 계좌일 경우 라디오 버튼 비활성화
+                //$(this).find('input[name="select-account"]').prop('disabled', true);
+                $(this).closest('tr').remove(); // 요소의 상위 행 삭제
             }
         });
     }

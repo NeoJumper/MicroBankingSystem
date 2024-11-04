@@ -6,7 +6,7 @@ body, input, button {
 h3 {
     font-weight: bold;
 }
-span {
+#select-account-form span {
     color: #073082;
 }
 #registration-page{
