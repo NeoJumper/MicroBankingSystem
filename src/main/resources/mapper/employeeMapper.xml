@@ -108,6 +108,7 @@
     <select id="getEmployeeCount" parameterType="EmployeeSearch">
         SELECT COUNT(*)
         FROM employee
+        WHERE branch_id = #{branchId}
         <where>
             <if test="searchOption != null and !searchOption.equals('')">
                 AND ${searchOption} LIKE '%' || #{searchValue} || '%'
