@@ -13,3 +13,6 @@
     font-size: 22px;
     cursor: pointer;
 }
+#password-error-message {
+    color: var(--point-red);
+}

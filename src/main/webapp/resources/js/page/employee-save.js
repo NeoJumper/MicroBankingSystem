@@ -9,6 +9,7 @@ $(document).ready(function() {
 
     handleResidentNumber();
     clickViewResidentNumber();
+    chkPW();
 });
 
 /**
@@ -29,7 +30,6 @@ function registerClickEventOfEmpSaveBtn(){
         };
 
         createEmployee(employeeCreateData);
-
     });
 }
 
@@ -160,3 +160,29 @@ function clickViewResidentNumber() {
         $(this).find('i').toggleClass('bi-eye bi-eye-slash'); // bi-eye와 bi-eye-slash 클래스 토글
     });
 }
+
+function chkPW(){
+
+    $("#emp-password").on('input', function(event) {
+        var pw = $("#emp-password").val();
+        var num = pw.search(/[0-9]/g);
+        var eng = pw.search(/[a-z]/ig);
+        var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+        if(pw.length < 8 || pw.length > 20){
+            $('#password-error-message').text("8자리 ~ 20자리 이내로 입력해주세요.");
+            return false;
+        }else if(pw.search(/\s/) != -1){
+            $('#password-error-message').text("비밀번호는 공백 없이 입력해주세요.");
+            return false;
+        }else if(num < 0 || eng < 0 || spe < 0 ){
+            $('#password-error-message').text("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+            return false;
+        }else {
+            $('#password-error-message').text("");  // 경고 메시지 제거
+            return true;
+        }
+    });
+
+}
+

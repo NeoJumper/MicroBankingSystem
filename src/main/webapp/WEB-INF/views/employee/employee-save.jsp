@@ -23,16 +23,20 @@
     </div>
     <table class="common-table">
         <tr>
-            <th>아이디</th>
-            <td><input type="text" id="emp-id"></td>
-            <th>비밀번호</th>
-            <td><input type="password" id="emp-password"></td>
-        </tr>
-        <tr>
             <th>이름</th>
             <td><input type="text" id="emp-name"></td>
             <th>생년월일</th>
             <td><input type="date" id="emp-birth-date"></td>
+
+        </tr>
+        <tr>
+            <th>비밀번호</th>
+            <td>
+                <input type="password" id="emp-password">
+                <div><span id="password-error-message"></span></div>
+            </td>
+
+            <td colspan="2"></td>
         </tr>
         <tr>
             <th>주민번호</th>
