@@ -119,7 +119,7 @@
         version,
         auto_transfer_id
         ) VALUES (
-        #{id},
+        reserve_transfer_seq.nextval,
         #{accId},
         #{targetAccId},
         #{amount},

@@ -754,9 +754,8 @@ public class AccountTradeFacade {
      *  시간 설정 x -> 날짜 주기 정함 -> 자동이체됨
      *
      */
-
-  @Scheduled(cron = "0 0 0 * * MON-FRI")
     @Scheduled(fixedRate = 6000)
+  //@Scheduled(cron = "0 0 0 * * MON-FRI")
     public void scheduleAutoTransfers(){
         System.out.println("scheduleReserveTransfers >>>>>> ");
 
@@ -778,6 +777,9 @@ public class AccountTradeFacade {
             registerReserveTransfers(todayAutoList);
         }
     }
+
+
+
 
     // 자동이체 리스트 -> 예약이체등록하기
     // 예약이체에 자동이체거래내역 넣기,
@@ -845,14 +847,13 @@ public class AccountTradeFacade {
    *  실행 해야 하는 전체 예약이체 정보 리스트 가져오기
 
    * */
-    //실행 해야 하는 전체 예약이체 정보 리스트 가져오기
-
-    @Scheduled(fixedRate = 6000)// 6초마다 실행
+    //실행 해야하는 전체 예약이체 정보 리스트 가져오기
+  /*  @Scheduled(fixedRate = 6000)// 6초마다 실행
     public void scheduleReserveTransfers() {
         System.out.println("scheduleReserveTransfers >>>>>> 예약이체 목록 조회 ");
 
         SearchReserve searchReserve = new SearchReserve();
-        searchReserve.setStatus("WAIT");
+        searchReserve.setStatus("FAIL");
 
 
         List<TransferTradeCreate> transfers = reserveTransferService.getPendingTransfers(searchReserve);
@@ -861,17 +862,41 @@ public class AccountTradeFacade {
             processReserveTransfer(transfers);
         }
 
-    }
+    }*/
 
+    // 실패한 거래 조회 기능
+    //@Scheduled(fixedRate = 6000)
+    public void failScheduleReserveTransfers() {
+        // 검색 조건 설정
+        SearchReserve searchFail = new SearchReserve();
+        searchFail.setStatus("FAIL");
 
-    public class DateConverter {
-        public static Timestamp convertStringToTimestamp(String dateString) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 포맷 수정
-            LocalDateTime localDateTime = LocalDateTime.parse(dateString, formatter);
-            return Timestamp.valueOf(localDateTime);
+        SearchReserve searchWait = new SearchReserve();
+        searchWait.setStatus("WAIT");
+
+        // 실패한 예약 이체 목록 조회
+        List<TransferTradeCreate> failTransfers = reserveTransferService.getPendingTransfers(searchFail);
+        System.out.println("Fail Transfers: " + failTransfers); // 실패한 이체 로그
+        for (TransferTradeCreate transfer : failTransfers) {
+            System.out.println(transfer); // 각 실패한 이체 객체 출력
         }
-    }
 
+        // 대기 중인 예약 이체 목록 조회
+        List<TransferTradeCreate> waitTransfers = reserveTransferService.getPendingTransfers(searchWait);
+        for (TransferTradeCreate transfer : waitTransfers) {
+            System.out.println(transfer); // 각 대기 중인 이체 객체 출력
+        }
+
+        // 실패한 이체 처리
+//        if (!failTransfers.isEmpty()) {
+//            processFailedTransfers(failTransfers);
+//        }
+//
+//        // 대기 중인 이체 처리
+//        if (!waitTransfers.isEmpty()) {
+//            processPendingTransfers(waitTransfers);
+//        }
+    }
 
     /**
      * @Description
@@ -898,7 +923,8 @@ public class AccountTradeFacade {
 
 
             }catch (CustomException e){
-
+                System.out.println("거래실패내역 >>>>>>>>>>>>>");
+                /*
                 String reserveId= transferTradeCreate.getReserveTransferId();
                 // 실패했을 때 거래내역 생성
                 transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
@@ -932,7 +958,7 @@ public class AccountTradeFacade {
                     // 이메일 전송 로직 추가
 
                     //sendEmailNotification(existingTransfer);
-                }
+                }*/
                 // 새로운 예약이체 다시 생성 , missed_count +1
 
                 // ReserveTransferCreate.build에 필요한 정보 넣고 transferService.createReserveTransfer(...) 실행
