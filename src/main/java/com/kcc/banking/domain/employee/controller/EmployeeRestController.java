@@ -8,8 +8,6 @@ import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class EmployeeRestController {
@@ -33,7 +31,7 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/api/manager/employee")
-    public List<EmployeeDataOfList> getEmployeeList(@ModelAttribute EmployeeSearch employeeSearch) {
+    public EmployeeSearchResult getEmployeeList(@ModelAttribute EmployeeSearch employeeSearch) {
          return employeeService.getEmployeeListByOption(employeeSearch);
     }
 

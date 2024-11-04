@@ -1,5 +1,7 @@
 package com.kcc.banking.domain.employee.mapper;
 
+import com.kcc.banking.domain.customer.dto.request.CustomerSearch;
+import com.kcc.banking.domain.customer.dto.response.CustomerSearchInfo;
 import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
@@ -28,4 +30,8 @@ public interface EmployeeMapper {
     AuthData findAuthDataById(Long id);
 
     int getEmployeeSeq();
+
+    int getEmployeeCount(EmployeeSearch employeeSearch);
+
+    List<EmployeeSearchInfo> findEmployees(EmployeeSearch searchDTO);
 }

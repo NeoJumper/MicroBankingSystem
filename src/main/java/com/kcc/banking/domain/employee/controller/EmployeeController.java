@@ -36,7 +36,6 @@ public class EmployeeController {
 
     @GetMapping("/page/manager/employee-list")
     public String employeeListPage(Model model) {
-        model.addAttribute("employeeList",employeeService.getEmployeeListOfBranch());
         return "employee/employee-list";
     }
     @GetMapping("/page/manager/employee-update")

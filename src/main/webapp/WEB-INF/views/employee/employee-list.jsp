@@ -44,34 +44,18 @@
         <table class="common-table" style="margin-bottom: 0px">
             <thead>
             <tr>
-                <th style="width: 10%;">사번</th>
-                <th style="width: 10%;">이름</th>
-                <th style="width: 20%;">생년월일</th>
-                <th style="width: 20%;">전화번호</th>
-                <th style="width: 20%;">이메일</th>
-                <th style="width: 10%;">직책</th>
+                <th style="width: 10%; text-align: center;">사번</th>
+                <th style="width: 10%; text-align: center;">이름</th>
+                <th style="width: 20%; text-align: center;">이메일</th>
+                <th style="width: 20%; text-align: center;">전화번호</th>
+                <th style="width: 20%; text-align: center;">주소</th>
+                <th style="width: 10%; text-align: center;">직책</th>
             </tr>
             </thead>
+            <tbody id="emp-table-body">
+
+            </tbody>
         </table>
-
-        <div style="overflow-y: auto; height: 350px;">
-            <table class="common-table">
-                <tbody id="emp-table-body">
-                <c:forEach var="employee" items="${employeeList}">
-                    <tr class="emp-element">
-                        <td style="width: 10%;">${employee.id}</td>
-                        <td style="width: 10%;">${employee.name}</td>
-                        <td style="width: 20%;"><fmt:formatDate value="${employee.birthDate}" pattern="yyyy-MM-dd" /></td>
-                        <td style="width: 20%;">${employee.phoneNumber}</td>
-                        <td style="width: 20%;">${employee.email}</td>
-                        <td style="width: 10%;">${employee.roles}</td>
-                    </tr>
-
-                </c:forEach>
-                <!-- 추가 행들 -->
-                </tbody>
-            </table>
-        </div>
 
     </div>
 </div>

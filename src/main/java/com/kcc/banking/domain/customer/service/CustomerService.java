@@ -23,6 +23,9 @@ public class CustomerService {
 
     public CustomerSearchResult findCustomers(CustomerSearch customerSearch){
 
+        String branchId = commonService.getCurrentBusinessDateAndBranchId().getBranchId();
+        customerSearch.setBranchId(branchId);
+
         int totalCount = customerMapper.getCustomerCount(customerSearch);
 
         // 페이징 처리 객체 생성

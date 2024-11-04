@@ -4,6 +4,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcc.banking.domain.employee.mapper.EmployeeMapper">
 
+    <select id="findEmployees" parameterType="EmployeeSearch">
+        SELECT *
+        FROM (
+        SELECT ROWNUM AS rn, id, name, email, phone_number, (address || detail_address) AS address, branch_name, roles
+        FROM (
+            SELECT e.id, e.name, e.email, e.phone_number, e.address, e.detail_address, b.name AS branch_name, e.roles
+            FROM employee e
+            join branch b on e.branch_id = b.id
+            WHERE e.branch_id = #{branchId}
+            <where>
+                <if test="searchOption != null and !searchOption.equals('')">
+                    AND ${searchOption} LIKE '%' || #{searchValue} || '%'
+                </if>
+            </where>
+        )
+        )
+        <if test="criteria != null and !criteria.equals('')">
+            WHERE rn BETWEEN #{criteria.amount} * (#{criteria.pageNum} - 1) + 1 AND #{criteria.amount} * #{criteria.pageNum}
+        </if>
+    </select>
+
+
     <select id="findById" parameterType="java.lang.Long">
         select e.*, b.name as "branch_name"
         from employee e
@@ -83,18 +105,14 @@
         where e.branch_id = #{branchId}
     </select>
 
-    <select id="findAllOfBranchBySearchOption" parameterType="EmployeeSearch">
-        SELECT e.id AS "id",
-        e.name AS "name",
-        e.birth_date AS "birthDate",
-        e.phone_number AS "phoneNumber",
-        e.email,
-        roles
-        FROM employee e
-        WHERE e.branch_id = #{branchId}
-        <if test="searchOption != null and !searchOption.equals('')">
-            AND e.${searchOption} LIKE '%' || #{searchValue} || '%'
-        </if>
+    <select id="getEmployeeCount" parameterType="EmployeeSearch">
+        SELECT COUNT(*)
+        FROM employee
+        <where>
+            <if test="searchOption != null and !searchOption.equals('')">
+                AND ${searchOption} LIKE '%' || #{searchValue} || '%'
+            </if>
+        </where>
     </select>
 
 </mapper>

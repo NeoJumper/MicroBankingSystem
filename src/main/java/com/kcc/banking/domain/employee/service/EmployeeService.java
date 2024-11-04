@@ -10,6 +10,7 @@ import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
 import com.kcc.banking.domain.employee.dto.request.EmployeeUpdate;
 import com.kcc.banking.domain.employee.dto.response.*;
 import com.kcc.banking.domain.employee.mapper.EmployeeMapper;
+import com.kcc.banking.domain.trade.dto.response.PageDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,10 +57,15 @@ public class EmployeeService {
 
     }
 
-    public List<EmployeeDataOfList> getEmployeeListByOption(EmployeeSearch employeeSearch) {
-        employeeSearch.setBranchId(AuthenticationUtils.getLoginMemberId());
-        List<EmployeeDataOfList> employees = employeeMapper.findAllOfBranchBySearchOption(employeeSearch);
-        return employees;
+    public EmployeeSearchResult getEmployeeListByOption(EmployeeSearch employeeSearch) {
+        String branchId = commonService.getCurrentBusinessDateAndBranchId().getBranchId();
+        employeeSearch.setBranchId(branchId);
+
+        int totalCount = employeeMapper.getEmployeeCount(employeeSearch);
+        PageDTO pageDTO = new PageDTO(employeeSearch.getCriteria(), totalCount);
+
+        List<EmployeeSearchInfo> employees = employeeMapper.findEmployees(employeeSearch);
+        return EmployeeSearchResult.of(employees, pageDTO);
     }
 
     public EmployeeDetail getEmployeeDetail(Long id) {

@@ -22,6 +22,7 @@
         FROM (
             SELECT id,name,birth_date,phone_number, branch_id, security_level,email ,  address, detail_address
             FROM customer
+            where branch_id = ${branchId}
             <where>
                 <if test="searchOption != null and !searchOption.equals('')">
                     AND ${searchOption} LIKE '%' || #{searchValue} || '%'
@@ -43,6 +44,7 @@
     <select id="getCustomerCount" parameterType="CustomerSearch">
         SELECT COUNT(*)
         FROM customer
+        where branch_id = ${branchId}
         <where>
             <if test="searchOption != null and !searchOption.equals('')">
                 AND ${searchOption} LIKE '%' || #{searchValue} || '%'
