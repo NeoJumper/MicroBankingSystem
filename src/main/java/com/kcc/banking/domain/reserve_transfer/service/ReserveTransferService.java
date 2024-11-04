@@ -41,8 +41,8 @@ public class ReserveTransferService {
         return reserveTransferMapper.getPendingTransfers(searchReserve);
     }
 
-    public void insertScheduledAutoTransferList(List<ReserveTransferCreate> reserveTransferCreateList){
-        reserveTransferMapper.insertScheduledAutoTransferList(reserveTransferCreateList);
+    public void insertScheduledAutoTransfer(ReserveTransferCreate reserveTransferCreate){
+        reserveTransferMapper.insertScheduledAutoTransfer(reserveTransferCreate);
     }
 
 }

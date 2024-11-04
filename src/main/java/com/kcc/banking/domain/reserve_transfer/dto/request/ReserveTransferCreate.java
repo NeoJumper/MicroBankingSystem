@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
@@ -18,7 +19,7 @@ public class ReserveTransferCreate {
     private Long bulkTransferId;
     private Long autoTransferId;
     private BigDecimal amount;
-    private String transferDate;
+    private Timestamp transferDate;
     private String transferStartTime;
     private String transferEndTime;
     private Long retryCount;
@@ -32,7 +33,7 @@ public class ReserveTransferCreate {
     private String transferType;
     
     @Builder
-    public ReserveTransferCreate(Long id, String accId, String targetAccId, Long bulkTransferId, Long autoTransferId, BigDecimal amount, String transferDate, String transferStartTime, String transferEndTime, Long retryCount, String description, String status, String failureReason, Long registrantId, Long branchId, String transferType) {
+    public ReserveTransferCreate(Long id, String accId, String targetAccId, Long bulkTransferId, Long autoTransferId, BigDecimal amount, Timestamp transferDate, String transferStartTime, String transferEndTime, Long retryCount, String description, String status, String failureReason, Long registrantId, Long branchId, String transferType) {
         this.id = id;
         this.accId = accId;
         this.targetAccId = targetAccId;

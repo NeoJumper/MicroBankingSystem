@@ -51,7 +51,8 @@
             auto_transfer_start_date,
             auto_transfer_period,
             status,
-            missed_count
+            missed_count,
+            next_transfer_date
 
         from Auto_transfer
         where
