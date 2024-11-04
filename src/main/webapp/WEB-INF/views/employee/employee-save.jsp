@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert title here</title>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/employee-save.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
 </head>
@@ -36,16 +37,16 @@
         <tr>
             <th>주민번호</th>
             <td style="position: relative;">
-                <input type="text" id="customer-resident-number" placeholder="000000-0000000" maxlength="14">
+                <input type="text" id="emp-resident-number" placeholder="000000-0000000" maxlength="14">
                 <div class="toggle-visibility"><i class="bi bi-eye"></i></div>
             </td>
             <th>주소</th>
             <td>
                 <div class="d-flex my-2">
-                    <input  type="text" id="customer-address" placeholder="주소"><br>
+                    <input  type="text" id="emp-address" placeholder="주소"><br>
                     <input class="ms-2" style="height: 42px;" type="button" onclick="sample6_execDaumPostcode()" value="주소 검색"><br>
                 </div>
-                <input type="text" id="customer-detail-address" placeholder="상세주소">
+                <input type="text" id="emp-detail-address" placeholder="상세주소">
 
             </td>
 
