@@ -63,31 +63,28 @@
     <select id="getPendingTransfers" parameterType="SearchReserve" resultType="TransferTradeCreate">
 
         select
-            rt.id as reserve_transfer_id,
-            rt.acc_id as acc_id ,
-            rt.target_acc_id as targetAccId,
-            rt.amount as transfer_amount,
-            a.password as accountPassword,
-            rt.transfer_start_time as transfer_start_time,
-            rt.transfer_end_time as transfer_end_time,
-            rt.retry_count as retry_count,
-            rt.status as status,
-            rt.transfer_date as transfer_date,
-            auto.missed_count AS missed_count
+        rt.id as reserve_transfer_id,
+        rt.acc_id as acc_id ,
+        rt.target_acc_id as targetAccId,
+        rt.amount as transfer_amount,
+        a.password as accountPassword,
+        rt.transfer_start_time as transfer_start_time,
+        rt.transfer_end_time as transfer_end_time,
+        rt.retry_count as retry_count,
+        rt.status as status,
+        rt.transfer_date as transfer_date
 
         from reserve_transfer rt
         join account a
         on a.id = rt.acc_id
-        join auto_transfer auto
-        on rt.acc_id = auto.acc_id
         WHERE
-            TO_CHAR(transfer_date, 'YY/MM/DD') = TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD')
-          AND
-            rt.status = #{status}
-          AND
-            TO_DATE(TO_CHAR(SYSTIMESTAMP, 'HH24:MI'), 'HH24:MI')
-                BETWEEN TO_DATE(transfer_start_time, 'HH24:MI')
-                AND TO_DATE(transfer_end_time, 'HH24:MI')
+        TO_CHAR(rt.transfer_date, 'YY/MM/DD') = TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD')
+        AND
+        rt.status =#{status}
+        AND
+        TO_DATE(TO_CHAR(SYSTIMESTAMP, 'HH24:MI'), 'HH24:MI')
+        BETWEEN TO_DATE(rt.transfer_start_time, 'HH24:MI')
+        AND TO_DATE(rt.transfer_end_time, 'HH24:MI')
     </select>
 
     <update id="updateTransferStatus">

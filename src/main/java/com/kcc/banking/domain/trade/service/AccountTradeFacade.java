@@ -212,12 +212,12 @@ public class AccountTradeFacade {
     public AccountCloseResult addCloseTrade(StatusWithTrade statusWithTrade) {
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
-        
+
         // OPEN 상태가 아니라면
         if (!currentBusinessDay.getStatus().equals("OPEN")) {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
-        
+
         // 해지 계좌 정보 조회
         CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountById = accountService.getCloseSavingsFlexibleAccountById(statusWithTrade.getAccId());
 
@@ -748,7 +748,7 @@ public class AccountTradeFacade {
      *  시간 설정 x -> 날짜 주기 정함 -> 자동이체됨
      *
      */
-    //@Scheduled(fixedRate = 6000)
+  //  @Scheduled(fixedRate = 6000)
   @Scheduled(cron = "0 0 0 * * MON-FRI")
     public void scheduleAutoTransfers(){
         System.out.println("scheduleReserveTransfers >>>>>> ");
@@ -772,8 +772,10 @@ public class AccountTradeFacade {
         }
     }
 
+
+
+
     // 자동이체 리스트 -> 예약이체등록하기
-    // 예약이체에 자동이체거래내역 넣기,
     private void registerReserveTransfers(List<AutoTransferList> todayAutoList) {
         List<ReserveTransferCreate> reserveTransfers = new ArrayList<>();
 
@@ -839,25 +841,50 @@ public class AccountTradeFacade {
    *  실행 해야 하는 전체 예약이체 정보 리스트 가져오기
 
    * */
-    //실행 해야 하는 전체 예약이체 정보 리스트 가져오기
-
-    @Scheduled(fixedRate = 6000)// 6초마다 실행
-    public void scheduleReserveTransfers() {
-        System.out.println("scheduleReserveTransfers >>>>>> 예약이체 목록 조회 ");
-
-        SearchReserve searchReserve = new SearchReserve();
-        searchReserve.setStatus("WAIT");
 
 
-        List<TransferTradeCreate> transfers = reserveTransferService.getPendingTransfers(searchReserve);
+    // 실패한 거래 + 실행할 거래 조회 기능 0
+   // @Scheduled(fixedRate = 6000)
+    public void failScheduleReserveTransfers() {
+        // 검색 조건 설정
+        SearchReserve searchFail = new SearchReserve();
+        searchFail.setStatus("FAIL");
 
-        if (!transfers.isEmpty()) {
-            processReserveTransfer(transfers);
+        SearchReserve searchWait = new SearchReserve();
+        searchWait.setStatus("WAIT");
+
+        // 실패한 이체 목록 조회
+        List<TransferTradeCreate> failTransfers = reserveTransferService.getPendingTransfers(searchFail);
+        System.out.println("Fail Transfers: " + failTransfers); // 실패한 이체 로그
+        for (TransferTradeCreate transfer : failTransfers) {
+            System.out.println("Failed Transfer ID: " + transfer.getReserveTransferId());
+            System.out.println("Account ID: " + transfer.getAccId());
+            System.out.println("Target Account ID: " + transfer.getTargetAccId());
+            System.out.println("Transfer Amount: " + transfer.getTransferStartTime());
+            System.out.println("---------------------------------");
         }
 
+// 대기 중인 예약 이체 목록 조회
+        List<TransferTradeCreate> waitTransfers = reserveTransferService.getPendingTransfers(searchWait);
+        System.out.println("Wait Transfers: " + waitTransfers); // 대기 중인 이체 로그
+        for (TransferTradeCreate transfer : waitTransfers) {
+            System.out.println("Waiting Transfer ID: " + transfer.getReserveTransferId());
+            System.out.println("Account ID: " + transfer.getAccId());
+            System.out.println("Target Account ID: " + transfer.getTargetAccId());
+            System.out.println("Transfer Amount: " + transfer.getTransferAmount());
+        }
+
+
+        // 실패한 이체 처리
+//        if (!failTransfers.isEmpty()) {
+//            processFailedTransfers(failTransfers);
+//        }
+//
+//        // 대기 중인 이체 처리
+//        if (!waitTransfers.isEmpty()) {
+//            processPendingTransfers(waitTransfers);
+//        }
     }
-
-
 
     /**
      * @Description
@@ -884,7 +911,8 @@ public class AccountTradeFacade {
 
 
             }catch (CustomException e){
-
+                System.out.println("거래실패내역 >>>>>>>>>>>>>");
+                /*
                 String reserveId= transferTradeCreate.getReserveTransferId();
                 // 실패했을 때 거래내역 생성
                 transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
@@ -918,7 +946,7 @@ public class AccountTradeFacade {
                     // 이메일 전송 로직 추가
 
                     //sendEmailNotification(existingTransfer);
-                }
+                }*/
                 // 새로운 예약이체 다시 생성 , missed_count +1
 
                 // ReserveTransferCreate.build에 필요한 정보 넣고 transferService.createReserveTransfer(...) 실행
