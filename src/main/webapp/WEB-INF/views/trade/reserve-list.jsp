@@ -73,9 +73,10 @@
                     <option value="1">21:00</option>
                     <option value="1">22:00</option>
                 </select>
+                ~
                 <select id="end-time-btn">
                     <option value="1">9:00</option>
-                    <option value="1">10:00</option>
+                    <option value="1" selected>10:00</option>
                     <option value="1">11:00</option>
                     <option value="1">12:00</option>
                     <option value="1">13:00</option>
@@ -100,73 +101,25 @@
     </div>
 
     <!--  이체 조회 결과 -->
-    <div id="common-transfer-select-result" style="display: none;">
-        <div>
-            <h3 class="mt-3">총 입출금 금액</h3>
-
-            <div id="trade-total-balance">
-                <label for="total-deposit-input" >입금액</label>
-                <input type="text" id="total-deposit-input" style="text-align: right;" disabled >
-
-                <label for="total-withdraw-input">출금액</label>
-                <input type="text" id="total-withdraw-input" style="text-align: right;" disabled>
-
-            </div>
-        </div>
-        <div>
-            <h3 class="mt-3">총 거래 내역</h3>
-
-            <table class="common-table">
-                <thead>
-                <th style="width: 8%"><label id="trade-type">거래유형</label></th>
-                <th style="width: 10%"><label id="trade-date">거래일</label></th>
-                <th style="width: 15%"><label id="acc-id">대상계좌</label></th>
-                <th style="width: 15%"><label id="target-acc-id">상대계좌</label></th>
-                <th style="width: 14%"><label id="amount">거래액</label></th>
-                <th style="width: 14%"><label id="balance">잔액</label></th>
-                <th style="width: 7%"><label id="cash-indicator">현금여부</label></th>
-                <th style="width: 7%"><label id="status">상태</label></th>
-                <th style="width: 20%"><label></label></th>
-                </thead>
-                <tbody id="trade-result-tbody">
-
-                </tbody>
-            </table>
-        </div>
-
-
-        <div id="pagination">
-
-
-        </div>
-    </div>
-
-    <!--  대량이체 조회 결과 -->
-    <div id="bulk-transfer-select-result" style="display: none;">
-        <div>
-            <h3 class="mt-3">총 거래 내역</h3>
-
-            <table class="common-table">
-                <thead>
-
-                <th>순번</th>
-                <th><label id="bulk-transfer-trade-date">거래일시</label></th>
-                <th><label id="bulk-transfer-acc-id">비고</label></th>
-                <th><label id="bulk-transfer-total-amount">총 이체금액</label></th>
-                <th><label id="bulk-transfer-failure-cnt">실패건수</label></th>
-                <th><label id="bulk-transfer-success-cnt">성공건수</label></th>
-                <th><label id="bulk-transfer-total-cnt">총건수</label></th>
-                <th><label id="bulk-transfer-status">상태</label></th>
-                <th><label id="bulk-transfer-detail"></label></th>
-                </thead>
-                <tbody id="bulk-transfer-result-tbody">
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-
+    <table class="common-table" id="transfer-result">
+        <thead>
+        <th style="width: 8%"><label id="transfer-type">이체 유형</label></th>
+        <th style="width: 15%"><label id="trade-date">출금계좌</label></th>
+        <th style="width: 15%"><label id="acc-id">입금계좌</label></th>
+        <th style="width: 15%"><label id="target-acc-id">실행날짜 및 시간</label></th>
+        <th style="width: 14%"><label id="amount">이체 금액</label></th>
+        <th style="width: 14%"><label id="balance">비고</label></th>
+        <th style="width: 10%"><label id="cash-indicator">성공 여부</label></th>
+        <th style="width: 10%"><label id="status">재전송 횟수</label></th>
+        </thead>
+        <tbody id="reserve-trade-result-tbody">
+        <tr class="reserve-empty-message">
+            <td colspan="9" style="text-align: center; color: gray; border-bottom: none; height: 100px">
+                조회 조건을 입력하시오
+            </td>
+        </tr>
+        </tbody>
+    </table>
     <input type="hidden" id="businessDay" value="${businessDay}">
 </div>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
