@@ -249,7 +249,7 @@
             c.name AS customerName
         FROM Account a
                  JOIN Customer c ON a.customer_id = c.id
-        WHERE a.id = #{accountId}
+        WHERE a.id = #{accountId} FOR UPDATE
     </select>
 
 

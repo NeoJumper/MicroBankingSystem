@@ -14,16 +14,18 @@
     <select id="findBulkTransferList" parameterType="BulkTransferSearch">
         SELECT *
         FROM (
-            SELECT ROWNUM rn, id, registration_date, amount, status, success_cnt, failure_cnt, total_cnt, description
+            SELECT ROWNUM rn, id,acc_id, registration_date, amount, registered_amount, status, success_cnt, failure_cnt, total_cnt, description
             FROM (
                 SELECT
                     id,
+                    acc_id,
                     registration_date,
+                    registered_amount,
                     amount,
                     status,
                     success_cnt,
                     failure_cnt,
-                    success_cnt + failure_cnt as total_cnt,
+                    total_cnt,
                     description
                 FROM Bulk_Transfer
                 <where>
@@ -51,6 +53,15 @@
 
     </select>
 
+    <select id="findProgressStatus" parameterType="java.lang.Long">
+        SELECT
+        status,
+        success_cnt,
+        failure_cnt,
+        total_cnt
+        FROM Bulk_Transfer
+        WHERE id = #{bulkTransferId}
+    </select>
 
     <select id="findBulkTransfer" parameterType="java.lang.Long">
 
@@ -60,11 +71,12 @@
         bt.id,
         bt.registration_date,
         e.name as registrant_name,
+        bt.registered_amount,
         bt.amount,
         bt.status,
         bt.success_cnt,
         bt.failure_cnt,
-        bt.success_cnt + bt.failure_cnt as total_cnt,
+        bt.total_cnt,
         bt.description,
         bt.registrant_id
         FROM Bulk_Transfer bt
@@ -82,9 +94,11 @@
             acc_id,
             branch_id,
             trade_date,
+            registered_amount,
             amount,
             success_cnt,
             failure_cnt,
+            total_cnt,
             status,
             <if test="description != null and description != ''">
             description,
@@ -99,9 +113,11 @@
             #{accId},
             #{branchId},
             #{tradeDate},
+            #{registeredAmount},
             #{amount},
             #{successCnt},
             #{failureCnt},
+            #{totalCnt},
             #{status},
             <if test="description != null and description != ''">
             #{description},
@@ -111,21 +127,42 @@
         )
     </insert>
 
-    <update id="updateAllBulkTransfer" parameterType="BulkTransferUpdate">
+    <update id="updateBulkTransfer" parameterType="BulkTransferUpdate">
         UPDATE bulk_transfer
         SET
-            acc_id = #{accId, jdbcType=VARCHAR},
-            branch_id = #{branchId, jdbcType=BIGINT},
-            trade_date = #{tradeDate, jdbcType=VARCHAR},
-            amount = #{amount, jdbcType=DECIMAL},
-            status = #{status, jdbcType=VARCHAR},
-            success_cnt = #{successCnt, jdbcType=BIGINT},
-            failure_cnt = #{failureCnt, jdbcType=BIGINT},
-            description = #{description, jdbcType=VARCHAR},
-            registrant_id = #{registrantId, jdbcType=BIGINT},
+            <if test="amount != null and amount != ''">
+                amount = amount + #{amount},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="perTradeStatus == 'SUCCESS'">
+                success_cnt = success_cnt + 1,
+            </if>
+            <if test="perTradeStatus == 'FAIL'">
+                failure_cnt = failure_cnt + 1,
+            </if>
             modification_date = SYSTIMESTAMP,
             modifier_id = #{modifierId, jdbcType=BIGINT},
-            version = 1
+            version = version + 1
         WHERE id = #{id, jdbcType=BIGINT}
     </update>
+
+<!--    <update id="updateBulkTransfer" parameterType="BulkTransferUpdate">
+        UPDATE bulk_transfer
+        SET
+        acc_id = #{accId, jdbcType=VARCHAR},
+        branch_id = #{branchId, jdbcType=BIGINT},
+        trade_date = #{tradeDate, jdbcType=VARCHAR},
+        amount = #{amount, jdbcType=DECIMAL},
+        status = #{status, jdbcType=VARCHAR},
+        success_cnt = #{successCnt, jdbcType=BIGINT},
+        failure_cnt = #{failureCnt, jdbcType=BIGINT},
+        description = #{description, jdbcType=VARCHAR},
+        registrant_id = #{registrantId, jdbcType=BIGINT},
+        modification_date = SYSTIMESTAMP,
+        modifier_id = #{modifierId, jdbcType=BIGINT},
+        version = 1
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>-->
 </mapper>

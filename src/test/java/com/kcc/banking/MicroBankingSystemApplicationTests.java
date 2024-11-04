@@ -50,7 +50,7 @@ class MicroBankingSystemApplicationTests {
 
 		bulkTransferMapper.insertBulkTransfer(b);
 
-		bulkTransferMapper.updateAllBulkTransfer(u);
+		bulkTransferMapper.updateBulkTransfer(u);
 		
 	}
 

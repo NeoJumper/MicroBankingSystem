@@ -55,7 +55,7 @@
     <container id="registration-page">
         <%--  계좌선택 섹션  --%>
         <section>
-            <h4>대량이체 출금정보</h4>
+            <h4>출금계좌정보</h4>
             <hr>
             <%--계좌선택--%>
             <div id="select-account-form">
@@ -181,7 +181,7 @@
                     </button>
 
                     <button id="uploadIndividualEmployeeBtn" type="button" class="file-btn" value="개별추가"
-                            style="height: 33px; font-weight: bold;">
+                            style="height: 33px; font-weight: bold;" disabled>
                         개별 추가
                     </button>
 
@@ -206,6 +206,7 @@
                             <th><label>등록된 예금주</label></th>
                             <th><label>조회된 예금주</label></th>
                             <th><label>받는분 통장표시</label></th>
+                            <th><label>상태</label></th>
                         </tr>
                     </thead>
                     <tbody id="employeeTablePreviewBody">

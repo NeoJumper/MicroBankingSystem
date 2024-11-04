@@ -1,11 +1,8 @@
 package com.kcc.banking.domain.bulk_transfer.controller;
 
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferValidation;
-import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferPreview;
-import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
+import com.kcc.banking.domain.bulk_transfer.dto.response.*;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferSearch;
-import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResult;
-import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferValidationResult;
 import com.kcc.banking.domain.bulk_transfer.service.BulkTransferService;
 import com.kcc.banking.domain.trade.dto.request.TransferTradeCreate;
 import com.kcc.banking.domain.trade.dto.request.TransferTradeUpdate;
@@ -110,5 +107,11 @@ public class BulkTransferRestController {
         List<BulkTransferDetail> bulkTransferList = bulkTransferService.getBulkTransferList(bulkTransferSearch);
         PageDTO pageDTO = new PageDTO(bulkTransferSearch.getCriteria(), bulkTransferList.size());
         return ResponseEntity.ok().body(BulkTransferSearchResult.of(bulkTransferList, pageDTO));
+    }
+
+    @GetMapping("/api/employee/bulk-transfers/{bulkTransferId}/progress-status")
+    public ResponseEntity<BulkTransferProgressStatus> getBulkTransferProgressStatus(@PathVariable("bulkTransferId") Long bulkTransferId) {
+        BulkTransferProgressStatus bulkTransferProgressStatus = bulkTransferService.getBulkTransferProgressStatus(bulkTransferId);
+        return ResponseEntity.ok().body(bulkTransferProgressStatus);
     }
 }

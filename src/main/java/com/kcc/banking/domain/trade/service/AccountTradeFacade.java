@@ -3,11 +3,10 @@ package com.kcc.banking.domain.trade.service;
 import com.kcc.banking.common.exception.CustomException;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
+import com.kcc.banking.common.util.TransactionService;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
-import com.kcc.banking.domain.account.dto.response.CloseSavingsAccount;
-import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.auto_transfer.dto.request.AutoTransferCreate;
 import com.kcc.banking.domain.auto_transfer.dto.response.AutoTransferList;
@@ -15,7 +14,6 @@ import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferCreate;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferUpdate;
 import com.kcc.banking.domain.bulk_transfer.dto.request.BulkTransferValidation;
-import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferValidationResult;
 import com.kcc.banking.domain.bulk_transfer.service.BulkTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
@@ -33,7 +31,6 @@ import com.kcc.banking.domain.trade.dto.request.*;
 import com.kcc.banking.domain.trade.dto.response.CloseCancelDetail;
 import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TransferDetail;
-import com.kcc.banking.domain.trade.mapper.TradeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -45,14 +42,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.*;
 
-@Component
 @RequiredArgsConstructor
+@Component
 @Slf4j
 @EnableScheduling
 public class AccountTradeFacade {
+
 
     private final InterestService interestService;
     private final AccountService accountService;
@@ -61,9 +58,10 @@ public class AccountTradeFacade {
     private final BulkTransferService bulkTransferService;
     private final CommonService commonService;
     private final AutoTransferService autoTransferService;
-    private final TradeMapper tradeMapper;
+
     private final ReserveTransferService reserveTransferService;
     private final ReserveTransferMapper reserveTransferMapper;
+    private final TransactionService transactionService;
 
     /**
      *   @Description - 보통 예금계좌 개설
@@ -609,39 +607,59 @@ public class AccountTradeFacade {
         }
 
         Long bulkTransferId = bulkTransferService.getNextId();
-        int successCnt = 0;
-        int failureCnt = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
-
-        for(TransferTradeCreate transferTradeCreate : transferTradeCreateList){
-            try{
-                transferTradeCreate.setBulkTransferId(bulkTransferId);
-                processTransfer(transferTradeCreate);
-                successCnt++;
-                BigDecimal transferAmount = transferTradeCreate.getTransferAmount();
-                totalAmount = totalAmount.add(transferAmount);
-            }catch (CustomException e){
-                transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
-                processFailTransfer(transferTradeCreate);
-                failureCnt++;
-            }
-        }
 
         BulkTransferCreate bulkTransferCreate = BulkTransferCreate.builder()
                 .id(bulkTransferId)
                 .registrantId(currentData.getEmployeeId())
+                .registeredAmount(transferTradeCreateList.stream().map(TransferTradeCreate::getTransferAmount).reduce(BigDecimal.ZERO, BigDecimal::add))
+                .amount(BigDecimal.ZERO)
                 .branchId(currentData.getBranchId())
                 .accId(transferTradeCreateList.get(0).getAccId())
                 .tradeDate(currentData.getCurrentBusinessDate())
-                .amount(totalAmount)
-                .status("NOR")
-                .successCnt(successCnt)
-                .failureCnt(failureCnt)
+                .status("PROCESSING")
+                .successCnt(0)
+                .failureCnt(0)
+                .totalCnt(transferTradeCreateList.size())
                 .description(transferTradeCreateList.get(0).getDescription())
                 .build();
 
-
         bulkTransferService.createBulkTransfer(bulkTransferCreate);
+        bulkTransferService.createProgress(bulkTransferId, transferTradeCreateList.size());
+
+
+        transferTradeCreateList.forEach(transferTradeCreate -> {
+            transactionService.invokeAsync(() -> {
+                try {
+                    transferTradeCreate.setBulkTransferId(bulkTransferId);
+                    processTransfer(transferTradeCreate);
+
+                    BulkTransferUpdate bulkTransferUpdate = BulkTransferUpdate.builder()
+                            .id(bulkTransferId)
+                            .perTradeStatus("SUCCESS")
+                            .amount(transferTradeCreate.getTransferAmount())
+                            .modifierId(currentData.getEmployeeId())
+                            .build();
+                    bulkTransferService.updateBulkTransfer(bulkTransferUpdate);
+                    bulkTransferService.increaseSuccessCnt(bulkTransferId, currentData.getEmployeeId());
+                } catch (CustomException e) {
+                    transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
+                    processFailTransfer(transferTradeCreate);
+
+                    BulkTransferUpdate bulkTransferUpdate = BulkTransferUpdate.builder()
+                            .id(bulkTransferId)
+                            .perTradeStatus("FAIL")
+                            .modifierId(currentData.getEmployeeId())
+                            .build();
+                    bulkTransferService.updateBulkTransfer(bulkTransferUpdate);
+                    bulkTransferService.increaseFailureCnt(bulkTransferId, currentData.getEmployeeId());
+
+                }
+                return null;
+            });
+
+        });
+
+
         return bulkTransferId;
     }
 
@@ -664,7 +682,7 @@ public class AccountTradeFacade {
 
         for(BulkTransferValidation bulkTransferValidation: bulkTransferValidationList){
             AccountDetail depositAccount = accountService.getAccountDetail(bulkTransferValidation.getTargetAccId());
-            String customerName = depositAccount.getCustomerName();
+
 
 
             String status = "";
@@ -672,13 +690,19 @@ public class AccountTradeFacade {
             if(depositAccount == null || depositAccount.getStatus().equals("CLS")){
                 status = "계좌 오류";
                 errorCnt++;
+
             }
-            else if (!customerName.equals(bulkTransferValidation.getDepositor())){
+            else if (!depositAccount.getCustomerName().equals(bulkTransferValidation.getDepositor())){
                 status = "예금주 불일치";
                 inconsistencyCnt++;
+                bulkTransferValidation.setValidDepositor(depositAccount.getCustomerName());
+            }
+            else
+            {
+                status = "정상";
+                bulkTransferValidation.setValidDepositor(depositAccount.getCustomerName());
             }
             bulkTransferValidation.setStatus(status);
-            bulkTransferValidation.setValidDepositor(customerName);
         }
 
         BulkTransferValidationResult result = BulkTransferValidationResult.builder()
@@ -706,7 +730,7 @@ public class AccountTradeFacade {
      *  *: 모든 일
      *  *: 모든 월
      *  MON-FRI: 월요일부터 금요일까지 (주말 제외)
-     *  
+     *
      *
      **/
 
@@ -879,7 +903,7 @@ public class AccountTradeFacade {
                 // 새로운 예약이체 다시 생성 , missed_count +1
 
                 // ReserveTransferCreate.build에 필요한 정보 넣고 transferService.createReserveTransfer(...) 실행
-
+                // 이 때 retryCount += 1, 같은거
 
             }
         }

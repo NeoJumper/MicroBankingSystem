@@ -9,7 +9,7 @@
     <meta charset="UTF-8"/>
 
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/page/trade-list.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/reserve-list.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
 </head>
 
@@ -26,113 +26,19 @@
         <h3 class="mt-3">예약내역조회</h3>
 
     </div>
-    <table class="common-table">
-        <tbody>
-        <tr>
 
-            <th><label for="acc-id-input">계좌번호</label></th>
-            <td class="acc-id-input">
-                <input disabled type="text" id="acc-id-input">
-                <button type="button"  data-bs-toggle="modal" data-bs-target="#search-modal-account" class="basic-btn" id="search-account-btn">계좌검색</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div>
-        <h3 class="mt-3">상세조건입력</h3>
-
-    </div>
     <table class="common-table">
         <tr>
             <th>대분류</th>
             <td>
                 <div id = "major-category-button-group" class="button-group">
                     <input type="radio" id="common-transfer" value="common" name="major-category" checked>
-                    <label for="common-transfer">계좌 이체</label>
-                    <input type="radio" id="bulk-transfer" value="bulk" name="major-category">
-                    <label for="bulk-transfer">대량 이체</label>
+                    <label for="common-transfer">전체</label>
+                    <input type="radio" id="reserve-transfer" value="reserve" name="major-category" >
+                    <label for="reserve-transfer">예약 이체</label>
+                    <input type="radio" id="auto-transfer" value="auto" name="major-category">
+                    <label for="auto-transfer">자동 이체</label>
                 </div>
-            </td>
-        </tr>
-        <tr id="trade-type-row">
-            <th>조건별조회</th>
-            <td>
-                <div class="button-group" id ="trade-type-div">
-                    <button type="button" class="trade-status-search-btn active" >전체</button>
-                    <button type="button" class="trade-status-search-btn" value="DEPOSIT">입금</button>
-                    <button type="button" class="trade-status-search-btn" value="WITHDRAWAL">출금</button>
-                    <button type="button" class="trade-status-search-btn" value="CLOSE">해지</button>
-                    <button type="button" class="trade-status-search-btn" value="OPEN">가입</button>
-                </div>
-
-            </td>
-        </tr>
-        <tr>
-            <th>조회기간 설정</th>
-            <td>
-                <div class="button-group">
-                    <input type="radio" id="period" name="search-period-type" value="period" checked>
-                    <label for="period">기간 조회</label>
-                    <input type="radio" id="monthly" name="search-period-type" value="monthly">
-                    <label for="monthly">월별 조회</label>
-                </div>
-
-            </td>
-        </tr>
-        <tr id="search-monthly-tr">
-            <th><label for="year-search-btn">월별 조회</label></th>
-            <td>
-
-                <select id="year-search-btn">
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                    <option value="2020">2020</option>
-                </select>
-                년
-                &nbsp &nbsp &nbsp
-
-                <select id="month-search-btn">
-                    <option value="1">1월</option>
-                    <option value="2">2월</option>
-                    <option value="3">3월</option>
-                    <option value="4">4월</option>
-                    <option value="5">5월</option>
-                    <option value="6">6월</option>
-                    <option value="7">7월</option>
-                    <option value="8">8월</option>
-                    <option value="9">9월</option>
-                    <option value="10">10월</option>
-                    <option value="11">11월</option>
-                    <option value="12">12월</option>
-                </select>
-                <label for="month-search-btn">월</label>&nbsp &nbsp
-            </td>
-        </tr>
-        <tr id="search-period-tr">
-            <th><label for="period-start-input">기간조회</label></th>
-            <td>
-                <div class="button-group">
-                    <button type="button" class="trade-period-search-btn" value="1d">당일</button>
-                    <button type="button" class="trade-period-search-btn" value="1w">1주일</button>
-                    <button type="button" class="trade-period-search-btn" value="1m">1개월</button>
-                    <button type="button" class="trade-period-search-btn active" value="3m">3개월</button>
-                    <button type="button" class="trade-period-search-btn" value="6m">6개월</button>
-                    <button type="button" class="trade-period-search-btn" id="custom-period-btn">직접입력</button>
-                </div>
-                <div id="period-search-area">
-                    <div class="period-search-container" id="period-search-container">
-                        <label for="period-start-input">시작일 :</label>
-                        <input type="date" id="period-start-input">
-                        <label for="period-end-input">종료일 :</label>
-                        <input type="date" id="period-end-input">
-
-                    </div>
-                </div>
-
-
             </td>
         </tr>
 
@@ -147,6 +53,44 @@
                 </div>
 
             </td>
+        </tr>
+        <tr>
+            <th>시간대 조건</th>
+            <td id = "select-time-td">
+                <select id="start-time-btn">
+                    <option value="1">9:00</option>
+                    <option value="1">10:00</option>
+                    <option value="1">11:00</option>
+                    <option value="1">12:00</option>
+                    <option value="1">13:00</option>
+                    <option value="1">14:00</option>
+                    <option value="1">15:00</option>
+                    <option value="1">16:00</option>
+                    <option value="1">17:00</option>
+                    <option value="1">18:00</option>
+                    <option value="1">19:00</option>
+                    <option value="1">20:00</option>
+                    <option value="1">21:00</option>
+                    <option value="1">22:00</option>
+                </select>
+                <select id="end-time-btn">
+                    <option value="1">9:00</option>
+                    <option value="1">10:00</option>
+                    <option value="1">11:00</option>
+                    <option value="1">12:00</option>
+                    <option value="1">13:00</option>
+                    <option value="1">14:00</option>
+                    <option value="1">15:00</option>
+                    <option value="1">16:00</option>
+                    <option value="1">17:00</option>
+                    <option value="1">18:00</option>
+                    <option value="1">19:00</option>
+                    <option value="1">20:00</option>
+                    <option value="1">21:00</option>
+                    <option value="1">22:00</option>
+                </select>
+            </td>
+
         </tr>
     </table>
 
@@ -226,7 +170,7 @@
     <input type="hidden" id="businessDay" value="${businessDay}">
 </div>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
-<script src="/resources/js/page/trade-list.js"></script>
+<script src="/resources/js/page/reserve-list.js"></script>
 <script src="/resources/js/footer.js"></script>
 </body>
 </html>

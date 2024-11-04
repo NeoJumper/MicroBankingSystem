@@ -206,13 +206,14 @@
                 <thead>
 
                 <th>순번</th>
+                <th><label id="bulk-transfer-status">상태</label></th>
+                <th><label id="bulk-transfer-acc-id">출금 계좌</label></th>
                 <th><label id="bulk-transfer-trade-date">거래일시</label></th>
-                <th><label id="bulk-transfer-acc-id">비고</label></th>
-                <th><label id="bulk-transfer-total-amount">총 이체금액</label></th>
+                <th><label id="bulk-transfer-total-cnt">총건수</label></th>
                 <th><label id="bulk-transfer-failure-cnt">실패건수</label></th>
                 <th><label id="bulk-transfer-success-cnt">성공건수</label></th>
-                <th><label id="bulk-transfer-total-cnt">총건수</label></th>
-                <th><label id="bulk-transfer-status">상태</label></th>
+                <th><label id="bulk-transfer-registered-amount">등록금액</label></th>
+                <th><label id="bulk-transfer-amount">실행완료금액</label></th>
                 <th><label id="bulk-transfer-detail"></label></th>
                 </thead>
                 <tbody id="bulk-transfer-result-tbody">

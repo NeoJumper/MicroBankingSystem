@@ -1,5 +1,6 @@
 #registration-page{
     position: relative;
+
 }
 
 #register-result-toggle-btn {
@@ -84,6 +85,7 @@ section h4 {
     justify-content: center;
     display: flex;
     /*justify-content: space-around;*/
+    margin-top: 50px;
     border-radius: 15px;
     font-weight: bold;
     font-size: 1.0rem;
@@ -114,6 +116,7 @@ section h4 {
     align-items: center;
     gap: 20px;
     padding-bottom: 17px;
+    margin-bottom: 35px;
 }
 
 .submit-btns > input[type="button"]{
@@ -179,7 +182,9 @@ p {
 }
 .account-result-contents{
     display: flex;
-    gap:40%;
+    justify-content: space-between;
+    gap:5%;
+    margin-top: 15px;
 }
 .account-result-contents > div > div:nth-child(1){
     padding-bottom: 10px;
@@ -192,7 +197,7 @@ p {
     margin: 0 auto;
     position: relative;
     margin-top: 10px;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 }
 
 /* 각 단계 */
@@ -407,9 +412,10 @@ p {
 }
 
 .tableWrapper {
-    max-height: 480px;
+    max-height: 410px;
     height: auto;
     border-top: 1px solid var(--little-dark-gray);
+    border-bottom: 1px solid var(--little-dark-gray);
     overflow: auto;
 }
 .bulk-insert-table{
@@ -420,13 +426,16 @@ p {
     position: sticky;
     top: 0px;
 }
-#uploadIndividualEmployeeModal th, #uploadIndividualEmployeeModal td{
+#uploadIndividualEmployeeModal th{
     font-size: 1.2rem;
+}
+#uploadIndividualEmployeeModal td{
+    font-size: 1.0rem;
 }
 #uploadIndividualEmployeeModal input
 {
-    width: 70%;
-    padding: 10px 10px;
+    width: 75%;
+    padding: 8px 4px;
 }
 
 #transfer-info-detail-modal th, #transfer-info-detail-modal td{
@@ -447,4 +456,76 @@ p {
     font-size: 1.5rem;
     font-weight: bold;
     color: #073082;
+}
+.text-color-basic{
+    color: #073082;
+    font-weight: bold;
+}
+/**
+ - 원형 그래프
+ */
+.progress-circle {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin-bottom: 20px;
+}
+
+.bg-circle {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 10;
+}
+
+.progress-circle-bar {
+    fill: none;
+    stroke: #4caf50;
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 283; /* 2 * PI * r (where r = 45) */
+    stroke-dashoffset: 283;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.5s;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    font-weight: bold;
+    color: #073082;
+}
+#progress-count-area > div{
+    width: 170px;
+
+    margin-right: 10px;
+}
+#progress-count-area{
+    position: relative;
+}
+#progress-top-text{
+    position: absolute;
+    bottom: 210px;
+}
+#print-img-container{
+    margin-left: 9px;
+    width: 85px;
+    justify-content: center;
+    display: flex;
+    align-items: end;
+    overflow: hidden;
+}
+#print-logo-img{
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    justify-content: center;
+    align-items: center;
+}
+.print-bulk-transfer th, .print-bulk-transfer td{
+    font-size: 2.0rem !important;
+    padding: 28px 23px !important;
 }

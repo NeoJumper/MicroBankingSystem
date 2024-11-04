@@ -3,7 +3,7 @@
 }
 
 #search-modal-account .modal-body {
-    padding: 5%;
+    padding: 2% 4%;
 }
 
 #search-modal-account .modal-body h5,
@@ -52,7 +52,7 @@
 }
 
 #scrollable-tbody-wrapper {
-    max-height: 400px;
+    max-height: 250px;
     overflow-y: auto;
     display: block;
 }
