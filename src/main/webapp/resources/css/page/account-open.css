@@ -41,3 +41,10 @@
     font-weight: bold;
     color: #FF0000;
 }
+.krw-amount-input {
+    width: 65%;
+    text-align: right;
+    color: var(--deep-dark-gray);
+    border: none;
+    background-color: white !important;
+}

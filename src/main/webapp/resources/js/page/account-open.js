@@ -12,11 +12,8 @@ $(document).ready(function () {
 
 
     // 입력 금액 포맷 변경
-    handleKRWFormat();
+    handleAmountFormat();
 
-
-    handlePerTradeLimit();
-    handleDailyLimit()
 
     $('input[name="major-category"]').change(function() {
         resetFormData();
@@ -142,21 +139,10 @@ function accountOpenResult(accountId) {
     });
 }
 
-function handleKRWFormat(){
-    $('.balance-input').on('input', function() {
-        // 현재 입력된 값을 가져옴
-        let value = $(this).val();
 
-        // 숫자 이외의 문자를 제거
-        value = value.replace(/[^0-9]/g, '');
 
-        // 숫자를 한국 원화 형식으로 변환
-        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-        // 변환된 값을 다시 input에 설정
-        $(this).val(value);
-    });
-}
+
 
 function handleTransferLimitText() {
     var selectedAccountType =  $('input[name="major-category"]:checked').val();
@@ -234,41 +220,60 @@ function resetFormData() {
 
 
 }
+function handleAmountFormat(){
+    $('.balance-input').on('input', function() {
+        // 현재 입력된 값을 가져옴
+        let value = $(this).val();
+        let elementId = $(this).attr('id');
 
-function handlePerTradeLimit() {
-    $(document).on('input', '#per-trade-limit-input', function () {
-        $(this).val(comma(convertNumber(($(this).val()))));
-
-        var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
-
-
-
-        if (inputAmount > perTradeLimit) {
-            $('#over-per-trade-limit').text("최대 이체 한도를 초과했습니다.");
-            $(this).val(comma(perTradeLimit));  // 입력된 값을 계좌 잔액으로 제한
-        } else {
-            $('#over-per-trade-limit').text("");  // 경고 메시지 제거
+        if(elementId === 'per-trade-limit-input'){
+            value = handlePerTradeLimit(value);
         }
+        else if(elementId === 'daily-limit-input'){
+            value = handleDailyLimit(value);
+        }
+
+        $(this).siblings('.krw-amount-input').val(convertToKoreanNumber(parseInt(value)) + '원');
+
+        // 숫자를 한국 원화 형식으로 변환
+        value = String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+        // 변환된 값을 다시 input에 설정
+        $(this).val(value);
     });
 }
 
-function handleDailyLimit() {
-    $(document).on('input', '#daily-limit-input', function () {
-        $(this).val(comma(convertNumber(($(this).val()))));
 
-        var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+function handlePerTradeLimit(value) {
 
+    var inputAmount = parseFloat(convertNumber(value));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
 
+    if (inputAmount > perTradeLimit) {
+        $('#over-per-trade-limit').text("1회 이체한도 최대금액 입니다.");
+        $('#per-trade-limit-input').val(comma(perTradeLimit));  // 입력된 값을 계좌 잔액으로 제한
+        inputAmount = perTradeLimit;
+    } else {
+        $('#over-per-trade-limit').text("");  // 경고 메시지 제거
+    }
 
-        if (inputAmount > dailyLimit) {
-            $('#over-daily-limit').text("최대 이체 한도를 초과했습니다.");
-            $(this).val(comma(dailyLimit));  // 입력된 값을 계좌 잔액으로 제한
-        } else {
-            $('#over-daily-limit').text("");  // 경고 메시지 제거
-        }
-    });
+    return inputAmount;
+
 }
+function handleDailyLimit(value) {
 
+    var inputAmount = parseFloat(convertNumber(value));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+
+    if (inputAmount > dailyLimit) {
+        $('#over-daily-limit').text("1일 이체한도 최대금액 입니다.");
+        $('#daily-limit-input').val(comma(dailyLimit));  // 입력된 값을 계좌 잔액으로 제한
+        inputAmount = dailyLimit;
+    } else {
+        $('#over-daily-limit').text("");  // 경고 메시지 제거
+    }
+
+    return inputAmount;
+
+}
 
 function comma(str) {
     str = String(str);
