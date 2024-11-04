@@ -40,3 +40,7 @@
 #employee-detail-modal .modal-body th {
     text-align: center;
 }
+.modal-body
+{
+    height: 650px !important;
+}
