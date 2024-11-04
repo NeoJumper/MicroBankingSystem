@@ -25,11 +25,11 @@ function registerClickEventOfEmpSaveBtn(){
             name: $('#emp-name').val(),
             birthDate: $('#emp-birth-date').val(),
             password: $('#emp-password').val(),
-            residentNumber: originalValue,
+            identificationCode: originalValue,
             address: $('#emp-address').val(),
             detailAddress: $('#emp-detail-address').val(),
             email: $('#emp-email').val(),
-            phoneNumber: $('#emp-phone-number').val(),
+            phoneNumber: originalPhoneNumber,
             roles: $('#emp-roles').val()
         };
 
@@ -52,7 +52,7 @@ function createEmployee(employeeCreateData){
         data: JSON.stringify({
             ...employeeCreateData
         }),
-        success: function(createdEmployee) {
+        success: function(createdEmployeeId) {
             swal({
                 title: "직원 추가 성공",
                 text: "직원 정보가 성공적으로 추가되었습니다.",
@@ -61,10 +61,9 @@ function createEmployee(employeeCreateData){
             });
 
             resetEmpDataOfCreateForm();
-            fillEmpDataOfDetailModal(createdEmployee);
+            fillEmpDataOfDetailModal(createdEmployeeId);
 
-            var employeeDetailModal = new bootstrap.Modal(document.getElementById('employee-detail-modal'));
-            employeeDetailModal.show();
+
 
             // 성공 시 추가 작업 (예: 페이지 리로드, 메시지 표시 등)
         },
@@ -89,15 +88,50 @@ function resetEmpDataOfCreateForm(){
 
 }
 
-function fillEmpDataOfDetailModal(createdEmployee){
-    $('#detail-modal-emp-id').val(createdEmployee.id);
-    $('#detail-modal-emp-password').val(createdEmployee.password);
-    $('#detail-modal-emp-name').val(createdEmployee.name);
-    $('#detail-modal-emp-birth-date').val(new Date(createdEmployee.birthDate).toISOString().split('T')[0]);
-    $('#detail-modal-emp-email').val(createdEmployee.email);
-    $('#detail-modal-emp-phone-number').val(createdEmployee.phoneNumber);
-    $('#detail-modal-emp-branch-name').val(createdEmployee.branchName); // 지점명은 id로 받음, 필요 시 변환
-    $('#detail-modal-emp-roles').val(createdEmployee.roles);
+function fillEmpDataOfDetailModal(createdEmployeeId){
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/manager/employee/' + createdEmployeeId ,  // 서버의 URL로 변경
+        success: function(createdEmployee) {
+            swal({
+                title: "직원 추가 성공",
+                text: "직원 정보가 성공적으로 추가되었습니다.",
+                icon: "success",
+                button: "닫기",
+            });
+
+            $('#detail-modal-emp-id').val(createdEmployee.id);
+            $('#detail-modal-emp-password').val(createdEmployee.password);
+            $('#detail-modal-emp-name').val(createdEmployee.name);
+            $('#detail-modal-emp-birth-date').val(new Date(createdEmployee.birthDate).toISOString().split('T')[0]);
+            $('#detail-modal-emp-email').val(createdEmployee.email);
+            $('#detail-modal-emp-phone-number').val(createdEmployee.phoneNumber);
+            $('#detail-modal-emp-branch-name').val(createdEmployee.branchName);
+            $('#detail-modal-customer-identification-code').val(createdEmployee.identificationCode);
+            $('#detail-modal-emp-address').val(createdEmployee.address);
+            $('#detail-modal-emp-detail-address').val(createdEmployee.detailAddress);
+            $('#detail-modal-emp-roles').val(createdEmployee.roles);
+            $('#detail-modal-emp-registrant-name').val(createdEmployee.registrantName);
+            $('#detail-modal-emp-registration-date').val(createdEmployee.registrationDate);
+
+            originalValue = createdEmployee.identificationCode;
+            originalPhoneNumber = createdEmployee.phoneNumber;
+            maskResidentNumber();
+            hyphenPhoneNumber();
+
+            var employeeDetailModal = new bootstrap.Modal(document.getElementById('employee-detail-modal'));
+            employeeDetailModal.show();
+
+            // 성공 시 추가 작업 (예: 페이지 리로드, 메시지 표시 등)
+        },
+        error: function(error) {
+            alert('데이터 전송 중 오류가 발생했습니다.');
+            console.error(error);
+        }
+    });
+
+
 
 }
 

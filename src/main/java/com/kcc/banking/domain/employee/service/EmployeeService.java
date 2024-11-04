@@ -3,9 +3,8 @@ package com.kcc.banking.domain.employee.service;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.NotFoundException;
 import com.kcc.banking.common.util.AuthenticationUtils;
-import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
+import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
-import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import com.kcc.banking.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.banking.domain.employee.dto.request.EmployeeSearch;
@@ -16,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.time.Year;
 import java.util.List;
 
 @Service
@@ -24,7 +23,6 @@ import java.util.List;
 public class EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final BusinessDayService businessDayService;
     private final CommonService commonService;
 
     public List<EmployeeDataOfList> getEmployeeListOfBranch() {
@@ -36,15 +34,18 @@ public class EmployeeService {
      * @return
      * @Description 비밀번호 암호화 해야함
      */
-    public CreatedEmployee createEmployee(EmployeeCreate employeeCreate) {
+    public Long createEmployee(EmployeeCreate employeeCreate) {
+        int employeeSeq = employeeMapper.getEmployeeSeq();
+        CurrentData currentData = commonService.getCurrentData();
+        int year = Year.now().getValue(); // 올해 년도
 
         employeeCreate.setPassword(passwordEncoder.encode(employeeCreate.getPassword()));
-        employeeCreate.setCommonColumn(commonService.getCurrentBusinessDateAndEmployeeId());
-
+        employeeCreate.setCommonColumn(currentData);
+        String id = String.format("%d%s%04d", year, currentData.getBranchId(), employeeSeq);
+        employeeCreate.setId(Long.valueOf(id));
 
         employeeMapper.save(employeeCreate);
-        return new CreatedEmployee(employeeCreate, "은평 1지점", "매니저");
-
+        return employeeCreate.getId();
     }
 
 
@@ -62,7 +63,7 @@ public class EmployeeService {
     }
 
     public EmployeeDetail getEmployeeDetail(Long id) {
-        return employeeMapper.findById(id);
+        return employeeMapper.findEmpDetailById(id);
     }
 
     public AuthData getAuthData() {

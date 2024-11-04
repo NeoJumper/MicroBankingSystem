@@ -27,3 +27,4 @@ function redirectEmployeeUpdatePage(employeeId){
 
     window.location.href = `/page/manager/employee-update?id=${employeeId}`;
 }
+

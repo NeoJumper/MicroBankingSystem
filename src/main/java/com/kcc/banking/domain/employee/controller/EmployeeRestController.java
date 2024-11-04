@@ -25,7 +25,7 @@ public class EmployeeRestController {
     }
 
     @PostMapping("/api/manager/employee")
-    public CreatedEmployee createEmployee(@RequestBody EmployeeCreate employeeCreate) {
+    public Long createEmployee(@RequestBody EmployeeCreate employeeCreate) {
         return employeeService.createEmployee(employeeCreate);
 
     }

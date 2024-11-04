@@ -23,5 +23,9 @@ public interface EmployeeMapper {
 
     EmployeeDetail findById(Long id);
 
+    EmployeeDetail findEmpDetailById(Long id);
+
     AuthData findAuthDataById(Long id);
+
+    int getEmployeeSeq();
 }

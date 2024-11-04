@@ -5,9 +5,18 @@
 <mapper namespace="com.kcc.banking.domain.employee.mapper.EmployeeMapper">
 
     <select id="findById" parameterType="java.lang.Long">
-        select id, name, birth_date, phone_number , email, roles, password
-        from employee
-        WHERE id = #{id}
+        select e.*, b.name as "branch_name"
+        from employee e
+        join branch b on e.branch_id = b.id
+        WHERE e.id = #{id}
+    </select>
+
+    <select id="findEmpDetailById" parameterType="java.lang.Long">
+        select e.*, b.name as "branch_name", r.name as "registrant_name"
+        from employee e
+        join branch b on e.branch_id = b.id
+        join employee r on e.registrant_id = r.id
+        WHERE e.id = #{id}
     </select>
 
     <select id="findAuthDataById" parameterType="java.lang.Long">
@@ -20,12 +29,16 @@
 
     </select>
 
+    <select id="getEmployeeSeq" resultType="int">
+        SELECT employee_seq.nextval
+        FROM dual
+    </select>
 
     <insert id="save" parameterType="EmployeeCreate">
         <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
             SELECT employee_seq.nextval FROM dual
         </selectKey>
-        INSERT INTO Employee (id, branch_id, name, phone_number, email,birth_date, password, roles, registrant_id, registration_date, version)
+        INSERT INTO Employee (id, branch_id, name, phone_number, email,birth_date, password, address, detail_address, identification_code, roles, registrant_id, registration_date, version)
         VALUES (
         #{id},
         #{branchId},
@@ -34,6 +47,9 @@
         #{email},
         #{birthDate},
         #{password},
+        #{address},
+        #{detailAddress},
+        #{identificationCode},
         #{roles},
         #{registrantId},
         #{registrationDate},
@@ -49,6 +65,9 @@
         email = #{email},
         birth_date = #{birthDate},
         password = #{password},
+        address = #{address},
+        detail_address = #{detailAddress},
+        identification_code = #{identificationCode},
         roles = #{roles},
         modifier_id = #{modifierId},
         modification_date = #{modificationDate},
