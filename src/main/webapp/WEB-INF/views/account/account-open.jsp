@@ -91,7 +91,10 @@
             </tr>
             <tr>
                 <th>초기 예치금(KRW)</th>
-                <td><input type="text" id="init-balance-input" class="balance-input"></td>
+                <td>
+                    <input type="text" id="init-balance-input" value="0" class="balance-input">원
+                    <input id = "init-balance-span" class="mt-1 krw-amount-input" style="display: none">
+                </td>
 
                 <fmt:parseDate value="${tradeDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedTradeDate" />
                 <th>계좌 비밀번호</th>
@@ -103,7 +106,7 @@
                 <td>
                     <div><span id="over-per-trade-limit"></span></div>
                     <input type="text" id="per-trade-limit-input" value="0" class="balance-input">&nbsp원<span class="max-amount-span" style="color: #5F5F5F"></span>
-
+                    <input id = "per-trade-limit-span" class="mt-1 krw-amount-input" disabled style="display: none">
                 </td>
 
 
@@ -111,6 +114,7 @@
                 <td>
                     <div><span id="over-daily-limit"></span></div>
                     <input type="text" id="daily-limit-input" value="0" class="balance-input">&nbsp원<span class="max-amount-span" style="color: #5F5F5F"></span>
+                    <input id = "daily-limit-span" class="mt-1 krw-amount-input" style="display: none">
                 </td>
             </tr>
             <tr>

@@ -4,6 +4,9 @@
 .account-open-table th{
     width: 12%;
 }
+.account-open-table td{
+    width: 30%;
+}
 /* 버튼 CSS */
 .button-group {
     display: flex;
@@ -40,4 +43,11 @@
 #over-daily-limit, #over-per-trade-limit {
     font-weight: bold;
     color: #FF0000;
+}
+.krw-amount-input {
+    width: 65%;
+    text-align: right;
+    color: var(--deep-dark-gray);
+    border: none;
+    background-color: white !important;
 }

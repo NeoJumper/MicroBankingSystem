@@ -28,7 +28,7 @@ public class AutoTransferList {
     private String modificationDate;              // 수정 날짜
     private Long modifierId;                         // 수정자 ID
     private Long version;                         // 버전
-    private String nextTransferDate;
+    private Timestamp nextTransferDate;
 
 
 }

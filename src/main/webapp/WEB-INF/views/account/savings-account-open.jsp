@@ -117,18 +117,18 @@
     <table class="common-table">
         <tr>
             <th>우대이율</th>
-            <td><input type="text" id="preferred-interest-input"> %</td>
+            <td><input type="text" id="preferred-interest-input" style="text-align: right"> %</td>
         </tr>
         <tr>
             <th>총 이자율</th>
-            <td><input type="text" id="total-interest-input" disabled> %</td>
+            <td><input type="text" id="total-interest-input" disabled style="text-align: right"> %</td>
         </tr>
         <tr>
             <th>원금</th>
             <td>
 
-                <input type="text" id="auto-transfer-amount-input">
-                원
+                <input type="text" id="auto-transfer-amount-input" style="text-align: right">원
+                <input id = "init-balance-span" class="mt-1 krw-amount-input" style="display: none">
                 <div class="button-group">
                     <button type="button" class="amount-btn" data-amount="1000000">100만</button>
                     <button type="button" class="amount-btn" data-amount="500000">50만</button>
@@ -144,7 +144,7 @@
 
         <tr>
             <th>만기예상약정이자</th>
-            <td><input type="text" id="expected-maturity-interest-input" disabled>
+            <td><input type="text" id="expected-maturity-interest-input" disabled style="text-align: right">
                 [ 단리식 / 월단위 ] 원금x연이율x월수/12
             </td>
 

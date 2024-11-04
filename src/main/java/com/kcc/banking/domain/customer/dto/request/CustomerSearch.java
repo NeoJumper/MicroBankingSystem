@@ -13,11 +13,13 @@ public class CustomerSearch {
     private String searchOption;
     private String searchValue;
     private Criteria criteria;
+    private String branchId;
 
     @Builder
-    public CustomerSearch(String searchOption, String searchValue, Criteria criteria) {
+    public CustomerSearch(String searchOption, String searchValue, Criteria criteria, String branchId) {
         this.searchOption = searchOption;
         this.searchValue = searchValue;
         this.criteria = criteria;
+        this.branchId = branchId;
     }
 }

@@ -1,0 +1,18 @@
+.toggle-visibility {
+    position: absolute;
+    top: 50%; /* 세로 중앙 정렬 */
+    right: 39%; /* 오른쪽 여백 */
+    transform: translateY(-50%); /* 수직 중앙 정렬을 위한 변환 */
+    cursor: pointer; /* 커서 모양 변경 */
+}
+
+.toggle-visibility  i {
+
+    width: 22px;
+    height: 30px;
+    font-size: 22px;
+    cursor: pointer;
+}
+#password-error-message {
+    color: var(--point-red);
+}

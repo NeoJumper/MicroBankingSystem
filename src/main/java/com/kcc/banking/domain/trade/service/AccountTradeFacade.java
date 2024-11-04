@@ -6,7 +6,8 @@ import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.common.util.TransactionService;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
-import com.kcc.banking.domain.account.dto.response.CloseAccountTotal;
+import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
+import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.auto_transfer.dto.request.AutoTransferCreate;
 import com.kcc.banking.domain.auto_transfer.dto.response.AutoTransferList;
@@ -33,9 +34,6 @@ import com.kcc.banking.domain.trade.dto.response.TradeDetail;
 import com.kcc.banking.domain.trade.dto.response.TransferDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -156,21 +154,15 @@ public class AccountTradeFacade {
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
-        int tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
-        int statusResult = accountService.updateByCloseTrade(statusWithTrade, currentData);
+        TradeCreate tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
+        AccountUpdate accountUpdate = accountService.updateByCloseTrade(statusWithTrade, currentData);
 
-
-        if (tradeResult > 0) {
-            resultText.append(" 'tradeResult' ");
-        }
-        if (statusResult > 0) {
-            resultText.append(" 'statusResult' ");
-        }
 
         // 행원 마감 출금액 변경
         businessDayCloseService.updateTradeAmount(statusWithTrade.getAmount(), currentData, statusWithTrade.getTradeType());
 
-        return (tradeResult + statusResult ) > 0 ? resultText.toString() : "FAIL";
+        // 적금 계좌 해지 정보 return
+        return null;
 
     }
 
@@ -210,16 +202,14 @@ public class AccountTradeFacade {
 
     //---------------------------------------------------------
     /**
-     *   @Description - 보통예금 계좌 해지
-     *
-     *   1. 계좌 해지 거래 내역 생성
-     *   2. 계좌 잔액 및 상태 변경
-     *   3. 이자 지급일 및 상태 변경
+     *   @Description - 계좌 해지
+     *   1. 해지 계좌 정보 조회
+     *   2. 계좌 해지 거래 내역 생성
+     *   3. 계좌 잔액 및 상태 변경
+     *   4. 이자 지급일 및 상태 변경
      */
     @Transactional(rollbackFor = Exception.class)
-    public String addCloseTrade(StatusWithTrade statusWithTrade) {
-        StringBuilder resultText = new StringBuilder("SUCCESS");
-
+    public AccountCloseResult addCloseTrade(StatusWithTrade statusWithTrade) {
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
@@ -228,29 +218,34 @@ public class AccountTradeFacade {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
 
+        // 해지 계좌 정보 조회
+        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountById = accountService.getCloseSavingsFlexibleAccountById(statusWithTrade.getAccId());
+
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
 
-        int tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
-        int statusResult = accountService.updateByCloseTrade(statusWithTrade, currentData);
+        TradeCreate tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
+        AccountUpdate accountUpdate = accountService.updateByCloseTrade(statusWithTrade, currentData);
         int paymentStatusResult = interestService.updateByClose(statusWithTrade, currentData);
 
-
-        if (tradeResult > 0) {
-            resultText.append(" 'tradeResult' ");
-        }
-        if (statusResult > 0) {
-            resultText.append(" 'statusResult' ");
-        }
-        if (paymentStatusResult > 0) {
-            resultText.append(" 'paymentStatusResult' ");
-        }
 
         // 행원 마감 출금액 변경
         businessDayCloseService.updateTradeAmount(statusWithTrade.getAmount(), currentData, statusWithTrade.getTradeType());
 
-        return (tradeResult + statusResult + paymentStatusResult) > 0 ? resultText.toString() : "FAIL";
+        return AccountCloseResult.builder()
+                .accountId(statusWithTrade.getAccId())
+                .accountStatus(accountUpdate.getStatus())
+                .openDate(Timestamp.valueOf(LocalDateTime.parse(closeSavingsFlexibleAccountById.getOpenDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                .accountPreInterRate(closeSavingsFlexibleAccountById.getPreferentialInterestRate())
+                .accountBal(accountUpdate.getBalance())
+                .customerName(closeSavingsFlexibleAccountById.getCustomerName())
+                .customerId(closeSavingsFlexibleAccountById.getCustomerId())
+                .productName(closeSavingsFlexibleAccountById.getProductName())
+                .productInterRate(closeSavingsFlexibleAccountById.getInterestRate())
+                .productTaxRate(closeSavingsFlexibleAccountById.getTaxRate())
+                .amountSum(statusWithTrade.getAmount())
+                .build();
     }
 
 
@@ -333,21 +328,20 @@ public class AccountTradeFacade {
      *   1. 해지된 계좌 정보
      *   2. 해지 계좌 이자 계산 정보
      */
-    public CloseAccountTotal findCloseAccountTotal(String accountId) {
+    public AccountCloseResult findCloseAccountTotal(String accountId) {
 
         InterestSum interestSum = interestService.getInterestSum(accountId);
-
 
         Optional<CloseAccount> optCloseAccount = Optional.ofNullable(accountService.getCloseAccount(accountId));
         CloseAccount closeAccount = optCloseAccount.orElse(new CloseAccount());
 
-        CloseAccountTotal cat = CloseAccountTotal.builder()
+        AccountCloseResult cat = AccountCloseResult.builder()
                 .accountId(closeAccount.getAccountId())
                 .accountStatus(closeAccount.getAccountStatus())
                 .customerName(closeAccount.getCustomerName())
                 .customerId(closeAccount.getCustomerId())
                 .productName(closeAccount.getProductName())
-                .amountDate(closeAccount.getAmountDate())
+                .openDate(closeAccount.getOpenDate())
                 .accountPreInterRate(closeAccount.getAccountPreInterRate())
                 .productInterRate(closeAccount.getProductInterRate())
                 .accountBal(closeAccount.getAccountBal())
@@ -754,8 +748,8 @@ public class AccountTradeFacade {
      *  시간 설정 x -> 날짜 주기 정함 -> 자동이체됨
      *
      */
-    @Scheduled(fixedRate = 6000)
-  //@Scheduled(cron = "0 0 0 * * MON-FRI")
+  //  @Scheduled(fixedRate = 6000)
+  @Scheduled(cron = "0 0 0 * * MON-FRI")
     public void scheduleAutoTransfers(){
         System.out.println("scheduleReserveTransfers >>>>>> ");
 
@@ -782,7 +776,6 @@ public class AccountTradeFacade {
 
 
     // 자동이체 리스트 -> 예약이체등록하기
-    // 예약이체에 자동이체거래내역 넣기,
     private void registerReserveTransfers(List<AutoTransferList> todayAutoList) {
         List<ReserveTransferCreate> reserveTransfers = new ArrayList<>();
 
@@ -791,13 +784,14 @@ public class AccountTradeFacade {
             System.out.println("for (AutoTransferList >>>>>"+autoTransfer.getAccId());
             ReserveTransferCreate reserveTransfer = new ReserveTransferCreate();
 
-            reserveTransfer.setAutoTransferId(autoTransfer.getId());
+            reserveTransfer.setAutoTransferId(autoTransfer.getId().toString());
             reserveTransfer.setAccId(autoTransfer.getAccId());
             reserveTransfer.setTargetAccId(autoTransfer.getTargetAccId());
             reserveTransfer.setAmount(autoTransfer.getAmount());
             reserveTransfer.setStatus("WAIT"); // 초기 상태를 대기(pending)로 설정
             reserveTransfer.setRegistrantId(autoTransfer.getRegistrantId());
             reserveTransfer.setTransferType("AUTO");
+            reserveTransfer.setTransferDate(autoTransfer.getNextTransferDate());
             // 필요시 추가 필드 설정
 
             System.out.println("Created ReserveTransfer List: " +
@@ -839,7 +833,7 @@ public class AccountTradeFacade {
 
   /*
   *
-  *   *
+  *
    *  조건 :
    *      현재 영업일 = 예약일
    *      & 상태 = WAIT
@@ -847,25 +841,10 @@ public class AccountTradeFacade {
    *  실행 해야 하는 전체 예약이체 정보 리스트 가져오기
 
    * */
-    //실행 해야하는 전체 예약이체 정보 리스트 가져오기
-  /*  @Scheduled(fixedRate = 6000)// 6초마다 실행
-    public void scheduleReserveTransfers() {
-        System.out.println("scheduleReserveTransfers >>>>>> 예약이체 목록 조회 ");
-
-        SearchReserve searchReserve = new SearchReserve();
-        searchReserve.setStatus("FAIL");
 
 
-        List<TransferTradeCreate> transfers = reserveTransferService.getPendingTransfers(searchReserve);
-
-        if (!transfers.isEmpty()) {
-            processReserveTransfer(transfers);
-        }
-
-    }*/
-
-    // 실패한 거래 조회 기능
-    //@Scheduled(fixedRate = 6000)
+    // 실패한 거래 + 실행할 거래 조회 기능 0
+   // @Scheduled(fixedRate = 6000)
     public void failScheduleReserveTransfers() {
         // 검색 조건 설정
         SearchReserve searchFail = new SearchReserve();
@@ -874,18 +853,27 @@ public class AccountTradeFacade {
         SearchReserve searchWait = new SearchReserve();
         searchWait.setStatus("WAIT");
 
-        // 실패한 예약 이체 목록 조회
+        // 실패한 이체 목록 조회
         List<TransferTradeCreate> failTransfers = reserveTransferService.getPendingTransfers(searchFail);
         System.out.println("Fail Transfers: " + failTransfers); // 실패한 이체 로그
         for (TransferTradeCreate transfer : failTransfers) {
-            System.out.println(transfer); // 각 실패한 이체 객체 출력
+            System.out.println("Failed Transfer ID: " + transfer.getReserveTransferId());
+            System.out.println("Account ID: " + transfer.getAccId());
+            System.out.println("Target Account ID: " + transfer.getTargetAccId());
+            System.out.println("Transfer Amount: " + transfer.getTransferStartTime());
+            System.out.println("---------------------------------");
         }
 
-        // 대기 중인 예약 이체 목록 조회
+// 대기 중인 예약 이체 목록 조회
         List<TransferTradeCreate> waitTransfers = reserveTransferService.getPendingTransfers(searchWait);
+        System.out.println("Wait Transfers: " + waitTransfers); // 대기 중인 이체 로그
         for (TransferTradeCreate transfer : waitTransfers) {
-            System.out.println(transfer); // 각 대기 중인 이체 객체 출력
+            System.out.println("Waiting Transfer ID: " + transfer.getReserveTransferId());
+            System.out.println("Account ID: " + transfer.getAccId());
+            System.out.println("Target Account ID: " + transfer.getTargetAccId());
+            System.out.println("Transfer Amount: " + transfer.getTransferAmount());
         }
+
 
         // 실패한 이체 처리
 //        if (!failTransfers.isEmpty()) {

@@ -6,7 +6,7 @@ body, input, button {
 h3 {
     font-weight: bold;
 }
-span {
+#select-account-form span {
     color: #073082;
 }
 #registration-page{
@@ -15,12 +15,14 @@ span {
 
 
 .common-table input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
-    max-width: 60%;
+    max-width: 100%;
 }
 
 .button-group {
     display: flex;
+    justify-content: start;
     gap: 5px;
+    width: 65%;
 }
 
 /* 공통 버튼 스타일 */
@@ -56,6 +58,9 @@ span {
 #over-account-balance {
     font-weight: bold;
     color: #FF0000;
+}
+.amount-btn{
+    height: 42px;
 }
 
 .amount-btn.active {
@@ -112,7 +117,7 @@ p {
     color: white;
 }
 #reserve-time-select-div{
-    max-width: 60%;
+    max-width: 100%;
     display: flex;
 }
 #time-search-btn {
@@ -206,3 +211,10 @@ p {
     display: inline-block;
 }
 
+.krw-amount-input {
+    width: 65%;
+    text-align: right;
+    color: var(--deep-dark-gray);
+    border: none;
+    background-color: white !important;
+}

@@ -21,6 +21,10 @@
                         <td id="result-modal-cash-trade-acc-id"></td>
                     </tr>
                     <tr>
+                        <th>예금주</th>
+                        <td id="result-modal-cash-trade-customer-name"></td>
+                    </tr>
+                    <tr>
                         <th>입금액</th>
                         <td id="result-modal-cash-trade-amount"></td>
                     </tr>
@@ -32,10 +36,7 @@
                         <th>승인일자</th>
                         <td id="result-modal-cash-trade-registration-date"></td>
                     </tr>
-                    <tr>
-                        <th>담당자</th>
-                        <td id="result-modal-cash-trade-registrant-id"></td>
-                    </tr>
+
                     <tr>
                         <th>거래 유형</th>
                         <td id="result-modal-cash-trade-trade-type"></td>

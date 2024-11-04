@@ -22,11 +22,11 @@
         FROM (
             SELECT id,name,birth_date,phone_number, branch_id, security_level,email ,  address, detail_address
             FROM customer
-            <where>
-                <if test="searchOption != null and !searchOption.equals('')">
-                    AND ${searchOption} LIKE '%' || #{searchValue} || '%'
-                </if>
-            </where>
+            where branch_id = ${branchId}
+            <if test="searchOption != null and !searchOption.equals('')">
+                AND ${searchOption} LIKE '%' || #{searchValue} || '%'
+            </if>
+
         )
         )
         <if test="criteria != null and !criteria.equals('')">
@@ -44,6 +44,7 @@
         SELECT COUNT(*)
         FROM customer
         <where>
+            branch_id = ${branchId}
             <if test="searchOption != null and !searchOption.equals('')">
                 AND ${searchOption} LIKE '%' || #{searchValue} || '%'
             </if>

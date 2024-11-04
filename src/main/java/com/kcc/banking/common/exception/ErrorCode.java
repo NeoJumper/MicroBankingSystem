@@ -28,6 +28,7 @@ public enum ErrorCode {
     INVALID_CERTIFICATION_NUMBER("인증번호가 일치하지 않습니다", HttpStatus.BAD_REQUEST),
     EXPIRED_CERTIFICATION_NUMBER("인증번호 만료되었습니다.", HttpStatus.BAD_REQUEST),
     INVALID_MANAGER_BALANCE("마감 금액이 입출금 내역과 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
+    FAIL_TO_CLOSE("계좌 해지에 실패하였습니다.", HttpStatus.BAD_REQUEST),
 
     // 403
 

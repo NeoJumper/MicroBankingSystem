@@ -12,22 +12,34 @@ import lombok.Setter;
 public class EmployeeDetail {
     private Long id;
     private String branchName;
+    private String registrantName;
     private String birthDate;
     private String name;
     private String phoneNumber;
+    private String address;
+    private String detailAddress;
+    private String identificationCode;
+    private String registrationDate;
     private String email;
     private String password;
     private String roles;
+    private String currentBusinessDate;
 
     @Builder
-    public EmployeeDetail(EmployeeUpdate employeeUpdate, String branchName, String roles) {
-        this.id = employeeUpdate.getId();
-        this.birthDate = employeeUpdate.getBirthDate();
+    public EmployeeDetail(Long id, String branchName, String registrantName,String registrationDate,String birthDate, String name, String phoneNumber, String address, String detailAddress, String identificationCode, String email, String password, String roles, String currentBusinessDate) {
+        this.id = id;
         this.branchName = branchName;
-        this.name = employeeUpdate.getName();
-        this.phoneNumber = employeeUpdate.getPhoneNumber();
-        this.email = employeeUpdate.getEmail();
-        this.password = employeeUpdate.getPassword();
+        this.registrantName = registrantName;
+        this.birthDate = birthDate;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.registrationDate = registrationDate;
+        this.detailAddress = detailAddress;
+        this.identificationCode = identificationCode;
+        this.email = email;
+        this.password = password;
         this.roles = roles;
+        this.currentBusinessDate = currentBusinessDate;
     }
 }

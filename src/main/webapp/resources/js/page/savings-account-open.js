@@ -80,9 +80,43 @@ $(document).ready(function () {
     $('#savings-account-create-btn').click(function () {
         createSavingAccount();
     });
+
+    // 입력 금액 포맷 변경
+    handleAmountInputFormat();
 });
+function handleAmountInputFormat(){
+    $('#auto-transfer-amount-input').on('input', function() {
+        handleAmountFormat($(this));
+    });
+}
+function handleAmountFormat(element){
+
+    // 현재 입력된 값을 가져옴
+    let value = element.val();
+
+    if(String(value) === ''){
+        element.siblings('.krw-amount-input').val('').hide();
+        value = 0;
+        element.val(value);
+        return;
+    }
+    console.log(value);
 
 
+    value = parseFloat(convertNumber(value));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+
+
+
+    element.siblings('.krw-amount-input').val(convertToKoreanNumber(parseInt(value)) + '원').show();
+
+    // 숫자를 한국 원화 형식으로 변환
+    value = String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    console.log(value);
+    // 변환된 값을 다시 input에 설정
+    element.val(value);
+
+}
 
 // 잔액 부족 알림 띄우기
 function checkBalance() {
@@ -131,7 +165,7 @@ function clickAmountBtn() {
             const amount = this.getAttribute('data-amount'); // 버튼의 data-amount 속성에서 금액 가져오기
             document.getElementById('auto-transfer-amount-input').value = amount; // 입력 필드에 금액 설정
             document.getElementById('auto-transfer-amount').value = amount; // 입력 필드에 금액 설정
-
+            handleAmountFormat($('#auto-transfer-amount-input'));
         });
     });
 }

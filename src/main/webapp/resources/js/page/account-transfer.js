@@ -21,7 +21,9 @@ $(document).ready(function () {
 
     clickTransferAmountBtn(); // 100, 50, 10, 5, 1, 전액 버튼
 
-    handleAmount(); // 입력 시 숫자 제외한 문자 모두 제거, 계좌 잔액 초과하는 입력 제거, 0 이상은 입력못함(00000 등)
+    // 입력 시 숫자 제외한 문자 모두 제거, 계좌 잔액 초과하는 입력 제거, 0 이상은 입력못함(00000 등)
+    // 한글 금액 표기
+    handleAmountInput();
 
     removeErrorMessage();    // 입력 필드를 벗어났을 때 경고 메시지를 제거
 
@@ -50,6 +52,35 @@ $(document).ready(function () {
 
 });
 
+function handleAmountInput(){
+    $('#transfer-amount').on('input', function() {
+
+        handleAmount($(this));
+
+    });
+}
+function handleAmount(element){
+    let value = element.val();
+    if(String(value) === ''){
+        element.siblings('.krw-amount-input').val('').hide();
+        value = 0;
+        element.val(value);
+        return;
+    }
+    console.log(value);
+    value = handleKrwAmount(value);
+
+
+    element.siblings('.krw-amount-input').val(convertToKoreanNumber(parseInt(value)) + '원').show();
+
+    // 숫자를 한국 원화 형식으로 변환
+    value = String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    console.log(value);
+    // 변환된 값을 다시 input에 설정
+    element.val(value);
+}
+
 function comma(str) {
     str = String(str);
     return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');  // 천 단위 쉼표 추가
@@ -72,14 +103,15 @@ function disableDuplicateAccounts() {
     var withdrawalAccountId = $('#withdrawal-account-number').text();  // 출금 계좌 번호 가져오기
 
     if (withdrawalAccountId) {
-        // 모달에 있는 모든 라디오 버튼을 순회하면서 출금 계좌와 동일한 계좌를 찾아 비활성화
+        // 모달에 있는 모든 라디오 버튼을 순회하면서 출금 계좌와 동일한 계좌를 찾아 삭제
         $('#search-modal-common-table tbody tr').each(function () {
             var accountId = $(this).find('td:eq(1)').text();  // 각 계좌의 계좌 번호 추출
 
             //console.log("입금계좌 : " + accountId);
             if (accountId === withdrawalAccountId) {
-                // 동일한 계좌일 경우 라디오 버튼 비활성화
-                $(this).find('input[name="select-account"]').prop('disabled', true);
+                // 선택된 계좌일 경우 라디오 버튼 비활성화
+                //$(this).find('input[name="select-account"]').prop('disabled', true);
+                $(this).closest('tr').remove(); // 요소의 상위 행 삭제
             }
         });
     }
@@ -449,6 +481,7 @@ function clickDepositAccountCheckBtn() {
 function clickTransferAmountBtn() {
     $('.amount-btn').click(function () {
         setAmount(this);
+        handleAmount($('#transfer-amount'));
     });
 }
 
@@ -474,20 +507,21 @@ function clickAccountSelectBtn() {
     });
 }
 
-function handleAmount() {
-    $(document).on('input', '#transfer-amount', function () {
-        $(this).val(comma(convertNumber($(this).val())));
+function handleKrwAmount(value) {
 
-        var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
-        var transferableAmount = parseFloat(convertNumber($('#transferable-amount').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
+    var inputAmount = parseFloat(convertNumber(value));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+    var transferableAmount = parseFloat(convertNumber($('#transferable-amount').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
 
-        if (inputAmount > transferableAmount) {
-            $('#over-account-balance').text("이체 가능 금액을 초과했습니다.");
-            $(this).val(comma(transferableAmount));  // 입력된 값을 계좌 잔액으로 제한
-        } else {
-            $('#over-account-balance').text("");  // 경고 메시지 제거
-        }
-    });
+    if (inputAmount > transferableAmount) {
+        $('#over-account-balance').text("이체 가능 최대 금액입니다.");
+        $('#transfer-amount').val(comma(transferableAmount));  // 입력된 값을 계좌 잔액으로 제한
+        inputAmount = transferableAmount
+    } else {
+        $('#over-account-balance').text("");  // 경고 메시지 제거
+    }
+
+    return inputAmount;
+
 }
 
 function removeErrorMessage() {

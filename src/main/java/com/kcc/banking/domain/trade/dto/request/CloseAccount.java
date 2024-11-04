@@ -17,20 +17,20 @@ public class CloseAccount {
     private String customerName;
     private long customerId;
     private String productName;
-    private Timestamp amountDate;
+    private Timestamp openDate;
     private BigDecimal accountPreInterRate;
     private BigDecimal productInterRate;
     private BigDecimal accountBal;
     private BigDecimal productTaxRate;
 
     @Builder
-    public CloseAccount(String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp amountDate, BigDecimal accountPreInterRate, BigDecimal productInterRate, BigDecimal accountBal, BigDecimal productTaxRate) {
+    public CloseAccount(String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp openDate, BigDecimal accountPreInterRate, BigDecimal productInterRate, BigDecimal accountBal, BigDecimal productTaxRate) {
         this.accountId = accountId;
         this.accountStatus = accountStatus;
         this.customerName = customerName;
         this.customerId = customerId;
         this.productName = productName;
-        this.amountDate = amountDate;
+        this.openDate = openDate;
         this.accountPreInterRate = accountPreInterRate;
         this.productInterRate = productInterRate;
         this.accountBal = accountBal;
