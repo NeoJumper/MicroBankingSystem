@@ -16,8 +16,8 @@ import java.util.Set;
 @EnableScheduling
 public class SchedulerRunner {
 
-    @Scheduled(fixedDelay = 3000)
+    /*@Scheduled(fixedDelay = 3000)
     public void testScheduler() {
         log.info("Starting test scheduler");
-    }
+    }*/
 }

@@ -41,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -845,7 +846,7 @@ public class AccountTradeFacade {
 
 
     // 실패한 거래 + 실행할 거래 조회 기능 0
-   // @Scheduled(fixedRate = 6000)
+   @Scheduled(fixedRate = 10000)
     public void failScheduleReserveTransfers() {
         // 검색 조건 설정
         SearchReserve searchFail = new SearchReserve();
@@ -878,13 +879,13 @@ public class AccountTradeFacade {
 
         // 실패한 이체 처리
 //        if (!failTransfers.isEmpty()) {
-//            processFailedTransfers(failTransfers);
+//            processReserveTransfer(failTransfers);
 //        }
 //
 //        // 대기 중인 이체 처리
-//        if (!waitTransfers.isEmpty()) {
-//            processPendingTransfers(waitTransfers);
-//        }
+        if (!waitTransfers.isEmpty()) {
+            processReserveTransfer(waitTransfers);
+        }
     }
 
     /**
@@ -894,70 +895,153 @@ public class AccountTradeFacade {
      * - 실패했을 때는 예약 이체의 상태는 FAIL로 변경하고 실패거래를 생성한다.
      * - 자동이체는 실패했을 때 시도 횟수를 카운팅하여 새로운 예약이체를 생성한다.
      */
-    public void processReserveTransfer(List<TransferTradeCreate> transferTradeCreateList){
-        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+    public void processReserveTransfer(List<TransferTradeCreate> transferTradeCreateList) {
+      /*  BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
         // OPEN 상태가 아니라면
         if (!currentBusinessDay.getStatus().equals("OPEN")) {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
-        }
+        }*/
 
-        for(TransferTradeCreate transferTradeCreate : transferTradeCreateList){
-            try{
-                // 성공 메시지 출력
-                System.out.println("reserve success 로직 시작" +transferTradeCreate.getReserveTransferId());
-                processTransfer(transferTradeCreate); // 이체거래 시도
+        for (TransferTradeCreate transferTradeCreate : transferTradeCreateList) {
+            try {
+                System.out.println("Processing transfer for Reserve ID: " + transferTradeCreate.getReserveTransferId());
 
-                // 성공을 했으니 해당 예약이체의 상태를 SUCCESS로 변경
+                AutoProcessTransfer(transferTradeCreate); // 이체 거래 시도
+
+                // 성공 시 예약 이체의 상태를 SUCCESS로 변경
                 String reserveId = transferTradeCreate.getReserveTransferId();
                 reserveTransferService.updateTransferStatus(reserveId, "SUCCESS", null);
-
-                // 성공 메시지 출력
                 System.out.println("Transfer successful for Reserve ID: " + reserveId);
-            }catch (CustomException e){
+
+            } catch (CustomException e) {
                 System.out.println("거래실패내역 >>>>>>>>>>>>>");
-                /*
-                String reserveId= transferTradeCreate.getReserveTransferId();
+               /*
+               String reserveId = transferTradeCreate.getReserveTransferId();
                 // 실패했을 때 거래내역 생성
                 transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
-                processFailTransfer(transferTradeCreate);
-                // 실패 했으니 해당 예약이체의 상태를 FAIL로 변경 failReason도 변경
+                processFailTransfer(transferTradeCreate); // 실패 거래 처리
+
+                // 실패 상태로 변경
                 reserveTransferService.updateTransferStatus(reserveId, "FAIL", transferTradeCreate.getFailureReason());
+                System.out.println("Transfer failed for Reserve ID: " + reserveId + ", Reason: " + e.getErrorCode().getMessage());
 
-                // 적금 자동이체인 경우 missed_count가 3회 이하면 새로운 예약이체를 만들어야함
+                // 미납 횟수 카운팅 및 새로운 예약 이체 생성 로직
                 int currentMissedCount = transferTradeCreate.getMissedCount();
-                int maxMissedCount = 3;
-
-                if (currentMissedCount < maxMissedCount) {
+                if (currentMissedCount < 3) {
                     // 새로운 예약 이체 생성
                     ReserveTransferCreate newTransfer = new ReserveTransferCreate();
                     newTransfer.setAccId(transferTradeCreate.getAccId());
                     newTransfer.setTargetAccId(transferTradeCreate.getTargetAccId());
                     newTransfer.setAmount(transferTradeCreate.getTransferAmount());
                     newTransfer.setStatus("WAIT");
+                    //newTransfer.setMissedCount(currentMissedCount + 1); // missedCount 증가
 
-                    // 새 예약 이체 등록
-                    List<ReserveTransferCreate> reserveTransfers = new ArrayList<>();
-                    reserveTransfers.add(newTransfer);
-
-                }else {
+                    // 새 예약 이체 등록 로직 (transferService.createReserveTransfer 등 호출)
+                    System.out.println("New transfer created for Reserve ID: " + reserveId);
+                } else {
                     // 최대 미납 횟수 초과 시 상태를 STOP으로 변경
                     reserveTransferService.updateTransferStatus(reserveId, "STOP", "Max missed count exceeded");
-
-                    // missed_count 4번이면 자동이체 STATUS = STOP / 메일전송
-
-
-                    // 이메일 전송 로직 추가
-
-                    //sendEmailNotification(existingTransfer);
+                    System.out.println("Transfer STOPPED for Reserve ID: " + reserveId + " due to max missed count.");
                 }*/
-                // 새로운 예약이체 다시 생성 , missed_count +1
-
-                // ReserveTransferCreate.build에 필요한 정보 넣고 transferService.createReserveTransfer(...) 실행
-                // 이 때 retryCount += 1, 같은거
-
             }
         }
     }
 
+
+    @Transactional(rollbackFor = {Exception.class})  // 모든 예외 발생 시 롤백
+    public List<TransferDetail> AutoProcessTransfer(TransferTradeCreate transferTradeCreate) {
+        log.info("트랜잭션 시작: 계좌 {}에서 계좌 {}로 이체 금액 {}", transferTradeCreate.getAccId(), transferTradeCreate.getTargetAccId(), transferTradeCreate.getTransferAmount());
+
+
+
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = sdf.format(currentTimestamp);
+
+        // 시스템 id 0 , branchid 가져오기
+        CurrentData currentData = new CurrentData(1L,1L,time);
+        // 입출금 계좌 조회
+        // 출금 계좌: accId
+        // 입금 계좌: targetAccId
+
+        AccountDetail withdrawalAccount = null;
+        AccountDetail depositAccount = null;
+
+        if(transferTradeCreate.getAccId().compareTo(transferTradeCreate.getTargetAccId()) < 0)
+        {
+            withdrawalAccount = accountService.getAccountDetail(transferTradeCreate.getAccId());
+            depositAccount = accountService.getAccountDetail(transferTradeCreate.getTargetAccId());
+        }
+        else{
+            depositAccount = accountService.getAccountDetail(transferTradeCreate.getTargetAccId());
+            withdrawalAccount = accountService.getAccountDetail(transferTradeCreate.getAccId());
+        }
+
+        log.info("{} 스레드 계좌 조회 완료", Thread.currentThread().getName());
+
+        if(withdrawalAccount == null) {  // 출금 계좌가 없을 때
+            throw new BadRequestException(ErrorCode.NOT_FOUND_ACCOUNT);
+        }
+        else if(withdrawalAccount.getStatus().equals("CLS")){  // 출금 계좌가 해지됐을 때
+            throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
+        }
+        else{   // 비밀번호 검증에 실패했을 때
+            accountService.validatePassword(new PasswordValidation(transferTradeCreate.getAccId(), transferTradeCreate.getAccountPassword()));
+        }
+
+        // 출금 계좌 잔액 조회
+        BigDecimal withdrawalAccountBalance = withdrawalAccount.getBalance();
+        // 오늘의 이체 출금총액 조회
+        BigDecimal transferAmountOfToday = tradeService.getTransferAmountOfToday(TradeSearch.builder().accId(withdrawalAccount.getId()).tradeDate(currentData.getCurrentBusinessDate()).build());
+        transferAmountOfToday = (transferAmountOfToday != null) ? transferAmountOfToday : BigDecimal.ZERO;
+
+
+        // 이체 금액이 잔액보다 큰 경우
+        if (withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()).compareTo(BigDecimal.ZERO) < 0) {
+            throw new BadRequestException(ErrorCode.OVER_TRANSFER_AMOUNT);
+        }
+        if (transferTradeCreate.getTransferAmount().add(transferAmountOfToday).compareTo(withdrawalAccount.getDailyLimit()) > 0){
+            throw new BadRequestException(ErrorCode.OVER_DAILY_LIMIT);
+        } else if (transferTradeCreate.getTransferAmount().compareTo(withdrawalAccount.getPerTradeLimit()) > 0) {
+            throw new BadRequestException(ErrorCode.OVER_PER_TRADE_LIMIT);
+        }
+
+        // 상대 계좌 조회 -> 입금 계좌 잔액 조회
+        BigDecimal depositAccountBalance = accountService.getAccountDetail(transferTradeCreate.getTargetAccId()).getBalance();
+
+
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+
+        // 출금 거래내역 추가
+        TransferDetail withdrawalTrade = tradeService.createTransferTrade(transferTradeCreate, withdrawalAccount.getCustomerName(), currentData, withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()), tradeNumber, "WITHDRAWAL");
+        // 출금 계좌 잔액 업데이트
+        accountService.updateByTransferTrade(withdrawalAccount, currentData, withdrawalAccountBalance.subtract(transferTradeCreate.getTransferAmount()));
+
+
+        // 입금 계좌 조회 시
+        if(depositAccount == null){
+            throw new BadRequestException(ErrorCode.NOT_FOUND_TARGET_ACCOUNT);
+        }
+
+        //입금 계좌 상태 확인
+        else if(depositAccount.getStatus().equals("CLS")){
+            throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
+        }
+
+        // 계좌번호 바꾸기
+        transferTradeCreate.setAccId(depositAccount.getId());
+        transferTradeCreate.setTargetAccId(withdrawalAccount.getId());
+
+        // 입금 거래내역 추가
+        TransferDetail depositTrade = tradeService.createTransferTrade(transferTradeCreate,depositAccount.getCustomerName() ,currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()), tradeNumber, "DEPOSIT");
+        // 입금 계좌 잔액 업데이트
+        accountService.updateByTransferTrade(depositAccount, currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()));
+
+        // 출금 내역과 입금 내역 반환
+        return Arrays.asList(withdrawalTrade, depositTrade);
+    }
 }
