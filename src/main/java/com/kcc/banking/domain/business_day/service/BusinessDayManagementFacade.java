@@ -125,13 +125,11 @@ public class BusinessDayManagementFacade {
      * 5. 지점마감의 거래번호를 가져와 이자 생성
      */
     public void closeByManager(VaultCashRequest vaultCashRequest) {
-
         // 1
         BusinessDateAndBranchId businessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
         String currentBusinessDate = businessDateAndBranchId.getBusinessDate();
 
         ManagerClosingData managerClosingData =  businessDayCloseService.getManagerClosingData();
-
 
         // 2
         if (managerClosingData.getClosingDataList().stream().map(ClosingData::getStatus).anyMatch("OPEN"::equals))
@@ -150,28 +148,15 @@ public class BusinessDayManagementFacade {
         interestService.createInterest(tradeNumber, businessDateAndBranchId);
     }
 
+    /**
+     * @Discription 
+     * - 복리 이자내역 테스트 코드
+     * @param vaultCashRequest
+     * @param businessDateAndBranchId
+     */
     public void closeByManagerForTest(VaultCashRequest vaultCashRequest, BusinessDateAndBranchId businessDateAndBranchId) {
 
-        // 1
-        //BusinessDateAndBranchId businessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        String currentBusinessDate = businessDateAndBranchId.getBusinessDate();
-
-        ManagerClosingData managerClosingData =  businessDayCloseService.getManagerClosingData();
-
-
-/*        // 2
-        if (managerClosingData.getClosingDataList().stream().map(ClosingData::getStatus).anyMatch("OPEN"::equals))
-            throw new BadRequestException(ErrorCode.REQUIRED_EMPLOYEE_CLOSING);
-        if(businessDayCloseService.getBranchClosingStatusByDateAndId(businessDateAndBranchId).equals("CLOSED"))
-            throw new BadRequestException(ErrorCode.ALREADY_CLOSED_BUSINESS_DAY);
-
-        // 3
-        businessDayCloseService.closeBranchBusinessDay(businessDateAndBranchId, vaultCashRequest);
-
-        // 4
-        businessDayService.businessDayStatusToClosed(currentBusinessDate);*/
-
-        // 5 - 보통예금, 자율적금 단복리 이자 내역 추가
+        // 보통예금, 자율적금 단복리 이자 내역 추가 테스트
         String tradeNumber = businessDayCloseService.getClosingTradeNumber(businessDateAndBranchId);
         interestService.createInterest(tradeNumber, businessDateAndBranchId);
     }

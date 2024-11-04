@@ -63,10 +63,10 @@ public class SavingInterestCreate {
         BigDecimal balance = accountDetail.getBalance();
         // 이자율을 퍼센트에서 소수로 변환 후 합산 (2.6% -> 0.026)
         BigDecimal interestRateSum = accountDetail.getInterestRate().add(accountDetail.getPreferentialInterestRate())
-                .divide(BigDecimal.valueOf(100), 8, RoundingMode.DOWN); // scale을 8로 설정
+                .divide(BigDecimal.valueOf(100), 4, RoundingMode.DOWN); // scale을 4로 설정
 
         // 월 이자율 계산 (연 이자율을 12로 나눔, 소수점 자릿수 유지)
-        BigDecimal monthlyInterestRate = interestRateSum.divide(BigDecimal.valueOf(12), 8, RoundingMode.DOWN);
+        BigDecimal monthlyInterestRate = interestRateSum.divide(BigDecimal.valueOf(12), 4, RoundingMode.DOWN);
 
 
         // 이자 계산 (단리 또는 복리)

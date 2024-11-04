@@ -205,19 +205,11 @@ function getSavingsFlexibleAccount(data, accountId) {
     $.ajax({
         url: "/api/employee/savings-flexible-account-close-total-info/" + accountId,
         type: "GET",
-        success: function (data)  {
+        success: function (data) {
             console.log("SELECT FLEXIBLE ACCOUNT", data);
-
+            // 기존의 총 이율 합산
             const interestRateSum = data.interestRate + data.preferentialInterestRate;
-
-            // 해지 이율 계산
-            const {finalInterestRate, isEarlyTermination, isMaturityTermination, diffDays} = calculateTerminationRate(
-                data.openDate,
-                businessDate,
-                data.period,
-                interestRateSum
-            );
-
+            // 해지 이율 테이블 계산
             const rateData = calculateRateData(
                 data.openDate,
                 businessDate,
@@ -229,7 +221,7 @@ function getSavingsFlexibleAccount(data, accountId) {
 
             // 이율 데이터에 대해 반복하며 적용 이율과 일치하는 키 찾기
             for (const [key, rate] of Object.entries(rateData)) {
-                if (parseFloat(rate) === finalInterestRate * 100) { // 금리를 퍼센트로 변환하여 비교
+                if (parseFloat(rate) === data.finalInterestRate * 100) { // 금리를 퍼센트로 변환하여 비교
                     highlightedKey = key;
                     break; // 일치하는 키를 찾으면 반복 중단
                 }
@@ -246,75 +238,53 @@ function getSavingsFlexibleAccount(data, accountId) {
                 }
             }
 
-            let interestSum = addInterestList(finalInterestRate, isEarlyTermination, accountId);
-            addCloseInfo(isEarlyTermination, isMaturityTermination, diffDays, data.openDate, data.openDate, businessDate, finalInterestRate, data.balance, interestSum);
-            console.log("FINAL INTEREST::", finalInterestRate);
-
+            // 계좌 해지 정보 추가 - 만기일 추가 예정
+            addCloseInfo(data, businessDate);
+            // 이자 내역 테이블 추가
+            addInterestList(data.interestDetailsList);
         }
     })
 }
 
-function addCloseInfo(isEarlyTermination, isMaturityTermination, diffDays, openDate, expirationDate, businessDate, finalInterestRate, balance, interestSum){
-    // 계좌 해지 정보 테이블에 값 추가
+function addCloseInfo(data, businessDate) {
     let tbodyInfo = $('#savings-account-close-info');
     tbodyInfo.empty();
-    let closeType = "만기 후 해지";
-    if(isEarlyTermination){
-        closeType = "중도 해지";
-    }else if(isMaturityTermination){
-        closeType = "만기 해지"
-    }
+
+    let roundDownToTen = (Math.floor(data.totalAmount / 10) * 10).toLocaleString();
 
     let row = `
         <tr>
-            <td>${closeType}</td>
-            <td>${diffDays} 일</td>
-            <td>${openDate}</td>
-            <td>${expirationDate}</td>
+            <td>${data.closeTypeDescription}</td>
+            <td>${data.openDate.split(" ")[0]}</td>
+            <td>${data.expectedExpireDate.split(" ")[0]}</td>
             <td>${businessDate}</td>
-            <td>${finalInterestRate}</td>
-            <td>${(balance + interestSum).toLocaleString()} 원</td>
+            <td>${data.finalInterestRate * 100} %</td>
+            <td>${data.totalAmount.toLocaleString()} 원</td>
+            <td id="flexible-saving-account-total-amount">${roundDownToTen} 원</td>
         </tr>
     `;
 
     tbodyInfo.append(row);
-
 }
 
-function addInterestList(finalInterestRate, isEarlyTermination, accountId) {
-    let interestSum = 0;
-    // 중도 해지
-    // if (isEarlyTermination) {
-    //
-    // }
-    // 만기 해지 / 만기 후 해지
-    // else
-        if(true) {
-        // 만기 시 / 만기 후 해지 시 이자내역 추가
-            $.ajax({
-                url: "/api/employee/interest-details/" + accountId,
-                type: "GET",
-                success: function (data) {
-                    console.log("account close flexible", data);
+function addInterestList(interestDetailsList) {
+    // tbody 준비
+    let tbody = $('#savings-account-flexible-monthly-interest-list').find('tbody');
+    tbody.empty();
 
-                    // tbody 요소를 찾고 기존 내용을 비웁니다.
-                    // 이자내역 테이블에 값 추가
-                    let tbody = $('#savings-account-flexible-monthly-interest-list').find('tbody');
-                    tbody.empty();
-
-                    // 데이터가 없을 경우 기본 메시지를 추가
-                    if (data.length === 0) {
-                        tbody.append(`
+    if (interestDetailsList.length === 0) {
+        // 데이터가 없을 경우 기본 메시지를 추가
+        tbody.append(`
                 <tr class="saving-account-close-empty-message">
                     <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 100px">
                         이자 내역이 존재하지 않습니다.
                     </td>
                 </tr>
             `);
-                    } else {
-                        // data 리스트의 각 항목을 tbody에 추가
-                        $.each(data, function(index, item) {
-                            let row = `
+    } else {
+        // data 리스트의 각 항목을 tbody에 추가
+        $.each(interestDetailsList, function (index, item) {
+            let row = `
                     <tr>
                         <td>${item.creationDate.split(" ")[0]}</td>
                         <td><input type="text" value="${item.balance.toLocaleString()}" disabled/> 원</td>
@@ -323,17 +293,10 @@ function addInterestList(finalInterestRate, isEarlyTermination, accountId) {
                         <td><input type="text" value="${item.amount.toLocaleString()}" disabled /> 원</td>
                     </tr>
                 `;
-                            interestSum += item.amount;
-                            tbody.append(row);
-                        });
-                    }
-                },
-                error: function () {
-                    console.log("데이터를 불러오는 중 오류가 발생했습니다.");
-                }
-            });
+            interestSum += item.amount;
+            tbody.append(row);
+        });
     }
-    return interestSum;
 }
 
 
@@ -372,7 +335,7 @@ function getSavingsAccount(data, accountId) {
 
             let highlightedKey = ""; // 해당 케이스 키
 
-            console.log("openDate"+data.openDate+ "finalInterestRate Key:", finalInterestRate);
+            console.log("openDate" + data.openDate + "finalInterestRate Key:", finalInterestRate);
 
             // 이율 데이터에 대해 반복하며 적용 이율과 일치하는 키 찾기
             for (const [key, rate] of Object.entries(rateData)) {
@@ -394,7 +357,7 @@ function getSavingsAccount(data, accountId) {
                 }
             }
 
-            console.log("FINAL INTEREST::" ,finalInterestRate);
+            console.log("FINAL INTEREST::", finalInterestRate);
             savingAccountFixedCloseRequest(data);
 
         },
@@ -490,7 +453,7 @@ function calculateSelectedRate(openDate, businessDate, period, interestRateSum) 
 
 function checkAccountId() {
     const inputId = $('#savings-account-close-password').val();
-    var accountNumber = $('#acco unt-number').val();
+    var accountNumber = $('#savings-account-close-number').val();
 
     $.ajax({
         url: '/api/employee/account-validate',
@@ -508,8 +471,8 @@ function checkAccountId() {
             })
 
             //비밀번호 성공시 opacity 스타일 제거
-            $('#submit-btn').removeAttr('style');
-            $('#submit-btn').prop('disabled', false);
+            $('#saving-account-close-submit-btn').removeAttr('style');
+            $('#saving-account-close-submit-btn').prop('disabled', false);
 
         }, error: function (error) {
             swal({
@@ -540,7 +503,28 @@ function submitSavingAccountClose() {
 
 // 정기적금 해지 프로세스
 function savingAccountFixedCloseRequest() {
+    var accountNumber = $('#savings-account-close-number').val();
+    var totalAmount = parseFloat($('#flexible-saving-account-total-amount').val().replace(/,/g, ''));
+    $.ajax({
+        url: '/api/employee/close-trade',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            accid: accountNumber,
+            amount: totalAmount,
+            status: "CLS",
+            description: "자유 적금 계좌 해지",
+            tradeType: "CLOSE"
+        }),
+        success: function (response) {
+            swal({
+                title: "해지 성공",
+                text: "계좌 해지 완료되었습니다.",
+                icon: "success",
+            });
 
+        }
+    })
 }
 
 // 자유적금 해지 프로세스

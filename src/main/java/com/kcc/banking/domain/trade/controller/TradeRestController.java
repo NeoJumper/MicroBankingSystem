@@ -79,6 +79,12 @@ public class TradeRestController {
         return ResponseEntity.ok(transferCancelDetails);
     }
 
+    /**
+     * @Discription 
+     * - 보통예금 해지 거래 추가
+     * @param statusWithTrade
+     * @return ResponseEntity<?>
+     */
     @PostMapping("/close-trade")
     public ResponseEntity<?> addCloseTrade(@RequestBody StatusWithTrade statusWithTrade) {
         String result = accountTradeFacade.addCloseTrade(statusWithTrade);
@@ -89,6 +95,12 @@ public class TradeRestController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    /**
+     * @Discription 
+     * - 보통에금 해지 거래 취소 추가
+     * @param accountIdWithExpireDate
+     * @return ResponseEntity<CloseCancelDetail>
+     */
     @PostMapping("/close-cancel-trade")
     public ResponseEntity<CloseCancelDetail> cancelCloseTrade(@RequestBody AccountIdWithExpireDate accountIdWithExpireDate) {
 
