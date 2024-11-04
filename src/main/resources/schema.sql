@@ -115,18 +115,18 @@ CREATE TABLE Customer (
 );
 
 CREATE TABLE Reserve_transfer (
-                               id NUMBER NOT NULL,
-                               acc_id  VARCHAR(20) NOT NULL,
-                               target_acc_id  VARCHAR(20) NOT NULL,
-                               amount NUMBER NOT NULL,
+                               id NUMBER  NULL,
+                               acc_id  VARCHAR(20)  NULL,
+                               target_acc_id  VARCHAR(20)  NULL,
+                               amount NUMBER  NULL,
                                bulk_transfer_id VARCHAR(20) NULL,
                                auto_transfer_id VARCHAR(20) NULL,
-                               transfer_start_time  VARCHAR(20) NOT NULL,
-                               transfer_end_time  VARCHAR(20) NOT NULL,
+                               transfer_start_time  VARCHAR(20)  NULL,
+                               transfer_end_time  VARCHAR(20)  NULL,
                                transfer_date TIMESTAMP NULL, -- 이체 지정일(지정 영업일)
                                retry_count NUMBER,
-                               transfer_type VARCHAR(10),
-                               status VARCHAR(20),
+                               transfer_type VARCHAR(10) NULL,
+                               status VARCHAR(20) NULL,
                                failure_reason VARCHAR(100) NULL,
                                description VARCHAR(1000) NULL,
                                create_date TIMESTAMP NULL, -- 등록일(영업일)

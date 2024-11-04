@@ -49,6 +49,7 @@
                     <td><input id="customer-name" type="text" disabled></td>
                 </tr>
                 <tr>
+                <tr>
                     <th><label for="account-number">계좌번호</label></th>
                     <td><input id="account-number" type="text" disabled></td>
                 </tr>
