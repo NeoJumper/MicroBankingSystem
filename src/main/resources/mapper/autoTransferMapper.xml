@@ -37,27 +37,30 @@
                      NULL,  -- modifier_id
                      1,      -- version
                      0,
-                    #{next_transfer_date},
+                     next_transfer_date,
                     'WAIT'
                  )
     </insert>
 
     <select id="findScheduledAutoTransferList">
         select
-            id,
-            acc_id,
-            target_acc_id,
-            amount,
-            auto_transfer_start_date,
-            auto_transfer_period,
-            status,
-            missed_count,
-            next_transfer_date
+            au.id as id,
+            au.acc_id as acc_id,
+            au.target_acc_id as target_acc_id,
+            au.amount as amount,
+            au.auto_transfer_start_date as auto_transfer_start_date,
+            au.auto_transfer_period as auto_transfer_period,
+            au.status as status,
+            au.missed_count as missed_count,
+            au.next_transfer_date as next_transfer_date,
+            a.registrant_id as registrantId
 
-        from Auto_transfer
+        from Auto_transfer au
+                 join Account a
+                      on au.acc_id = a.id
         where
-            status = 'WAIT'
-        and
-            TO_CHAR(next_transfer_date, 'YY/MM/DD') = TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD')
+            au.status = 'WAIT'
+          and
+            TO_CHAR(au.next_transfer_date, 'YY/MM/DD') = TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD')
     </select>
 </mapper>

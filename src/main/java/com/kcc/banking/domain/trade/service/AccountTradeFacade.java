@@ -754,9 +754,8 @@ public class AccountTradeFacade {
      *  시간 설정 x -> 날짜 주기 정함 -> 자동이체됨
      *
      */
-
+    //@Scheduled(fixedRate = 6000)
   @Scheduled(cron = "0 0 0 * * MON-FRI")
-    @Scheduled(fixedRate = 6000)
     public void scheduleAutoTransfers(){
         System.out.println("scheduleReserveTransfers >>>>>> ");
 
@@ -789,13 +788,14 @@ public class AccountTradeFacade {
             System.out.println("for (AutoTransferList >>>>>"+autoTransfer.getAccId());
             ReserveTransferCreate reserveTransfer = new ReserveTransferCreate();
 
-            reserveTransfer.setAutoTransferId(autoTransfer.getId());
+            reserveTransfer.setAutoTransferId(autoTransfer.getId().toString());
             reserveTransfer.setAccId(autoTransfer.getAccId());
             reserveTransfer.setTargetAccId(autoTransfer.getTargetAccId());
             reserveTransfer.setAmount(autoTransfer.getAmount());
             reserveTransfer.setStatus("WAIT"); // 초기 상태를 대기(pending)로 설정
             reserveTransfer.setRegistrantId(autoTransfer.getRegistrantId());
             reserveTransfer.setTransferType("AUTO");
+            reserveTransfer.setTransferDate(autoTransfer.getNextTransferDate());
             // 필요시 추가 필드 설정
 
             System.out.println("Created ReserveTransfer List: " +
@@ -837,7 +837,7 @@ public class AccountTradeFacade {
 
   /*
   *
-  *   *
+  *
    *  조건 :
    *      현재 영업일 = 예약일
    *      & 상태 = WAIT
@@ -863,14 +863,6 @@ public class AccountTradeFacade {
 
     }
 
-
-    public class DateConverter {
-        public static Timestamp convertStringToTimestamp(String dateString) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 포맷 수정
-            LocalDateTime localDateTime = LocalDateTime.parse(dateString, formatter);
-            return Timestamp.valueOf(localDateTime);
-        }
-    }
 
 
     /**

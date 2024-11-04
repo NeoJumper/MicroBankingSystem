@@ -110,30 +110,22 @@
         transfer_date,
         retry_count,
         transfer_type,
-        description,
         status,
-        failure_reason,
         registrant_id,
-        branch_id,
         registration_date,
-        version,
-        auto_transfer_id
+        version
         ) VALUES (
-        #{id},
+        reserve_transfer_seq.NEXTVAL,
         #{accId},
         #{targetAccId},
         #{amount},
-        SYSTIMESTAMP,
+        #{transferDate},
         0,
         'AUTO',
-        #{description},
         #{status},
-        'x',  <!-- NULL이 아닐 때만 삽입 -->
         #{registrantId},
-        #{branchId},
         SYSTIMESTAMP,
-        1,
-        #{autoTransferId}
+        1
         )
     </insert>
 
