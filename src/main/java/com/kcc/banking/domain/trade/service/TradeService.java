@@ -221,7 +221,7 @@ public class TradeService {
         return TradeDetail.of(tradeCreate);
     }
 
-    public int createCloseTrade(StatusWithTrade statusWithTrade, CurrentData currentData, Long tradeNumber) {
+    public TradeCreate createCloseTrade(StatusWithTrade statusWithTrade, CurrentData currentData, Long tradeNumber) {
         TradeCreate tradeCreate = TradeCreate.builder()
                 .accId(statusWithTrade.getAccId())
                 .branchId(currentData.getBranchId())
@@ -235,7 +235,8 @@ public class TradeService {
                 .status("NOR") // 거래 상태: 정상
                 .tradeDate(currentData.getCurrentBusinessDate()).build();
 
-        return tradeMapper.insertTrade(tradeCreate);
+        tradeMapper.insertTrade(tradeCreate);
+        return tradeCreate;
     }
 
     public int createCloseCancelTrade(String accId, CurrentData currentData, BigDecimal rollbackBalance, Long tradeNumber) {

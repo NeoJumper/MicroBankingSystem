@@ -69,7 +69,7 @@ function cancelCloseAccount(){
                     // text: "비밀번호 인증 성공",
                     icon: "success",
                 });
-                // const registrationDate = new Date(accountData.amountDate);
+                // const registrationDate = new Date(accountData.openDate);
                 // const now = new Date();
                 // const totalDays = Math.floor((now - registrationDate) / 1000 / 60 / 60 / 24);
                 // const totalPayment = accountData.accountBal + accountData.amountSum;

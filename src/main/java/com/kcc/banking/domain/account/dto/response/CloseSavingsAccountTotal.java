@@ -53,7 +53,7 @@ public class CloseSavingsAccountTotal {
     private BigDecimal totalBalanceSum;
 
     @Builder
-    public CloseSavingsAccountTotal(String autoTransferCount, String accountId, String accountStatus, String customerName, long customerId, String productName, Timestamp amountDate, BigDecimal accountInterestRate, BigDecimal productInterestRate, BigDecimal accountBalance, BigDecimal productTaxRate, BigDecimal amountSum, AutoTransferClose autoTransferClose, String productType) {
+    public CloseSavingsAccountTotal(String autoTransferCount, String accountId, String accountStatus, String customerName, long customerId, String productName, BigDecimal accountInterestRate, BigDecimal productInterestRate, BigDecimal accountBalance, BigDecimal productTaxRate, BigDecimal amountSum, AutoTransferClose autoTransferClose, String productType) {
         this.accountId = accountId;
         this.accountStatus = accountStatus;
         this.customerName = customerName;

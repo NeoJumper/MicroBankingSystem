@@ -2,9 +2,9 @@ package com.kcc.banking.domain.account.controller;
 
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.*;
+import com.kcc.banking.domain.account.service.AccountCloseFacade;
 import com.kcc.banking.domain.account.service.AccountService;
 import com.kcc.banking.domain.common.service.CommonService;
-import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.trade.dto.request.TradeSearch;
 import com.kcc.banking.domain.trade.service.AccountTradeFacade;
 import com.kcc.banking.domain.trade.service.TradeService;
@@ -21,10 +21,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountRestController {
 
+    private final CommonService commonService;
     private final AccountService accountService;
     private final TradeService tradeService;
+
     private final AccountTradeFacade accountTradeFacade;
-    private final CommonService commonService;
+    private final AccountCloseFacade accountCloseFacade;
 
     @PostMapping("/api/employee/account-validate")
     public ResponseEntity<Void> validatePassword(@ModelAttribute PasswordValidation passwordValidation) {
@@ -45,7 +47,7 @@ public class AccountRestController {
 
     /**
      * @Description
-     * - 계좌 개설
+     * - 보통예금 계좌 개설
      */
     @Transactional
     @PostMapping("/api/employee/accounts")
@@ -59,9 +61,9 @@ public class AccountRestController {
 
     /**
      * @Description
-     * -  보통예금 계좌 개설 완료 시 개설된 계좌의 상세정보 조회
+     * - 보통예금 계좌 개설 완료 시 개설된 계좌의 상세정보 조회
+     * - 보통예금 계좌 정보 조회 API
      */
-    // 보통예금 계좌 정보 조회 API
     @GetMapping("/api/employee/accounts/{accountId}")
     public ResponseEntity<AccountOpenResultOfModal> getAccountInfo(@PathVariable String accountId) {
         AccountOpenResultOfModal accountInfo = accountService.getAccountOpenResultOfModal(accountId);
@@ -78,7 +80,7 @@ public class AccountRestController {
 
     /**
      * @Description
-     * - 이체한도 변경 시 이용
+     * - 보통예금 이체한도 변경 시 이용
      */
     @PatchMapping("/api/employee/accounts/{accountId}/transfer-limit")
     public ResponseEntity<Void> partialUpdateAccount(@PathVariable String accountId, @RequestBody AccountUpdate accountUpdate) {
@@ -86,6 +88,36 @@ public class AccountRestController {
 
         return ResponseEntity.ok().body(null);
     }
+
+    /**
+     * @Discription
+     * - 보통예금 해지 페이지에 필요한 Customer DETAIL 데이터
+     * @param accountId
+     * @return
+     */
+    @GetMapping("/api/employee/account-close-details/{accountId}")
+    public ResponseEntity<?> getEmployeeDetail(@PathVariable("accountId") String accountId) {
+        AccountCloseResult cat = accountTradeFacade.findCloseAccountTotal(accountId);
+        return ResponseEntity.status(HttpStatus.OK).body(cat);
+    }
+
+
+    // 한 고객의 개설 상태의 입출금 통장 조회
+    @GetMapping("/api/employee/transfer-accounts/{customerId}")
+    public ResponseEntity<List<AccountOfModal>> getAllAccountOfOneCustomer(@PathVariable String customerId){
+        System.out.println("getAllAccountOfOneCustomer >>>>> customerId" + customerId);
+        List<AccountOfModal> accountsOfPerPerson = accountService.getAllAccountOfOneCustomer(customerId);
+        return ResponseEntity.ok(accountsOfPerPerson);
+    }
+
+    // 예금/적금별 상품 전체 조회
+    @GetMapping("/api/employee/products")
+    public ResponseEntity<List<ProductOfModal>> getAllProductByAccountType(@ModelAttribute SearchProductOfModal searchProductOfModal){
+        System.out.println("예금/ 적금별 상품 전체 조회 getAllProductByAccountType >>>>>>>>>>");
+        List<ProductOfModal> allProductList = accountService.getAllProductList(searchProductOfModal);
+        return ResponseEntity.ok(allProductList);
+    }
+
 
 
     // 적금 계좌 개설
@@ -109,28 +141,6 @@ public class AccountRestController {
 //        }
 //    }
 
-    // 해지 페이지에 필요한 Customer DETAIL 데이터
-    @GetMapping("/api/employee/account-close-details/{accountId}")
-    public ResponseEntity<?> getEmployeeDetail(@PathVariable("accountId") String accountId) {
-        CloseAccountTotal cat = accountTradeFacade.findCloseAccountTotal(accountId);
-        return ResponseEntity.status(HttpStatus.OK).body(cat);
-    }
-
-    // 한 고객의 개설 상태의 입출금 통장 조회
-    @GetMapping("/api/employee/transfer-accounts/{customerId}")
-    public ResponseEntity<List<AccountOfModal>> getAllAccountOfOneCustomer(@PathVariable String customerId){
-        System.out.println("getAllAccountOfOneCustomer >>>>> customerId" + customerId);
-        List<AccountOfModal> accountsOfPerPerson = accountService.getAllAccountOfOneCustomer(customerId);
-        return ResponseEntity.ok(accountsOfPerPerson);
-    }
-
-    // 예금/적금별 상품 전체 조회
-    @GetMapping("/api/employee/products")
-    public ResponseEntity<List<ProductOfModal>> getAllProductByAccountType(@ModelAttribute SearchProductOfModal searchProductOfModal){
-        System.out.println("예금/ 적금별 상품 전체 조회 getAllProductByAccountType >>>>>>>>>>");
-        List<ProductOfModal> allProductList = accountService.getAllProductList(searchProductOfModal);
-        return ResponseEntity.ok(allProductList);
-    }
 
 //    // 적금 해지
 //    @GetMapping("/api/employee/savings-account-close-details/{accountId}")
@@ -139,18 +149,43 @@ public class AccountRestController {
 //        return ResponseEntity.status(HttpStatus.OK).body(savingsInfo);
 //    }
 
-    // 001-0000013-3687 번에 거래내역 존재
+
+    /**
+     * @Discription
+     * - 정기적금 해지를 위한 계좌 상세정보
+     * - 자동이체 정보 불러오기
+     * - 001-0000013-3687 번에 거래내역 존재
+     * @param accountId
+     * @return ResponseEntity<CloseSavingsAccountTotal>
+     */
     @GetMapping("/api/employee/savings-account-close-total-info/{accountId}")
     public ResponseEntity<CloseSavingsAccountTotal> getCloseAccountInfo(@PathVariable("accountId") String accountId){
         CloseSavingsAccountTotal closeSavingsAccountInfo = accountService.getCloseSavingsAccount(accountId);
         return ResponseEntity.ok(closeSavingsAccountInfo);
     }
 
-    // 자유적금 해지
-    @GetMapping("/api/employee/savings-flexible-account-close-total-info/{accountId}")
-    public ResponseEntity<CloseSavingsFlexibleAccountTotal> getCloseFlexibleAccountInfo(@PathVariable("accountId") String accountId){
-        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountService.getCloseSavingsFlexibleAccount(accountId);
+    /**
+     * @Discription 
+     * - 자유적금 해지를 위한 계좌 상세정보
+     * @param accountId
+     * @return ResponseEntity<CloseSavingsFlexibleAccountTotal>
+     */
+    @GetMapping("/api/employee/flexible-savings-account/{accountId}")
+    public ResponseEntity<CloseSavingsFlexibleAccountTotal> getFlexibleCloseAccountInfo(@PathVariable("accountId") String accountId){
+        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountCloseFacade.getFlexibleSavingsAccount(accountId);
         return ResponseEntity.ok(closeSavingsFlexibleAccountTotal);
     }
+
+    /**
+     * @Discription 
+     * - 자유적금 해지 요청
+     * @return
+     */
+    @PostMapping("/api/employee/flexible-savings-account-close")
+    public ResponseEntity<?> closeFlexibleSavingsAccount(@RequestBody AccountClose accountClose){
+        accountCloseFacade.closeFlexibleSavingsAccount(accountClose);
+        return ResponseEntity.ok(null);
+    }
+
 }
 
