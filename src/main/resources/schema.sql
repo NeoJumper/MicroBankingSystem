@@ -117,6 +117,7 @@ CREATE TABLE Reserve_transfer (
                                target_acc_id  VARCHAR(20) NOT NULL,
                                amount NUMBER NOT NULL,
                                bulk_transfer_id VARCHAR(20) NULL,
+                               auto_transfer_id VARCHAR(20) NULL,
                                transfer_start_time  VARCHAR(20) NOT NULL,
                                transfer_end_time  VARCHAR(20) NOT NULL,
                                transfer_date TIMESTAMP NULL, -- 이체 지정일(지정 영업일)
@@ -142,7 +143,6 @@ CREATE TABLE Auto_transfer (
                          target_acc_id  VARCHAR(20) NOT NULL,
                          amount NUMBER NOT NULL,
                          auto_transfer_start_date TIMESTAMP NULL,
-                         auto_transfer_date TIMESTAMP NULL,
                          auto_transfer_end_date TIMESTAMP NULL,
                          auto_transfer_period NUMBER NULL,
                          create_date TIMESTAMP NULL,
@@ -151,7 +151,10 @@ CREATE TABLE Auto_transfer (
                          registrant_id NUMBER NULL,
                          modification_date TIMESTAMP NULL,
                          modifier_id NUMBER NULL,
-                         version NUMBER NULL
+                         version NUMBER NULL,
+                         next_transfer_date TIMESTAMP NULL,
+                         missed_count NUMBER NULL,
+                         status VARCHAR(20) NULL
 );
 
 CREATE TABLE Account (

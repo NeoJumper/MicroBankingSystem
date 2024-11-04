@@ -115,7 +115,6 @@ CREATE TABLE Auto_transfer (
                                target_acc_id  VARCHAR(20) NOT NULL,
                                amount NUMBER NOT NULL,
                                auto_transfer_start_date TIMESTAMP NULL,
-                               auto_transfer_date TIMESTAMP NULL,
                                auto_transfer_end_date TIMESTAMP NULL,
                                auto_transfer_period NUMBER NULL,
                                create_date TIMESTAMP NULL,

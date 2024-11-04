@@ -1,0 +1,10 @@
+#select-time-td {
+    display : flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+#start-time-btn {
+    flex: 1;
+    margin: 10px;
+}

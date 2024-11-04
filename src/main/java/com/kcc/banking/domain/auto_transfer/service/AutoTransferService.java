@@ -6,9 +6,11 @@ import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.*;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 import com.kcc.banking.domain.auto_transfer.dto.request.AutoTransferCreate;
+import com.kcc.banking.domain.auto_transfer.dto.response.AutoTransferList;
 import com.kcc.banking.domain.auto_transfer.mapper.AutoTransferMapper;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
+import com.kcc.banking.domain.reserve_transfer.dto.request.ReserveTransferCreate;
 import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +28,11 @@ public class AutoTransferService {
     public int createAutoTransferInfo(AutoTransferCreate autoTransferCreate) {
         return autoTransferMapper.insertAutoTransfer(autoTransferCreate);
     }
+
+    public List<AutoTransferList> findScheduledAutoTransferList(){
+        return autoTransferMapper.findScheduledAutoTransferList();
+    }
+
 
 
 }

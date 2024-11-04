@@ -60,4 +60,87 @@
         )
     </insert>
 
+    <select id="getPendingTransfers" parameterType="SearchReserve" resultType="TransferTradeCreate">
+
+        select
+            rt.id as reserve_transfer_id,
+            rt.acc_id as acc_id ,
+            rt.target_acc_id as targetAccId,
+            rt.amount as transfer_amount,
+            a.password as accountPassword,
+            rt.transfer_start_time as transfer_start_time,
+            rt.transfer_end_time as transfer_end_time,
+            rt.retry_count as retry_count,
+            rt.status as status,
+            rt.transfer_date as transfer_date,
+            auto.missed_count AS missed_count
+
+        from reserve_transfer rt
+        join account a
+        on a.id = rt.acc_id
+        join auto_transfer auto
+        on rt.acc_id = auto.acc_id
+        WHERE
+            TO_CHAR(transfer_date, 'YY/MM/DD') = TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD')
+          AND
+            rt.status = #{status}
+          AND
+            TO_DATE(TO_CHAR(SYSTIMESTAMP, 'HH24:MI'), 'HH24:MI')
+                BETWEEN TO_DATE(transfer_start_time, 'HH24:MI')
+                AND TO_DATE(transfer_end_time, 'HH24:MI')
+    </select>
+
+    <update id="updateTransferStatus">
+        UPDATE reserve_transfer
+        SET status = #{status},
+        failure_reason =
+        <if test="failureReason != null and failureReason != ''">
+            #{failureReason}
+        </if>
+        WHERE id = #{reserveTransferId}
+    </update>
+
+
+    <insert id="insertScheduledAutoTransferList" parameterType="java.util.List">
+        INSERT INTO reserve_transfer (
+        id,
+        acc_id,
+        target_acc_id,
+        amount,
+        transfer_date,
+        retry_count,
+        transfer_type,
+        description,
+        status,
+        <if test="failureReason != null and !failureReason.equals('')">
+            failure_reason,
+        </if>
+        registrant_id,
+        branch_id,
+        registration_date,
+        version,
+        auto_transfer_id
+        ) VALUES
+        <foreach collection="list" item="transfer" separator=",">
+            (
+            #{transfer.id},
+            #{transfer.accId},
+            #{transfer.targetAccId},
+            #{transfer.amount},
+            #{transfer.transferDate},
+            0,
+            'AUTO',
+            #{transfer.description},
+            #{transfer.status},
+            <if test="transfer.failureReason != null and !transfer.failureReason.equals('')">
+                #{transfer.failureReason},
+            </if>
+            #{transfer.registrantId},
+            #{transfer.branchId},
+            SYSTIMESTAMP,
+            1,
+            #{transfer.autoTransferId}
+            )
+        </foreach>
+    </insert>
 </mapper>

@@ -22,6 +22,7 @@ public class CloseSavingsAccountTotal {
     private BigDecimal accountInterestRate;
     private BigDecimal productInterestRate;
     private BigDecimal accountBalance;
+
     private BigDecimal productTaxRate;
 
     // 단복리
@@ -31,11 +32,13 @@ public class CloseSavingsAccountTotal {
     // 적금 가입 날짜
     // - ! openDate로 변경
     private String startDate;
+    private String openDate;
 
     // 총 이자액
     private BigDecimal amountSum;
-    // 자동이체 횟수
-    private String autoTransferCount;
+
+
+    private String accId;
 
     // 자동이체 정보
     private BigDecimal fixedAmount;
@@ -43,6 +46,8 @@ public class CloseSavingsAccountTotal {
     private String autoTransferEndDate;
     private String autoTransferPeriod;
     private String createDate;
+    // 자동이체 횟수
+    private String autoTransferCount;
 
     // 총 이자액 + 잔액 = 지급액
     private BigDecimal totalBalanceSum;
