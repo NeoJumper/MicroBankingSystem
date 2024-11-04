@@ -131,3 +131,10 @@ input[type="button"][value="계좌조회 >"] {
     color: #fff; /* 체크 시 글자색 */
     border-color: #007bff; /* 체크 시 테두리 색상 */
 }
+.krw-amount-input {
+    width: 60%;
+    text-align: right;
+    color: var(--deep-dark-gray);
+    border: none;
+    background-color: white !important;
+}

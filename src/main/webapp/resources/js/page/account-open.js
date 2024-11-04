@@ -224,13 +224,14 @@ function handleAmountFormat(){
     $('.balance-input').on('input', function() {
         // 현재 입력된 값을 가져옴
         let value = $(this).val();
-        console.log(value);
+
         if(String(value) === ''){
             $(this).siblings('.krw-amount-input').val('').hide();
             value = 0;
             $(this).val(value);
             return;
         }
+        console.log(value);
 
         let elementId = $(this).attr('id');
         if(elementId === 'per-trade-limit-input')
@@ -247,6 +248,7 @@ function handleAmountFormat(){
         // 숫자를 한국 원화 형식으로 변환
         value = String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
+        console.log(value);
         // 변환된 값을 다시 input에 설정
         $(this).val(value);
     });

@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     clickCashTradeBtn(); // 현금 거래 요청
 
-    handleAmount(); // 입력 시 숫자 제외한 문자 모두 제거, 계좌 잔액 초과하는 입력 제거, 0 이상은 입력못함(00000 등)
+    handleAmountInput(); // 입력 시 숫자 제외한 문자 모두 제거, 계좌 잔액 초과하는 입력 제거, 0 이상은 입력못함(00000 등)
 
     clickTradeAmountBtn(); // 100, 50, 10, 5, 1, 전액 버튼
 
@@ -44,57 +44,77 @@ function resetTradeForm() {
     $('#cash-trade-account-number').text('계좌를 선택해주세요');
     $('#cash-trade-customer-name').text('');
     $('#cash-trade-product-name').text('');
+    $('#limit-span').val(0);
     $('#cash-trade-balance').css('margin-left', '20px').text('0');
-    $('#cash-trade-amount').val('');
+    $('#cash-trade-amount').val(0);
+    $('.krw-amount-input').val('').hide();
     $('#cash-trade-password').val('');  // 출금일 경우 비밀번호도 초기화
     $('#cash-trade-submit').prop('disabled', true);  // 승인 버튼 비활성화
     enableAmountButtons(0); // 금액 입력 버튼 비활성화
     disableAmountButtons();
+    handleAmount($('#cash-trade-amount'));
 }
 
-function handleAmount() {
+function handleAmountInput() {
     $(document).on('input', '#cash-trade-amount', function () {
-        $(this).val(comma(convertNumber($(this).val())));
-
-        if($('input[name="trade-type"]:checked').val() === 'withdrawal'){
-            var inputAmount = parseFloat(convertNumber($(this).val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
-            var accountBalance = parseFloat(convertNumber($('#cash-trade-balance').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
-            var employeeCashBalance =  parseFloat(convertNumber($('.emp-close-prev-cash-balance').val()));
-
-            if(accountBalance < employeeCashBalance){ // 계좌잔액이 행원의 현금 잔액보다 작다면
-                if (accountBalance < inputAmount) {
-                    $('#over-account-balance').text("계좌 잔액을 초과했습니다.");
-                    $(this).val(comma(accountBalance));  // 입력된 값을 계좌 잔액으로 제한
-                }
-            }
-            else
-            {
-                if (employeeCashBalance < inputAmount ) {
-                    $('#over-account-balance').text("현금 잔액을 초과했습니다. 시재금 거래를 진행해주세요!");
-                    $(this).val(comma(employeeCashBalance));  // 입력된 값을 계좌 잔액으로 제한
-                }
-            }
-
-        }
-
+        handleAmount($(this));
     });
 }
+function handleAmount(element) {
+    let value = element.val();
 
-function comma(str) {
-    str = String(str);
-    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');  // 천 단위 쉼표 추가
-}
-
-function convertNumber(str) {
-    str = String(str.replace(/[^\d]+/g, ''));  // 숫자를 제외한 모든 문자 제거
-
-
-    if (/^0{2,}/.test(str)) {
-        // 두 번 이상 연속된 0을 잘라내고 나머지 부분 반환
-        return str.replace(/^0{2,}/, '0');
+    if(String(value) === '' || value === '0'){
+        element.siblings('.krw-amount-input').val('').hide();
+        value = 0;
+        element.val(value);
+        return;
     }
-    return str;
+
+    if($('input[name="trade-type"]:checked').val() === 'withdrawal'){
+        var inputAmount = parseFloat(convertNumber(element.val()));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+        var accountBalance = parseFloat(convertNumber($('#cash-trade-balance').text()));  // 계좌 잔액에서 쉼표 제거 후 숫자로 변환
+        var employeeCashBalance =  parseFloat(convertNumber($('.emp-close-prev-cash-balance').val()));
+
+        if(accountBalance < employeeCashBalance){ // 계좌잔액이 행원의 현금 잔액보다 작다면
+            if (accountBalance < inputAmount) {
+                $('#over-account-balance').text("계좌 잔액을 초과했습니다.");
+                element.val(comma(accountBalance));  // 입력된 값을 계좌 잔액으로 제한
+                value = accountBalance;
+            }
+            else {
+                $('#over-account-balance').text("");  // 경고 메시지 제거
+                value = parseFloat(convertNumber(value));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+            }
+        }
+        else
+        {
+            if (employeeCashBalance < inputAmount ) {
+                $('#over-account-balance').text("현금 잔액을 초과했습니다. 시재금 거래를 진행해주세요!");
+                element.val(comma(employeeCashBalance));  // 입력된 값을 현금 잔액으로 제한
+                value = employeeCashBalance;
+            }
+            else {
+                $('#over-account-balance').text("");  // 경고 메시지 제거
+                value = parseFloat(convertNumber(value));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+            }
+        }
+
+    }
+    else{
+        value = parseFloat(convertNumber(value));  // 입력된 값에서 쉼표 제거 후 숫자로 변환
+    }
+    element.siblings('.krw-amount-input').val(convertToKoreanNumber(parseInt(value)) + '원').show();
+
+    console.log(value);
+    // 숫자를 한국 원화 형식으로 변환
+    value = String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // 변환된 값을 다시 input에 설정
+    element.val(value);
+
 }
+
+
 
 // 비밀번호 검증 클릭 시
 function validateAccountPassword() {
@@ -346,6 +366,7 @@ function disableAmountButtons(balance) {
 function clickTradeAmountBtn() {
     $('.amount-btn').click(function () {
         setAmount(this);
+        handleAmount($('#cash-trade-amount'));
     });
 }
 function setAmount(button) {

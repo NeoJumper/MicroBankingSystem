@@ -86,7 +86,7 @@
                     <td>
                         <div><span id="over-account-balance"></span></div>
                         <input disabled type="text" id="transfer-amount" style="text-align: right; width: 65%" value="0"> &nbsp 원
-                        <input id = "limit-span" class="mt-1 krw-amount-input" style="display: none" disabled >
+                        <input id = "limit-span" class="mt-1 krw-amount-input" style="display: none" disabled>
                         <div class="button-group">
                             <button type="button" class="amount-btn" disabled>100만</button>
                             <button type="button" class="amount-btn" disabled>50만</button>

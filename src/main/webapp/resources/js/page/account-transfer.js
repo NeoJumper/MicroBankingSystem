@@ -64,9 +64,10 @@ function handleAmount(element){
     if(String(value) === ''){
         element.siblings('.krw-amount-input').val('').hide();
         value = 0;
-        $(this).val(value);
+        element.val(value);
         return;
     }
+    console.log(value);
     value = handleKrwAmount(value);
 
 
@@ -75,6 +76,7 @@ function handleAmount(element){
     // 숫자를 한국 원화 형식으로 변환
     value = String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
+    console.log(value);
     // 변환된 값을 다시 input에 설정
     element.val(value);
 }
