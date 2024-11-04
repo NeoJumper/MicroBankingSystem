@@ -171,7 +171,7 @@ function handlePhoneNumber() {
     });
 }
 
-// 주민번호 뒷자리 마스킹 함수
+// 휴대전화 하이푼 처리
 function hyphenPhoneNumber() {
     let displayPhoneNumber = originalPhoneNumber; // 화면에 표시할 값 초기화
     if (originalPhoneNumber.length > 3 && originalPhoneNumber.length <= 7) {

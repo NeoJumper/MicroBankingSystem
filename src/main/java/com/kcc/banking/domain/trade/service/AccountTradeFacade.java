@@ -748,15 +748,23 @@ public class AccountTradeFacade {
      *  시간 설정 x -> 날짜 주기 정함 -> 자동이체됨
      *
      */
-
-//    @Scheduled(cron = "0 0 0 * * MON-FRI")
-    @Scheduled(fixedRate = 6000)
+    //@Scheduled(fixedRate = 6000)
+  @Scheduled(cron = "0 0 0 * * MON-FRI")
     public void scheduleAutoTransfers(){
         System.out.println("scheduleReserveTransfers >>>>>> ");
 
         //1. 활성 상태의(wait)이고, 다음 영업일 = 영업일 당일인 자동이체 리스트 조회
         List<AutoTransferList> todayAutoList = autoTransferService.findScheduledAutoTransferList();
 
+        // 2. 오늘의 자동이체 리스트가 비어 있는지 확인하고 로그 출력
+        if (todayAutoList.isEmpty()) {
+            System.out.println("No scheduled auto transfers found for today.");
+        } else {
+            System.out.println("Scheduled auto transfers for today:");
+            for (AutoTransferList autoTransfer : todayAutoList) {
+                System.out.println(autoTransfer); // toString() 메서드가 정의되어 있어야 출력이 제대로 됩니다.
+            }
+        }
         //2. 조회된 자동이체 리스트 -> 예약이체 등록
         if (!todayAutoList.isEmpty()) {
             System.out.println("조회된 자동이체 리스트>>>>");
@@ -766,39 +774,49 @@ public class AccountTradeFacade {
 
     // 자동이체 리스트 -> 예약이체등록하기
     // 예약이체에 자동이체거래내역 넣기,
-    private void registerReserveTransfers(List<AutoTransferList> autoTransfers) {
+    private void registerReserveTransfers(List<AutoTransferList> todayAutoList) {
         List<ReserveTransferCreate> reserveTransfers = new ArrayList<>();
 
-        for (AutoTransferList autoTransfer : autoTransfers) {
+        System.out.println("Created ReserveTransfer: >>>>>>>>>>>>>  for (AutoTransferList autoTransfer : todayAutoList)");
+        for (AutoTransferList autoTransfer : todayAutoList) {
+            System.out.println("for (AutoTransferList >>>>>"+autoTransfer.getAccId());
             ReserveTransferCreate reserveTransfer = new ReserveTransferCreate();
-            reserveTransfer.setAutoTransferId(autoTransfer.getId());
+
+            reserveTransfer.setAutoTransferId(autoTransfer.getId().toString());
             reserveTransfer.setAccId(autoTransfer.getAccId());
             reserveTransfer.setTargetAccId(autoTransfer.getTargetAccId());
             reserveTransfer.setAmount(autoTransfer.getAmount());
             reserveTransfer.setStatus("WAIT"); // 초기 상태를 대기(pending)로 설정
             reserveTransfer.setRegistrantId(autoTransfer.getRegistrantId());
             reserveTransfer.setTransferType("AUTO");
+            reserveTransfer.setTransferDate(autoTransfer.getNextTransferDate());
             // 필요시 추가 필드 설정
-           // reserveTransfer.setTransferDate(new Timestamp(System.currentTimeMillis())); // 현재 시간을 이체 날짜로 설정
-            //reserveTransfer.setBranchId(autoTransfer.getBranchId()); // 브랜치 ID 설정 (필요한 경우)
-           // reserveTransfer.setVersion(1); // 버전 초기값 설정
 
+            System.out.println("Created ReserveTransfer List: " +
+                    "autoTransferId = " + reserveTransfer.getAutoTransferId() +
+                    ", accId = " + reserveTransfer.getAccId() +
+                    ", targetAccId = " + reserveTransfer.getTargetAccId() +
+                    ", amount = " + reserveTransfer.getAmount() +
+                    ", status = " + reserveTransfer.getStatus() +
+                    ", registrantId = " + reserveTransfer.getRegistrantId() +
+                    ", transferType = " + reserveTransfer.getTransferType());
             reserveTransfers.add(reserveTransfer);
         }
 
+
         // 데이터베이스에 삽입
         if (!reserveTransfers.isEmpty()) {
-            try {
-                reserveTransferMapper.insertScheduledAutoTransferList(reserveTransfers);
-            } catch (Exception e) {
-                // 로깅 또는 예외 처리
-                System.err.println("Error inserting scheduled transfers: " + e.getMessage());
+            for (ReserveTransferCreate transfer : reserveTransfers) {
+                try {
+                    reserveTransferMapper.insertScheduledAutoTransfer(transfer);
+                } catch (Exception e) {
+                    System.err.println("Error inserting scheduled transfer for ID " + transfer.getId() + ": " + e.getMessage());
+                }
             }
         }
 
 
     }
-
 
 
 
@@ -810,20 +828,27 @@ public class AccountTradeFacade {
      * 30분 마다 조회 -> 조회이유 : 예약 취소가 날수 있음. 반영해야댐
      *
      */
+
+  /*
+  *
+  *
+   *  조건 :
+   *      현재 영업일 = 예약일
+   *      & 상태 = WAIT
+   *      & 예약 시간대 -> 현재 실행 시간에
+   *  실행 해야 하는 전체 예약이체 정보 리스트 가져오기
+
+   * */
+    //실행 해야 하는 전체 예약이체 정보 리스트 가져오기
+
     @Scheduled(fixedRate = 6000)// 6초마다 실행
     public void scheduleReserveTransfers() {
-        System.out.println("scheduleReserveTransfers >>>>>> ");
+        System.out.println("scheduleReserveTransfers >>>>>> 예약이체 목록 조회 ");
 
         SearchReserve searchReserve = new SearchReserve();
         searchReserve.setStatus("WAIT");
 
-        /**
-         *  조건 :
-         *      현재 영업일 = 예약일
-         *      & 상태 = WAIT
-         *      & 예약 시간대 -> 현재 실행 시간
-         *  실행 해야 하는 전체 예약이체 정보 리스트 가져오기
-         */
+
         List<TransferTradeCreate> transfers = reserveTransferService.getPendingTransfers(searchReserve);
 
         if (!transfers.isEmpty()) {
@@ -831,8 +856,6 @@ public class AccountTradeFacade {
         }
 
     }
-
-
 
 
 
@@ -885,7 +908,6 @@ public class AccountTradeFacade {
                     List<ReserveTransferCreate> reserveTransfers = new ArrayList<>();
                     reserveTransfers.add(newTransfer);
 
-                    // 미납 횟수 업데이트 : setMissedCount(currentMissedCount + 1);
                 }else {
                     // 최대 미납 횟수 초과 시 상태를 STOP으로 변경
                     reserveTransferService.updateTransferStatus(reserveId, "STOP", "Max missed count exceeded");

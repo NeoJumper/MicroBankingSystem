@@ -27,13 +27,27 @@
                         <th>사원번호</th>
                         <td><input type="text" id="detail-modal-emp-id" disabled></td>
                         <th>비밀번호</th>
-                        <td><input type="password" id="detail-modal-emp-password" disabled></td>
+                        <td><input type="password" id="detail-modal-emp-password" readonly></td>
                     </tr>
                     <tr>
                         <th>이름</th>
                         <td><input type="text" id="detail-modal-emp-name" disabled></td>
                         <th>생년월일</th>
                         <td><input type="date" id="detail-modal-emp-birth-date" disabled></td>
+                    </tr>
+                    <tr>
+                        <th>주민번호</th>
+                        <td style="position: relative;">
+                            <input type="text" id="detail-modal-emp-identification-code" disabled>
+                            <div class="toggle-visibility"><i class="bi bi-eye"></i></div>
+                        </td>
+                        <th>주소</th>
+                        <td>
+                            <div class="d-flex my-2">
+                                <input  type="text" id="detail-modal-emp-address" placeholder="주소"><br>
+                            </div>
+                            <input type="text" id="detail-modal-emp-detail-address" placeholder="상세주소">
+                        </td>
                     </tr>
                     <tr>
                         <th>이메일</th>
@@ -51,6 +65,15 @@
                             <input type="text" id="detail-modal-emp-roles" disabled>
                         </td>
                     </tr>
+                    <tr>
+                        <th>담당자</th>
+                        <td><input type="text" id="detail-modal-emp-registrant-name" disabled></td>
+                        <th>등록일자</th>
+                        <td>
+                            <input type="text" id="detail-modal-emp-registration-date"  pattern='yyyy-MM-dd' disabled>
+                        </td>
+                    </tr>
+
 
                 </table>
                 <div class="d-flex justify-content-center mt-5">

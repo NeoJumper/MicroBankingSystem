@@ -18,7 +18,7 @@ public interface ReserveTransferMapper {
     List<TransferTradeCreate> getPendingTransfers(SearchReserve searchReserve);
     
     // 당일 자동이체 -> 예약이체로 등록하기
-    void insertScheduledAutoTransferList(List<ReserveTransferCreate> reserveTransferCreate);
+    void insertScheduledAutoTransfer(ReserveTransferCreate reserveTransferCreate);
 
 }
 

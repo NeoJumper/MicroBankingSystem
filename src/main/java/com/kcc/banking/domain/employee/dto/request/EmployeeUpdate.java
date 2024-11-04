@@ -1,6 +1,7 @@
 package com.kcc.banking.domain.employee.dto.request;
 
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
+import com.kcc.banking.domain.common.dto.request.CurrentData;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -10,35 +11,36 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class EmployeeUpdate {
     private Long id;
-    private Long branchId;
-    private String birthDate;
     private String name;
-    private String phoneNumber;
-    private String email;
+    private String birthDate;
     private String password;
+    private String address;
+    private String detailAddress;
+    private String identificationCode;
+    private String email;
+    private String phoneNumber;
     private String roles;
+    private Long branchId;
     private String modifierId;
-    private String modificationDate;
-    private Long version;
 
     @Builder
-    public EmployeeUpdate(Long id, Long branchId, String birthDate, String name, String phoneNumber, String email, String password, String roles, String modifierId, String modificationDate, Long version) {
+    public EmployeeUpdate(Long id, String name, String birthDate, String password, String address, String detailAddress, String identificationCode, String email, String phoneNumber, String roles, Long branchId, String modifierId) {
         this.id = id;
-        this.branchId = branchId;
-        this.birthDate = birthDate;
         this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
+        this.birthDate = birthDate;
         this.password = password;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.identificationCode = identificationCode;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.roles = roles;
+        this.branchId = branchId;
         this.modifierId = modifierId;
-        this.modificationDate = modificationDate;
-        this.version = version;
     }
 
-    public void  setCommonColumn(BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId){
-        this.modifierId = String.valueOf(currentBusinessDateAndEmployeeId.getEmployeeId());
-        this.modificationDate = currentBusinessDateAndEmployeeId.getBusinessDate();
-        this.version = 1L;
+    public void  setCommonColumn(CurrentData currentData){
+        this.modifierId = String.valueOf(currentData.getEmployeeId());
+        this.branchId = currentData.getBranchId();
     }
 }

@@ -101,7 +101,7 @@
     </update>
 
 
-    <insert id="insertScheduledAutoTransferList" parameterType="java.util.List">
+    <insert id="insertScheduledAutoTransfer" parameterType="ReserveTransferCreate">
         INSERT INTO reserve_transfer (
         id,
         acc_id,
@@ -110,37 +110,23 @@
         transfer_date,
         retry_count,
         transfer_type,
-        description,
         status,
-        <if test="failureReason != null and !failureReason.equals('')">
-            failure_reason,
-        </if>
         registrant_id,
-        branch_id,
         registration_date,
-        version,
-        auto_transfer_id
-        ) VALUES
-        <foreach collection="list" item="transfer" separator=",">
-            (
-            #{transfer.id},
-            #{transfer.accId},
-            #{transfer.targetAccId},
-            #{transfer.amount},
-            #{transfer.transferDate},
-            0,
-            'AUTO',
-            #{transfer.description},
-            #{transfer.status},
-            <if test="transfer.failureReason != null and !transfer.failureReason.equals('')">
-                #{transfer.failureReason},
-            </if>
-            #{transfer.registrantId},
-            #{transfer.branchId},
-            SYSTIMESTAMP,
-            1,
-            #{transfer.autoTransferId}
-            )
-        </foreach>
+        version
+        ) VALUES (
+        reserve_transfer_seq.NEXTVAL,
+        #{accId},
+        #{targetAccId},
+        #{amount},
+        #{transferDate},
+        0,
+        'AUTO',
+        #{status},
+        #{registrantId},
+        SYSTIMESTAMP,
+        1
+        )
     </insert>
+
 </mapper>

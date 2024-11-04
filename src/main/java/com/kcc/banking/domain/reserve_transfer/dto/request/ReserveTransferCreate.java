@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
@@ -16,9 +17,9 @@ public class ReserveTransferCreate {
     private String accId;
     private String targetAccId;
     private Long bulkTransferId;
-    private Long autoTransferId;
+    private String autoTransferId;
     private BigDecimal amount;
-    private String transferDate;
+    private Timestamp transferDate;
     private String transferStartTime;
     private String transferEndTime;
     private Long retryCount;
@@ -30,9 +31,13 @@ public class ReserveTransferCreate {
     private Long branchId;
     // 자동이체 AUTO, 일반이체 NORMAL
     private String transferType;
+
+    private Timestamp createDate; // 추가된 필드
+    private Timestamp modificationDate; // 추가된 필드
+    private Long modifierId; // 추가된 필드
     
     @Builder
-    public ReserveTransferCreate(Long id, String accId, String targetAccId, Long bulkTransferId, Long autoTransferId, BigDecimal amount, String transferDate, String transferStartTime, String transferEndTime, Long retryCount, String description, String status, String failureReason, Long registrantId, Long branchId, String transferType) {
+    public ReserveTransferCreate(Long id, String accId, String targetAccId, Long bulkTransferId, String autoTransferId, BigDecimal amount, Timestamp transferDate, String transferStartTime, String transferEndTime, Long retryCount, String description, String status, String failureReason, Long registrantId, Long branchId, String transferType, Timestamp createDate, Timestamp modificationDate, long modifierId ) {
         this.id = id;
         this.accId = accId;
         this.targetAccId = targetAccId;
@@ -49,5 +54,8 @@ public class ReserveTransferCreate {
         this.registrantId = registrantId;
         this.branchId = branchId;
         this.autoTransferId = autoTransferId;
+        this.createDate =createDate;
+        this.modificationDate = modificationDate;
+        this.modifierId = modifierId;
     }
 }
