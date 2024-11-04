@@ -23,6 +23,7 @@ $(document).ready(function() {
                 break;
 
         }
+        console.log('검색 버튼');
         checkProduct();
          // 계좌 조회 함수 호출
     });
@@ -69,12 +70,12 @@ function checkProduct() {
         data: requestData,
         type: "GET",
         success: function(data) {
-            var productTableBody = $("#search-product-modal-common-table tbody");
+            var productTableBody = $("#search-product-modal-body");
             productTableBody.empty();
 
             $.each(data, function(index, product) {
 
-                var row = "<tr>" +
+                var row = "<tr  class= 'product-element'>" +
                     "<td><input type='radio' name='selected-product-id' value='" + product.productId + "' class='select-product-radio'></td>" +
                     "<td>" + product.productId +"</td>" +
                     "<td>" + product.productName + " </td>" +
@@ -85,6 +86,17 @@ function checkProduct() {
                     "</tr>";
                 productTableBody.append(row);
             });
+
+            $('.product-element').on('click', function() {
+                // 해당 tr 안의 라디오 버튼을 체크
+                $(this).find('.select-product-radio').prop('checked', true);
+            });
+
+            // 라디오 버튼이 클릭되었을 때도 체크되도록 설정
+            $('.select-product-radio').on('click', function(e) {
+                e.stopPropagation();  // 이벤트 전파 중단 (tr 클릭이 중복 처리되지 않도록)
+            });
+
         },
         error: function(error) {
             console.log("checkProduct() '/api/employee/products'api 에러남", error);
