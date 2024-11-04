@@ -12,6 +12,9 @@ $(document).ready(function() {
     handlePhoneNumber();
     chkPW();
 
+    $('#employee-detail-modal').on('hidden.bs.modal', function () {
+        window.location.href = '/page/manager/employee-save';
+    })
 
 });
 
@@ -61,7 +64,6 @@ function createEmployee(employeeCreateData){
                 button: "닫기",
             });
 
-            resetEmpDataOfCreateForm();
             fillEmpDataOfDetailModal(createdEmployeeId);
 
 
@@ -77,17 +79,7 @@ function createEmployee(employeeCreateData){
 
 
 
-function resetEmpDataOfCreateForm(){
-    $('#emp-name').val('');
-    $('#emp-birth-date').val('');
-    $('#emp-email').val('');
-    $('#emp-password').val('');
-    $('#emp-phone-number').val('');
-    $('#emp-branch-id').prop('selectedIndex', 0);  // '지점 선택'으로 설정
-    $('#emp-roles').prop('selectedIndex', 0);     // '직급 선택'으로 설정
 
-
-}
 
 function fillEmpDataOfDetailModal(createdEmployeeId){
 
@@ -262,3 +254,14 @@ function hyphenPhoneNumber() {
     $('#emp-phone-number').val(displayPhoneNumber); // 화면에 마스킹된 값만 보여주기
     $('#detail-modal-emp-phone-number').val(displayPhoneNumber); // 화면에 마스킹된 값만 보여주기
 }
+function convertNumber(str) {
+    str = String(str.replace(/[^\d]+/g, ''));  // 숫자를 제외한 모든 문자 제거
+
+
+    if (/^0{2,}/.test(str)) {
+        // 두 번 이상 연속된 0을 잘라내고 나머지 부분 반환
+        return str.replace(/^0{2,}/, '0');
+    }
+    return str;
+}
+
