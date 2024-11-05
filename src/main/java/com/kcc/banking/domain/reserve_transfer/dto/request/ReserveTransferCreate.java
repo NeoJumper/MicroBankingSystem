@@ -35,7 +35,7 @@ public class ReserveTransferCreate {
     private Timestamp createDate; // 추가된 필드
     private Timestamp modificationDate; // 추가된 필드
     private Long modifierId; // 추가된 필드
-    
+    private Long MissedCount;
     @Builder
     public ReserveTransferCreate(Long id, String accId, String targetAccId, Long bulkTransferId, String autoTransferId, BigDecimal amount, Timestamp transferDate, String transferStartTime, String transferEndTime, Long retryCount, String description, String status, String failureReason, Long registrantId, Long branchId, String transferType, Timestamp createDate, Timestamp modificationDate, long modifierId ) {
         this.id = id;
