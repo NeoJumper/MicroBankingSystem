@@ -9,7 +9,7 @@ $(document).ready(function () {
         selectAccount();
     })
 
-    $('#submit-btn').click(function () {
+    $('#common-account-submit-btn').click(function () {
         closeAccount();
     })
 
@@ -89,8 +89,8 @@ function checkAccountId() {
             })
 
             //비밀번호 성공시 opacity 스타일 제거
-            $('#submit-btn').removeAttr('style');
-            $('#submit-btn').prop('disabled', false);
+            $('#common-account-submit-btn').removeAttr('style');
+            $('#common-account-submit-btn').prop('disabled', false);
 
         }, error: function (error){
             swal({
@@ -153,8 +153,8 @@ function closeAccount() {
             $('#customer-name').val("");
             $('#account-pw-input').val("");
             // 버튼 비활성화
-            $('#submit-btn').attr('style', 'background-color: gray; opacity: 0.5;');
-            $('#submit-btn').prop('disabled', true);
+            $('#common-account-submit-btn').attr('style', 'background-color: gray; opacity: 0.5;');
+            $('#common-account-submit-btn').prop('disabled', true);
         });
     } else {
         // accountId가 없을 경우 경고

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Getter
@@ -40,12 +41,14 @@ public class CloseSavingsFlexibleAccountTotal {
     private BigDecimal finalInterestRate;
     // 해지 시 최종 이자 금액 합산
     private BigDecimal totalInterestSum;
+    // 해지 시 최종 이자*세율 계산 금액
+    private BigDecimal totalInterestSumAfterTax;
     // 해지 시 최종 지급액
     private BigDecimal totalAmount;
     // 해지 시 이자 내역
     private List<InterestDetails> interestDetailsList;
     // 해지 종류
-    private CloseType closeType;  // CloseType 필드 추가
+    private CloseType closeType;
 
     // 해지 종류 Enum을 public으로 선언
     public enum CloseType {
@@ -92,12 +95,23 @@ public class CloseSavingsFlexibleAccountTotal {
         for(InterestDetails interestDetail : interestDetailsList) {
             totalInterestSum = totalInterestSum.add(interestDetail.getAmount());
         }
-        BigDecimal totalAmount = closeSavingsFlexibleAccountTotal.getBalance().add(totalInterestSum);
 
-        // 계산된 값 저장
-        closeSavingsFlexibleAccountTotal.setTotalAmount(totalAmount);
+        // 이자 합 : 세전
         closeSavingsFlexibleAccountTotal.setTotalInterestSum(totalInterestSum);
+        // 이자 합 : 세후
+        closeSavingsFlexibleAccountTotal.setTotalInterestSumAfterTax(totalInterestSum
+                .multiply(closeSavingsFlexibleAccountTotal.getTaxRate())
+                .setScale(4, RoundingMode.DOWN));
+        // 이자 내역 저장
         closeSavingsFlexibleAccountTotal.setInterestDetailsList(interestDetailsList);
+
+        // 최종 지급액 계산 : 10의 자리 버림
+        BigDecimal totalAmount = closeSavingsFlexibleAccountTotal.getBalance()
+                .add(closeSavingsFlexibleAccountTotal.getTotalInterestSumAfterTax())
+                .divide(new BigDecimal("10"), 0, RoundingMode.DOWN)
+                .multiply(new BigDecimal("10"));
+        closeSavingsFlexibleAccountTotal.setTotalAmount(totalAmount);
+
         return closeSavingsFlexibleAccountTotal;
     }
 }

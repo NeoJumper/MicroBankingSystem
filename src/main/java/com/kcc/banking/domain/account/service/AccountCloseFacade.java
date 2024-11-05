@@ -144,8 +144,24 @@ public class AccountCloseFacade {
             if(interestDetailsList.isEmpty()){
                 // 연 이자율로 나눠서 계산
                 BigDecimal intersetSum = closeSavingsFlexibleAccountTotal.getBalance().multiply(finalInterestRate.divide(BigDecimal.valueOf(12), 8, RoundingMode.DOWN));
+                // 이자 합: 세전
                 closeSavingsFlexibleAccountTotal.setTotalInterestSum(intersetSum);
-                closeSavingsFlexibleAccountTotal.setBalance(closeSavingsFlexibleAccountTotal.getBalance().add(intersetSum));
+                // 이자 합 : 세후
+                closeSavingsFlexibleAccountTotal.setTotalInterestSumAfterTax(intersetSum
+                        .multiply(closeSavingsFlexibleAccountTotal.getTaxRate())
+                        .setScale(4, RoundingMode.DOWN));
+
+                // 해지 시 최종 지급액
+                // 최종 지급액 계산 : 10의 자리 버림
+                BigDecimal totalAmount = closeSavingsFlexibleAccountTotal.getBalance()
+                        .add(closeSavingsFlexibleAccountTotal.getTotalInterestSumAfterTax())
+                        .divide(new BigDecimal("10"), 0, RoundingMode.DOWN)
+                        .multiply(new BigDecimal("10"));
+                closeSavingsFlexibleAccountTotal.setTotalAmount(totalAmount);
+
+                // 이자 내역 : null
+                closeSavingsFlexibleAccountTotal.setInterestDetailsList(null);
+                return closeSavingsFlexibleAccountTotal;
             }else {
                 // 이자 내역 재계산
                 BigDecimal totalInterestSum = BigDecimal.ZERO;  // 총 이자 합계 변수 초기화
