@@ -22,7 +22,7 @@
                 <div id="transfer-result-img-container">
                     <img  src="/resources/assets/transfer-result.png" alt="Logo" id="transfer-result-img"  />
                 </div>
-                <div class="mt-2 d-flex flex-column justify-content-center align-items-center">
+                <div class="result-modal-text-area mt-2 d-flex flex-column justify-content-center align-items-center">
                     <div>
                         총
                         <span class="fw-bold"> 1 </span>
@@ -36,7 +36,7 @@
                     <span>이체가 완료 되었습니다.</span>
                 </div>
 
-                <h5>출금 내역</h5>
+                <h5>거래 내역</h5>
                 <table class="common-table">
                     <tr>
                         <th>출금 계좌 번호</th>

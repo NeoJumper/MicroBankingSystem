@@ -567,13 +567,13 @@ public class AccountTradeFacade {
 
         // 거래 계좌 조회 + 거래 계좌 잔액 조회
         AccountDetail cashTradeAccount = accountService.getAccountDetail(cashTradeCreate.getAccId());
-        BigDecimal cashTradeAccountBalance = cashTradeAccount.getBalance();
+
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
         // 현금 거래 내역 생성
-        TradeDetail tradeDetail = tradeService.createCashTrade(cashTradeCreate, currentData, cashTradeAccountBalance ,tradeNumber);
+        TradeDetail tradeDetail = tradeService.createCashTrade(cashTradeCreate, currentData, cashTradeAccount ,tradeNumber);
 
         // 잔액 업데이트
         accountService.updateByCashTrade(cashTradeAccount, currentData, tradeDetail.getBalance());

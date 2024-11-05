@@ -1,4 +1,4 @@
-#transfer-result-img-container {
+#cash-trade-result-img-container {
     margin-left: 9px;
     margin-right: 9px;
     width: 100%;
@@ -7,9 +7,9 @@
     align-items: center;
     overflow: hidden;
 }
-#transfer-result-img{
-    max-width: 80%; /* 부모 컨테이너의 너비에 맞추기 */
-    max-height: 40%; /* 부모 컨테이너의 높이에 맞추기 */
+#cash-trade-result-img{
+    max-width: 70%; /* 부모 컨테이너의 너비에 맞추기 */
+    max-height: 80%; /* 부모 컨테이너의 높이에 맞추기 */
     object-fit: contain;
 }
 h5{

@@ -4,6 +4,7 @@ import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.AccountOpen;
 import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.trade.dto.request.*;
@@ -191,7 +192,7 @@ public class TradeService {
      * - 현금 거래시 사용
      * - 입출금 계좌 거래 데이터 생성 및 상세내역 반환
      */
-    public TradeDetail createCashTrade(CashTradeCreate cashTradeCreate, CurrentData currentData, BigDecimal cashTradeAccountBalance, Long tradeNumber) {
+    public TradeDetail createCashTrade(CashTradeCreate cashTradeCreate, CurrentData currentData, AccountDetail cashTradeAccount, Long tradeNumber) {
 
         TradeCreate tradeCreate = TradeCreate.builder()
                 .accId(cashTradeCreate.getAccId())
@@ -206,19 +207,20 @@ public class TradeService {
                 .status("NOR") // 거래 상태: 정상
                 .build();
 
+        BigDecimal cashBalance = cashTradeAccount.getBalance();
         // 출금일 경우
         if(cashTradeCreate.getTradeType().equals("WITHDRAWAL")){
-            tradeCreate.setBalance(cashTradeAccountBalance.subtract(cashTradeCreate.getAmount()));
+            tradeCreate.setBalance(cashBalance.subtract(cashTradeCreate.getAmount()));
         }
         // 입금일 경우
         else if(cashTradeCreate.getTradeType().equals("DEPOSIT")){
-            tradeCreate.setBalance(cashTradeAccountBalance.add(cashTradeCreate.getAmount()));
+            tradeCreate.setBalance(cashBalance.add(cashTradeCreate.getAmount()));
         }
 
         tradeMapper.insertTrade(tradeCreate);
 
 
-        return TradeDetail.of(tradeCreate);
+        return TradeDetail.of(tradeCreate, cashTradeAccount.getCustomerName());
     }
 
     public TradeCreate createCloseTrade(StatusWithTrade statusWithTrade, CurrentData currentData, Long tradeNumber) {
