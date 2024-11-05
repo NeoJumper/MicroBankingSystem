@@ -381,37 +381,37 @@ function renderOfTradeSearchResults(data) {
                 .addClass('text-center')
                 .attr('hidden', true) // hidden 속성 추가
                 .text(trade.tradeNumber))
-            .append($('<td>')
+            .append($('<td id="trade-list-trade-type">')
                 .addClass('text-center')
                 .addClass(tradeTypeInfo.cssClass)
                 .append($('<i>').addClass('bi bi-circle-fill me-2'))
                 .append(tradeTypeInfo.type))
-            .append($('<td>')
+            .append($('<td id="trade-list-trade-date">')
                 .addClass('text-center')
                 .text(formattedTradeDate))
-            .append($('<td>')
+            .append($('<td id="trade-list-trade-acc-id">')
                 .addClass('text-center')
                 .text(trade.accId))
-            .append($('<td>')
+            .append($('<td id="trade-list-trade-target-acc-id">')
                 .addClass('text-center')
                 .text(trade.targetAccId))
-            .append($('<td>')
+            .append($('<td id="trade-list-trade-type-amount">')
                 .addClass('text-right')
                 .addClass(amountClass)
                 .text(comma(amountText) + '원'))
-            .append($('<td>')
+            .append($('<td id="trade-list-trade-balance">')
                 .addClass('text-right')
                 .text(comma(balance) + '원'))
-            .append($('<td>')
+            .append($('<td id="trade-list-trade-cash-indicator">')
                 .addClass('text-center')
                 .addClass(cashIndicatorClass)
                 .text(cashIndicatorText))
-            .append($('<td>')
+            .append($('<td id="trade-list-trade-status">')
                     .addClass('text-center')
                     .text(statusInfo.text)
                     .addClass(statusInfo.class));
 
-        if (formattedBusinessDay === formattedTradeDate && trade.status === 'NOR') {
+        if (formattedBusinessDay === formattedTradeDate && trade.status === 'NOR' && (trade.tradeType === 'CLOSE' || trade.tradeType === 'WITHDRAWAL')) {
             // 영업일과 거래일이 동일하고 거래 유형이 'OPEN'이 아닐 경우 버튼 추가
             row.append($('<td>')
                 .addClass('text-center')
@@ -584,15 +584,34 @@ function registerClickEventOfTradeCancelBtn() {
         // 버튼이 클릭된 트리거의 부모인 <tr> 요소 찾기
         const $row = $(this).closest('tr');
 
+        const tradeTypeClose = $row.find('.trade-type-close');
+        const tradeTypeWithdrawal = $row.find('.trade-type-withdrawal');
         // hidden-trade-number 클래스의 값을 가져오기
         const tradeNumber = $row.find('.hidden-trade-number').text();
+        const accountId = $row.find('#trade-list-trade-acc-id').text();
 
-        // 결과 출력
-        console.log('추출된 거래 번호:', tradeNumber);
 
-        // AJAX 요청
-        const url = '/page/employee/account-transfer-cancel?tradeNumber=' + tradeNumber; // 요청할 URL 설정
-        window.location.href = url; // 지정한 URL로 이동
+
+        if (tradeTypeWithdrawal.length > 0){
+            // 결과 출력
+            console.log('추출된 거래 번호:', tradeNumber);
+
+            // AJAX 요청
+            const url = '/page/employee/account-transfer-cancel?tradeNumber=' + tradeNumber; // 요청할 URL 설정
+            window.location.href = url; // 지정한 URL로 이동
+
+
+        }
+        else if (tradeTypeClose.length > 0){
+            // 결과 출력
+            console.log('추출된 계좌 번호:', accountId);
+
+            // AJAX 요청
+            const url = '/page/employee/account-close-cancel?accountId=' + accountId; // 요청할 URL 설정
+            window.location.href = url; // 지정한 URL로 이동
+        }
+
+
 
 
     });

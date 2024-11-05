@@ -836,8 +836,3 @@ function getAndFillFailTradeList(bulkTransferId) {
 
 
 
-function getParameterByName(name, url) {
-    // URL에서 쿼리 파라미터를 찾기 위한 정규식 생성
-    const urlParams = new URLSearchParams(new URL(url).search);
-    return urlParams.get(name); // 해당 파라미터의 값을 반환
-}

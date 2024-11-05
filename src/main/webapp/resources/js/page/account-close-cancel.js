@@ -1,14 +1,19 @@
 let accountCloseCancelData = {};
+let url;
+
 
 $(document).ready(function () {
+    url = window.location.href;
     isClosed();
+
+    checkAccountIdIsExist();
 
     $('#search-modal-account').on('hidden.bs.modal', function () {
         getAccountDetail();
     });
 
     $('#search-modal-select-account-btn').click(function () {
-        selectAccount();
+        clickAccountSelectBtn();
     })
 
     $('#input-confirm').click(function () {
@@ -19,6 +24,18 @@ $(document).ready(function () {
         cancelCloseAccount();
     })
 });
+
+
+function checkAccountIdIsExist() {
+    const accountId = getParameterByName('accountId', url);
+    console.log(accountId);
+    if (accountId !== null)
+    {
+        selectAccount(accountId);
+    }
+}
+
+
 
 function getAccountDetail() {
     var accountNumber = $('#account-number').val();
@@ -156,7 +173,7 @@ function checkAccountId() {
     })
 }
 
-function selectAccount() {
+function clickAccountSelectBtn() {
 
     var selectedRow = $('input[name="select-account"]:checked').closest('tr');  // 선택된 라디오 버튼이 속한 행을 가져옴
     var selectedAccountId = selectedRow.find('td:eq(1)').text();  // 해당 행의 2번째 열(계좌번호 열)에서 값 추출
@@ -165,10 +182,17 @@ function selectAccount() {
         alert("계좌를 선택해 주세요.");
         return;
     }
+    selectAccount(selectedAccountId)
+
+
+}
+
+function selectAccount(accountId)
+{
     // 선택된 계좌번호로 서버에 다시 요청해서 계좌 정보 가져오기
     $.ajax({
         url: "/api/employee/accounts",
-        data: {accId: selectedAccountId, productName: null},
+        data: {accId: accountId, productName: null},
         type: "GET",
         success: function (data) {
             console.log(data);
