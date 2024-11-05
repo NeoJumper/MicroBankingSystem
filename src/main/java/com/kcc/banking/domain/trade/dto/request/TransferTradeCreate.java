@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -27,15 +28,18 @@ public class TransferTradeCreate {
     private String transferEndTime;
     private Long retryCount;
     private String status;
+    private String transferType;
+    private String autoTransferId;
+    private Long registrantId;
+    private Long branchId;
 
-
-    private int missedCount;
+    private Long missedCount;
 
     // 영업일
-    private String transferDate;
+    private Timestamp transferDate;
 
     @Builder
-    public TransferTradeCreate(String accId, String targetAccId, Long bulkTransferId, BigDecimal transferAmount, String description, String accountPassword, String krw, String depositor, String failureReason, String reserveTransferId, String transferStartTime, String transferEndTime, Long retryCount, String status, int missedCount) {
+    public TransferTradeCreate(String accId, String targetAccId, Long bulkTransferId, BigDecimal transferAmount, String description, String accountPassword, String krw, String depositor, String failureReason, String reserveTransferId, String transferStartTime, String transferEndTime, Long retryCount, String status, Long missedCount, String autoTransferId) {
         this.accId = accId;
         this.targetAccId = targetAccId;
         this.bulkTransferId = bulkTransferId;
@@ -50,8 +54,34 @@ public class TransferTradeCreate {
         this.transferEndTime = transferEndTime;
         this.retryCount = retryCount;
         this.status = status;
-
+        this.autoTransferId = autoTransferId;
         // 자동이체 실패횟수
         this.missedCount = missedCount;
+    }
+
+
+    @Override
+    public String toString() {
+        return "TransferTradeCreate{" +
+                "accId='" + accId + '\'' +
+                ", targetAccId='" + targetAccId + '\'' +
+                ", bulkTransferId=" + bulkTransferId +
+                ", transferAmount=" + transferAmount +
+                ", description='" + description + '\'' +
+                ", accountPassword='" + accountPassword + '\'' +
+                ", krw='" + krw + '\'' +
+                ", depositor='" + depositor + '\'' +
+                ", failureReason='" + failureReason + '\'' +
+                ", reserveTransferId='" + reserveTransferId + '\'' +
+                ", transferStartTime='" + transferStartTime + '\'' +
+                ", transferEndTime='" + transferEndTime + '\'' +
+                ", retryCount=" + retryCount +
+                ", status='" + status + '\'' +
+                ", transferType='" + transferType + '\'' +
+                ", missedCount=" + missedCount +
+                ", transferDate='" + transferDate + '\'' +
+                ", autoTransferId='" + autoTransferId + '\'' +
+
+                '}';
     }
 }

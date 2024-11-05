@@ -33,7 +33,8 @@
             registrant_id,
             branch_id,
             registration_date,
-            version
+            version,
+            auto_transfer_id
 
         ) VALUES (
             #{id},
@@ -56,7 +57,8 @@
             #{registrantId},
             #{branchId},
             SYSTIMESTAMP,
-            1
+            1,
+            #{autoTransferId}
         )
     </insert>
 
@@ -72,11 +74,18 @@
         rt.transfer_end_time as transfer_end_time,
         rt.retry_count as retry_count,
         rt.status as status,
-        rt.transfer_date as transfer_date
+        rt.transfer_date as transfer_date,
+        rt.transfer_type as transfer_type,
+        au.missed_count as missed_count,
+        au.id as auto_transfer_id,
+        a.branch_id as branch_id,
+        a.registrant_id as registrant_id
 
         from reserve_transfer rt
         join account a
         on a.id = rt.acc_id
+        join auto_transfer au
+        on rt.auto_transfer_id = au.id
         WHERE
         TO_CHAR(rt.transfer_date, 'YY/MM/DD') = TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD')
         AND
@@ -85,45 +94,36 @@
         TO_DATE(TO_CHAR(SYSTIMESTAMP, 'HH24:MI'), 'HH24:MI')
         BETWEEN TO_DATE(rt.transfer_start_time, 'HH24:MI')
         AND TO_DATE(rt.transfer_end_time, 'HH24:MI')
+        <!-- 'status'가 'FAIL'일 경우에만 'transfer_type' 필드를 추가 -->
+        <if test="status == 'FAIL' and transferType != null">
+            and rt.transfer_type = #{transferType}
+        </if>
+
     </select>
 
     <update id="updateTransferStatus">
         UPDATE reserve_transfer
-        SET status = #{status},
-        failure_reason =
+        SET status = #{status}
         <if test="failureReason != null and failureReason != ''">
-            #{failureReason}
+            ,failure_reason =  #{failureReason}
         </if>
         WHERE id = #{reserveTransferId}
     </update>
 
+    <update id="countMissedTransferOfAutoTransfer">
+        UPDATE auto_transfer
+        SET
+        missed_count = missed_count + 1
+        WHERE id = #{reserveTransferId}
+    </update>
 
-    <insert id="insertScheduledAutoTransfer" parameterType="ReserveTransferCreate">
-        INSERT INTO reserve_transfer (
-        id,
-        acc_id,
-        target_acc_id,
-        amount,
-        transfer_date,
-        retry_count,
-        transfer_type,
-        status,
-        registrant_id,
-        registration_date,
-        version
-        ) VALUES (
-        reserve_transfer_seq.NEXTVAL,
-        #{accId},
-        #{targetAccId},
-        #{amount},
-        #{transferDate},
-        0,
-        'AUTO',
-        #{status},
-        #{registrantId},
-        SYSTIMESTAMP,
-        1
-        )
-    </insert>
+    <!-- 자동이체 실패시 예약일 구하는 함수 -->
+    <select id = "findAutoReserveDate">
+        select ADD_MONTHS(next_transfer_date, missed_count)
+        from auto_transfer
+        WHERE id = #{reserveTransferId}
+    </select>
+
+
 
 </mapper>

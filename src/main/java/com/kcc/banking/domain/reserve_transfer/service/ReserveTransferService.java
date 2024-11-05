@@ -9,6 +9,7 @@ import com.kcc.banking.domain.trade.dto.request.TransferTradeCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,6 +33,9 @@ public class ReserveTransferService {
 
         reserveTransferMapper.createReserveTransfer(reserveTransferCreate);
     }
+    public void createReserveTransferBySystem(ReserveTransferCreate reserveTransferCreate){
+        reserveTransferMapper.createReserveTransfer(reserveTransferCreate);
+    }
 
     public void updateTransferStatus(String reserveTransferId, String status, String failureReason) {
         reserveTransferMapper.updateTransferStatus(reserveTransferId, status, failureReason);
@@ -41,8 +45,13 @@ public class ReserveTransferService {
         return reserveTransferMapper.getPendingTransfers(searchReserve);
     }
 
-    public void insertScheduledAutoTransfer(ReserveTransferCreate reserveTransferCreate){
-        reserveTransferMapper.insertScheduledAutoTransfer(reserveTransferCreate);
-    }
 
+    public void countMissedTransferOfAutoTransfer(String reserveTransferId){
+        reserveTransferMapper.countMissedTransferOfAutoTransfer(reserveTransferId);
+    };
+
+    public Timestamp findAutoReserveDate(String reserveTransferId){
+        return reserveTransferMapper.findAutoReserveDate(reserveTransferId);
+    }
 }
+

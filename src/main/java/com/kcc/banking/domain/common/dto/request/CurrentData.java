@@ -20,4 +20,13 @@ public class CurrentData {
         this.currentBusinessDate = currentBusinessDate;
     }
 
+
+    public CurrentData(Long branchId,  Long employeeId,  String currentBusinessDate) {
+        this.branchId = branchId;
+
+        this.employeeId = employeeId;
+
+        this.currentBusinessDate = currentBusinessDate;
+    }
+
 }
