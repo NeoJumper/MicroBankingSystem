@@ -29,14 +29,14 @@ function searchEmployee(){
         success: function(response) {
             // 성공 시 처리할 로직 작성
             $('#search-modal-employee-information').empty();
-            response.forEach(function(employee) {
+            response.employeeSearchInfoList.forEach(function(employee) {
                 // 새로운 행을 생성하고 테이블에 추가
                 let newRow = `
                             <tr class="employee-element">
                                 <td style="width: 6%;"><input class="form-check-input row-radio" type="radio" name="selected-employee"></td>
                                 <td style="width: 10%;">${employee.id}</td>
                                 <td style="width: 10%;">${employee.name}</td>
-                                <td style="width: 20%;">${new Date(employee.birthDate).toISOString().split('T')[0]}</td>
+                                <td style="width: 20%;">${new Date(employee.birthDate)}</td>
                                 <td style="width: 20%;">${employee.phoneNumber}</td>
                                 <td style="width: 20%;">${employee.email}</td>
                                 <td style="width: 10%;">${employee.roles}</td>
