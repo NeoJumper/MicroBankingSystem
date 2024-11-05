@@ -151,11 +151,9 @@ public class BusinessDayManagementFacade {
     /**
      * @Discription 
      * - 복리 이자내역 테스트 코드
-     * @param vaultCashRequest
      * @param businessDateAndBranchId
      */
-    public void closeByManagerForTest(VaultCashRequest vaultCashRequest, BusinessDateAndBranchId businessDateAndBranchId) {
-
+    public void closeByManagerForTest(BusinessDateAndBranchId businessDateAndBranchId) {
         // 보통예금, 자율적금 단복리 이자 내역 추가 테스트
         String tradeNumber = businessDayCloseService.getClosingTradeNumber(businessDateAndBranchId);
         interestService.createInterest(tradeNumber, businessDateAndBranchId);

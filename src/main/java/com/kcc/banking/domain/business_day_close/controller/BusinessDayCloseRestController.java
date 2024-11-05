@@ -33,9 +33,9 @@ public class BusinessDayCloseRestController {
     }
 
     @PatchMapping("/api/manager/business-day-close-test")
-    public void businessDayCloseOfManagerForTest(@RequestBody VaultCashRequest vaultCashRequest, BusinessDateAndBranchId businessDateAndBranchId)
+    public void businessDayCloseOfManagerForTest(@RequestBody BusinessDateAndBranchId businessDateAndBranchId)
     {
-        businessDayManagementFacade.closeByManagerForTest(vaultCashRequest, businessDateAndBranchId);
+        businessDayManagementFacade.closeByManagerForTest(businessDateAndBranchId);
     }
 
     @GetMapping("/api/manager/business-day-close")
