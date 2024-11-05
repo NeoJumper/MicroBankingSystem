@@ -1,0 +1,14 @@
+#otp-register-img-container {
+    margin-left: 9px;
+    margin-right: 9px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+#otp-register-img{
+    max-width: 50%; /* 부모 컨테이너의 너비에 맞추기 */
+    max-height: 80%; /* 부모 컨테이너의 높이에 맞추기 */
+    object-fit: contain;
+}

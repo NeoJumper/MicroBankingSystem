@@ -90,8 +90,8 @@
 
 
 
-            <div id="submit" class="row justify-content-center mb-5">
-                <input id="submit-btn" class="basic-btn col-1" type="submit" value="해지 신청" disabled>
+            <div class="row justify-content-center mb-5">
+                <button id="common-account-submit-btn" class="basic-btn col-1" disabled>해지 신청</button>
             </div>
         </div>
     </div>

@@ -54,7 +54,7 @@ public class InterestService {
         // 이자 생성
         interestCreateList.forEach(interestMapper::createInterest);
         // 4. 매월 1일인지 영업일 확인
-        LocalDateTime date = LocalDateTime.parse(businessDateAndBranchId.getBusinessDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDateTime date = LocalDateTime.parse(businessDateAndBranchId.getBusinessDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         // for Test
         // LocalDateTime date = LocalDateTime.parse("2024-08-02 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
