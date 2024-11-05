@@ -118,30 +118,6 @@
         </table>
     </div>
 
-    <div id="common-account-area">
-        <h3>계좌 해지 정보</h3>
-        <table class="common-table">
-            <thead>
-            <tr>
-                <th>해지 종류</th>
-                <th>개설일</th>
-                <th>만기일</th>
-                <th>해지 신청일</th>
-                <th>최종 적용 이율</th>
-                <th>지급 계산 금액</th>
-                <th>지급 총 금액</th>
-            </tr>
-            </thead>
-            <tbody id="savings-account-close-info">
-            <tr class="saving-account-close-empty-message">
-                <td colspan="7" style="text-align: center; color: gray; border-bottom: none; height: 100px">
-                    해지할 계좌를 선택해 주십시오
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
     <div class="fixed-account-area" style="display: none">
         <h3>자동이체 정보</h3>
         <table class="common-table">
@@ -152,8 +128,6 @@
                 <th>자동이체 총 횟수</th>
                 <th>자동이체 시작일</th>
                 <th>자동이체 종료일</th>
-
-
             </tr>
             </thead>
             <tbody id="savings-account-auto-transfer">
@@ -191,8 +165,54 @@
     </div>
 
 
-
     <div class="flexible-account-area" style="display: none">
+        <h3>적금 해지 종류</h3>
+        <table class="common-table">
+            <tbody>
+            <tr>
+                <th>개설일</th>
+                <td ><input id="flex-open-date-td" type="date" disabled/></td>
+                <th>만기일</th>
+                <td ><input id="flex-expired-date-td" type="date" disabled></td>
+            </tr>
+            <tr>
+                <th>해지 신청일</th>
+                <td><input id="flex-close-request-date" type="date" disabled/></td>
+                <th>해지 종류</th>
+                <td><span id="flex-close-type"></span></td>
+            </tr>
+            </tbody>
+        </table>
+        <h3>이율 및 금액 정보</h3>
+        <table class="common-table">
+            <tbody>
+            <tr>
+                <th>기본 이율</th>
+                <td id="flex-rate"></td>
+                <th>우대 이율</th>
+                <td id="flex-pre-rate">TEST</td>
+            </tr>
+            <tr>
+                <th>최종 적용 이율</th>
+                <td id="flex-final-rate"></td>
+                <th>세율</th>
+                <td id="flex-product-tax-rate"></td>
+            </tr>
+            <tr>
+                <th>세전 이자</th>
+                <td><input id="flex-total-before-interest-sum" type="text" disabled/> 원</td>
+                <th>세후 이자</th>
+                <td><input id="flex-total-after-interest-sum" type="text" disabled/> 원</td>
+            </tr>
+            <tr>
+                <th>계좌 잔액</th>
+                <td><input id="flex-balance" type="text" disabled /> 원</td>
+                <th>지급 총 금액</th>
+                <td><input id="flex-total-amount" type="text" disabled /> 원</td>
+            </tr>
+            </tbody>
+        </table>
+
         <h3>월별 이자 내역</h3>
         <table class="common-table" id="savings-account-flexible-monthly-interest-list">
             <thead>
@@ -200,11 +220,12 @@
             <th>계좌 잔액</th>
             <th>기본이율</th>
             <th>우대이율</th>
+            <th>적용이율</th>
             <th>이자 금액</th>
             </thead>
             <tbody>
             <tr class="saving-account-close-empty-message">
-                <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 100px">
+                <td colspan="6" style="text-align: center; color: gray; border-bottom: none; height: 100px">
                     해지할 계좌를 선택해 주십시오
                 </td>
             </tr>
@@ -226,7 +247,7 @@
     </table>
 
     <div class="row justify-content-center mb-5">
-        <button id="saving-account-close-submit-btn" class ="basic-btn col-1" disabled>해지 신청</button>
+        <button id="saving-account-close-submit-btn" class="basic-btn col-1" disabled>해지 신청</button>
     </div>
 </div>
 <script src="/resources/js/footer.js"></script>
