@@ -1,0 +1,21 @@
+#transfer-result-img-container {
+    margin-left: 9px;
+    margin-right: 9px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+#transfer-result-img{
+    max-width: 80%; /* 부모 컨테이너의 너비에 맞추기 */
+    max-height: 40%; /* 부모 컨테이너의 높이에 맞추기 */
+    object-fit: contain;
+}
+h5{
+    font-weight: bold;
+    margin-top: 8px;
+}
+.result-modal-text-area {
+    font-size: 1.5rem;
+}
