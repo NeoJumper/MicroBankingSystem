@@ -866,6 +866,7 @@ public class AccountTradeFacade {
             System.out.println("---------------------------------");
         }
 
+
 // 대기 중인 예약 이체 목록 조회
         List<TransferTradeCreate> waitTransfers = reserveTransferService.getPendingTransfers(searchWait);
         System.out.println("Wait Transfers: " + waitTransfers); // 대기 중인 이체 로그
@@ -953,6 +954,9 @@ public class AccountTradeFacade {
     public List<TransferDetail> AutoProcessTransfer(TransferTradeCreate transferTradeCreate) {
         log.info("트랜잭션 시작: 계좌 {}에서 계좌 {}로 이체 금액 {}", transferTradeCreate.getAccId(), transferTradeCreate.getTargetAccId(), transferTradeCreate.getTransferAmount());
 
+        BusinessDay businessDay = new BusinessDay();
+        businessDay.setBusinessDate("OPEN");
+        businessDay.setIsCurrentBusinessDay("TRUE");
 
 
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
@@ -987,7 +991,7 @@ public class AccountTradeFacade {
         else if(withdrawalAccount.getStatus().equals("CLS")){  // 출금 계좌가 해지됐을 때
             throw new BadRequestException(ErrorCode.ACCOUNT_CLOSED_FOR_TRANSFER);
         }
-        else{   // 비밀번호 검증에 실패했을 때
+        else{  // 비밀번호 검증에 실패했을 때
             accountService.validatePassword(new PasswordValidation(transferTradeCreate.getAccId(), transferTradeCreate.getAccountPassword()));
         }
 
