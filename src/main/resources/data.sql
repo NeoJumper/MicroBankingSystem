@@ -1,4 +1,7 @@
 INSERT INTO Branch (id, name, address, phone_number, vault_cash)
+VALUES (0, '0', '0', '0', 0);
+
+INSERT INTO Branch (id, name, address, phone_number, vault_cash)
 VALUES (branch_seq.NEXTVAL, '진관동1호점', '서울시 은평구 진관동 123-45', '02-123-1234', 100000000);
 
 INSERT INTO Branch (id, name, address, phone_number, vault_cash)
@@ -230,55 +233,55 @@ VALUES (customer_seq.NEXTVAL, 4, '이현정', '010-2345-6789', 'FEMALE', '880305
  */
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 1, '청년안심보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
+VALUES (product_seq.NEXTVAL, 1, '청년안심보통예금', 2.5, SYSDATE, '00', 0.154, 1, 'PRIVATE');
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 2, '청년미래보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
+VALUES (product_seq.NEXTVAL, 2, '청년미래보통예금', 2.5, SYSDATE, '00', 0.154, 1, 'PRIVATE');
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 3, '노후든든보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
+VALUES (product_seq.NEXTVAL, 3, '노후든든보통예금', 2.5, SYSDATE, '00', 0.154, 1, 'PRIVATE');
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 4, '노후건강보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
+VALUES (product_seq.NEXTVAL, 4, '노후건강보통예금', 2.5, SYSDATE, '00', 0.154, 1, 'PRIVATE');
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 5, '더편한보통예금', 2.5, SYSDATE, '00', 0.15, 1, 'PRIVATE');
+VALUES (product_seq.NEXTVAL, 5, '더편한보통예금', 2.5, SYSDATE, '00', 0.154, 1, 'PRIVATE');
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 1, '기업보통예금', 0.1, SYSDATE, '00', 0.15, 1, 'CORPORATION');
+VALUES (product_seq.NEXTVAL, 1, '기업보통예금', 0.1, SYSDATE, '00', 0.154, 1, 'CORPORATION');
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type)
-VALUES (product_seq.NEXTVAL, 1, 'ONE 사업자 통장', 0.1, SYSDATE, '00', 0.15, 1, 'CORPORATION');
+VALUES (product_seq.NEXTVAL, 1, 'ONE 사업자 통장', 0.1, SYSDATE, '00', 0.154, 1, 'CORPORATION');
 
 --적금 상품 8 - 12번
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type)
-VALUES (product_seq.NEXTVAL, 1, '6개월만기정기적금', 2.5, SYSDATE, '06', 0.15, 1, 'PRIVATE', 'FIXED');
+VALUES (product_seq.NEXTVAL, 1, '6개월만기정기적금', 2.5, SYSDATE, '06', 0.154, 1, 'PRIVATE', 'FIXED');
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type)
-VALUES (product_seq.NEXTVAL, 1, '1년만기정기적금', 3, SYSDATE, '12', 0.15, 1, 'PRIVATE', 'FIXED');
+VALUES (product_seq.NEXTVAL, 1, '1년만기정기적금', 3, SYSDATE, '12', 0.154, 1, 'PRIVATE', 'FIXED');
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type)
-VALUES (product_seq.NEXTVAL, 1, '2년만기정기적금', 3.5, SYSDATE, '24', 0.15, 1, 'PRIVATE', 'FIXED');
+VALUES (product_seq.NEXTVAL, 1, '2년만기정기적금', 3.5, SYSDATE, '24', 0.154, 1, 'PRIVATE', 'FIXED');
 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type)
-VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.15, 1, 'PRIVATE', 'FIXED');
+VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.154, 1, 'PRIVATE', 'FIXED');
 
 -- 자율적금 단리
 -- 12
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
 VALUES (product_seq.NEXTVAL, 1, '네오자유행복적금', 2.5, SYSDATE, '12',
-        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
+        0.154, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
 --13
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
 VALUES (product_seq.NEXTVAL, 1, '네오자유청년행복적금', 3.5, SYSDATE, '12',
-        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
+        0.154, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
 
 
 -- 자율적금 복리
@@ -286,12 +289,12 @@ VALUES (product_seq.NEXTVAL, 1, '네오자유청년행복적금', 3.5, SYSDATE, 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
 VALUES (product_seq.NEXTVAL, 1, '다달이더하는자유적금', 0.4, SYSDATE, '12',
-        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
+        0.154, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
 --15
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
 VALUES (product_seq.NEXTVAL, 1, '다달이행복청년자유적금', 0.6, SYSDATE, '12',
-        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
+        0.154, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
 
 ---------- 단리 자율 적금 생성 ----------
 -- 12번 상품
@@ -620,13 +623,44 @@ VALUES ('001-0010001-7777', 1, 2, 2, 5, TO_TIMESTAMP('2024-01-01 00:00:00', 'YYY
 -- 자동이체 출금 : 001-0010000-7777
 -- 자동이체 입금 : 001-0010001-3687
 -- 10000원 매달 15일 입금
---
+
+
+INSERT INTO Auto_transfer (
+    id,
+    acc_id,
+    target_acc_id,
+    amount,
+    auto_transfer_start_date,
+    auto_transfer_end_date,
+    create_date,
+    registration_date,
+    registrant_id,
+    version,
+    missed_count,
+    next_transfer_date,
+    status
+) VALUES (
+             AUTO_TRANSFER_SEQ.nextval,
+             '001-0000005-5678',            -- 이준호 예금
+             '001-0000004-4567',            -- 이준호 적금
+             1000,                  -- 이체 금액 (예: 10,000원)
+             TO_TIMESTAMP('24/11/06 00:00:00', 'DD/MM/YY HH24:MI:SS'),  -- 자동 이체 시작 날짜
+             TO_TIMESTAMP('25/11/06 00:00:00', 'DD/MM/YY HH24:MI:SS'),-- 이체 날짜
+             TO_TIMESTAMP('24/11/06 00:00:00', 'YY/MM/DD HH24:MI:SS'),
+             TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD'),
+             1,                       -- 재시도 횟수 (예: 0)          -- 이체 유형 (예: 'AUTOMATIC', 'MANUAL')
+             1,
+             0,
+             TO_TIMESTAMP('24/11/06 00:00:00', 'YY/MM/DD HH24:MI:SS'),
+             'ACTIVE'
+         );
+
 INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
                            auto_transfer_start_date,
                            auto_transfer_end_date, auto_transfer_period,
                            create_date, registration_date, registrant_id,
                            modification_date, modifier_id, version)
-VALUES (1, '001-0010000-7777', '001-0010001-3687', 10000,
+VALUES (AUTO_TRANSFER_SEQ.nextval, '001-0010000-7777', '001-0010001-3687', 10000,
         TO_TIMESTAMP('2024-01-15 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
 
         NULL, 1,
@@ -640,7 +674,7 @@ INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
                            auto_transfer_end_date, auto_transfer_period,
                            create_date, registration_date, registrant_id,
                            modification_date, modifier_id, version)
-VALUES (1, '001-0000015-7777', '001-0000013-3687', 1000000,
+VALUES (AUTO_TRANSFER_SEQ.nextval, '001-0000015-7777', '001-0000013-3687', 1000000,
         TO_TIMESTAMP('2023-04-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
         NULL, 1,
         SYSTIMESTAMP, SYSTIMESTAMP, 2,
@@ -653,14 +687,16 @@ INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
                            create_date, registration_date, registrant_id,
                            modification_date, modifier_id, version)
 
-VALUES (2, '001-0000015-7777', '001-0000014-8954', 100000,
+VALUES (AUTO_TRANSFER_SEQ.nextval, '001-0000015-7777', '001-0000014-8954', 100000,
         TO_TIMESTAMP('2023-04-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
         NULL, 1,
         SYSTIMESTAMP, SYSTIMESTAMP, 2,
         NULL, NULL, 1);
 
 
-------------------------------------------------------------
+
+
+    ------------------------------------------------------------
 -- 계좌 가입 내역
 
 -- 1번 고객 계좌

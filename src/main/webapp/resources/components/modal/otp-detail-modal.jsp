@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/modal/otp-detail-modal.css"/>
 </head>
 <body>
 <!-- Modal -->
@@ -19,6 +20,9 @@
 
             <div class="modal-body">
                 <div id="comment-area">
+                    <div id="otp-register-img-container">
+                        <img  src="/resources/assets/qr-code.png" alt="Logo" id="otp-register-img"  />
+                    </div>
                     <ul>
                         <li>1인 1기기만 이용할 수 있습니다.</li>
                         <li>기기 변경, 어플 삭제 후 재설치, 데이터 초기화 등을 했다면 재발급해 주세요.</li>

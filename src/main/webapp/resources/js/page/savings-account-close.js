@@ -241,42 +241,41 @@ function getSavingsFlexibleAccount(data, accountId) {
             // 계좌 해지 정보 추가 - 만기일 추가 예정
             addCloseInfo(data, businessDate);
             // 이자 내역 테이블 추가
-            addInterestList(data.interestDetailsList);
+            addInterestList(data.interestDetailsList, data.finalInterestRate);
         }
     })
 }
 
 function addCloseInfo(data, businessDate) {
-    let tbodyInfo = $('#savings-account-close-info');
-    tbodyInfo.empty();
 
-    let roundDownToTen = (Math.floor(data.totalAmount / 10) * 10).toLocaleString();
+    $('#flex-open-date-td').val(data.openDate.split(" ")[0]);
+    $('#flex-expired-date-td').val(data.expectedExpireDate.split(" ")[0]);
+    $('#flex-close-request-date').val(businessDate);
+    $('#flex-close-type').text(data.closeTypeDescription);
+    $('#flex-close-type').val(data.closeType);
 
-    let row = `
-        <tr>
-            <td id="flexible-saving-account-close-type">${data.closeTypeDescription}</td>
-            <td>${data.openDate.split(" ")[0]}</td>
-            <td>${data.expectedExpireDate.split(" ")[0]}</td>
-            <td>${businessDate}</td>
-            <td>${data.finalInterestRate * 100} %</td>
-            <td>${data.totalAmount.toLocaleString()} 원</td>
-            <td id="flexible-saving-account-total-amount">${roundDownToTen} 원</td>
-        </tr>
-    `;
+    $('#flex-rate').text(data.interestRate + " %");
+    $('#flex-pre-rate').text(data.preferentialInterestRate + " %");
+    $('#flex-final-rate').text((data.finalInterestRate * 100) + " %");
 
-    tbodyInfo.append(row);
+    $('#flex-product-tax-rate').text((data.taxRate * 100) + " %");
+    $('#flex-total-before-interest-sum').val(data.totalInterestSum);
+    $('#flex-total-after-interest-sum').val(data.totalInterestSumAfterTax);
+
+    $('#flex-balance').val(data.balance.toLocaleString());
+    $('#flex-total-amount').val(data.totalAmount.toLocaleString());
 }
 
-function addInterestList(interestDetailsList) {
+function addInterestList(interestDetailsList, finalInterestRate) {
     // tbody 준비
     let tbody = $('#savings-account-flexible-monthly-interest-list').find('tbody');
     tbody.empty();
 
-    if (interestDetailsList.length === 0) {
+    if (interestDetailsList == null ||interestDetailsList.length === 0) {
         // 데이터가 없을 경우 기본 메시지를 추가
         tbody.append(`
                 <tr class="saving-account-close-empty-message">
-                    <td colspan="5" style="text-align: center; color: gray; border-bottom: none; height: 100px">
+                    <td colspan="6" style="text-align: center; color: gray; border-bottom: none; height: 100px">
                         이자 내역이 존재하지 않습니다.
                     </td>
                 </tr>
@@ -290,6 +289,7 @@ function addInterestList(interestDetailsList) {
                         <td><input type="text" value="${item.balance.toLocaleString()}" disabled/> 원</td>
                         <td>${item.interestRate} %</td>
                         <td>${item.preferentialInterestRate} %</td>
+                        <td>${finalInterestRate * 100} %</td>
                         <td><input type="text" value="${item.amount.toLocaleString()}" disabled /> 원</td>
                     </tr>
                 `;
@@ -414,7 +414,7 @@ function calculateSavingsMonths(nowDate, startDate) {
         monthsSaved
     };
 }
-*/
+
 function calculateSelectedRate(openDate, businessDate, period, interestRateSum) {
     // 기존 함수 호출
     const rateData = calculateRateData(openDate, businessDate, period, interestRateSum);
@@ -450,6 +450,8 @@ function calculateSelectedRate(openDate, businessDate, period, interestRateSum) 
 
     return "조건에 맞는 이율이 없습니다"; // 모든 조건이 만족하지 않을 경우
 }
+
+*/
 
 function checkAccountId() {
     const inputId = $('#savings-account-close-password').val();
@@ -511,8 +513,9 @@ function savingAccountFixedCloseRequest() {
 // 자유적금 해지 프로세스
 function savingAccountFlexibleCloseRequest() {
     var accountNumber = $('#savings-account-close-number').val();
-    var totalAmount = parseFloat($('#flexible-saving-account-total-amount').text().replace(/,/g, ''));
-    var closeType = $('#flexible-saving-account-close-type').text();
+    var totalAmount = parseFloat($('#flex-total-amount').val().replace(/,/g, ''));
+    var closeType = $('#flex-close-type').val();
+
     $.ajax({
         url: '/api/employee/close-trade',
         type: 'POST',

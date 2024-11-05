@@ -103,9 +103,17 @@ function highlightTransferLimit() {
     // 보안등급에 따른 column 인덱스 설정
     let colIndex = securityLevel === "1등급" ? 2 : 3;
 
+    // 모든 셀의 스타일 초기화
+    $(".transfer-limit-table tbody td")
+        .css("background-color", "")   // 기본 배경색으로 초기화
+        .css("color", "")              // 기본 글자색으로 초기화
+        .css("font-weight", "");       // 기
+
     // 색칠할 셀 선택 및 강조 스타일 적용
     $(".transfer-limit-table tbody tr:nth-child(" + rowIndex + ") td:nth-child(" + colIndex + ")")
-        .css("background-color", "#dfe6fd");  // 원하는 색상으로 변경 가능
+        .css("background-color", "#f1f8ff")
+        .css("color", "#3f5ba9")
+        .css("font-weight", "bold")// 원하는 색상으로 변경 가능
 }
 
 function setTransferLimits() {
