@@ -24,7 +24,6 @@
 
     <div>
         <h3>출금 계좌 정보</h3>
-        <hr>
     </div>
 
     <!-- 출금 계좌 정보 -->
@@ -51,7 +50,7 @@
             <td id="cancel-transfer-withdrawal-trade-date"></td>
         </tr>
         <tr>
-            <th>설명</th>
+            <th>비고</th>
             <td id="cancel-transfer-withdrawal-description"></td>
         </tr>
         </tbody>
@@ -59,7 +58,6 @@
 
     <div>
         <h3>입금 계좌 정보</h3>
-        <hr>
     </div>
 
     <!-- 입금 계좌 정보 -->
