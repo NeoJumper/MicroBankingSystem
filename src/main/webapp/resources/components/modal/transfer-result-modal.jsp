@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Transfer Result Modal</title>
+    <link rel="stylesheet" href="/resources/css/modal/transfer-result-modal.css">
     <script src="/resources/js/modal/transfer-result-modal.js"></script>
 </head>
 <body>
@@ -18,9 +19,24 @@
                 <button id="result-modal-close-btn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h5>출금 내역</h5>
-                <hr>
+                <div id="transfer-result-img-container">
+                    <img  src="/resources/assets/transfer-result.png" alt="Logo" id="transfer-result-img"  />
+                </div>
+                <div class="mt-2 d-flex flex-column justify-content-center align-items-center">
+                    <div>
+                        총
+                        <span class="fw-bold"> 1 </span>
+                        건의
+                    </div>
 
+                    <div class="d-flex">
+                        <span style="font-weight: bold; color: #073082;" id="modal-result-deposit-amount"></span>
+                        &nbsp 원
+                    </div>
+                    <span>이체가 완료 되었습니다.</span>
+                </div>
+
+                <h5>출금 내역</h5>
                 <table class="common-table">
                     <tr>
                         <th>출금 계좌 번호</th>
@@ -31,16 +47,11 @@
                         <td><span id="modal-result-withdrawal-customer-name"></span></td>
                     </tr>
                     <tr>
-                        <th>출금 금액</th>
-                        <td><span id="modal-result-withdrawal-amount"></span></td>
-                    </tr>
-                    <tr>
                         <th>출금 후 잔액</th>
                         <td><span id="modal-result-withdrawal-balance"></span> 원</td>
                     </tr>
                 </table>
                 <h5>입금 내역</h5>
-                <hr>
                 <table class="common-table">
                     <tr>
                         <th>입금 계좌 번호</th>
@@ -49,10 +60,6 @@
                     <tr>
                         <th>입금 계좌 고객명</th>
                         <td><span id="modal-result-deposit-customer-name"></span></td>
-                    </tr>
-                    <tr>
-                        <th>입금 금액</th>
-                        <td><span id="modal-result-deposit-amount"></span> 원</td>
                     </tr>
                     <tr>
                         <th>입금 후 잔액</th>
