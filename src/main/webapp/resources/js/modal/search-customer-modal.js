@@ -1,12 +1,34 @@
+
+
 $(document).ready(function () {
 
     customerSearchInputEnterEvent();
     customerSearchBtnClickEvent();
     insertCustomerId();
-
+    handleChangeSearchOption();
 
 });
 
+function handleChangeSearchOption() {
+    $('#search-modal-select').change(function() {
+        var selectedOption = $(this).val();
+        var placeholderText = '';
+
+
+        // 선택된 옵션에 따라 placeholder 텍스트 설정
+        if (selectedOption === 'id') {
+            placeholderText = '고객번호를 입력하세요';
+        } else if (selectedOption === 'name') {
+            placeholderText = '이름을 입력하세요';
+        } else if (selectedOption === 'phone_number') {
+            placeholderText = '전화번호를 입력하세요';
+        }
+
+        // search-modal-input의 placeholder 업데이트
+        $('#search-modal-input').val('');
+        $('#search-modal-input').attr('placeholder', placeholderText);
+    });
+}
 
 function customerSearchInputEnterEvent() {
 
