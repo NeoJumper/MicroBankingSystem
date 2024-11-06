@@ -29,3 +29,9 @@
 #employee-add-list .common-table{
     margin: 0;
 }
+#employee-add-list {
+    max-height: 245px;
+    height: 245px;
+    overflow-y: auto;
+    display: block;
+}
