@@ -33,4 +33,6 @@ public interface InterestMapper {
 
     // 계좌번호로 이자내역 목록 불러오기
     List<InterestDetails> findInterestDetails(String accountId);
+
+    void updateByCloseWithInterestList(PaymentUpdate paymentUpdate);
 }

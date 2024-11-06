@@ -140,7 +140,7 @@ public class AccountTradeFacade {
      */
 
     @Transactional(rollbackFor = Exception.class)
-    public String addCloseSavingsTrade(StatusWithTrade statusWithTrade){
+    public String addCloseSavingsTrade(AccountClose accountClose){
 
         StringBuilder resultText = new StringBuilder("SUCCESS");
 
@@ -155,12 +155,12 @@ public class AccountTradeFacade {
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
-        TradeCreate tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
-        AccountUpdate accountUpdate = accountService.updateByCloseTrade(statusWithTrade, currentData);
+        TradeCreate tradeResult = tradeService.createCloseTrade(accountClose, currentData, tradeNumber);
+        AccountUpdate accountUpdate = accountService.updateByCloseTrade(accountClose, currentData);
 
 
         // 행원 마감 출금액 변경
-        businessDayCloseService.updateTradeAmount(statusWithTrade.getAmount(), currentData, statusWithTrade.getTradeType());
+        businessDayCloseService.updateTradeAmount(accountClose.getAmount(), currentData, accountClose.getTradeType());
 
         // 적금 계좌 해지 정보 return
         return null;
@@ -203,14 +203,14 @@ public class AccountTradeFacade {
 
     //---------------------------------------------------------
     /**
-     *   @Description - 계좌 해지
+     *   @Description - 보통예금 계좌 해지
      *   1. 해지 계좌 정보 조회
      *   2. 계좌 해지 거래 내역 생성
      *   3. 계좌 잔액 및 상태 변경
      *   4. 이자 지급일 및 상태 변경
      */
     @Transactional(rollbackFor = Exception.class)
-    public AccountCloseResult addCloseTrade(StatusWithTrade statusWithTrade) {
+    public AccountCloseResult addCloseTrade(AccountClose accountClose) {
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
@@ -219,23 +219,23 @@ public class AccountTradeFacade {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
 
-        // 해지 계좌 정보 조회
-        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountById = accountService.getCloseSavingsFlexibleAccountById(statusWithTrade.getAccId());
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
 
-        TradeCreate tradeResult = tradeService.createCloseTrade(statusWithTrade, currentData, tradeNumber);
-        AccountUpdate accountUpdate = accountService.updateByCloseTrade(statusWithTrade, currentData);
-        int paymentStatusResult = interestService.updateByClose(statusWithTrade, currentData);
-
+        TradeCreate tradeResult = tradeService.createCloseTrade(accountClose, currentData, tradeNumber);
+        AccountUpdate accountUpdate = accountService.updateByCloseTrade(accountClose, currentData);
+        int paymentStatusResult = interestService.updateByClose(accountClose, currentData);
 
         // 행원 마감 출금액 변경
-        businessDayCloseService.updateTradeAmount(statusWithTrade.getAmount(), currentData, statusWithTrade.getTradeType());
+        businessDayCloseService.updateTradeAmount(accountClose.getAmount(), currentData, accountClose.getTradeType());
+
+        // 해지 계좌 정보 조회
+        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountById = accountService.getCloseSavingsFlexibleAccountById(accountClose.getAccId());
 
         return AccountCloseResult.builder()
-                .accountId(statusWithTrade.getAccId())
+                .accountId(accountClose.getAccId())
                 .accountStatus(accountUpdate.getStatus())
                 .openDate(Timestamp.valueOf(LocalDateTime.parse(closeSavingsFlexibleAccountById.getOpenDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
                 .accountPreInterRate(closeSavingsFlexibleAccountById.getPreferentialInterestRate())
@@ -245,7 +245,7 @@ public class AccountTradeFacade {
                 .productName(closeSavingsFlexibleAccountById.getProductName())
                 .productInterRate(closeSavingsFlexibleAccountById.getInterestRate())
                 .productTaxRate(closeSavingsFlexibleAccountById.getTaxRate())
-                .amountSum(statusWithTrade.getAmount())
+                .amountSum(accountClose.getAmount())
                 .build();
     }
 

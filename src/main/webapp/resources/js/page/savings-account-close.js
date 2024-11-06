@@ -271,7 +271,7 @@ function addInterestList(interestDetailsList, finalInterestRate) {
     let tbody = $('#savings-account-flexible-monthly-interest-list').find('tbody');
     tbody.empty();
 
-    if (interestDetailsList == null ||interestDetailsList.length === 0) {
+    if (interestDetailsList == null || interestDetailsList.length === 0) {
         // 데이터가 없을 경우 기본 메시지를 추가
         tbody.append(`
                 <tr class="saving-account-close-empty-message">
@@ -512,11 +512,29 @@ function savingAccountFixedCloseRequest() {
 
 // 자유적금 해지 프로세스
 function savingAccountFlexibleCloseRequest() {
-    var accountNumber = $('#savings-account-close-number').val();
+    var accountId = $('#savings-account-close-number').val();
     var totalAmount = parseFloat($('#flex-total-amount').val().replace(/,/g, ''));
-    var closeType = $('#flex-close-type').val();
+    // "중도 해지" 텍스트
+    var closeType = $('#flex-close-type').text();
 
     $.ajax({
+            url: "/api/employee/flexible-savings-account/" + accountId,
+            type: "GET",
+            success: function (data) {
+                console.log("RE_DATA", data);
+            }, error: function (error) {
+            swal({
+                title: "해지 실패",
+                text: error,
+                icon: "error",
+            });
+            }
+        }
+    );
+
+    // 자유적금 해지를 위한 계좌 세부 정보
+    // return CloseSavingsFlexibleAccountTotal
+/*    $.ajax({
         url: '/api/employee/close-trade',
         type: 'POST',
         contentType: 'application/json',
@@ -530,7 +548,7 @@ function savingAccountFlexibleCloseRequest() {
         }),
         success: function (response) {
 
-            console.log("자유적금 계좌 해지 DATA",response);
+            console.log("자유적금 계좌 해지 DATA", response);
             swal({
                 title: "해지 성공",
                 text: "계좌 해지 완료되었습니다.",
@@ -538,5 +556,5 @@ function savingAccountFlexibleCloseRequest() {
             });
 
         }
-    })
+    })*/
 }

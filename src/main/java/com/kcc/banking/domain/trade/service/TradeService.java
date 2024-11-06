@@ -3,7 +3,7 @@ package com.kcc.banking.domain.trade.service;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.AccountOpen;
-import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.account.dto.request.AccountClose;
 import com.kcc.banking.domain.account.dto.response.AccountDetail;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
@@ -223,15 +223,15 @@ public class TradeService {
         return TradeDetail.of(tradeCreate, cashTradeAccount.getCustomerName());
     }
 
-    public TradeCreate createCloseTrade(StatusWithTrade statusWithTrade, CurrentData currentData, Long tradeNumber) {
+    public TradeCreate createCloseTrade(AccountClose accountClose, CurrentData currentData, Long tradeNumber) {
         TradeCreate tradeCreate = TradeCreate.builder()
-                .accId(statusWithTrade.getAccId())
+                .accId(accountClose.getAccId())
                 .branchId(currentData.getBranchId())
-                .amount(statusWithTrade.getAmount())
-                .description(statusWithTrade.getDescription())
+                .amount(accountClose.getAmount())
+                .description(accountClose.getDescription())
                 .balance(BigDecimal.valueOf(0))
                 .registrantId(currentData.getEmployeeId())
-                .tradeType(statusWithTrade.getTradeType())
+                .tradeType(accountClose.getTradeType())
                 .tradeNumber(tradeNumber)  // 거래 번호
                 .cashIndicator("TRUE")  // 현금 여부 : TRUE
                 .status("NOR") // 거래 상태: 정상

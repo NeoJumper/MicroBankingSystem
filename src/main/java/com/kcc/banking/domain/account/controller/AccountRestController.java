@@ -182,9 +182,9 @@ public class AccountRestController {
      * @return
      */
     @PostMapping("/api/employee/flexible-savings-account-close")
-    public ResponseEntity<?> closeFlexibleSavingsAccount(@RequestBody AccountClose accountClose){
-        accountCloseFacade.closeFlexibleSavingsAccount(accountClose);
-        return ResponseEntity.ok(null);
+    public ResponseEntity<?> closeFlexibleSavingsAccount(@RequestBody FlexibleSavingsAccountClose accountClose){
+        AccountCloseResult accountCloseResult = accountCloseFacade.closeFlexibleSavingsAccount(accountClose);
+        return ResponseEntity.ok(accountCloseResult);
     }
 
 }

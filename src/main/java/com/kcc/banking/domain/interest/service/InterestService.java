@@ -1,10 +1,9 @@
 package com.kcc.banking.domain.interest.service;
 
-import com.kcc.banking.common.util.AuthenticationUtils;
-import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.account.dto.request.AccountClose;
+import com.kcc.banking.domain.account.dto.request.FlexibleSavingsAccountClose;
 import com.kcc.banking.domain.account.dto.response.AccountDetailForInterest;
 import com.kcc.banking.domain.account.service.AccountService;
-import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.request.*;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -109,21 +107,28 @@ public class InterestService {
     }
 
     /**
-     * @Description 해지에 의한 이자 테이블 상태 및 지급일 변경
+     * @Discription 보통예금 해지 시 이자내역 지급변경
+     * @param accountClose
+     * @param currentData
+     * @return
      */
-    public int updateByClose(StatusWithTrade statusWithTrade, CurrentData currentData) {
+    public int updateByClose(AccountClose accountClose, CurrentData currentData) {
         PaymentStatusUpdate paymentStatusUpdate = PaymentStatusUpdate.builder()
                 .branchId(currentData.getBranchId())
                 .payDate(currentData.getCurrentBusinessDate())
                 .modifierId(currentData.getEmployeeId())
-                .accId(statusWithTrade.getAccId())
+                .accId(accountClose.getAccId())
                 .build();
 
         return interestMapper.updateByClose(paymentStatusUpdate);
     }
 
     /**
-     * @Description 해지 취소에 의한 이자 테이블 상태 및 지급일 변경
+     * @Discription 보통예금 해지 취소에 따른 이자내역 변경
+     * @param accId
+     * @param currentData
+     * @param expireDate
+     * @return
      */
     public int updateByCloseCancel(String accId, CurrentData currentData, String expireDate) {
 
@@ -146,5 +151,30 @@ public class InterestService {
 
     public List<InterestDetails> getInterestDetailsByAccountId(String accountId) {
         return interestMapper.findInterestDetails(accountId);
+    }
+
+    /**
+     * @Discription 자유적금 해지 - 중도해지의 경우 적용된 이율 및 단리 계산으로 인한 이자내역 변경
+     * @param accountClose
+     * @param currentData
+     * @return
+     */
+    public void updateByCloseWithInterestList(FlexibleSavingsAccountClose accountClose, CurrentData currentData) {
+        // InterestDetails 리스트를 PaymentUpdate 리스트로 변환
+        List<PaymentUpdate> paymentUpdates = accountClose.getInterestDetailsList().stream()
+                .map(detail -> PaymentUpdate.builder()
+                        .accId(accountClose.getAccId())
+                        .branchId(currentData.getBranchId())
+                        .modifierId(currentData.getEmployeeId())
+                        .payDate(currentData.getCurrentBusinessDate())
+                        .creationDate(detail.getCreationDate())
+                        .balance(detail.getBalance())
+                        .interestRate(detail.getInterestRate())
+                        .preferentialInterestRate(detail.getPreferentialInterestRate())
+                        .amount(detail.getAmount())
+                        .build())
+                .toList();
+
+        paymentUpdates.forEach(interestMapper::updateByCloseWithInterestList);
     }
 }

@@ -1,10 +1,7 @@
 package com.kcc.banking.domain.trade.controller;
 
-import com.beust.jcommander.Parameter;
-import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
+import com.kcc.banking.domain.account.dto.request.AccountClose;
 import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
-import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
-import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResult;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;
 import com.kcc.banking.domain.trade.dto.request.TradeCancelRequest;
 import com.kcc.banking.domain.trade.dto.request.CashTradeCreate;
@@ -17,7 +14,6 @@ import com.kcc.banking.domain.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,9 +55,7 @@ public class TradeRestController {
     // 계좌 이체
     @PostMapping("/account-transfer")
     public ResponseEntity<List<TransferDetail>> transfer(@RequestBody TransferTradeCreate transferTradeCreate) {
-
         List<TransferDetail> tradeDetails = accountTradeFacade.processTransfer(transferTradeCreate);
-
         return ResponseEntity.ok(tradeDetails);
     }
 
@@ -82,13 +76,13 @@ public class TradeRestController {
 
     /**
      * @Discription 
-     * - 계좌 해지 거래 추가
-     * @param statusWithTrade
+     * - 보통예금 계좌 해지 프로세스
+     * @param accountClose
      * @return ResponseEntity<AccountCloseResult>
      */
     @PostMapping("/close-trade")
-    public ResponseEntity<AccountCloseResult> addCloseTrade(@RequestBody StatusWithTrade statusWithTrade) {
-        AccountCloseResult accountCloseResult = accountTradeFacade.addCloseTrade(statusWithTrade);
+    public ResponseEntity<AccountCloseResult> addCloseTrade(@RequestBody AccountClose accountClose) {
+        AccountCloseResult accountCloseResult = accountTradeFacade.addCloseTrade(accountClose);
         return ResponseEntity.status(HttpStatus.OK).body(accountCloseResult);
     }
 
