@@ -1,10 +1,7 @@
-
 let employeeDataForUpload = [];
 let errorItems = [];
-let checkedData = [];
 let url;
-// 주기적으로 상태를 확인하는 인터벌
-let progressInterval = setInterval(checkProgressStatus, 500);
+let progressInterval; // 주기적으로 상태를 확인하는 인터벌
 var bulkTransferId;
 let currentPercentage = 0; // 기존 퍼센티지 저장할 변수
 
@@ -20,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     registerClickEventOfFileUpload();
     registerClickEventOfPrint();
 
-    checkProgressStatus();
+    checkProgressStatusForPageEnter();
 
 });
 
@@ -50,8 +47,6 @@ function animateProgress(newPercentage) {
 }
 
 
-
-
 // 숫자 애니메이션 함수
 function animateNumber(element, target) {
     $({ value: parseInt(element.text()) }).animate({ value: target }, {
@@ -65,6 +60,7 @@ function animateNumber(element, target) {
         }
     });
 }
+
 // 진행 상태 확인 함수
 function checkProgressStatus() {
 
@@ -88,6 +84,48 @@ function checkProgressStatus() {
             // 진행이 완료되었는지 확인
             if (response.status === 'NOR' || response.status === 'WAIT') { // 상태가 완료된 경우
                 clearInterval(progressInterval); // 주기적인 호출 중단
+                swal({
+                    title: "대량 이체 완료",
+                    text: "대량 이체가 완료되었습니다.",
+                    icon: "success"
+                });
+                location.reload(); // 페이지 새로 고침
+
+            }
+            else{
+                progressInterval = setInterval(checkProgressStatus, 500);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("진행 상태를 불러오는 중 오류 발생:", error);
+        }
+    });
+}
+
+
+
+// 페이지에 들어왔을 떄
+function checkProgressStatusForPageEnter() {
+
+    $.ajax({
+        url: `/api/employee/bulk-transfers/${bulkTransferId}/progress-status`,
+        type: 'GET',
+        success: function(response) {
+            // 진행이 완료되었는지 확인
+            if (response.status === 'NOR' || response.status === 'WAIT') { // 상태가 완료된 경우
+                let successCnt = response.successCnt;
+                let failureCnt = response.failureCnt;
+                let totalCnt = response.totalCnt;
+
+                // 부드럽게 successCnt와 failureCnt를 업데이트
+                animateNumber($('#success-count'), successCnt);
+                animateNumber($('#failure-count'), failureCnt);
+
+
+                const percentage = Math.floor((successCnt + failureCnt) / totalCnt * 100);
+                animateProgress(percentage);
+                currentPercentage = percentage;
+
                 fillBulkTransferInfoListBody(bulkTransferId);
 
                 $('#sectionB').show();
@@ -96,12 +134,20 @@ function checkProgressStatus() {
                     $('#resend-error-item').prop('disabled', false);
 
             }
+            else{
+                progressInterval = setInterval(checkProgressStatus, 500);
+            }
         },
         error: function(xhr, status, error) {
             console.error("진행 상태를 불러오는 중 오류 발생:", error);
         }
     });
 }
+
+
+
+
+
 function registerClickEventOfSelectAllCheckbox() {
     $('#bulk-transfer-info thead input[type="checkbox"]').click(function () {
         toggleAllCheckboxes($(this).is(':checked'));
@@ -232,13 +278,23 @@ function handleFileUpload() {
 function handlePrint() {
     const element = $('#sectionC');
 
-// 요소가 존재하는지 확인
+    // 요소가 존재하는지 확인
     if (element.length === 0) {
         console.error("Element not found!");
         return; // 함수 종료
     }
 
-// html2canvas에 DOM 요소를 전달
+    // 요소가 이미 숨겨져 있다면, 위치를 화면 밖으로 잠시 이동
+    const isHidden = element.css('display') === 'none';
+    if (isHidden) {
+        element.css({
+            'position': 'absolute',
+            'left': '-9999px', // 화면 밖으로 이동
+            'top': '-9999px'   // 화면 밖으로 이동
+        }).show(); // 요소를 잠시 보이게 함
+    }
+
+    // html2canvas에 DOM 요소를 전달
     html2canvas(element[0]).then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
@@ -248,11 +304,20 @@ function handlePrint() {
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save("download.pdf");
+
+        // 캡처 후, 요소를 원래 상태로 되돌림
+        if (isHidden) {
+            element.hide(); // 원래대로 숨김 처리
+            element.css({
+                'position': '',
+                'left': '',
+                'top': ''
+            }); // 원래 위치로 복원
+        }
     }).catch((error) => {
         console.error("Error generating PDF:", error);
     });
 }
-
 function handleBack() {
     history.replaceState(null, '', document.referrer);
     window.history.back();
@@ -279,12 +344,6 @@ function fillBulkTransferInfoListBody(bulkTransferId) {
                 if(bulkTransferInfo.status === 'NOR')
                     totalTransferAmount += bulkTransferInfo.amount;
                 tbody.append(createRow(bulkTransferInfo, ++index));
-            });
-
-            swal({
-                    title: "대량 이체 완료",
-                    text: "대량 이체가 완료되었습니다.",
-                    icon: "success"
             });
 
             $('#total-transfer-amount').text(comma(totalTransferAmount));

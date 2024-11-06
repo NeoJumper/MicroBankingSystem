@@ -118,7 +118,7 @@
         </section>
 
         <%-- 처리결과 내역서 --%>
-        <section id="sectionC" style="padding: 60px 60px">
+        <section id="sectionC" style="padding: 60px 60px; display: none;">
 
             <div>
                 <div class="d-flex justify-content-between">
