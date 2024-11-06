@@ -18,7 +18,7 @@ public class AutoTransferList {
     private String autoTransferStartDate;       // 자동이체 시작 날짜
     private int autoTransferPeriod;                 // 자동이체 주기 (예: 1개월)
     private String status;                          // 상태 (active, paused 등)
-    private int missedCount;                        // 미납 횟수
+    private Long missedCount;                        // 미납 횟수
 
     private Long id;                                 // 자동이체 ID
     private String autoTransferEndDate;          // 자동이체 종료 날짜

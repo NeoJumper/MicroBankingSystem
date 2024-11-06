@@ -6,6 +6,7 @@ import com.kcc.banking.domain.trade.dto.request.TransferTradeCreate;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -19,6 +20,10 @@ public interface ReserveTransferMapper {
     
     // 당일 자동이체 -> 예약이체로 등록하기
     void insertScheduledAutoTransfer(ReserveTransferCreate reserveTransferCreate);
+
+    void countMissedTransferOfAutoTransfer(String reserveTransferId);
+
+    Timestamp findAutoReserveDate(String reserveTransferId);
 
 }
 

@@ -16,5 +16,6 @@ public class SearchReserve {
 
     //wait 상태인 예약이체
     private String status;
+    private String transferType;
 
 }

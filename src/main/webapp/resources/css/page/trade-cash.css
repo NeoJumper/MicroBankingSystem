@@ -12,9 +12,10 @@ h3 {
 p {
     margin: 0;
 }
-span {
+#select-account-form span , #modal-result-deposit-amount{
     color: #073082;
 }
+
 
 .common-table input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
     max-width: 60%;

@@ -17,6 +17,7 @@ public class TradeDetail {
     private Long id;
     private Long registrantId;
     private String accId;
+    private String customerName;
     private String targetAccId;
     private String targetCustomerName;
     private Long branchId;
@@ -34,10 +35,11 @@ public class TradeDetail {
     private Long version;
 
     @Builder
-    public TradeDetail(Long id, Long registrantId, String accId, String targetAccId, Long branchId, String tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version) {
+    public TradeDetail(Long id, Long registrantId, String accId,String customerName, String targetAccId, Long branchId, String tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;
+        this.customerName = customerName;
         this.targetAccId = targetAccId;
         this.branchId = branchId;
         this.tradeDate = tradeDate;
@@ -54,10 +56,11 @@ public class TradeDetail {
         this.version = version;
     }
 
-    public static TradeDetail of(TradeCreate cashTradeCreate) {
+    public static TradeDetail of(TradeCreate cashTradeCreate, String customerName) {
         return TradeDetail.builder()
                 .accId(cashTradeCreate.getAccId())
                 .amount(cashTradeCreate.getAmount())
+                .customerName(customerName)
                 .balance(cashTradeCreate.getBalance())
                 .tradeType(cashTradeCreate.getTradeType())
                 .branchId(cashTradeCreate.getBranchId())

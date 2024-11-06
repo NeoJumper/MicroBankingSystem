@@ -21,6 +21,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div id="account-open-result-img-container">
+                    <img  src="/resources/assets/account-open.png" alt="Logo" id="account-open-result-img"  />
+                </div>
+                <h5>개설 내역</h5>
                 <table class="common-table account-open-result-modal-table">
                     <tr>
                         <th>계좌번호</th>
@@ -45,7 +49,7 @@
                         <th>기준이율</th>
                         <td><input type="text" id="result-modal-product-interest-input" disabled> %</td>
                         <th>우대이율</th>
-                        <td><input type="text" id="result-modal-preferred-interest-input"> %</td>
+                        <td><input type="text" id="result-modal-preferred-interest-input" disabled> %</td>
                     </tr>
 
                     <tr>
