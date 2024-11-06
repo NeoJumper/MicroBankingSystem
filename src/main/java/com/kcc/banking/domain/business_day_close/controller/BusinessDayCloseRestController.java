@@ -22,37 +22,33 @@ public class BusinessDayCloseRestController {
     private final BusinessDayManagementFacade businessDayManagementFacade;
 
     @PatchMapping("/api/employee/business-day-close")
-    public void businessDayCloseOfEmployee(@RequestBody VaultCashRequest vaultCashRequest){
+    public void businessDayCloseOfEmployee(@RequestBody VaultCashRequest vaultCashRequest) {
         businessDayManagementFacade.closeByEmployee(vaultCashRequest);
     }
 
     @PatchMapping("/api/manager/business-day-close")
-    public void businessDayCloseOfManager(@RequestBody VaultCashRequest vaultCashRequest)
-    {
+    public void businessDayCloseOfManager(@RequestBody VaultCashRequest vaultCashRequest) {
         businessDayManagementFacade.closeByManager(vaultCashRequest);
     }
 
     @PatchMapping("/api/manager/business-day-close-test")
-    public void businessDayCloseOfManagerForTest(@RequestBody VaultCashRequest vaultCashRequest, BusinessDateAndBranchId businessDateAndBranchId)
-    {
-        businessDayManagementFacade.closeByManagerForTest(vaultCashRequest, businessDateAndBranchId);
+    public void businessDayCloseOfManagerForTest(@RequestBody BusinessDateAndBranchId businessDateAndBranchId) {
+        businessDayManagementFacade.closeByManagerForTest(businessDateAndBranchId);
     }
 
     @GetMapping("/api/manager/business-day-close")
-    public ManagerClosingData getBusinessDayChangeDataOfManager()
-    {
-        ManagerClosingData managerClosingData = businessDayCloseService.getManagerClosingData();
-        return managerClosingData;
+    public ManagerClosingData getBusinessDayChangeDataOfManager() {
+        return businessDayCloseService.getManagerClosingData();
     }
+
     @GetMapping("/api/employee/cash-balance")
-    public BigDecimal getEmployeeCashBalanceOfCurrent()
-    {
+    public BigDecimal getEmployeeCashBalanceOfCurrent() {
         BigDecimal employeeCashBalance = businessDayCloseService.getEmployeeCashBalance();
         return employeeCashBalance;
     }
 
     @GetMapping("/api/common/business-day-close/status")
-    public String getBusinessDayCloseStatus(){
+    public String getBusinessDayCloseStatus() {
         return businessDayCloseService.getEmployeeStatus();
     }
 }

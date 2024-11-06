@@ -55,8 +55,6 @@ public class InterestService {
         interestCreateList.forEach(interestMapper::createInterest);
         // 4. 매월 1일인지 영업일 확인
         LocalDateTime date = LocalDateTime.parse(businessDateAndBranchId.getBusinessDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        // for Test
-        // LocalDateTime date = LocalDateTime.parse("2024-08-02 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         // 매월 1일이라면
         if (date.getDayOfMonth() == 1) {
@@ -72,7 +70,7 @@ public class InterestService {
                         .toList()
         ).orElse(List.of());
 
-// 이자 내역 합산을 param으로 넘겨 새로운 이자 내역 생성
+        // 이자 내역 합산을 param으로 넘겨 새로운 이자 내역 생성
         List<SavingInterestCreate> interestSavingCreateList = accountList.stream()
                 .filter(account -> "FLEXIBLE".equals(account.getProductType()))
                 .map(account -> {
