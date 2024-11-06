@@ -584,18 +584,7 @@ function showOtpInputModal() {
     otpInputModal = new bootstrap.Modal(document.getElementById('otp-input-modal'));
     otpInputModal.show();
 }
-function handleTransferLimitTooltip() {
-    $('#select-transfer-limit').hover(
-        function() {
-            // 마우스가 올라갔을 때
-            $('#select-transfer-limit-tooltip').css('opacity', '1');
-        },
-        function() {
-            // 마우스가 벗어났을 때
-            $('#select-transfer-limit-tooltip').css('opacity', '0');
-        }
-    );
-}
+
 
 function handleOtpBtn() {
     let selectedBtn;
@@ -616,4 +605,16 @@ function handleOtpBtn() {
         selectedBtn.show();
         $('#otp-authentication-modal-btn').hide();
     }
+}
+function handleTransferLimitTooltip() {
+    $('#select-transfer-limit').hover(
+        function() {
+            // 마우스가 올라갔을 때
+            $('#select-transfer-limit-tooltip').css('opacity', '1');
+        },
+        function() {
+            // 마우스가 벗어났을 때
+            $('#select-transfer-limit-tooltip').css('opacity', '0');
+        }
+    );
 }
