@@ -88,8 +88,10 @@ function checkProgressStatus() {
                     title: "대량 이체 완료",
                     text: "대량 이체가 완료되었습니다.",
                     icon: "success"
+                }).then(() => {
+                    location.reload(); // 페이지 새로 고침
                 });
-                location.reload(); // 페이지 새로 고침
+
 
             }
             else{

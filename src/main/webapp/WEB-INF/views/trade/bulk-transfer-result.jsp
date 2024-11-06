@@ -166,6 +166,13 @@
                     <td colspan="2"></td>
                 </tr>
                 <tr>
+                    <th>등록 건수</th>
+                    <td>
+                        <span>${bulkTransfer.totalCnt}</span>건
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
                     <th>입금계좌 표시</th>
                     <td>
                         <span>${bulkTransfer.description}</span>
@@ -174,7 +181,7 @@
                 </tr>
                 <tr >
                     <th rowspan="2" style="width: 20%">총 이체건수</th>
-                    <td rowspan="2" style="width: 30%"><span class="fw-bold">${bulkTransfer.totalCnt}</span>&nbsp 건</td>
+                    <td rowspan="2" style="width: 30%"><span class="fw-bold">${bulkTransfer.successCnt}</span>&nbsp 건</td>
 
                     <th style="width: 20%">성공건수</th>
                     <td><span class="text-color-basic">${bulkTransfer.successCnt}</span>&nbsp 건</td>
@@ -186,7 +193,7 @@
                 </tr>
                 <tr >
                     <th rowspan="2" style="width: 20%">총 이체금액</th>
-                    <td rowspan="2" style="width: 30%"><span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
+                    <td rowspan="2" style="width: 30%"><span class="fw-bold"><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
 
                     <th style="width: 20%">정상</th>
                     <td><span><fmt:formatNumber value="${bulkTransfer.amount}" pattern="#,###"/></span> 원</td>
@@ -194,7 +201,7 @@
                 </tr>
                 <tr>
                     <th style="width: 20%">오류</th>
-                    <td><span><fmt:formatNumber value="${bulkTransfer.failAmount}" pattern="#,###"/></span> 원</td>
+                    <td><span><fmt:formatNumber value="${bulkTransfer.failureAmount}" pattern="#,###"/></span> 원</td>
                 </tr>
 
 
