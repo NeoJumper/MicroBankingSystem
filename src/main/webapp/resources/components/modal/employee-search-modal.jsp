@@ -51,7 +51,6 @@
                             <th style="width: 6%;"><label>선택</label></th>
                             <th style="width: 10%;"><label id="search-modal-employee-id">사원번호</label></th>
                             <th style="width: 10%;"><label id="search-modal-employee-name">이름</label></th>
-                            <th style="width: 20%;"><label id="search-modal-employee-birth">생년월일</label></th>
                             <th style="width: 20%;"><label id="search-modal-employee-phone">전화번호</label></th>
                             <th style="width: 20%;"><label id="search-modal-employee-email">이메일</label></th>
                             <th style="width: 10%;"><label id="search-modal-branch-roles">직책</label></th>
@@ -60,7 +59,7 @@
 
                     </table>
 
-                    <div id="employee-add-list" style="overflow-y: auto; height: 230px;">
+                    <div id="employee-add-list">
                         <table class="common-table">
                             <tbody id="search-modal-employee-information">
 

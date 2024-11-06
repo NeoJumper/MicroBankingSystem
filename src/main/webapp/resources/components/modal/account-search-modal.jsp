@@ -42,7 +42,7 @@
                             <th style="width: 20%;"><label id="search-modal-account-id">계좌번호</label></th>
                             <th style="width: 15%;"><label id="search-modal-open-date">개설일</label></th>
                             <th style="width: 20%;"><label id="search-modal-customer-name">고객명</label></th>
-                            <th style="width: 15%;"><label id="search-modal-product-name">상품 종류</label></th>
+                            <th style="width: 17%;"><label id="search-modal-product-name">상품 종류</label></th>
                             <th style="width: 25%"><label id="search-modal-balance">현재 잔액</label></th>
                         </tr>
                         </thead>

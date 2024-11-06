@@ -1,21 +1,44 @@
+
+
 $(document).ready(function () {
 
     customerSearchInputEnterEvent();
     customerSearchBtnClickEvent();
     insertCustomerId();
-
+    handleChangeSearchOption();
 
 });
 
-// ------------------------------- START customerSearchModalEvent()------------------------------------------
-// 모달 내 고객 검색 버튼 클릭시 함수
+function handleChangeSearchOption() {
+    $('#search-modal-select').change(function() {
+        var selectedOption = $(this).val();
+        var placeholderText = '';
+
+
+        // 선택된 옵션에 따라 placeholder 텍스트 설정
+        if (selectedOption === 'id') {
+            placeholderText = '고객번호를 입력하세요';
+        } else if (selectedOption === 'name') {
+            placeholderText = '이름을 입력하세요';
+        } else if (selectedOption === 'phone_number') {
+            placeholderText = '전화번호를 입력하세요';
+        }
+
+        // search-modal-input의 placeholder 업데이트
+        $('#search-modal-input').val('');
+        $('#search-modal-input').attr('placeholder', placeholderText);
+    });
+}
+
 function customerSearchInputEnterEvent() {
 
-    $('#search-modal-search-btn').keypress(function(event) {
+    $('#search-modal-input').keydown(function(event) {
 
         if (event.which === 13) {
-            const searchOption = $('#search-modal-select').val(); // 드롭다운에서 선택된 값
-            const searchValue = $('#search-modal-input').val(); // 입력 필드의 값 가져오기
+            const searchOption = $('#search-modal-select').val();
+            console.log(searchOption);
+            const searchValue = $('#search-modal-input').val();
+            console.log(searchValue);
             searchCustomer(searchOption, searchValue);
         }
     });
