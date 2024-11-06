@@ -72,7 +72,7 @@
                 <input type="text" id="product-id-input" disabled>
                 <button data-bs-toggle="modal" data-bs-target="#search-modal-product" type="button"
                         id="search-modal-product-btn" class="btn basic-btn">
-                    <span class="bi bi-search search-icon-margin"></span> 계좌조회
+                    <span class="bi bi-search search-icon-margin"></span> 상품조회
                 </button>
             </td>
         </tr>

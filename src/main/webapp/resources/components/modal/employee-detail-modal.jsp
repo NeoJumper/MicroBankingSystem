@@ -20,14 +20,13 @@
             <div class="modal-body">
                 <div>
                     <h3>행원 정보</h3>
-                    <hr>
                 </div>
                 <table class="common-table">
                     <tr>
                         <th>사원번호</th>
                         <td><input type="text" id="detail-modal-emp-id" disabled></td>
                         <th>비밀번호</th>
-                        <td><input type="password" id="detail-modal-emp-password" readonly></td>
+                        <td><input type="password" id="detail-modal-emp-password" disabled></td>
                     </tr>
                     <tr>
                         <th>이름</th>
@@ -44,9 +43,9 @@
                         <th>주소</th>
                         <td>
                             <div class="d-flex my-2">
-                                <input  type="text" id="detail-modal-emp-address" placeholder="주소"><br>
+                                <input  type="text" id="detail-modal-emp-address" placeholder="주소" disabled><br>
                             </div>
-                            <input type="text" id="detail-modal-emp-detail-address" placeholder="상세주소">
+                            <input type="text" id="detail-modal-emp-detail-address" placeholder="상세주소" disabled>
                         </td>
                     </tr>
                     <tr>

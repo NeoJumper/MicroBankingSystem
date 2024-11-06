@@ -3,7 +3,7 @@
 }
 
 #employee-detail-modal .modal-body {
-    padding: 5% 5%;
+    padding: 3% 3%;
 }
 
 #employee-detail-modal .modal-body h5,
@@ -16,12 +16,6 @@
     border: 2px solid black;
     margin-bottom: 30px;
 }
-
-#employee-detail-modal .modal-body {
-    background-color: #F5F5F5;
-    padding: 10px;
-}
-
 #modalCenterBox {
     display: flex;
     align-items: center;
@@ -40,7 +34,9 @@
 #employee-detail-modal .modal-body th {
     text-align: center;
 }
-.modal-body
-{
-    height: 650px !important;
+#employee-add-list {
+    max-height: 245px;
+    height: 245px;
+    overflow-y: auto;
+    display: block;
 }
