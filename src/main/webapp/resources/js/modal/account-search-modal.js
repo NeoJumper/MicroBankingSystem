@@ -135,7 +135,7 @@ function checkAccount(status,period) {
                     "<td style='width: 20%;'>" + account.accId + "</td>" +
                     "<td style='width: 15%;'>" + openDateOnly + "</td>" +
                     "<td style='width: 20%;'>" + account.customerName + " 님</td>" +
-                    "<td style='width: 15%;'>" + account.productName + "</td>" +
+                    "<td style='width: 17%;'>" + account.productName + "</td>" +
                     "<td style='width: 25%'>" + account.balance.toLocaleString('ko-KR') + " 원</td>" +
                     "</tr>";
                 accountTableBody.append(row);

@@ -118,7 +118,7 @@ public class AccountRestController {
         return ResponseEntity.ok(allProductList);
     }
 
-
+//------------------------------적금 계좌 개설-------------------------------------------
 
     // 적금 계좌 개설
 //    @Transactional
@@ -152,18 +152,16 @@ public class AccountRestController {
 
     /**
      * @Discription
-     * - 정기적금 해지를 위한 계좌 상세정보
-     * - 자동이체 정보 불러오기
-     * - 001-0000013-3687 번에 거래내역 존재
-     * @param accountId
+     * - 정기적금 해지 정보 출력 ( 정기적금 계좌 : 001-0000013-3687)
      * @return ResponseEntity<CloseSavingsAccountTotal>
      */
     @GetMapping("/api/employee/savings-account-close-total-info/{accountId}")
     public ResponseEntity<CloseSavingsAccountTotal> getCloseAccountInfo(@PathVariable("accountId") String accountId){
-        CloseSavingsAccountTotal closeSavingsAccountInfo = accountService.getCloseSavingsAccount(accountId);
+        CloseSavingsAccountTotal closeSavingsAccountInfo = accountCloseFacade.getCloseSavingsAccount(accountId);
         return ResponseEntity.ok(closeSavingsAccountInfo);
     }
-
+    
+    //------------------------------적금 계좌 개설-------------------------------------------
     /**
      * @Discription 
      * - 자유적금 해지를 위한 계좌 상세정보

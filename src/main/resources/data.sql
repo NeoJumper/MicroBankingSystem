@@ -1,4 +1,7 @@
 INSERT INTO Branch (id, name, address, phone_number, vault_cash)
+VALUES (0, '0', '0', '0', 0);
+
+INSERT INTO Branch (id, name, address, phone_number, vault_cash)
 VALUES (branch_seq.NEXTVAL, '진관동1호점', '서울시 은평구 진관동 123-45', '02-123-1234', 100000000);
 
 INSERT INTO Branch (id, name, address, phone_number, vault_cash)
@@ -641,14 +644,14 @@ INSERT INTO Auto_transfer (
              '001-0000005-5678',            -- 이준호 예금
              '001-0000004-4567',            -- 이준호 적금
              1000,                  -- 이체 금액 (예: 10,000원)
-             TO_TIMESTAMP('24/11/05 00:00:00', 'DD/MM/YY HH24:MI:SS'),  -- 자동 이체 시작 날짜
-             TO_TIMESTAMP('25/11/05 00:00:00', 'DD/MM/YY HH24:MI:SS'),-- 이체 날짜
-             TO_TIMESTAMP('24/11/05 00:00:00', 'YY/MM/DD HH24:MI:SS'),
+             TO_TIMESTAMP('24/11/06 00:00:00', 'DD/MM/YY HH24:MI:SS'),  -- 자동 이체 시작 날짜
+             TO_TIMESTAMP('25/11/06 00:00:00', 'DD/MM/YY HH24:MI:SS'),-- 이체 날짜
+             TO_TIMESTAMP('24/11/06 00:00:00', 'YY/MM/DD HH24:MI:SS'),
              TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD'),
              1,                       -- 재시도 횟수 (예: 0)          -- 이체 유형 (예: 'AUTOMATIC', 'MANUAL')
              1,
              0,
-             TO_TIMESTAMP('24/11/05 00:00:00', 'YY/MM/DD HH24:MI:SS'),
+             TO_TIMESTAMP('24/11/06 00:00:00', 'YY/MM/DD HH24:MI:SS'),
              'ACTIVE'
          );
 

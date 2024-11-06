@@ -52,7 +52,8 @@
 }
 
 #scrollable-tbody-wrapper {
-    max-height: 250px;
+    max-height: 245px;
+    height: 245px;
     overflow-y: auto;
     display: block;
 }

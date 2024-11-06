@@ -50,8 +50,6 @@ public interface AccountMapper {
     // 적금 해지 검색 모달 조회
     CloseSavingsAccountTotal findCloseSavingsAccountDetail(String accountId);
 
-    //자동이체 납일 횟수 조회
-    String findMonthlyPaidOfSavingsAccount(String accountId);
 
     // 자유적금 해지 시 조회
     CloseSavingsFlexibleAccountTotal findCloseSavingsFlexibleAccountById(String accountId);

@@ -12,7 +12,9 @@
 #search-modal-title {
     font-weight: bold;
 }
-
+#search-product-modal-common-table{
+    margin: 0;
+}
 
 #search-modal-center-box {
     display: flex;

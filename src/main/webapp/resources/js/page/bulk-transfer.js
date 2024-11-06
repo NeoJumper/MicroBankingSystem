@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
     registerInputEventOfAccountNumber('#targetAccIdModal');
     registerInputEventOfAccountNumber('#update-target-acc-id');
 
+    handleOtpInput(); // OTP 입력란 자동 이동
+    clickOtpAuthenticationModalBtn() // OTP 인증 모달 띄우는 버튼 클릭
+    clickOtpAuthenticationBtn() // OTP 인증 버튼 클릭
 
 
     // 이벤트 핸들러 초기화
@@ -203,7 +206,7 @@ function checkAccountId() {
 
             $('#uploadEmployeeBtn').prop('disabled', false);
             $('#uploadIndividualEmployeeBtn').prop('disabled', false);
-
+            $('#otp-authentication-modal-btn').prop('disabled', false);
 
             $('html, body').animate({ scrollTop: $(document).height() }, 'slow', function() {
             });
@@ -560,8 +563,16 @@ function validationExecution() {
 
             $('#result-content-div').show();
             $('input[value="초기화"]').show();
-            $('input[value="이체실행"]').show();
             $('input[value="예금주 확인"]').hide();
+
+            if(securityLevel === '1등급'){
+                $('#otp-authentication-modal-btn').show();
+                $('input[value="이체실행"]').hide();
+            }
+            else{
+                $('#otp-authentication-modal-btn').hide();
+                $('input[value="이체실행"]').show();
+            }
 
             swal({ title: "예금주 확인", text: "예금주 확인 완료", icon: "success" });
             // 프로그래스바 진행상황 업데이트
@@ -694,6 +705,7 @@ function initExecution() {
     $('#result-content-div').hide();
     $('input[value="초기화"]').hide();
     $('input[value="이체실행"]').hide();
+    $('input[value="OTP 인증"]').hide();
     $('input[value="예금주 확인"]').show();
 
     resetProgressIndicator();
@@ -834,5 +846,98 @@ function getAndFillFailTradeList(bulkTransferId) {
     });
 }
 
+function clickOtpAuthenticationModalBtn(){
+    $('#otp-authentication-modal-btn').click(function () {
+        showOtpInputModal();
+    });
+}
+
+function showOtpInputModal() {
+    otpInputModal = new bootstrap.Modal(document.getElementById('otp-input-modal'));
+    otpInputModal.show();
+}
 
 
+function handleOtpInput() {
+    $('.auth-code-input').on('input', function() {
+        // 숫자 외의 입력은 제거
+        var value = $(this).val();
+        if (!/^\d$/.test(value)) {
+            $(this).val(''); // 숫자 외의 입력은 비움
+            return;
+        }
+
+        // 다음 인풋으로 자동 포커스 이동
+        var nextInput = $(this).next('.auth-code-input');
+        if (nextInput.length && value !== '') {
+            nextInput.focus();
+        }
+    });
+
+    $('.auth-code-input').on('keydown', function(e) {
+        // 백스페이스 시 이전 칸으로 이동
+        if (e.key === 'Backspace' && $(this).val() === '') {
+            var prevInput = $(this).prev('.auth-code-input');
+            if (prevInput.length) {
+                prevInput.focus();
+            }
+        }
+    });
+}
+function clickOtpAuthenticationModalBtn(){
+    $('#otp-authentication-modal-btn').click(function () {
+        showOtpInputModal();
+    });
+}
+
+// 인증하기 버튼 클릭
+function clickOtpAuthenticationBtn() {
+
+    $('#otp-authenticate-btn').click(function() {
+
+        var values = $('.auth-code-input').map(function() {
+            return $(this).val();
+        }).get(); // 배열로 변환
+
+        // 배열을 문자열로 합치기
+        var combinedValue = values.join('');
+
+        $.ajax({
+            url: "/api/common/otp-authentication",
+            data:{
+                userId : customerId,
+                userCode : combinedValue
+            },
+            type: "POST",
+            success: function() {
+
+                otpInputModal.hide();
+                $('#account-transfer-submit').show();
+                $('#otp-authentication-modal-btn').hide();
+                $('input[value="이체실행"]').show();
+
+                swal({
+                    title: "OTP 인증 성공",
+                    text: "OTP 인증이 성공적으로 수행되었습니다.",
+                    icon: "success",
+                    button: "닫기",
+                })
+
+
+
+            },
+            error: function(xhr, status, error) {
+                swal({
+                    title: "OTP 인증 실패",
+                    text: "OTP 인증에 실패했습니다.",
+                    icon: "error",
+                    button: "닫기",
+                })
+            }
+        });
+
+
+
+
+    });
+}

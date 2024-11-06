@@ -7,7 +7,10 @@ import com.kcc.banking.domain.account.dto.request.AccountClose;
 import com.kcc.banking.domain.account.dto.request.AccountUpdate;
 import com.kcc.banking.domain.account.dto.request.FlexibleSavingsAccountClose;
 import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
+import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
+import com.kcc.banking.domain.account.mapper.AccountMapper;
+import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
@@ -40,6 +43,10 @@ public class AccountCloseFacade {
     private final TradeService tradeService;
     private final BusinessDayCloseService businessDayCloseService;
 
+    private final AutoTransferService autoTransferService;
+    private final AccountMapper accountMapper;
+
+
     /**
      * @param accountId
      * @return
@@ -49,6 +56,8 @@ public class AccountCloseFacade {
      * 1-1. 만기일 이전에 해지 할 시 이자내역 다시 계산
      * 1-2. 만기일 / 만기일 이후 해지 시 그대로 반환
      * 재계산된 이자 내역 추가
+     * @param accountId
+     * @return
      */
     public CloseSavingsFlexibleAccountTotal getFlexibleSavingsAccount(String accountId) {
         // 자유 적금 정보 불러오기
@@ -274,5 +283,36 @@ public class AccountCloseFacade {
                 .productTaxRate(closeSavingsFlexibleAccountById.getTaxRate())
                 .amountSum(accountClose.getAmount())
                 .build();
+    }
+
+    /**
+     * @Description
+     * 정기적금 계좌 해지 정보/ (예금 제외)
+     *
+     *
+     */
+    public CloseSavingsAccountTotal getCloseSavingsAccount(String accountId){
+
+        // 1. 정기적금 해지 정보 총 출력
+        /*
+          1. 계좌정보
+          2. 자동이체 정보
+          3. 적금 상품 정보
+          4. 이율 계산 정보 - 함수사용
+        */
+
+
+        CloseSavingsAccountTotal csat =  accountMapper.findCloseSavingsAccountDetail(accountId);
+        // csat가 null인지 확인
+        if (csat == null) {
+            // 적절한 예외 처리 또는 기본값 설정
+            throw new IllegalArgumentException("계좌 ID에 대한 정보를 찾을 수 없습니다: " + accountId);
+        }
+
+        // 이체 횟수조회(거래내역조회)
+        //csat.setAutoTransferCount();
+
+        // 현재날짜
+        return csat;
     }
 }
