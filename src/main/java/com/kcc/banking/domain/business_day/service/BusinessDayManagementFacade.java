@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -154,6 +155,14 @@ public class BusinessDayManagementFacade {
      * @param businessDateAndBranchId
      */
     public void closeByManagerForTest(BusinessDateAndBranchId businessDateAndBranchId) {
+        // 지점 시재금 0원 저장
+        VaultCashRequest build = VaultCashRequest.builder().vaultCash(BigDecimal.ZERO).build();
+        // 지점 마감
+        businessDayCloseService.closeBranchBusinessDay(businessDateAndBranchId, build);
+
+        // 영업일 상태 변경
+        businessDayService.businessDayStatusToClosed(businessDateAndBranchId.getBusinessDate());
+
         // 보통예금, 자율적금 단복리 이자 내역 추가 테스트
         String tradeNumber = businessDayCloseService.getClosingTradeNumber(businessDateAndBranchId);
         interestService.createInterest(tradeNumber, businessDateAndBranchId);

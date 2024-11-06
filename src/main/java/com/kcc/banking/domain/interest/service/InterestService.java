@@ -70,7 +70,7 @@ public class InterestService {
                         .toList()
         ).orElse(List.of());
 
-// 이자 내역 합산을 param으로 넘겨 새로운 이자 내역 생성
+        // 이자 내역 합산을 param으로 넘겨 새로운 이자 내역 생성
         List<SavingInterestCreate> interestSavingCreateList = accountList.stream()
                 .filter(account -> "FLEXIBLE".equals(account.getProductType()))
                 .map(account -> {
