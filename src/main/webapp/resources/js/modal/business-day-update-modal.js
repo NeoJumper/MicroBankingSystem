@@ -181,7 +181,7 @@ function handleWorkers() {
                     // 직원 정보 처리
                     let vaultCash = employee.vaultCash;
                     let prevCashBalance = 0;
-                    let roleDisplay = employee.roles === 'ROLE_EMPLOYEE' ? '행원' : employee.roles;
+                    let roleDisplay = employee.roles === 'ROLE_EMPLOYEE' ? '행원' : '매니저';
 
                     // vaultCash와 prevCashBalance를 포맷팅
                     let formattedVaultCash = new Intl.NumberFormat().format(vaultCash);

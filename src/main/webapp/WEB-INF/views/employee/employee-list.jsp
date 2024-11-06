@@ -29,9 +29,9 @@
                 <option selected value="" disabled>검색조건</option>
                 <option value="id">사번</option>
                 <option value="name">이름</option>
-                <option value="birthDate">생년월일</option>
-                <option value="phoneNumber">전화번호</option>
                 <option value="email">이메일</option>
+                <option value="phone_number">전화번호</option>
+                <option value="address">주소</option>
                 <option value="roles">직책</option>
             </select>
         </div>

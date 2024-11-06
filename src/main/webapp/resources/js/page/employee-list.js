@@ -47,7 +47,8 @@ function searchEmployee(searchOption, searchValue,pageNum = 1){
 
             response.employeeSearchInfoList.forEach(function(employee) {
                 // 새로운 행을 생성하고 테이블에 추가
-                var role = employee.address === 'ROLE_MANAGER' ? '매니저' : '행원';
+                var role = employee.role === 'ROLE_MANAGER' ? '매니저' : '행원';
+                var address = employee.address === null ? '' : employee.address;
 
                 let newRow = `
                             <tr class="emp-element">
@@ -55,8 +56,8 @@ function searchEmployee(searchOption, searchValue,pageNum = 1){
                                 <td style="text-align: center;">${employee.name}</td>
                                 <td style="text-align: center;">${employee.email}</td>
                                 <td style="text-align: center;">${employee.phoneNumber}</td>
+                                <td style="text-align: center;">${address}</td>
                                 <td style="text-align: center;">${role}</td>
-                                <td style="text-align: center;">${employee.roles}</td>
                             </tr>
                         `;
                 $('#emp-table-body').append(newRow); // 새 데이터 추가
