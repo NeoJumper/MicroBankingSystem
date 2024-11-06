@@ -4,7 +4,10 @@ package com.kcc.banking.domain.account.service;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.AccountClose;
+import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
+import com.kcc.banking.domain.account.mapper.AccountMapper;
+import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
@@ -29,6 +32,10 @@ public class AccountCloseFacade {
     private final AccountService accountService;
     private final CommonService commonService;
     private final InterestService interestService;
+
+    private final AutoTransferService autoTransferService;
+    private final AccountMapper accountMapper;
+
 
     /**
      * @Discription
@@ -217,7 +224,40 @@ public class AccountCloseFacade {
         if(!currentBusinessDay.getStatus().equals("OPEN")){
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
-
-
     }
+
+
+
+    /**
+     * @Description
+     * 정기적금 계좌 해지 정보/ (예금 제외)
+     *
+     *
+     */
+    public CloseSavingsAccountTotal getCloseSavingsAccount(String accountId){
+
+        // 1. 정기적금 해지 정보 총 출력
+        /*
+          1. 계좌정보
+          2. 자동이체 정보
+          3. 적금 상품 정보
+          4. 이율 계산 정보 - 함수사용
+        */
+
+
+        CloseSavingsAccountTotal csat =  accountMapper.findCloseSavingsAccountDetail(accountId);
+        // csat가 null인지 확인
+        if (csat == null) {
+            // 적절한 예외 처리 또는 기본값 설정
+            throw new IllegalArgumentException("계좌 ID에 대한 정보를 찾을 수 없습니다: " + accountId);
+        }
+
+        // 이체 횟수조회(거래내역조회)
+        //csat.setAutoTransferCount();
+
+        // 현재날짜
+        return csat;
+    }
+
+
 }
