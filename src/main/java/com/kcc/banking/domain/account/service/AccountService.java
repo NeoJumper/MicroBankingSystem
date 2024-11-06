@@ -5,7 +5,6 @@ import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.common.exception.custom_exception.NotFoundException;
 import com.kcc.banking.domain.account.dto.request.*;
 import com.kcc.banking.domain.account.dto.response.*;
-import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
 import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
@@ -13,8 +12,6 @@ import com.kcc.banking.domain.common.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -134,10 +131,10 @@ public class AccountService {
      * 잔액과 상태를 변경
      * 해지 거래에 사용
      */
-    public AccountUpdate updateByCloseTrade(StatusWithTrade statusWithTrade, CurrentData currentData) {
+    public AccountUpdate updateByCloseTrade(AccountClose accountClose, CurrentData currentData) {
         AccountUpdate accountUpdate = AccountUpdate.builder()
-                .targetAccId(statusWithTrade.getAccId())
-                .status(statusWithTrade.getStatus())
+                .targetAccId(accountClose.getAccId())
+                .status(accountClose.getStatus())
                 .modifierId(currentData.getEmployeeId())
                 .balance(BigDecimal.valueOf(0))
                 .expireDate(currentData.getCurrentBusinessDate())

@@ -1,21 +1,14 @@
 package com.kcc.banking.domain.account.service;
 
-
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.AccountClose;
 import com.kcc.banking.domain.account.dto.request.AccountUpdate;
 import com.kcc.banking.domain.account.dto.request.FlexibleSavingsAccountClose;
 import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
-import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
-import com.kcc.banking.domain.account.mapper.AccountMapper;
-import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
-import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
-import com.kcc.banking.domain.common.service.CommonService;
-import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.interest.dto.response.InterestDetails;
 import com.kcc.banking.domain.interest.service.InterestService;
 import com.kcc.banking.domain.trade.dto.request.TradeCreate;
@@ -35,17 +28,11 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-public class AccountCloseFacade {
+public class AccountCloseFacadeTest {
 
     private final AccountService accountService;
-    private final CommonService commonService;
     private final InterestService interestService;
     private final TradeService tradeService;
-    private final BusinessDayCloseService businessDayCloseService;
-
-    private final AutoTransferService autoTransferService;
-    private final AccountMapper accountMapper;
-
 
     /**
      * @param accountId
@@ -56,15 +43,13 @@ public class AccountCloseFacade {
      * 1-1. 만기일 이전에 해지 할 시 이자내역 다시 계산
      * 1-2. 만기일 / 만기일 이후 해지 시 그대로 반환
      * 재계산된 이자 내역 추가
-     * @param accountId
-     * @return
      */
-    public CloseSavingsFlexibleAccountTotal getFlexibleSavingsAccount(String accountId) {
+    public CloseSavingsFlexibleAccountTotal getFlexibleSavingsAccountTest(String accountId, String startDateStr) {
         // 자유 적금 정보 불러오기
         CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountService.getCloseSavingsFlexibleAccountById(accountId);
 
         // 해지 종류 판별
-        String businessDateStr = commonService.getCurrentBusinessDay().getBusinessDate();
+        String businessDateStr = startDateStr;
         String openDateStr = closeSavingsFlexibleAccountTotal.getOpenDate();
         String periodStr = closeSavingsFlexibleAccountTotal.getPeriod();
 
@@ -211,28 +196,12 @@ public class AccountCloseFacade {
         } else {
             closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.POST_MATURITY_TERMINATION);
         }
-        return CloseSavingsFlexibleAccountTotal.of(closeSavingsFlexibleAccountTotal, interestDetailsList);
+        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotalTest = CloseSavingsFlexibleAccountTotal.of(closeSavingsFlexibleAccountTotal, interestDetailsList);
+        return closeSavingsFlexibleAccountTotalTest;
     }
 
-
-    /**
-     * @param accountClose
-     * @return
-     * @Discription - 자유적금 계좌 해지
-     * 1. 계좌 해지 거래 내역 생성
-     * 1-2. 행원 시재금 변경(출금)
-     * 2. 계좌 잔액 및 상태 변경
-     * 3. 이자 지급일 및 상태 변경
-     */
     @Transactional(rollbackFor = Exception.class)
-    public AccountCloseResult closeFlexibleSavingsAccount(FlexibleSavingsAccountClose accountClose) {
-        CurrentData currentData = commonService.getCurrentData();
-        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
-
-        // OPEN 상태가 아니라면
-        if (!currentBusinessDay.getStatus().equals("OPEN")) {
-            throw new BadRequestException(ErrorCode.NOT_OPEN);
-        }
+    public AccountCloseResult closeFlexibleSavingsAccountForTest(FlexibleSavingsAccountClose accountClose, CurrentData currentData, BusinessDay currentBusinessDay) {
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
@@ -252,7 +221,7 @@ public class AccountCloseFacade {
         // 2. 계좌 잔액 0, 상태 CLS
         AccountUpdate accountUpdate = accountService.updateByCloseTrade(basicAccountClose, currentData);
         // 2-1. 행원 마감 출금액 변경
-        businessDayCloseService.updateTradeAmount(accountClose.getAmount(), currentData, accountClose.getTradeType());
+        //businessDayCloseService.updateTradeAmount(accountClose.getAmount(), currentData, accountClose.getTradeType());
 
         // 3. 이자내역 지급 처리
         try {
@@ -285,34 +254,4 @@ public class AccountCloseFacade {
                 .build();
     }
 
-    /**
-     * @Description
-     * 정기적금 계좌 해지 정보/ (예금 제외)
-     *
-     *
-     */
-    public CloseSavingsAccountTotal getCloseSavingsAccount(String accountId){
-
-        // 1. 정기적금 해지 정보 총 출력
-        /*
-          1. 계좌정보
-          2. 자동이체 정보
-          3. 적금 상품 정보
-          4. 이율 계산 정보 - 함수사용
-        */
-
-
-        CloseSavingsAccountTotal csat =  accountMapper.findCloseSavingsAccountDetail(accountId);
-        // csat가 null인지 확인
-        if (csat == null) {
-            // 적절한 예외 처리 또는 기본값 설정
-            throw new IllegalArgumentException("계좌 ID에 대한 정보를 찾을 수 없습니다: " + accountId);
-        }
-
-        // 이체 횟수조회(거래내역조회)
-        //csat.setAutoTransferCount();
-
-        // 현재날짜
-        return csat;
-    }
 }

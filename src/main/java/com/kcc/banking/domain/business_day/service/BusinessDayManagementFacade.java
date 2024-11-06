@@ -150,25 +150,6 @@ public class BusinessDayManagementFacade {
     }
 
     /**
-     * @Discription 
-     * - 복리 이자내역 테스트 코드
-     * @param businessDateAndBranchId
-     */
-    public void closeByManagerForTest(BusinessDateAndBranchId businessDateAndBranchId) {
-        // 지점 시재금 0원 저장
-        VaultCashRequest build = VaultCashRequest.builder().vaultCash(BigDecimal.ZERO).build();
-        // 지점 마감
-        businessDayCloseService.closeBranchBusinessDay(businessDateAndBranchId, build);
-
-        // 영업일 상태 변경
-        businessDayService.businessDayStatusToClosed(businessDateAndBranchId.getBusinessDate());
-
-        // 보통예금, 자율적금 단복리 이자 내역 추가 테스트
-        String tradeNumber = businessDayCloseService.getClosingTradeNumber(businessDateAndBranchId);
-        interestService.createInterest(tradeNumber, businessDateAndBranchId);
-    }
-
-    /**
      * @Description
      * 1. 현재 영업일의 마감 데이터(행원, 지점) 삭제
      * 2. 이전 영업일의 마감 데이터 원복 -> 마감 총액 0, 마감 상태 OPEN
