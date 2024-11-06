@@ -9,6 +9,8 @@
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/savings-account-close.css"/>
+
 
 </head>
 
@@ -119,42 +121,93 @@
     </div>
 
     <div class="fixed-account-area" style="display: none">
-        <h3>자동이체 정보</h3>
-        <table class="common-table">
-            <thead>
-            <tr>
-                <th>자동이체 출금 계좌</th>
-                <th>원금</th>
-                <th>자동이체 총 횟수</th>
-                <th>자동이체 시작일</th>
-                <th>자동이체 종료일</th>
-            </tr>
-            </thead>
-            <tbody id="savings-account-auto-transfer">
-            <tr class="saving-account-close-empty-message">
-                <td colspan="9" style="text-align: center; color: gray; border-bottom: none; height: 100px">
-                    해지할 계좌를 선택해 주십시오
-                </td>
-            </tr>
-            </tbody>
-        </table>
 
-        <h3>예금 예상 금액 정보</h3>
+        <div id="savings-fixed-detail-info">
+            <div id="savings-table1">
+                <h3>자동이체 정보</h3>
+                <table class="common-table">
+                    <thead>
+                    <tr>
+                        <th class="th-gray-style"  rowspan="1" colspan="2">계좌정보</th>
+
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">자동이체 출금 계좌</th>
+                        <td id="saving-account-result-account-number" rowspan="1"></td>
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">원금</th>
+                        <td  id="saving-account-result-amount" rowspan="1"></td>
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">자동이체 총 횟수</th>
+                        <td id="saving-account-result-total-payCount" rowspan="1"></td>
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">자동이체 시작일</th>
+                        <td  id="saving-account-result-start-date" rowspan="1"></td>
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">자동이체 종료일</th>
+                        <td  id="saving-account-result-end-date" rowspan="1"></td>
+                    </tr>
+
+                    </thead>
+
+                </table>
+
+
+            </div>
+
+            <div id="savings-table2">
+                <h3>적금 상품 정보</h3>
+                <table class="common-table">
+                    <thead>
+                    <tr>
+                        <th class="th-gray-style"  rowspan="1" colspan="2">상품정보</th>
+
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">이자 계산 방식</th>
+                        <td id="saving-account-result-interest-type" rowspan="1"></td>
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">실제 적용 이율</th>
+                        <td  id="saving-account-result-total-interest" rowspan="1"></td>
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">이율</th>
+                        <td id="saving-account-result-product-interest" rowspan="1"></td>
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">우대 이율</th>
+                        <td  id="saving-account-result-account-interest" rowspan="1"></td>
+                    </tr>
+                    <tr>
+                        <th class="th-gray-style" rowspan="1">세율</th>
+                        <td  id="saving-account-result-tax-interest" rowspan="1"></td>
+                    </tr>
+
+                    </thead>
+
+                </table>
+            </div>
+
+        </div>
+
+        <h3> 최종 해지 금액 정보 </h3>
         <table class="common-table">
             <thead>
             <tr>
                 <th>이자 계산 방식</th>
                 <th>이율</th>
-                <th>우대 이율</th>
-                <th>실제 적용 이율</th>
                 <th>세율</th>
-                <th>이자 (세전)</th>
                 <th>이자 (세후)</th>
                 <th>잔액</th>
                 <th>지급 총 금액</th>
             </tr>
             </thead>
-            <tbody id="savings-account-total-cash">
+            <tbody id="savings-fixed-account-result">
             <tr class="saving-account-close-empty-message">
                 <td colspan="9" style="text-align: center; color: gray; border-bottom: none; height: 100px">
                     해지할 계좌를 선택해 주십시오
@@ -171,9 +224,9 @@
             <tbody>
             <tr>
                 <th>개설일</th>
-                <td ><input id="flex-open-date-td" type="date" disabled/></td>
+                <td><input id="flex-open-date-td" type="date" disabled/></td>
                 <th>만기일</th>
-                <td ><input id="flex-expired-date-td" type="date" disabled></td>
+                <td><input id="flex-expired-date-td" type="date" disabled></td>
             </tr>
             <tr>
                 <th>해지 신청일</th>
@@ -206,9 +259,9 @@
             </tr>
             <tr>
                 <th>계좌 잔액</th>
-                <td><input id="flex-balance" type="text" disabled /> 원</td>
+                <td><input id="flex-balance" type="text" disabled/> 원</td>
                 <th>지급 총 금액</th>
-                <td><input id="flex-total-amount" type="text" disabled /> 원</td>
+                <td><input id="flex-total-amount" type="text" disabled/> 원</td>
             </tr>
             </tbody>
         </table>

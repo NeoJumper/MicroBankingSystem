@@ -3,6 +3,7 @@ package com.kcc.banking.domain.trade.controller;
 import com.beust.jcommander.Parameter;
 import com.kcc.banking.domain.account.dto.request.StatusWithTrade;
 import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
+import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferDetail;
 import com.kcc.banking.domain.bulk_transfer.dto.response.BulkTransferSearchResult;
 import com.kcc.banking.domain.interest.dto.request.AccountIdWithExpireDate;

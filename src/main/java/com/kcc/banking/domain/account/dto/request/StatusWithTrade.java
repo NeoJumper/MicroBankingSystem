@@ -16,6 +16,7 @@ public class StatusWithTrade {
     private String tradeType;
     private String closeType;
 
+
     @Builder
     public StatusWithTrade(String accId, BigDecimal amount, String status, String description, String tradeType, String closeType) {
         this.accId = accId;

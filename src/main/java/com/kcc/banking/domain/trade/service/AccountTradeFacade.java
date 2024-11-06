@@ -842,40 +842,19 @@ public class AccountTradeFacade {
    *  조건 :
    *      현재 영업일 = 예약일
    *      & 상태 = WAIT
-   *      & 예약 시간대 -> 현재 실행 시간에
+   *      & 예약 시간대
+   *         ->  start time > 현재 실행 시간 > end time
    *  실행 해야 하는 전체 예약이체 정보 리스트 가져오기
 
    * */
 
 
-    // 실패한 거래 + 실행할 거래 조회 기능 0
-   //@Scheduled(fixedRate = 10000)
-    public void failScheduleReserveTransfers() {
-        // 검색 조건 설정
-        SearchReserve searchFail = new SearchReserve();
-        searchFail.setStatus("FAIL");
-        searchFail.setTransferType("AUTO");
+    // 오늘 실행할 거래 조회 기능 0
+   @Scheduled(fixedRate = 10000)
+    public void todayScheduleReserveTransfers() {
 
         SearchReserve searchWait = new SearchReserve();
         searchWait.setStatus("WAIT");
-
-        // 실패한 이체 목록 조회
-//        List<TransferTradeCreate> failTransfers = reserveTransferService.getPendingTransfers(searchFail);
-//        System.out.println("Fail Transfers: " + failTransfers); // 실패한 이체 로그
-//        for (TransferTradeCreate transfer : failTransfers) {
-//            System.out.println("Failed Transfer ID: " + transfer.getReserveTransferId());
-//            System.out.println("Account ID: " + transfer.getAccId());
-//            System.out.println("Target Account ID: " + transfer.getTargetAccId());
-//            System.out.println("Transfer StartTime: " + transfer.getTransferStartTime());
-//            System.out.println("Transfer MissedCount: " + transfer.getMissedCount());
-//
-//            System.out.println("---------------------------------");
-//        }
-       // 실패한 자동이체 처리
-//        if (!failTransfers.isEmpty()) {
-//            processReserveTransfer(failTransfers);
-//        }
-
 
         // 대기 중인 예약 이체 목록 조회
         List<TransferTradeCreate> waitTransfers = reserveTransferService.getPendingTransfers(searchWait);
@@ -893,10 +872,21 @@ public class AccountTradeFacade {
 
     /**
      * @Description
-     * - 스케줄러가 돌았을 때 처리해야하는 작업내역을 해당 메서드로 받아온다 0
-     * - 성공했을 때는 예약 이체의 상태를 SUCCESS로 변경한다. 0
-     * - 실패했을 때는 예약 이체의 상태는 FAIL로 변경하고 실패거래를 생성한다.
-     * - 자동이체는 실패했을 때 시도 횟수를 카운팅하여 새로운 예약이체를 생성한다.
+     * - 스케줄러가 돌았을 때 처리해야하는 작업내역을 해당 메서드로 받아온다 0 / todayScheduleReserveTransfers()
+     * - 성공했을 때
+     *    1. 예약 이체의 상태를 SUCCESS로 변경한다. 0
+     *    2. 거래내역에 예약이체 내역을 쌓는다. 0
+     * - 실패했을 때는
+     *    1. 예약 이체의 상태는 FAIL로 변경한다.0
+     *    2. type이 자동이체이면 예약이체 생성로직 시작한다.
+     *      (transferType = AUTO)
+     *    3. 미납 횟수조회 후 횟수에 따른 분기처리한다.
+     *    - 3이하 (!missedCount > 3)
+     *      1. missCount +1 변경한다. 0
+     *      2. 새로운 예약 이체를 거래내역를 생성한다. 0
+     *    - 3초과 (missedCount > 3)
+     *      3. 최대 미납 횟수 초과 시 자동이체 상태를 STOP / missCount +1 X
+     *      4. 메일 전송 X
      */
     public void processReserveTransfer(List<TransferTradeCreate> transferTradeCreateList) {
 
@@ -920,33 +910,32 @@ public class AccountTradeFacade {
 
                 // 실패 상태로 변경 + ( missedCount +1)
                 reserveTransferService.updateTransferStatus(reserveId, "FAIL", transferTradeCreate.getFailureReason());
-                // 실패했을 때 예약 거래내역 생성
+                
+                // 실패했을 때 자동이체 로직 시작 
+                //   1. 미납 횟수 조회
+                //   2. 미납 횟수에따른 분기처리
+                //   -> 미납 횟수 카운팅 및 새로운 예약 이체 생성 로직
                 if(transferTradeCreate.getTransferType().equals("AUTO")){
                     System.out.println("예약이체 실패시 로직 시작 >>>>>>>>"+transferTradeCreate.getMissedCount());
 
-                    // 미납 횟수 카운팅 및 새로운 예약 이체 생성 로직
+                    // 미납 횟수 조회
                     Long currentMissedCount = transferTradeCreate.getMissedCount();
 
                      //미납이 3 초과이면
                     if(currentMissedCount > 3){
                         System.out.println("자동이체 중지 stop 로직 >>>>> ");
-                        // update 2개 auto Count / reserve status
-                        // 예약이체 FAIL 변경
-                        reserveTransferService.updateTransferStatus(reserveId, "FAIL", "Max missed count exceeded");
 
                         // 최대 미납 횟수 초과 시 자동이체 상태를 STOP / missCount +1
-                        System.out.println("Transfer STOPPED for Reserve ID: " + reserveId + " due to max missed count.");
+                        System.out.println("Transfer STOPPED 로직 확인 >>>>>");
+                        reserveTransferService.updateTransferStatus(reserveId, "STOP", "자동이체 미납 횟수 초과");
+                        reserveTransferService.countMissedTransferOfAutoTransfer(reserveId);
+
+                        System.out.println(" sns or 메일 전송 >>>>> ");
 
                     } else {
                         System.out.println("예약이체 실패 로직 진행 >>>");
-
-                        // 예약이체 FAIL 변경
-                        reserveTransferService.updateTransferStatus(reserveId, "FAIL", "돈 부족");
-
-                        //------------------- 실패시 예약이체 끝   ---------------------
-
-                        // ------------ 실패시 자동이체 로직 ------------------------
-                        // 다음 예약일 = +1달 / missCount = +1
+                        
+                        // missCount = +1
                         System.out.println("예약이체 update missCount +1 >>>");
                         reserveTransferService.countMissedTransferOfAutoTransfer(reserveId);
 
