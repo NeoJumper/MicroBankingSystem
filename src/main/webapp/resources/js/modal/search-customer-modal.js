@@ -7,15 +7,16 @@ $(document).ready(function () {
 
 });
 
-// ------------------------------- START customerSearchModalEvent()------------------------------------------
-// 모달 내 고객 검색 버튼 클릭시 함수
+
 function customerSearchInputEnterEvent() {
 
-    $('#search-modal-search-btn').keypress(function(event) {
+    $('#search-modal-input').keydown(function(event) {
 
         if (event.which === 13) {
-            const searchOption = $('#search-modal-select').val(); // 드롭다운에서 선택된 값
-            const searchValue = $('#search-modal-input').val(); // 입력 필드의 값 가져오기
+            const searchOption = $('#search-modal-select').val();
+            console.log(searchOption);
+            const searchValue = $('#search-modal-input').val();
+            console.log(searchValue);
             searchCustomer(searchOption, searchValue);
         }
     });
