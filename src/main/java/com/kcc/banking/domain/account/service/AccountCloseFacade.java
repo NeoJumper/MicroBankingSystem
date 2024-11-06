@@ -13,6 +13,7 @@ import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.interest.dto.response.InterestDetails;
 import com.kcc.banking.domain.interest.service.InterestService;
+import com.kcc.banking.domain.reserve_transfer.service.ReserveTransferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ public class AccountCloseFacade {
 
     private final AutoTransferService autoTransferService;
     private final AccountMapper accountMapper;
+    private final ReserveTransferService reserveTransferService;
 
 
     /**
@@ -227,6 +229,130 @@ public class AccountCloseFacade {
     }
 
 
+    // 만기 후 해지 / 중도 해지 / 만기 후 해지 총 이율 구하는 함수
+    public CloseSavingsAccountTotal CalculateIntsertOtCloseFixedSavingsAccount(String accountId){
+
+        CloseSavingsAccountTotal closeSavingsAccountTotal = accountMapper.findCloseSavingsAccountDetail(accountId);
+
+        // 해지 종류 판별
+        String businessDateStr = commonService.getCurrentBusinessDay().getBusinessDate();
+        String openDateStr = closeSavingsAccountTotal.getOpenDate();
+        String periodStr = closeSavingsAccountTotal.getProductPeriod();
+
+        // DateTimeFormatter 정의
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        // String을 LocalDate, LocalDateTime으로 변환
+        LocalDate businessDate = LocalDateTime.parse(businessDateStr, dateTimeFormatter).toLocalDate();
+        LocalDateTime openDate = LocalDateTime.parse(openDateStr, dateTimeFormatter);
+        // period 값을 개월로 더하기
+        int periodMonths = Integer.parseInt(periodStr);
+        LocalDateTime maturityDate = openDate.plusMonths(periodMonths);  // 만기일 계산
+
+        // 만기일 계산
+        LocalDate maturityDateOnly = maturityDate.toLocalDate();  // 만기일을 LocalDate로 변환
+        // 만기일 설정
+        if(closeSavingsAccountTotal.getExpectedExpireDate() == null){
+            closeSavingsAccountTotal.setExpectedExpireDate(maturityDateOnly.toString());
+        }
+
+        // 경과 일수 및 계약 기간 계산
+        long diffDays = ChronoUnit.DAYS.between(openDate.toLocalDate(), businessDate);
+        long contractDays = ChronoUnit.DAYS.between(openDate.toLocalDate(), maturityDateOnly);
+
+        // 최종 이율 계산
+        BigDecimal finalInterestRate;
+        boolean isEarlyTermination = false;
+        boolean isMaturityTermination = false;
+
+        // 기본 이율 (우대금리 포함)
+        BigDecimal baseInterestRate = closeSavingsAccountTotal.getProductInterestRate().add(closeSavingsAccountTotal.getAccountInterestRate()).divide(BigDecimal.valueOf(100), 4, RoundingMode.DOWN);  // 소수로 변환
+
+        // 조건 비교
+        if (businessDate.isBefore(maturityDateOnly)) {
+            System.out.println("중도 해지");
+            isEarlyTermination = true;
+
+            // 중도 해지에 따른 이율 계산
+            if (diffDays < 30) {
+                finalInterestRate = BigDecimal.valueOf(0.001);  // 연 0.1%
+            } else if (diffDays < 90) {
+                finalInterestRate = BigDecimal.valueOf(0.0015);  // 연 0.15%
+            } else if (diffDays < 180) {
+                finalInterestRate = BigDecimal.valueOf(0.002);  // 연 0.2%
+            } else if (diffDays < 270) {
+                BigDecimal calculatedRate = BigDecimal.valueOf(0.6)
+                        .multiply(BigDecimal.valueOf(diffDays))
+                        .divide(BigDecimal.valueOf(contractDays), 4, RoundingMode.DOWN)
+                        .multiply(baseInterestRate);
+                finalInterestRate = calculatedRate.max(BigDecimal.valueOf(0.002));
+            } else if (diffDays < 330) {
+                BigDecimal calculatedRate = BigDecimal.valueOf(0.7)
+                        .multiply(BigDecimal.valueOf(diffDays))
+                        .divide(BigDecimal.valueOf(contractDays), 4, RoundingMode.DOWN)
+                        .multiply(baseInterestRate);
+                finalInterestRate = calculatedRate.max(BigDecimal.valueOf(0.002));
+            } else {
+                BigDecimal calculatedRate = BigDecimal.valueOf(0.9)
+                        .multiply(BigDecimal.valueOf(diffDays))
+                        .divide(BigDecimal.valueOf(contractDays), 4, RoundingMode.DOWN)
+                        .multiply(baseInterestRate);
+                finalInterestRate = calculatedRate.max(BigDecimal.valueOf(0.002));
+            }
+        } else if (businessDate.isEqual(maturityDateOnly)) {
+            System.out.println("만기 해지");
+            finalInterestRate = baseInterestRate;
+            isMaturityTermination = true;
+        } else {
+            System.out.println("만기 후 해지");
+            // 만기 후 해지 이율 계산
+            long diffDaysAfterMaturity = ChronoUnit.DAYS.between(maturityDateOnly, businessDate);
+
+            if (diffDaysAfterMaturity <= 30) {
+                finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.5)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/2
+            } else {
+                finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.25)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/4
+            }
+        }
+
+        // 최종 적용 이율
+        closeSavingsAccountTotal.setFinalInterestRate(finalInterestRate);
+
+
+        if(isEarlyTermination){
+            // 중도 해지 일때
+            closeSavingsAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.EARLY_TERMINATION);
+
+        }else if(isMaturityTermination){
+            // 만기 일때
+            closeSavingsAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.MATURITY_TERMINATION);
+
+        }else{
+            // 만기 후 해지 일때
+            closeSavingsAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.POST_MATURITY_TERMINATION);
+
+        }
+
+
+        return CloseSavingsAccountTotal.of(closeSavingsAccountTotal);
+    }
+
+    /**
+     * 정기적금 이자 계산 (단리 방식)
+     * @param principal 원금 (정기적금의 초기 금액)
+     * @param finalInterestRate 최종 이자율 (연 이자율)
+     * @param months 정기적금 기간 (개월)
+     * @return 이자 금액
+     */
+    public BigDecimal calculateInterest(BigDecimal principal, BigDecimal finalInterestRate, int months) {
+        // 월별 이자율 계산 (연 이자율을 12개월로 나누기)
+        BigDecimal monthlyInterestRate = finalInterestRate.divide(BigDecimal.valueOf(12), 6, RoundingMode.HALF_UP);
+
+        // 단리 계산: 원금 * 월별 이자율 * 기간(개월 수)
+        BigDecimal interest = principal.multiply(monthlyInterestRate).multiply(BigDecimal.valueOf(months));
+
+        return interest;
+    }
 
     /**
      * @Description
@@ -244,20 +370,24 @@ public class AccountCloseFacade {
           4. 이율 계산 정보 - 함수사용
         */
 
-
+        //1. 계좌정보 + 2. 자동이체 정보 + 3. 적금 상품 정보  호출
         CloseSavingsAccountTotal csat =  accountMapper.findCloseSavingsAccountDetail(accountId);
+        System.out.println("계좌정보 + 2. 자동이체 정보 + 3. 적금 상품 정보  호출 >>>>"+csat.toString());
+
         // csat가 null인지 확인
         if (csat == null) {
             // 적절한 예외 처리 또는 기본값 설정
             throw new IllegalArgumentException("계좌 ID에 대한 정보를 찾을 수 없습니다: " + accountId);
         }
+        String autoTransferId = csat.getAutoTransferId();
+        //이체 횟수조회(거래내역조회)
+        csat.setAutoTransferCount(reserveTransferService.countAutoReserveSuccess(autoTransferId));
 
-        // 이체 횟수조회(거래내역조회)
-        //csat.setAutoTransferCount();
-
-        // 현재날짜
+        // 정보 담김.
         return csat;
+
     }
+
 
 
 }

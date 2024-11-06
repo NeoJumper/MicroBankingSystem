@@ -797,6 +797,7 @@ public class AccountTradeFacade {
             reserveTransfer.setMissedCount(autoTransfer.getMissedCount());
 
 
+
             // 필요시 추가 필드 설정
 
             System.out.println("Created ReserveTransfer List: " +
@@ -850,7 +851,7 @@ public class AccountTradeFacade {
 
 
     // 오늘 실행할 거래 조회 기능 0
-   @Scheduled(fixedRate = 10000)
+  // @Scheduled(fixedRate = 10000)
     public void todayScheduleReserveTransfers() {
 
         SearchReserve searchWait = new SearchReserve();
@@ -858,7 +859,7 @@ public class AccountTradeFacade {
 
         // 대기 중인 예약 이체 목록 조회
         List<TransferTradeCreate> waitTransfers = reserveTransferService.getPendingTransfers(searchWait);
-        System.out.println("Wait Transfers: " + waitTransfers); // 대기 중인 이체 로그
+        System.out.println("Wait reserve Transfers: " + waitTransfers); // 대기 중인 이체 로그
         for (TransferTradeCreate transfer : waitTransfers) {
             System.out.println("대기 이체 정보>>>>>>>>>>>>>>>>"+transfer.toString());
         }
@@ -897,19 +898,19 @@ public class AccountTradeFacade {
                 AutoProcessTransfer(transferTradeCreate); // 이체 거래 시도
 
                 // 성공 시 예약 이체의 상태를 SUCCESS로 변경
-                String reserveId = transferTradeCreate.getReserveTransferId();
-                reserveTransferService.updateTransferStatus(reserveId, "SUCCESS", null);
-                System.out.println("Transfer successful for Reserve ID: " + reserveId);
+                String autoId = transferTradeCreate.getAutoTransferId();
+                reserveTransferService.updateReserveTransferStatus(autoId, "SUCCESS", null);
+                System.out.println("Transfer successful for Reserve ID: " + autoId);
 
             } catch (CustomException e) {
                 System.out.println("거래실패내역 >>>>>>>>>>>>>");
 
                 // 예약이체 실패 상태 변경
-                String reserveId = transferTradeCreate.getReserveTransferId();
+                String autoId = transferTradeCreate.getAutoTransferId();
                 transferTradeCreate.setFailureReason(e.getErrorCode().getMessage());
 
                 // 실패 상태로 변경 + ( missedCount +1)
-                reserveTransferService.updateTransferStatus(reserveId, "FAIL", transferTradeCreate.getFailureReason());
+                reserveTransferService.updateReserveTransferStatus(autoId, "FAIL", transferTradeCreate.getFailureReason());
                 
                 // 실패했을 때 자동이체 로직 시작 
                 //   1. 미납 횟수 조회
@@ -927,8 +928,8 @@ public class AccountTradeFacade {
 
                         // 최대 미납 횟수 초과 시 자동이체 상태를 STOP / missCount +1
                         System.out.println("Transfer STOPPED 로직 확인 >>>>>");
-                        reserveTransferService.updateTransferStatus(reserveId, "STOP", "자동이체 미납 횟수 초과");
-                        reserveTransferService.countMissedTransferOfAutoTransfer(reserveId);
+                        reserveTransferService.updateReserveTransferStatus(autoId, "STOP", "자동이체 미납 횟수 초과");
+                        reserveTransferService.updateMissedTransferOfAutoTransfer(autoId);
 
                         System.out.println(" sns or 메일 전송 >>>>> ");
 
@@ -937,11 +938,11 @@ public class AccountTradeFacade {
                         
                         // missCount = +1
                         System.out.println("예약이체 update missCount +1 >>>");
-                        reserveTransferService.countMissedTransferOfAutoTransfer(reserveId);
+                        reserveTransferService.updateMissedTransferOfAutoTransfer(autoId);
 
                         // 새로운 예약이체 생성 (한달 후)
                         //1. 자동이체 예약일 구해오기
-                        Timestamp nextReserveDate = reserveTransferService.findAutoReserveDate(reserveId);
+                        Timestamp nextReserveDate = reserveTransferService.findAutoReserveDate(autoId);
 
 
                         //2. 새로운 예약이체 쌓기
@@ -1063,7 +1064,7 @@ public class AccountTradeFacade {
         transferTradeCreate.setTargetAccId(withdrawalAccount.getId());
 
         // 입금 거래내역 추가
-        TransferDetail depositTrade = tradeService.createTransferTrade(transferTradeCreate,depositAccount.getCustomerName() ,currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()), tradeNumber, "DEPOSIT");
+        TransferDetail depositTrade = tradeService.createTransferTrade(transferTradeCreate,depositAccount.getCustomerName() ,currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()), tradeNumber, "RESERVE");
         // 입금 계좌 잔액 업데이트
         accountService.updateByTransferTrade(depositAccount, currentData, depositAccountBalance.add(transferTradeCreate.getTransferAmount()));
 
