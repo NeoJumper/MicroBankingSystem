@@ -160,6 +160,7 @@ public class AccountRestController {
         CloseSavingsAccountTotal closeSavingsAccountInfo = accountCloseFacade.getCloseSavingsAccount(accountId);
         return ResponseEntity.ok(closeSavingsAccountInfo);
     }
+
     
     //------------------------------적금 계좌 개설-------------------------------------------
     /**
@@ -180,9 +181,9 @@ public class AccountRestController {
      * @return
      */
     @PostMapping("/api/employee/flexible-savings-account-close")
-    public ResponseEntity<?> closeFlexibleSavingsAccount(@RequestBody AccountClose accountClose){
-        accountCloseFacade.closeFlexibleSavingsAccount(accountClose);
-        return ResponseEntity.ok(null);
+    public ResponseEntity<?> closeFlexibleSavingsAccount(@RequestBody FlexibleSavingsAccountClose accountClose){
+        AccountCloseResult accountCloseResult = accountCloseFacade.closeFlexibleSavingsAccount(accountClose);
+        return ResponseEntity.ok(accountCloseResult);
     }
 
 }

@@ -250,6 +250,7 @@
             <input class="basic-btn" type="button" value="예금주 확인" disabled>
             <input class="basic-btn" type="button" value="초기화" style="display: none">
             <input class="basic-btn" type="button" value="이체실행" disabled style="display: none">
+            <input class="basic-btn" type="button" value="OTP 인증" id="otp-authentication-modal-btn" disabled style="display: none;">
         </section>
     </container>
 </div>
@@ -313,7 +314,7 @@
 </div>
 <!-- 개별추가 모달 -->
 <div class="modal fade" id="uploadIndividualEmployeeModal" tabindex="-1">
-    <div class="modal-dialog modal-lg" style="margin-top:200px;">
+    <div class="modal-dialog modal-md" style="margin-top:200px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title fs-5 fw-bold">직접 입력으로 직원을 추가해보세요</h2>
@@ -322,6 +323,7 @@
             <div class="modal-body d-flex flex-column">
 
                 <div class="modal-body">
+                    <h5 style="font-weight: bold">입금 정보</h5>
                     <table class="common-table" style="margin-bottom: 0px">
                         <tr>
                             <th>입금계좌번호</th>
@@ -411,6 +413,7 @@
 
 <%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>
+<%@ include file="/resources/components/modal/otp-input-modal.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/bulk-transfer.js"></script>
 </body>

@@ -124,11 +124,16 @@
         WHERE id = #{autoTransferId}
     </select>
 
+    <!-- 자동이체 예약이체 참고하시오 -->
     <select id="countAutoReserveSuccess" >
         select count(*)
         from reserve_transfer
         where status = 'SUCCESS'
         and auto_transfer_id = #{autoTransferId}
+    </select>
+
+    <select id="">
+
     </select>
 
 

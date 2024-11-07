@@ -9,14 +9,19 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 public class AccountClose {
-
-    private String accountId;
+    private String accId;
+    // = totalAmount, 총 지급액
     private BigDecimal amount;
+    private String status;
+    private String description;
+    private String tradeType;
 
     @Builder
-    public AccountClose(String accountId, BigDecimal amount) {
-        this.accountId = accountId;
+    public AccountClose(String accId, BigDecimal amount, String status, String description, String tradeType) {
+        this.accId = accId;
         this.amount = amount;
+        this.status = status;
+        this.description = description;
+        this.tradeType = tradeType;
     }
-
 }

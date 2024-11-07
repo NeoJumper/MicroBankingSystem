@@ -98,10 +98,13 @@ public class CloseSavingsFlexibleAccountTotal {
 
         // 이자 합 : 세전
         closeSavingsFlexibleAccountTotal.setTotalInterestSum(totalInterestSum);
-        // 이자 합 : 세후
-        closeSavingsFlexibleAccountTotal.setTotalInterestSumAfterTax(totalInterestSum
-                .multiply(closeSavingsFlexibleAccountTotal.getTaxRate())
-                .setScale(4, RoundingMode.DOWN));
+
+        // 세후 이자 합 계산
+        // ex) 1 - 0.154
+        closeSavingsFlexibleAccountTotal.setTotalInterestSumAfterTax(
+                totalInterestSum.multiply(BigDecimal.ONE.subtract(closeSavingsFlexibleAccountTotal.getTaxRate()))
+                        .setScale(4, RoundingMode.DOWN)
+        );
         // 이자 내역 저장
         closeSavingsFlexibleAccountTotal.setInterestDetailsList(interestDetailsList);
 

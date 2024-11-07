@@ -166,7 +166,7 @@
             auto.auto_transfer_end_date as auto_transfer_end_date,
             auto.auto_transfer_period as auto_transfer_period,
             auto.create_date as create_date,
-            auto.target_acc_id as target_acc_id,
+            auto.acc_id as autoAccId,
             auto.create_date as create_date,
             auto.id as auto_transfer_id
 
@@ -175,6 +175,16 @@
                         JOIN Auto_transfer auto on a.id = auto.target_acc_id
         WHERE a.id  = #{accountId}
     </select>
+
+    <select id="findFixedDetailOfSavingsAccount" resultType="CloseFixedAccountDetail">
+        SELECT
+            amount,                         -- 각 거래 금액
+            COUNT(*) AS total_transfer_count -- 각 금액의 거래 횟수
+        FROM trade
+        WHERE acc_id = #{accId}
+        GROUP BY amount
+    </select>
+
 
 
     <resultMap id="AccountOpenModalResultMap" type="AccountOpenResultOfModal">

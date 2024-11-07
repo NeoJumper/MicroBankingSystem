@@ -18,7 +18,7 @@ import java.util.List;
 public class CloseSavingsAccountTotal {
 
     /*---------- 초기 입력될 정보---------- */
-    private String accountId; // 계좌번호 or 출금계좌
+    private String accountId; // 계좌번호 = 적금 입금 계좌
     private String accountStatus; // 계좌상태 OPN /CLS
     private String customerName; // 고객명
     private long customerId; // 고객ID
@@ -29,7 +29,6 @@ public class CloseSavingsAccountTotal {
     private BigDecimal accountBalance; //잔액
     private String openDate; // 적금 가입 날짜 : startDate-> openDate로 변경
     private String startDate;
-    private BigDecimal balance;
 
     // 예상 만기일
     private String expectedExpireDate;
@@ -46,7 +45,7 @@ public class CloseSavingsAccountTotal {
     private String autoTransferEndDate;
     private String autoTransferPeriod; // 기간  1,2,3 ~ 12 (달)
     private String createDate;
-    private String targetAccId; // 입금 계좌
+    private String autoAccId; // 출금 계좌
     private String autoTransferId;
 
     // 자동이체 횟수
@@ -54,14 +53,14 @@ public class CloseSavingsAccountTotal {
 
 
     /*---------- 이율 계산 정보---------- */
-    // 총 이자액
+    // 해지 시 최종 이율
+    private BigDecimal finalInterestRate;
+    // 세후 이율
+    private BigDecimal totalInterestAfterTax;
+    // 총 이자액 (잔액 * 이율)
     private BigDecimal interestCashSum;
     // 총 이자액 + 잔액 = 지급액
     private BigDecimal totalBalanceSum;
-    // 해지 시 최종 이율
-    private BigDecimal finalInterestRate;
-    // 해지 시 최종 이자 금액 합산
-    private BigDecimal totalInterestSum;
     // 해지 시 최종 이자*세율 계산 금액
     private BigDecimal totalInterestSumAfterTax;
     // 해지 시 최종 지급액
@@ -92,17 +91,16 @@ public class CloseSavingsAccountTotal {
     }
 
     @Builder
-    public CloseSavingsAccountTotal(String accountId, String accountStatus, String customerName, long customerId, String productName, BigDecimal accountInterestRate, BigDecimal accountBalance, String openDate, String startDate, BigDecimal balance, String expectedExpireDate, BigDecimal productInterestRate, BigDecimal productTaxRate, String productType, String productPeriod, BigDecimal fixedAmount, String autoTransferStartDate, String autoTransferEndDate, String autoTransferPeriod, String createDate, String targetAccId, String autoTransferId, String autoTransferCount, BigDecimal interestCashSum, BigDecimal totalBalanceSum, BigDecimal finalInterestRate, BigDecimal totalInterestSum, BigDecimal totalInterestSumAfterTax, BigDecimal totalAmount, CloseSavingsFlexibleAccountTotal.CloseType closeType) {
+    public CloseSavingsAccountTotal(BigDecimal totalInterestAfterTax,String accountId, String accountStatus, String customerName, long customerId, String productName, BigDecimal accountInterestRate, BigDecimal accountBalance, String openDate, String startDate, String expectedExpireDate, BigDecimal productInterestRate, BigDecimal productTaxRate, String productType, String productPeriod, BigDecimal fixedAmount, String autoTransferStartDate, String autoTransferEndDate, String autoTransferPeriod, String createDate, String autoAccId, String autoTransferId, String autoTransferCount, BigDecimal interestCashSum, BigDecimal totalBalanceSum, BigDecimal finalInterestRate, BigDecimal totalInterestSum, BigDecimal totalInterestSumAfterTax, BigDecimal totalAmount, CloseSavingsFlexibleAccountTotal.CloseType closeType) {
         this.accountId = accountId;
         this.accountStatus = accountStatus;
         this.customerName = customerName;
         this.customerId = customerId;
         this.productName = productName;
         this.accountInterestRate = accountInterestRate;
-        this.accountBalance = accountBalance;
         this.openDate = openDate;
         this.startDate = startDate;
-        this.balance = balance;
+        this.accountBalance = accountBalance;
         this.expectedExpireDate = expectedExpireDate;
         this.productInterestRate = productInterestRate;
         this.productTaxRate = productTaxRate;
@@ -113,54 +111,36 @@ public class CloseSavingsAccountTotal {
         this.autoTransferEndDate = autoTransferEndDate;
         this.autoTransferPeriod = autoTransferPeriod;
         this.createDate = createDate;
-        this.targetAccId = targetAccId;
+        this.autoAccId = autoAccId;
         this.autoTransferId = autoTransferId;
         this.autoTransferCount = autoTransferCount;
         this.interestCashSum = interestCashSum;
         this.totalBalanceSum = totalBalanceSum;
         this.finalInterestRate = finalInterestRate;
-        this.totalInterestSum = totalInterestSum;
         this.totalInterestSumAfterTax = totalInterestSumAfterTax;
         this.totalAmount = totalAmount;
         this.closeType = closeType;
+        this.totalInterestAfterTax =totalInterestAfterTax;
     }
 
     // 이자 합 계산
     public static CloseSavingsAccountTotal of(CloseSavingsAccountTotal closeSavingsAccountTotal) {
+        BigDecimal interestCashSum = closeSavingsAccountTotal.getInterestCashSum();
 
-        BigDecimal finalInterestRate = BigDecimal.ZERO;
-
-        // 최총 이자율
-        closeSavingsAccountTotal.setFinalInterestRate(finalInterestRate);
-        // 총 이자 합 (세전)
-        closeSavingsAccountTotal
-                .setTotalInterestSum(
-                        (closeSavingsAccountTotal.getBalance())
-                                .multiply(finalInterestRate)
-                                .setScale(4, RoundingMode.DOWN)
-                );
-        // 잔액 + 이자
+        // 지급액 = 이자 + 잔액
         closeSavingsAccountTotal
                 .setTotalBalanceSum(
-                        (closeSavingsAccountTotal.interestCashSum)
-                        .add(closeSavingsAccountTotal.accountBalance)
+                        (interestCashSum)
+                        .add(closeSavingsAccountTotal.getAccountBalance())
                 );
 
-        // 세후 총 이자 합
-        closeSavingsAccountTotal
-                .setTotalInterestSumAfterTax(
-                        (closeSavingsAccountTotal.totalInterestSum)
-                        .multiply(closeSavingsAccountTotal.getProductTaxRate())
-                        .setScale(4, RoundingMode.DOWN)
-                );
-       
-       
-        // 최종 지급액 계산 : 10의 자리 버림
-        BigDecimal totalAmount = closeSavingsAccountTotal.getBalance()
-                .add(closeSavingsAccountTotal.getTotalInterestSumAfterTax())
-                .divide(new BigDecimal("10"), 0, RoundingMode.DOWN)
-                .multiply(new BigDecimal("10"));
-        closeSavingsAccountTotal.setTotalAmount(totalAmount);
+        // 세금 계산 (세후 이자 계산: 총 이자 - 세금)
+        BigDecimal tax = interestCashSum.multiply(closeSavingsAccountTotal.getProductTaxRate()); // 세금 = 총 이자 * 세율
+        BigDecimal totalInterestAfterTax = interestCashSum.subtract(tax); // 세후 이자
+
+        closeSavingsAccountTotal.setTotalInterestAfterTax(totalInterestAfterTax);
+        // 최종 지급액 = 원금 + 세후 이자
+        closeSavingsAccountTotal.setTotalAmount(closeSavingsAccountTotal.getAccountBalance().add(totalInterestAfterTax));
 
         return closeSavingsAccountTotal;
     }
@@ -178,7 +158,6 @@ public class CloseSavingsAccountTotal {
                 ", accountBalance=" + accountBalance +
                 ", openDate='" + openDate + '\'' +
                 ", startDate='" + startDate + '\'' +
-                ", balance=" + balance +
                 ", expectedExpireDate='" + expectedExpireDate + '\'' +
                 ", productInterestRate=" + productInterestRate +
                 ", productTaxRate=" + productTaxRate +
@@ -189,13 +168,12 @@ public class CloseSavingsAccountTotal {
                 ", autoTransferEndDate='" + autoTransferEndDate + '\'' +
                 ", autoTransferPeriod='" + autoTransferPeriod + '\'' +
                 ", createDate='" + createDate + '\'' +
-                ", targetAccId='" + targetAccId + '\'' +
+                ", autoAccId='" + autoAccId + '\'' +
                 ", autoTransferId='" + autoTransferId + '\'' +
                 ", autoTransferCount='" + autoTransferCount + '\'' +
+                ", finalInterestRate=" + finalInterestRate +
                 ", interestCashSum=" + interestCashSum +
                 ", totalBalanceSum=" + totalBalanceSum +
-                ", finalInterestRate=" + finalInterestRate +
-                ", totalInterestSum=" + totalInterestSum +
                 ", totalInterestSumAfterTax=" + totalInterestSumAfterTax +
                 ", totalAmount=" + totalAmount +
                 ", closeType=" + closeType +

@@ -4,15 +4,23 @@ package com.kcc.banking.domain.account.service;
 import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.AccountClose;
+import com.kcc.banking.domain.account.dto.request.AccountUpdate;
+import com.kcc.banking.domain.account.dto.request.FlexibleSavingsAccountClose;
+import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
+import com.kcc.banking.domain.account.dto.response.CloseFixedAccountDetail;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
+import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
+import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import com.kcc.banking.domain.interest.dto.response.InterestDetails;
 import com.kcc.banking.domain.interest.service.InterestService;
+import com.kcc.banking.domain.trade.dto.request.TradeCreate;
+import com.kcc.banking.domain.trade.service.TradeService;
 import com.kcc.banking.domain.reserve_transfer.service.ReserveTransferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +42,8 @@ public class AccountCloseFacade {
     private final AccountService accountService;
     private final CommonService commonService;
     private final InterestService interestService;
+    private final TradeService tradeService;
+    private final BusinessDayCloseService businessDayCloseService;
 
     private final AutoTransferService autoTransferService;
     private final AccountMapper accountMapper;
@@ -40,8 +51,9 @@ public class AccountCloseFacade {
 
 
     /**
-     * @Discription
-     * 계좌번호로 기본 계좌 정보, 고객 정보, 상품의 기간과 이름 조회
+     * @param accountId
+     * @return
+     * @Discription 계좌번호로 기본 계좌 정보, 고객 정보, 상품의 기간과 이름 조회
      * 자유적금 해지를 위한 기본 정보 불러오기
      * 1. 개설일 + 기간 = 만기일
      * 1-1. 만기일 이전에 해지 할 시 이자내역 다시 계산
@@ -53,7 +65,7 @@ public class AccountCloseFacade {
     public CloseSavingsFlexibleAccountTotal getFlexibleSavingsAccount(String accountId) {
         // 자유 적금 정보 불러오기
         CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountService.getCloseSavingsFlexibleAccountById(accountId);
-        
+
         // 해지 종류 판별
         String businessDateStr = commonService.getCurrentBusinessDay().getBusinessDate();
         String openDateStr = closeSavingsFlexibleAccountTotal.getOpenDate();
@@ -72,7 +84,7 @@ public class AccountCloseFacade {
         // 만기일 계산
         LocalDate maturityDateOnly = maturityDate.toLocalDate();  // 만기일을 LocalDate로 변환
         // 만기일 설정
-        if(closeSavingsFlexibleAccountTotal.getExpectedExpireDate() == null){
+        if (closeSavingsFlexibleAccountTotal.getExpectedExpireDate() == null) {
             closeSavingsFlexibleAccountTotal.setExpectedExpireDate(maturityDateOnly.toString());
         }
 
@@ -85,7 +97,7 @@ public class AccountCloseFacade {
         boolean isEarlyTermination = false;
         boolean isMaturityTermination = false;
 
-        // 기본 이율 (우대금리 포함)
+        // 기본 이율 (기본 금리 + 우대금리 포함)
         BigDecimal baseInterestRate = closeSavingsFlexibleAccountTotal.getInterestRate().add(closeSavingsFlexibleAccountTotal.getPreferentialInterestRate()).divide(BigDecimal.valueOf(100), 4, RoundingMode.DOWN);  // 소수로 변환
 
         // 조건 비교
@@ -125,13 +137,14 @@ public class AccountCloseFacade {
             isMaturityTermination = true;
         } else {
             System.out.println("만기 후 해지");
+            finalInterestRate = baseInterestRate;
             // 만기 후 해지 이율 계산
             long diffDaysAfterMaturity = ChronoUnit.DAYS.between(maturityDateOnly, businessDate);
 
             if (diffDaysAfterMaturity <= 30) {
-                finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.5)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/2
+                //finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.5)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/2
             } else {
-                finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.25)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/4
+                //finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.25)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/4
             }
         }
 
@@ -144,13 +157,13 @@ public class AccountCloseFacade {
 */
         // 최종 적용 이율
         closeSavingsFlexibleAccountTotal.setFinalInterestRate(finalInterestRate);
-        
+
         List<InterestDetails> interestDetailsList = interestService.getInterestDetailsByAccountId(accountId);
         // 중도 해지 시
-        if(isEarlyTermination){
+        if (isEarlyTermination) {
             closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.EARLY_TERMINATION);
             // 1개월 미만일 시
-            if(interestDetailsList.isEmpty()){
+            if (interestDetailsList.isEmpty()) {
                 // 연 이자율로 나눠서 계산
                 BigDecimal intersetSum = closeSavingsFlexibleAccountTotal.getBalance().multiply(finalInterestRate.divide(BigDecimal.valueOf(12), 8, RoundingMode.DOWN));
                 // 이자 합: 세전
@@ -171,7 +184,7 @@ public class AccountCloseFacade {
                 // 이자 내역 : null
                 closeSavingsFlexibleAccountTotal.setInterestDetailsList(null);
                 return closeSavingsFlexibleAccountTotal;
-            }else {
+            } else {
                 // 이자 내역 재계산
                 BigDecimal totalInterestSum = BigDecimal.ZERO;  // 총 이자 합계 변수 초기화
 
@@ -195,42 +208,96 @@ public class AccountCloseFacade {
                     // 이자 합계에 더하기
                     totalInterestSum = totalInterestSum.add(interestAmount);
                 }
-                closeSavingsFlexibleAccountTotal.setTotalInterestSum(totalInterestSum);
-                closeSavingsFlexibleAccountTotal.setTotalAmount(closeSavingsFlexibleAccountTotal.getBalance().add(totalInterestSum));
             }
-        } else if(isMaturityTermination){
+        } else if (isMaturityTermination) {
             closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.MATURITY_TERMINATION);
-        }else{
+        } else {
             closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.POST_MATURITY_TERMINATION);
         }
-        return closeSavingsFlexibleAccountTotal.of(closeSavingsFlexibleAccountTotal, interestDetailsList);
+        return CloseSavingsFlexibleAccountTotal.of(closeSavingsFlexibleAccountTotal, interestDetailsList);
     }
 
 
     /**
-     * @Discription 
-     * - 자유적금 계좌 해지
-     *  1. 계좌 해지 거래 내역 생성
-     *  1-2. 행원 시재금 변경(출금)
-     *  2. 계좌 잔액 및 상태 변경
-     *  3. 이자 지급일 및 상태 변경
-     *
      * @param accountClose
+     * @return
+     * @Discription - 자유적금 계좌 해지
+     * 1. 계좌 해지 거래 내역 생성
+     * 1-2. 행원 시재금 변경(출금)
+     * 2. 계좌 잔액 및 상태 변경
+     * 3. 이자 지급일 및 상태 변경
      */
     @Transactional(rollbackFor = Exception.class)
-    public void closeFlexibleSavingsAccount(AccountClose accountClose) {
+    public AccountCloseResult closeFlexibleSavingsAccount(FlexibleSavingsAccountClose accountClose) {
         CurrentData currentData = commonService.getCurrentData();
         BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
 
         // OPEN 상태가 아니라면
-        if(!currentBusinessDay.getStatus().equals("OPEN")){
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
+
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+        // 재사용 위한 accountClose 설정
+        AccountClose basicAccountClose = AccountClose.builder()
+                .accId(accountClose.getAccId())
+                .amount(accountClose.getAmount())
+                .status(accountClose.getStatus())
+                .tradeType(accountClose.getTradeType())
+                .description(accountClose.getDescription())
+                .build();
+
+        // 1. 해지 거래 생성
+        TradeCreate tradeResult = tradeService.createCloseTrade(basicAccountClose, currentData, tradeNumber);
+
+        // 2. 계좌 잔액 0, 상태 CLS
+        AccountUpdate accountUpdate = accountService.updateByCloseTrade(basicAccountClose, currentData);
+        // 2-1. 행원 마감 출금액 변경
+        businessDayCloseService.updateTradeAmount(accountClose.getAmount(), currentData, accountClose.getTradeType());
+
+        // 3. 이자내역 지급 처리
+        try {
+            // 중도 해지라면 재계산된 이자 내역으로 업데이트
+            if (accountClose.getCloseType().equals(CloseSavingsFlexibleAccountTotal.CloseType.EARLY_TERMINATION.getDescription())) {
+                interestService.updateByCloseWithInterestList(accountClose, currentData);
+            } else {
+                // 기존 해지 재사용
+                interestService.updateByClose(basicAccountClose, currentData);
+            }
+        } catch (Exception e) {
+            throw new BadRequestException(ErrorCode.FAIL_TO_CLOSE);
+        }
+
+        // 해지 계좌 정보 조회
+        CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountById = accountService.getCloseSavingsFlexibleAccountById(accountClose.getAccId());
+
+        return AccountCloseResult.builder()
+                .accountId(accountClose.getAccId())
+                .accountStatus(accountUpdate.getStatus())
+                .openDate(Timestamp.valueOf(LocalDateTime.parse(closeSavingsFlexibleAccountById.getOpenDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                .accountPreInterRate(closeSavingsFlexibleAccountById.getPreferentialInterestRate())
+                .accountBal(accountUpdate.getBalance())
+                .customerName(closeSavingsFlexibleAccountById.getCustomerName())
+                .customerId(closeSavingsFlexibleAccountById.getCustomerId())
+                .productName(closeSavingsFlexibleAccountById.getProductName())
+                .productInterRate(closeSavingsFlexibleAccountById.getInterestRate())
+                .productTaxRate(closeSavingsFlexibleAccountById.getTaxRate())
+                .amountSum(accountClose.getAmount())
+                .build();
     }
 
-
-    // 만기 후 해지 / 중도 해지 / 만기 후 해지 총 이율 구하는 함수
-    public CloseSavingsAccountTotal CalculateIntsertOtCloseFixedSavingsAccount(String accountId){
+    /**
+     *   중도 해지
+     *   만기 해지
+     *   만기 후 해지 : 만기까지 약정이율의 이자 + 만기 이후 새로운 이율의 이자
+     *   총 이율 구하는 함수
+     * 
+     * @param accountId
+     * @return
+     */
+    public CloseSavingsAccountTotal CalculateInsertOtCloseFixedSavingsAccount(String accountId){
 
         CloseSavingsAccountTotal closeSavingsAccountTotal = accountMapper.findCloseSavingsAccountDetail(accountId);
 
@@ -262,10 +329,13 @@ public class AccountCloseFacade {
 
         // 최종 이율 계산
         BigDecimal finalInterestRate;
+        // 만기후 이율 계산
+        BigDecimal afterFinalInterestRate;
+        
         boolean isEarlyTermination = false;
         boolean isMaturityTermination = false;
 
-        // 기본 이율 (우대금리 포함)
+        // 기본 이율(상품이율) + 우대이율(계좌이율) [ 0.04% : (X) ] -> 0.0400
         BigDecimal baseInterestRate = closeSavingsAccountTotal.getProductInterestRate().add(closeSavingsAccountTotal.getAccountInterestRate()).divide(BigDecimal.valueOf(100), 4, RoundingMode.DOWN);  // 소수로 변환
 
         // 조건 비교
@@ -305,31 +375,86 @@ public class AccountCloseFacade {
             isMaturityTermination = true;
         } else {
             System.out.println("만기 후 해지");
+
+            finalInterestRate = baseInterestRate;
             // 만기 후 해지 이율 계산
             long diffDaysAfterMaturity = ChronoUnit.DAYS.between(maturityDateOnly, businessDate);
 
             if (diffDaysAfterMaturity <= 30) {
-                finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.5)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/2
+                afterFinalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.5)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/2
             } else {
-                finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.25)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/4
+                afterFinalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.25)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/4
             }
         }
 
         // 최종 적용 이율
         closeSavingsAccountTotal.setFinalInterestRate(finalInterestRate);
 
+        System.out.println("최종 적용 이율 finalInterestRate >>>>>>>>>>>"+finalInterestRate);
+
+        System.out.println("최종 이율: " + finalInterestRate.setScale(4, RoundingMode.DOWN));
+        System.out.println("중도 해지 여부: " + isEarlyTermination);
+        System.out.println("만기 해지 여부: " + isMaturityTermination);
+        System.out.println("경과 일수: " + diffDays);
+
+        // 정기 입금 금액 및 정기 입금 총 횟수
+        // 해지 계좌번호
+        String accId = closeSavingsAccountTotal.getAccountId();
+        CloseFixedAccountDetail closeFixedAccountDetail= accountService.findCloseFixedAccountDetail(accId);
+
+        // 정기 입금 금액
+        BigDecimal amount = closeFixedAccountDetail.getAmount();
+        // 정기 입금 총 횟수
+        int totalDepositCount = closeFixedAccountDetail.getTotalTransferCount();
+
+        BigDecimal totalInterest;
 
         if(isEarlyTermination){
+            System.out.println("중도 해지 일때 >>>>");
             // 중도 해지 일때
             closeSavingsAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.EARLY_TERMINATION);
+            // 원금 * 연이자율 * 기간(개월 수)
+            totalInterest = calculateFixedInterest(amount,finalInterestRate,totalDepositCount);
+            System.out.println("중도 해지  >>>>> "+closeSavingsAccountTotal.getCloseType());
+            System.out.println(totalInterest);
+            closeSavingsAccountTotal.setInterestCashSum(totalInterest);
 
         }else if(isMaturityTermination){
+            System.out.println("만기 일때 >>>>");
             // 만기 일때
             closeSavingsAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.MATURITY_TERMINATION);
+            // 원금 * 연이자율 * 기간(개월 수)
+            totalInterest = calculateFixedInterest(amount,finalInterestRate,totalDepositCount);
+            System.out.println("만기 해지  >>>>> "+closeSavingsAccountTotal.getCloseType());
+            System.out.println(totalInterest);
+
+            closeSavingsAccountTotal.setInterestCashSum(totalInterest);
+
 
         }else{
+
+            System.out.println("만기 후해지 일때 >>>>");
             // 만기 후 해지 일때
             closeSavingsAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.POST_MATURITY_TERMINATION);
+            // 만기까지 이자 + 만기 이후 이자
+
+            // 만기까지 이자: 원금 * 연이자율 * 기간(개월 수)
+            totalInterest = calculateFixedInterest(amount,finalInterestRate,parseIntWithoutZero(closeSavingsAccountTotal.getProductPeriod()));
+
+
+            afterFinalInterestRate = baseInterestRate;
+            // 만기 이후 입금 개월 수 : totalDepositCount - productPeriod
+            // 만기 이후 이자:BigDecimal principal, BigDecimal annualInterestRate, int months
+            int afterMonth = (totalDepositCount-parseIntWithoutZero(closeSavingsAccountTotal.getProductPeriod()));
+            BigDecimal afterTotalInterest = calculateMonthlyInterest(amount,afterFinalInterestRate,afterMonth);
+
+            System.out.println("만기 후 이율 계산  >>>>> "+closeSavingsAccountTotal.getCloseType());
+            System.out.println("totalInterest >>>> "+totalInterest);
+            System.out.println("afterTotalInterest ,afterMonth >>>> "+afterTotalInterest+","+afterMonth);
+            System.out.println("afterTotalInterest+totalInterest >>>> "+ afterTotalInterest.add(totalInterest));
+
+
+            closeSavingsAccountTotal.setInterestCashSum(afterTotalInterest.add(totalInterest));
 
         }
 
@@ -337,21 +462,65 @@ public class AccountCloseFacade {
         return CloseSavingsAccountTotal.of(closeSavingsAccountTotal);
     }
 
+    public int parseIntWithoutZero(String input) {
+        if (input != null && !input.isEmpty()) {
+            // parseInt로 변환하면 자동으로 앞의 '0'이 제거됩니다.
+            return Integer.parseInt(input);
+        } else {
+            throw new IllegalArgumentException("입력 값이 null이거나 빈 문자열입니다.");
+        }
+    }
+
     /**
      * 정기적금 이자 계산 (단리 방식)
      * @param principal 원금 (정기적금의 초기 금액)
-     * @param finalInterestRate 최종 이자율 (연 이자율)
+     * @param finalInterestRate 최종 이자율 (연 이자율) : 단위 : 실제 이율 [ 4% (x)) / 0.04 (0) ]
      * @param months 정기적금 기간 (개월)
      * @return 이자 금액
+     *
+     *
      */
-    public BigDecimal calculateInterest(BigDecimal principal, BigDecimal finalInterestRate, int months) {
-        // 월별 이자율 계산 (연 이자율을 12개월로 나누기)
-        BigDecimal monthlyInterestRate = finalInterestRate.divide(BigDecimal.valueOf(12), 6, RoundingMode.HALF_UP);
+    public BigDecimal calculateFixedInterest(BigDecimal principal, BigDecimal finalInterestRate, int months) {
+        BigDecimal totalInterest = BigDecimal.ZERO;
+        BigDecimal annualInterestRate = finalInterestRate;
 
-        // 단리 계산: 원금 * 월별 이자율 * 기간(개월 수)
-        BigDecimal interest = principal.multiply(monthlyInterestRate).multiply(BigDecimal.valueOf(months));
+        // 첫 번째 달: 연이율 * 12/12
+        BigDecimal firstMonthInterestRate = annualInterestRate.multiply(BigDecimal.valueOf(12)).divide(BigDecimal.valueOf(12), 4, RoundingMode.DOWN);
+        BigDecimal firstMonthInterest = principal.multiply(firstMonthInterestRate).divide(BigDecimal.valueOf(100), 4, RoundingMode.DOWN);
+        totalInterest = totalInterest.add(firstMonthInterest);
 
-        return interest;
+        // 두 번째 달부터는 연이율 * 남은개월/12
+        for (int i = 2; i <= months; i++) {
+            BigDecimal remainingMonths = BigDecimal.valueOf(months - i + 1); // 남은 개월 수 (12 -> 11 -> 10 ...)
+            BigDecimal monthlyInterestRate = annualInterestRate.multiply(remainingMonths).divide(BigDecimal.valueOf(12), 4, RoundingMode.DOWN);
+
+            // 해당 달 이자 계산
+            BigDecimal interestForMonth = principal.multiply(monthlyInterestRate).divide(BigDecimal.valueOf(100), 4, RoundingMode.DOWN);
+            totalInterest = totalInterest.add(interestForMonth);
+        }
+
+        return totalInterest;
+    }
+
+    // 예금 이자 단리계산 방식
+    public static BigDecimal calculateMonthlyInterest(BigDecimal principal, BigDecimal afterFinalInterestRate, int months) {
+        BigDecimal monthlyInterestRate = afterFinalInterestRate.divide(BigDecimal.valueOf(12), 6, RoundingMode.DOWN); // 월 이자율 계산
+        BigDecimal afterTotalInterest = BigDecimal.ZERO; // 총 이자
+        BigDecimal oneHundred = BigDecimal.valueOf(100); // 백분율 계산을 위한 상수
+
+        System.out.println("| 월  | 이자율 (%)  | 발생 이자 (원)  | 누적 이자 (원)  |");
+        System.out.println("|-----|--------------|-----------------|-----------------|");
+
+        // 매달 이자 계산
+        for (int i = 0; i < months; i++) {
+            // 월 이자율을 적용한 이자 계산
+            BigDecimal interestForMonth = principal.multiply(monthlyInterestRate).divide(oneHundred, 6, RoundingMode.DOWN);
+            afterTotalInterest = afterTotalInterest.add(interestForMonth); // 누적 이자
+
+            // 매달 발생한 이자와 누적 이자 출력
+            System.out.printf("| %2d  | %6.2f%%  | %,15.2f  | %,15.2f |\n", i + 1, monthlyInterestRate.multiply(BigDecimal.valueOf(100)), interestForMonth, afterTotalInterest);
+        }
+        return afterTotalInterest;
     }
 
     /**
@@ -360,6 +529,7 @@ public class AccountCloseFacade {
      *
      *
      */
+
     public CloseSavingsAccountTotal getCloseSavingsAccount(String accountId){
 
         // 1. 정기적금 해지 정보 총 출력
@@ -367,7 +537,7 @@ public class AccountCloseFacade {
           1. 계좌정보
           2. 자동이체 정보
           3. 적금 상품 정보
-          4. 이율 계산 정보 - 함수사용
+          4. 이율 계산 정보 - 함수사용 추가예정 CalculateInsertOtCloseFixedSavingsAccount()
         */
 
         //1. 계좌정보 + 2. 자동이체 정보 + 3. 적금 상품 정보  호출
@@ -380,8 +550,15 @@ public class AccountCloseFacade {
             throw new IllegalArgumentException("계좌 ID에 대한 정보를 찾을 수 없습니다: " + accountId);
         }
         String autoTransferId = csat.getAutoTransferId();
+
         //이체 횟수조회(거래내역조회)
         csat.setAutoTransferCount(reserveTransferService.countAutoReserveSuccess(autoTransferId));
+
+        // 이자 계산
+        csat = CalculateInsertOtCloseFixedSavingsAccount(accountId);
+
+        System.out.println("결과 확인>>>>>>>>>>"+csat.toString());
+
 
         // 정보 담김.
         return csat;

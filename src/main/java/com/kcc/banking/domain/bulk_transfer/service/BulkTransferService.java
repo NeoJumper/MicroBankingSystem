@@ -40,12 +40,27 @@ public class BulkTransferService {
     }
 
     public List<BulkTransferDetail> getBulkTransferList(BulkTransferSearch bulkTransferSearch) {
-        return bulkTransferMapper.findBulkTransferList(bulkTransferSearch);
+        List<BulkTransferDetail> bulkTransferList = bulkTransferMapper.findBulkTransferList(bulkTransferSearch);
+        bulkTransferList.forEach(bulkTransferDetail -> {
+            bulkTransferDetail.setFailureAmount();
+            String status = bulkTransferDetail.getStatus();
+            if (status.equals("NOR"))
+                bulkTransferDetail.setStatus("정상");
+            else if(status.equals("FAIL"))
+                bulkTransferDetail.setStatus("실패");
+            else if(status.equals("WAIT"))
+                bulkTransferDetail.setStatus("대기");
+        });
+        return bulkTransferList;
 
     }
 
     public BulkTransferDetail getBulkTransfer(Long bulkTransferId) {
-        return bulkTransferMapper.findBulkTransfer(bulkTransferId);
+
+        BulkTransferDetail bulkTransfer = bulkTransferMapper.findBulkTransfer(bulkTransferId);
+        bulkTransfer.setFailureAmount();
+        return bulkTransfer;
+
     }
 
     public int updateBulkTransfer(BulkTransferUpdate bulkTransferUpdate) {
