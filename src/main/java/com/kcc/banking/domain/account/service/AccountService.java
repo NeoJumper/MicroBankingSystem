@@ -251,4 +251,8 @@ public class AccountService {
     }
 
 
+    public CloseSavingsAccountTotal findCloseSavingsAccountDetail(String accountId){
+       return accountMapper.findCloseSavingsAccountDetail(accountId);
+    }
+
 }

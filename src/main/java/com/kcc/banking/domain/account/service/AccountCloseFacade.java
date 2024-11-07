@@ -5,6 +5,7 @@ import com.kcc.banking.common.exception.ErrorCode;
 import com.kcc.banking.common.exception.custom_exception.BadRequestException;
 import com.kcc.banking.domain.account.dto.request.AccountClose;
 import com.kcc.banking.domain.account.dto.request.AccountUpdate;
+import com.kcc.banking.domain.account.dto.request.FixedSavingsAccountClose;
 import com.kcc.banking.domain.account.dto.request.FlexibleSavingsAccountClose;
 import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
 import com.kcc.banking.domain.account.dto.response.CloseFixedAccountDetail;
@@ -287,6 +288,67 @@ public class AccountCloseFacade {
                 .amountSum(accountClose.getAmount())
                 .build();
     }
+
+
+    /**
+     *  정기 적금 해지
+     *  1. 해지 거래 생성
+     *  2. 잔액 변경
+     *  3. 행원 마감액 변경
+     *  4. 자동이체 계좌 존재시 상태 변경 :  해야됨
+     * @param accountClose
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public AccountCloseResult closeFixedSavingsAccount(FixedSavingsAccountClose accountClose) {
+        CurrentData currentData = commonService.getCurrentData();
+        BusinessDay currentBusinessDay = commonService.getCurrentBusinessDay();
+
+        // OPEN 상태가 아니라면
+        if (!currentBusinessDay.getStatus().equals("OPEN")) {
+            throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+        // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
+        Long tradeNumber = tradeService.getNextTradeNumberVal();
+
+        // 재사용 위한 accountClose 설정
+        AccountClose basicAccountClose = AccountClose.builder()
+                .accId(accountClose.getAccId())
+                .amount(accountClose.getAmount())
+                .status(accountClose.getStatus())
+                .tradeType(accountClose.getTradeType())
+                .description(accountClose.getDescription())
+                .build();
+
+        // 1. 해지 거래 생성
+        TradeCreate tradeResult = tradeService.createCloseTrade(basicAccountClose, currentData, tradeNumber);
+
+        // 2. 계좌 잔액 0, 상태 CLS
+        AccountUpdate accountUpdate = accountService.updateByCloseTrade(basicAccountClose, currentData);
+        // 2-1. 행원 마감 출금액 변경
+        businessDayCloseService.updateTradeAmount(accountClose.getAmount(), currentData, accountClose.getTradeType());
+
+        // 자동이체 계좌 존재 시 active -> stop 상태 변경
+        
+        // 해지 계좌 정보 조회
+        CloseSavingsAccountTotal closeSavingsAccountById = accountService.findCloseSavingsAccountDetail(accountClose.getAccId());
+
+        return AccountCloseResult.builder()
+                .accountId(accountClose.getAccId())
+                .accountStatus(accountUpdate.getStatus())
+                .openDate(Timestamp.valueOf(LocalDateTime.parse(closeSavingsAccountById.getOpenDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                .accountPreInterRate(closeSavingsAccountById.getProductInterestRate())
+                .accountBal(accountUpdate.getBalance())
+                .customerName(closeSavingsAccountById.getCustomerName())
+                .customerId(closeSavingsAccountById.getCustomerId())
+                .productName(closeSavingsAccountById.getProductName())
+                .productInterRate(closeSavingsAccountById.getAccountInterestRate())
+                .productTaxRate(closeSavingsAccountById.getProductTaxRate())
+                .amountSum(accountClose.getAmount())
+                .build();
+    }
+
 
     /**
      *   중도 해지

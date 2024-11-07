@@ -429,20 +429,20 @@ function savingAccountFixedCloseRequest() {
     var accountId = $('#savings-account-close-number').val();
 
     //해지 버튼 클릭
-    // $.ajax({
-    //         url: "//" + accountId,
-    //         type: "GET",
-    //         success: function (data) {
-    //             console.log("RE_DATA", data);
-    //         }, error: function (error) {
-    //             swal({
-    //                 title: "해지 실패",
-    //                 text: error,
-    //                 icon: "error",
-    //             });
-    //         }
-    //     }
-    // );
+    $.ajax({
+            url: "/api/employee/fixed-savings-account-close" + accountId,
+            type: "GET",
+            success: function (data) {
+                console.log("RE_DATA", data);
+            }, error: function (error) {
+                swal({
+                    title: "해지 실패",
+                    text: error,
+                    icon: "error",
+                });
+            }
+        }
+    );
 
 
 }
