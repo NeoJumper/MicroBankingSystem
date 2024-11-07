@@ -13,7 +13,6 @@ import java.util.List;
 public class FixedSavingsAccountClose {
 
     private String accId;
-    // totalAmount , 총 지급액
     private BigDecimal amount;
     private String status;
     private String description;

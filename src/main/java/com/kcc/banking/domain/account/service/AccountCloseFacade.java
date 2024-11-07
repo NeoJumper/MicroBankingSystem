@@ -330,7 +330,8 @@ public class AccountCloseFacade {
         businessDayCloseService.updateTradeAmount(accountClose.getAmount(), currentData, accountClose.getTradeType());
 
         // 자동이체 계좌 존재 시 active -> stop 상태 변경
-        
+
+
         // 해지 계좌 정보 조회
         CloseSavingsAccountTotal closeSavingsAccountById = accountService.findCloseSavingsAccountDetail(accountClose.getAccId());
 

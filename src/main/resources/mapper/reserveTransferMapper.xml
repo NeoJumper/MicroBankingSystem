@@ -132,9 +132,7 @@
         and auto_transfer_id = #{autoTransferId}
     </select>
 
-    <select id="">
 
-    </select>
 
 
 </mapper>

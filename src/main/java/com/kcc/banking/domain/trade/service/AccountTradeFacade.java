@@ -795,6 +795,15 @@ public class AccountTradeFacade {
             reserveTransfer.setTransferType("AUTO");
             reserveTransfer.setTransferDate(autoTransfer.getNextTransferDate());
             reserveTransfer.setMissedCount(autoTransfer.getMissedCount());
+            reserveTransfer.setTransferStartTime("9:00");
+            reserveTransfer.setTransferStartTime("10:00");
+            reserveTransfer.setRetryCount(0L);
+            reserveTransfer.setDescription("자동이체 등록");
+            reserveTransfer.setStatus("WAIT");
+            reserveTransfer.setBranchId(autoTransfer.getBranchId());
+
+
+
 
 
 
@@ -816,7 +825,7 @@ public class AccountTradeFacade {
         if (!reserveTransfers.isEmpty()) {
             for (ReserveTransferCreate transfer : reserveTransfers) {
                 try {
-                    reserveTransferMapper.insertScheduledAutoTransfer(transfer);
+                    reserveTransferMapper.createReserveTransfer(transfer);
                 } catch (Exception e) {
                     System.err.println("Error inserting scheduled transfer for ID " + transfer.getId() + ": " + e.getMessage());
                 }

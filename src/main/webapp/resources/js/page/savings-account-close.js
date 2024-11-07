@@ -371,7 +371,6 @@ function getSavingsAccount(data, accountId) {
 }
 
 
-
 function checkAccountId() {
     const inputId = $('#savings-account-close-password').val();
     var accountNumber = $('#savings-account-close-number').val();
@@ -427,20 +426,35 @@ function submitSavingAccountClose() {
 // 정기적금 해지 프로세스
 function savingAccountFixedCloseRequest() {
     var accountId = $('#savings-account-close-number').val();
+    // 첫 번째 행에서 "finalInterestRate"와 "totalAmount" 값 가져오기
+    var firstRow = $('#savings-fixed-account-result tbody tr').eq(0); // 첫 번째 tr 선택
 
+    var closeType = firstRow.find('#fixed-closed-type').text();  // closeType
+    var totalAmount = firstRow.find('#fixed-amount').text();
     //해지 버튼 클릭
     $.ajax({
-            url: "/api/employee/fixed-savings-account-close" + accountId,
-            type: "GET",
-            success: function (data) {
-                console.log("RE_DATA", data);
-            }, error: function (error) {
+            url: "/api/employee/fixed-savings-account-close",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                accId: accountId,
+                amount: totalAmount,
+                status: "CLS",
+                description: "정기 적금 계좌 해지",
+                tradeType: "CLOSE",
+                closeType: closeType
+            }),
+            success: function (response) {
+
+                console.log("정기적금 계좌 해지 DATA", response);
                 swal({
-                    title: "해지 실패",
-                    text: error,
-                    icon: "error",
+                    title: "해지 성공",
+                    text: "계좌 해지 완료되었습니다.",
+                    icon: "success",
                 });
+
             }
+    
         }
     );
 
@@ -448,10 +462,10 @@ function savingAccountFixedCloseRequest() {
 }
 
 // 정기적금 정보 출력하기
-function findSavingAccountFixedCloseInfo(data){
+function findSavingAccountFixedCloseInfo(data) {
     /* ------자동이체 데이터------*/
 
-    console.log(data.targetAccId+'data.targetAccId');
+    console.log(data.targetAccId + 'data.targetAccId');
 
     $('#saving-account-result-account-number').text(data.autoAccId);
     $('#saving-account-result-amount').text(data.fixedAmount);
@@ -490,12 +504,12 @@ function addFixedInterest(data, finalInterestRate) {
         // data 리스트의 각 항목을 tbody에 추가
 
         var row = "<tr>" +
-             "<td style='width: 5%;'>" + data.closeType + "</td>" +
-            "<td style='width: 20%;'>" + data.finalInterestRate + "</td>" +
+            "<td id ='fixed-closed-type' style='width: 5%;'>" + data.closeType + "</td>" +
+            "<td id ='fixedFinalInterestRate' style='width: 20%;'>" + data.finalInterestRate + "</td>" +
             "<td style='width: 15%;'>" + data.productTaxRate + "</td>" +
             "<td style='width: 25%'>" + data.interestCashSum + " 원</td>" +
             "<td style='width: 20%;'>" + data.totalInterestAfterTax + " 원</td>" +
-            "<td style='width: 17%;'>" + data.totalAmount + "</td>" +  <!-- 세후 이자 -->
+            "<td id ='fixed-amount' style='width: 17%;'>" + data.totalAmount + "</td>" +  <!-- 세후 이자 -->
 
             "</tr>";
 
@@ -519,38 +533,38 @@ function savingAccountFlexibleCloseRequest() {
             success: function (data) {
                 console.log("RE_DATA", data);
             }, error: function (error) {
-            swal({
-                title: "해지 실패",
-                text: error,
-                icon: "error",
-            });
+                swal({
+                    title: "해지 실패",
+                    text: error,
+                    icon: "error",
+                });
             }
         }
     );
 
     // 자유적금 해지를 위한 계좌 세부 정보
     // return CloseSavingsFlexibleAccountTotal
-/*    $.ajax({
-        url: '/api/employee/close-trade',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            accId: accountNumber,
-            amount: totalAmount,
-            status: "CLS",
-            description: "자유 적금 계좌 해지",
-            tradeType: "CLOSE",
-            closeType: closeType
-        }),
-        success: function (response) {
+    /*    $.ajax({
+            url: '/api/employee/close-trade',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                accId: accountNumber,
+                amount: totalAmount,
+                status: "CLS",
+                description: "자유 적금 계좌 해지",
+                tradeType: "CLOSE",
+                closeType: closeType
+            }),
+            success: function (response) {
 
-            console.log("자유적금 계좌 해지 DATA", response);
-            swal({
-                title: "해지 성공",
-                text: "계좌 해지 완료되었습니다.",
-                icon: "success",
-            });
+                console.log("자유적금 계좌 해지 DATA", response);
+                swal({
+                    title: "해지 성공",
+                    text: "계좌 해지 완료되었습니다.",
+                    icon: "success",
+                });
 
-        }
-    })*/
+            }
+        })*/
 }
