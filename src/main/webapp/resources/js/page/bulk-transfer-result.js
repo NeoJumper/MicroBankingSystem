@@ -95,7 +95,7 @@ function checkProgressStatus() {
 
             }
             else{
-                progressInterval = setInterval(checkProgressStatus, 500);
+                progressInterval = setInterval(checkProgressStatus, 2500);
             }
         },
         error: function(xhr, status, error) {

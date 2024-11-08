@@ -317,7 +317,7 @@
     <div class="modal-dialog modal-md" style="margin-top:200px;">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title fs-5 fw-bold">직접 입력으로 직원을 추가해보세요</h2>
+                <h2 class="modal-title fs-5 fw-bold">직접 입력으로 입금 정보를 추가해보세요.</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex flex-column">
@@ -365,7 +365,7 @@
     <div class="modal-dialog modal-lg" style="margin-top:200px;">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title fs-5 fw-bold">직접 입력으로 직원 정보를 수정해보세요</h2>
+                <h2 class="modal-title fs-5 fw-bold">직접 입력으로 입금 정보를 추가해보세요.</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex flex-column">
