@@ -749,7 +749,7 @@ public class AccountTradeFacade {
      *  시간 설정 x -> 날짜 주기 정함 -> 자동이체됨
      *
      */
-  //  @Scheduled(fixedRate = 6000)
+   // @Scheduled(fixedRate = 6000)
   @Scheduled(cron = "0 0 0 * * MON-FRI")
     public void scheduleAutoTransfers(){
         System.out.println("scheduleReserveTransfers >>>>>> ");

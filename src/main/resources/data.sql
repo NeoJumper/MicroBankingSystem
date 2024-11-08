@@ -751,7 +751,7 @@ INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
                            modification_date, modifier_id, version)
 VALUES (AUTO_TRANSFER_SEQ.nextval, '001-0000015-7777', '001-0000013-3687', 1000000,
         TO_TIMESTAMP('2023-04-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
-        NULL, 1,
+        TO_TIMESTAMP('2024-04-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1,
         SYSTIMESTAMP, SYSTIMESTAMP, 2,
         NULL, NULL, 1);
 
