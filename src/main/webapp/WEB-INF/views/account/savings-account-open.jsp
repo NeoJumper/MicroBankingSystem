@@ -10,7 +10,11 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/page/savings-account-open.css"/>
+    <!-- Flatpickr CSS 파일 포함 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
+    <!-- Flatpickr JS 파일 포함 -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- jquery 소스-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -145,9 +149,14 @@
         <tr>
             <th>만기예상약정이자</th>
             <td><input type="text" id="expected-maturity-interest-input" disabled style="text-align: right">
-                [ 단리식 / 월단위 ] 원금x연이율x월수/12
-            </td>
 
+            </td>
+        </tr>
+        <tr>
+            <th>만기예상금액(세전)</th>
+            <td>
+                <input type="text" id="expected-maturity-totalAmount-input" disabled style="text-align: right">
+            </td>
         </tr>
         <tr>
             <th>담당자</th>
@@ -179,6 +188,17 @@
         <label for="no-automatic-transfer">아니오</label>
     </div>
 
+<%--    <div>--%>
+<%--        <h3>첫달 현금 여부</h3>--%>
+<%--        <hr>--%>
+<%--    </div>--%>
+<%--    <div class="auto-transfer-radio-container">--%>
+<%--        <input type="radio" id="yes-cash-transfer" name="option-automatic-transfer" value="y-c">--%>
+<%--        <label for="yes-cash-transfer">예</label>--%>
+<%--        <input type="radio" id="no-cash-transfer" name="option-automatic-transfer" value="n-c" checked>--%>
+<%--        <label for="no-cash-transfer">아니오</label>--%>
+<%--    </div>--%>
+
     <br><br>
 
     <div id="automatic-transfer-info-div" style="display: none;">
@@ -200,6 +220,7 @@
 
                 <th>자동이체 시작일</th>
                 <td><input type="date" id="auto-transfer-start-date-input"></td>
+
             </tr>
 
         </table>
@@ -257,11 +278,11 @@
                 </tr>
                 <tr>
                     <th>출금(자동이체) 계좌 통장 표시</th>
-                    <td><input type="text" id="auto-transfer-account-description-input" ></td>
+                    <td><input value="정기적자동이체" type="text" id="auto-transfer-account-description-input" ></td>
                 </tr>
                 <tr>
                     <th>적금 통장 표시</th>
-                    <td><input type="text" id="savings-account-description-input" ></td>
+                    <td><input value="정기적자동이체" type="text" id="savings-account-description-input" ></td>
                 </tr>
 
 
@@ -282,6 +303,7 @@
 <%@ include file="/resources/components/modal/transfer-account-search-modal.jsp" %>
 <%@ include file="/resources/components/modal/search-modal-customer.jsp" %>
 <%@ include file="/resources/components/modal/search-modal-product.jsp" %>
+<%@ include file="/resources/components/modal/result-modal-savings-open-account.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/savings-account-open.js"></script>
 </body>

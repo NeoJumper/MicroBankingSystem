@@ -101,7 +101,7 @@
 
     </select>
 
-    <update id="updateTransferStatus">
+    <update id="updateReserveTransferStatus">
         UPDATE reserve_transfer
         SET status = #{status}
         <if test="failureReason != null and failureReason != ''">
@@ -110,19 +110,28 @@
         WHERE id = #{reserveTransferId}
     </update>
 
-    <update id="countMissedTransferOfAutoTransfer">
+    <update id="updateMissedTransferOfAutoTransfer">
         UPDATE auto_transfer
         SET
         missed_count = missed_count + 1
-        WHERE id = #{reserveTransferId}
+        WHERE id = #{autoTransferId}
     </update>
 
     <!-- 자동이체 실패시 예약일 구하는 함수 -->
     <select id = "findAutoReserveDate">
         select ADD_MONTHS(next_transfer_date, missed_count)
         from auto_transfer
-        WHERE id = #{reserveTransferId}
+        WHERE id = #{autoTransferId}
     </select>
+
+    <!-- 자동이체 예약이체 참고하시오 -->
+    <select id="countAutoReserveSuccess" >
+        select count(*)
+        from reserve_transfer
+        where status = 'SUCCESS'
+        and auto_transfer_id = #{autoTransferId}
+    </select>
+
 
 
 

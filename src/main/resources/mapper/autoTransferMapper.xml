@@ -53,7 +53,8 @@
             au.status as status,
             au.missed_count as missed_count,
             au.next_transfer_date as next_transfer_date,
-            a.registrant_id as registrantId
+            a.registrant_id as registrantId,
+            a.branch_id as branch_id
 
         from Auto_transfer au
                  join Account a
@@ -63,4 +64,6 @@
           and
             TO_CHAR(au.next_transfer_date, 'YY/MM/DD') = TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD')
     </select>
+
+
 </mapper>

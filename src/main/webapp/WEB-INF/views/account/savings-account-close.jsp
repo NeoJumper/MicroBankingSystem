@@ -172,7 +172,7 @@
                         <td id="saving-account-result-interest-type" rowspan="1"></td>
                     </tr>
                     <tr>
-                        <th class="th-gray-style" rowspan="1">실제 적용 이율</th>
+                        <th class="th-gray-style" rowspan="1">계약 이율</th>
                         <td  id="saving-account-result-total-interest" rowspan="1"></td>
                     </tr>
                     <tr>
@@ -196,18 +196,19 @@
         </div>
 
         <h3> 최종 해지 금액 정보 </h3>
-        <table class="common-table">
+        <table class="common-table" id="savings-fixed-account-result">
             <thead>
             <tr>
-                <th>이자 계산 방식</th>
-                <th>이율</th>
+                <th>해지 종류</th>
+                <th>최종이율</th>
                 <th>세율</th>
+                <th>이자 (세전)</th>
                 <th>이자 (세후)</th>
-                <th>잔액</th>
                 <th>지급 총 금액</th>
+
             </tr>
             </thead>
-            <tbody id="savings-fixed-account-result">
+            <tbody>
             <tr class="saving-account-close-empty-message">
                 <td colspan="9" style="text-align: center; color: gray; border-bottom: none; height: 100px">
                     해지할 계좌를 선택해 주십시오

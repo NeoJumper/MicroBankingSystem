@@ -246,5 +246,13 @@ public class AccountService {
         return accountMapper.findCloseSavingsFlexibleAccountById(accountId);
     }
 
+    public CloseFixedAccountDetail findCloseFixedAccountDetail(String accId){
+        return accountMapper.findFixedDetailOfSavingsAccount(accId);
+    }
+
+
+    public CloseSavingsAccountTotal findCloseSavingsAccountDetail(String accountId){
+       return accountMapper.findCloseSavingsAccountDetail(accountId);
+    }
 
 }

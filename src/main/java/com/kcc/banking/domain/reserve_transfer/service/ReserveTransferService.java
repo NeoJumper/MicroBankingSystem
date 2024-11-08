@@ -37,8 +37,8 @@ public class ReserveTransferService {
         reserveTransferMapper.createReserveTransfer(reserveTransferCreate);
     }
 
-    public void updateTransferStatus(String reserveTransferId, String status, String failureReason) {
-        reserveTransferMapper.updateTransferStatus(reserveTransferId, status, failureReason);
+    public void updateReserveTransferStatus(String reserveTransferId, String status, String failureReason) {
+        reserveTransferMapper.updateReserveTransferStatus(reserveTransferId, status, failureReason);
     }
 
     public List<TransferTradeCreate> getPendingTransfers(SearchReserve searchReserve){
@@ -46,12 +46,16 @@ public class ReserveTransferService {
     }
 
 
-    public void countMissedTransferOfAutoTransfer(String reserveTransferId){
-        reserveTransferMapper.countMissedTransferOfAutoTransfer(reserveTransferId);
+    public void updateMissedTransferOfAutoTransfer(String autoTransferId){
+        reserveTransferMapper.updateMissedTransferOfAutoTransfer(autoTransferId);
     };
 
-    public Timestamp findAutoReserveDate(String reserveTransferId){
-        return reserveTransferMapper.findAutoReserveDate(reserveTransferId);
+    public Timestamp findAutoReserveDate(String autoTransferId){
+        return reserveTransferMapper.findAutoReserveDate(autoTransferId);
+    }
+
+    public String countAutoReserveSuccess(String autoTransferId){
+        return reserveTransferMapper.countAutoReserveSuccess(autoTransferId);
     }
 }
 

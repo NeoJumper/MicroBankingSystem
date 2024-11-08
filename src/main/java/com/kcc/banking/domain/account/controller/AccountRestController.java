@@ -130,25 +130,7 @@ public class AccountRestController {
 //
 //    }
 
-    // 정기적금 계좌 정보 조회 API
-//    @GetMapping("/api/employee/savings-account/open/{accountId}")
-//    public ResponseEntity<SavingAccountOpenResultOfModal> getAccountInfo(@PathVariable String accountId) {
-//        AccountOpenResultOfModal accountInfo = accountService.getAccountOpenResultOfModal(accountId);
-//        if (accountInfo != null) {
-//            return ResponseEntity.ok(accountInfo);  // 조회된 계좌 정보를 반환
-//        } else {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 계좌 정보가 없는 경우 404 처리
-//        }
-//    }
-
-
-//    // 적금 해지
-//    @GetMapping("/api/employee/savings-account-close-details/{accountId}")
-//    public ResponseEntity<?> getSavingsAccountInfo(@PathVariable("accountId") String accountId) {
-//        CloseSavingsAccountTotal savingsInfo = accountTradeFacade.findCloseSavingAccountTotal(accountId);
-//        return ResponseEntity.status(HttpStatus.OK).body(savingsInfo);
-//    }
-
+    
 
     /**
      * @Discription
@@ -160,7 +142,17 @@ public class AccountRestController {
         CloseSavingsAccountTotal closeSavingsAccountInfo = accountCloseFacade.getCloseSavingsAccount(accountId);
         return ResponseEntity.ok(closeSavingsAccountInfo);
     }
-    
+
+    /**
+     * 정기적금 해지 요청 api
+     * -
+     * */
+
+    @PostMapping("/api/employee/fixed-savings-account-close")
+    public ResponseEntity<?> closeFixedSavingsAccount(@RequestBody FixedSavingsAccountClose accountClose){
+        AccountCloseResult accountCloseResult = accountCloseFacade.closeFixedSavingsAccount(accountClose);
+        return ResponseEntity.ok(accountCloseResult);
+    }
     //------------------------------적금 계좌 개설-------------------------------------------
     /**
      * @Discription 
