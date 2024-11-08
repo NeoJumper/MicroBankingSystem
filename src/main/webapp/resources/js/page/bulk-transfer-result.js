@@ -91,11 +91,6 @@ function checkProgressStatus() {
                 }).then(() => {
                     location.reload(); // 페이지 새로 고침
                 });
-
-
-            }
-            else{
-                progressInterval = setInterval(checkProgressStatus, 2500);
             }
         },
         error: function(xhr, status, error) {
