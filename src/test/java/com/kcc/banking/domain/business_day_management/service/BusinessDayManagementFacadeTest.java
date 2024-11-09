@@ -29,7 +29,6 @@ public class BusinessDayManagementFacadeTest {
         VaultCashRequest build = VaultCashRequest.builder().vaultCash(BigDecimal.ZERO).build();
         // 지점 마감
         businessDayCloseService.closeBranchBusinessDay(businessDateAndBranchId, build);
-
         // 영업일 상태 변경
         businessDayService.businessDayStatusToClosed(businessDateAndBranchId.getBusinessDate());
 

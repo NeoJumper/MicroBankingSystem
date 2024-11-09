@@ -46,7 +46,7 @@ public class InitData {
                 v_end_date DATE := TO_DATE('2024-08-01', 'YYYY-MM-DD');
                 v_start_date DATE := TRUNC(ADD_MONTHS(v_end_date, -3));
             BEGIN
-                WHILE v_start_date <= v_end_date LOOP
+                WHILE v_start_date < v_end_date LOOP
                     INSERT INTO Business_day (business_date, status, is_current_business_day, version)
                     VALUES (
                         TRUNC(v_start_date),

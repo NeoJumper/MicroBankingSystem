@@ -203,7 +203,7 @@ public class AccountTradeFacade {
 
     //---------------------------------------------------------
     /**
-     *   @Description - 보통예금 계좌 해지
+     *   @Description - 계좌 해지
      *   1. 해지 계좌 정보 조회
      *   2. 계좌 해지 거래 내역 생성
      *   3. 계좌 잔액 및 상태 변경
@@ -219,13 +219,20 @@ public class AccountTradeFacade {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
         }
 
+        // 이미 해지된 계좌라면
+        AccountDetail accountDetail = accountService.getAccountDetail(accountClose.getAccId());
+        if(accountDetail.getStatus().equals("CLS")){
+            throw new BadRequestException(ErrorCode.ALREADY_CLOSED_ACCOUNT);
+        }
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1
         Long tradeNumber = tradeService.getNextTradeNumberVal();
 
-
+        // 해지 거래 추가
         TradeCreate tradeResult = tradeService.createCloseTrade(accountClose, currentData, tradeNumber);
+        // 계좌 업데이트
         AccountUpdate accountUpdate = accountService.updateByCloseTrade(accountClose, currentData);
+        // 이자 지급 여부 업데이트
         int paymentStatusResult = interestService.updateByClose(accountClose, currentData);
 
         // 행원 마감 출금액 변경

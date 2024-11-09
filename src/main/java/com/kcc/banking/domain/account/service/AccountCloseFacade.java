@@ -7,10 +7,7 @@ import com.kcc.banking.domain.account.dto.request.AccountClose;
 import com.kcc.banking.domain.account.dto.request.AccountUpdate;
 import com.kcc.banking.domain.account.dto.request.FixedSavingsAccountClose;
 import com.kcc.banking.domain.account.dto.request.FlexibleSavingsAccountClose;
-import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
-import com.kcc.banking.domain.account.dto.response.CloseFixedAccountDetail;
-import com.kcc.banking.domain.account.dto.response.CloseSavingsAccountTotal;
-import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
+import com.kcc.banking.domain.account.dto.response.*;
 import com.kcc.banking.domain.account.mapper.AccountMapper;
 import com.kcc.banking.domain.auto_transfer.service.AutoTransferService;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
@@ -239,6 +236,11 @@ public class AccountCloseFacade {
         // OPEN 상태가 아니라면
         if (!currentBusinessDay.getStatus().equals("OPEN")) {
             throw new BadRequestException(ErrorCode.NOT_OPEN);
+        }
+
+        AccountDetail accountDetail = accountService.getAccountDetail(accountClose.getAccId());
+        if(accountDetail.getStatus().equals("CLS")){
+            throw new BadRequestException(ErrorCode.ALREADY_CLOSED_ACCOUNT);
         }
 
         // 거래번호 조회 (trade_num_seq): return 거래번호 + 1

@@ -1,11 +1,19 @@
 package com.kcc.banking.domain.interest.controller;
 
+import com.kcc.banking.common.util.AuthenticationUtils;
 import com.kcc.banking.domain.account.dto.request.FlexibleSavingsAccountClose;
 import com.kcc.banking.domain.account.dto.response.AccountCloseResult;
 import com.kcc.banking.domain.account.dto.response.CloseSavingsFlexibleAccountTotal;
 import com.kcc.banking.domain.account.service.AccountCloseFacadeTest;
+import com.kcc.banking.domain.business_day.dto.request.BusinessDayChange;
+import com.kcc.banking.domain.business_day.dto.request.WorkerData;
 import com.kcc.banking.domain.business_day.dto.response.BusinessDay;
+import com.kcc.banking.domain.business_day.service.BusinessDayService;
 import com.kcc.banking.domain.business_day_close.controller.BusinessDayCloseControllerTest;
+import com.kcc.banking.domain.business_day_close.dto.request.BranchClosingCreate;
+import com.kcc.banking.domain.business_day_close.dto.request.EmployeeClosingCreate;
+import com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper;
+import com.kcc.banking.domain.business_day_close.service.BusinessDayCloseService;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.interest.dto.response.InterestDetails;
 import com.kcc.banking.domain.interest.mapper.InterestMapper;
@@ -55,6 +63,12 @@ public class InterestCalculationTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private BusinessDayService businessDayService;
+
+    @Autowired
+    private BusinessDayCloseMapper businessDayCloseMapper;
+
     @BeforeEach
     public void setUp() {
         // 필요한 경우 테스트 데이터 설정
@@ -81,7 +95,7 @@ public class InterestCalculationTest {
         String firstPlsql = """
             DECLARE
                 v_date DATE := TO_DATE('2024-08-01', 'YYYY-MM-DD');
-                v_end_date DATE := TRUNC(ADD_MONTHS(v_date, 16));
+                v_end_date DATE := TRUNC(ADD_MONTHS(v_date, 10));
             BEGIN
                 WHILE v_date <= v_end_date LOOP
                     INSERT INTO Business_day (business_date, status, is_current_business_day, version)
@@ -105,7 +119,7 @@ public class InterestCalculationTest {
                 v_end_date DATE := TO_DATE('2024-08-01', 'YYYY-MM-DD');
                 v_start_date DATE := TRUNC(ADD_MONTHS(v_end_date, -3));
             BEGIN
-                WHILE v_start_date <= v_end_date LOOP
+                WHILE v_start_date < v_end_date LOOP
                     INSERT INTO Business_day (business_date, status, is_current_business_day, version)
                     VALUES (
                         TRUNC(v_start_date),
@@ -128,7 +142,7 @@ public class InterestCalculationTest {
                 status = 'OPEN',
                 is_current_business_day = 'TRUE',
                 version = 2
-            WHERE business_date = '25/11/02'
+            WHERE business_date = '24/08/01'
             """;
 
         jdbcTemplate.execute(firstPlsql);
@@ -157,7 +171,7 @@ public class InterestCalculationTest {
     public void testInterestAccumulationOverYear() {
         // 시작 날짜와 종료 날짜 설정
         LocalDate startDate = LocalDate.of(2024, 8, 1);
-        LocalDate endDate = startDate.plusMonths(15);
+        LocalDate endDate = startDate.plusMonths(5);
 
 
         String startDay = startDate.atStartOfDay().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -193,6 +207,28 @@ public class InterestCalculationTest {
 
             // 영업일 마감 시뮬레이션 - 내부 로직에서 interest 테이블에 마감 시 이자내역 생성
             businessDayCloseControllerTest.businessDayCloseOfManagerForTest(businessDateAndBranchId, currentData);
+
+            // 영업일 변경
+            BusinessDay currentBusinessDay = businessDayService.getCurrentBusinessDay();
+            BusinessDay nextBusinessDay = businessDayService.getNextBusinessDay();
+
+            BusinessDayChange businessDayChange = new BusinessDayChange();
+            businessDayChange.setBusinessDateToChange(businessDate);
+            businessDayChange.setPrevCashBalanceOfBranch(BigDecimal.valueOf(10000000));
+            List<WorkerData> list = new ArrayList<>();
+            list.add(WorkerData.builder().id("1").prevCashBalance(BigDecimal.valueOf(100000)).status("CLOSED").build());
+            businessDayChange.setWorkerDataList(list);
+
+            // CLOSED TRUE - FALSE
+            businessDayService.businessDayChange(currentBusinessDay, nextBusinessDay);
+            Long tradeNumber = businessDayCloseMapper.getNextTradeNumberVal();
+
+            businessDateAndBranchId.setBusinessDate(nextBusinessDay.getBusinessDate());
+            // 영업일 생성
+            createEmployeeClosing(businessDayChange.getWorkerDataList(),businessDayChange.getBusinessDateToChange(), businessDateAndBranchId, tradeNumber);
+            createBranchClosing(businessDayChange.getBusinessDateToChange(), businessDayChange.getPrevCashBalanceOfBranch(), tradeNumber, businessDateAndBranchId);
+
+
             // 매월 1일에 이자 계산 및 검증
             if (date.getDayOfMonth() == 1) {
                 // 이자 내역 가져오기
@@ -250,7 +286,31 @@ public class InterestCalculationTest {
         interestLog(accountSimple, expectedSimpleInterests, totalExpectedInterestSimple, accountCompound, expectedCompoundInterests, totalExpectedInterestCompound);
 
         // 해지 테스트
-        //closeTest(endDate);
+        closeTest(endDate);
+
+    }
+
+    private void createBranchClosing(String businessDateToChange, BigDecimal prevCashBalanceOfBranch, Long tradeNumber, BusinessDateAndBranchId businessDateAndBranchId) {
+        Long loginMemberId = AuthenticationUtils.getLoginMemberId();
+
+        BranchClosingCreate branchClosingCreate = BranchClosingCreate.builder()
+                .closingDate(businessDateToChange)
+                .branchId(businessDateAndBranchId.getBranchId())
+                .status("OPEN")
+                .prevCashBalance(prevCashBalanceOfBranch)
+                .tradeNumber(tradeNumber)
+                .registrantId(String.valueOf(loginMemberId))
+                .build();
+
+        businessDayCloseMapper.insertBranchClosing(branchClosingCreate);
+    }
+
+    public void createEmployeeClosing(List<WorkerData> workerDataList, String businessDateToChange, BusinessDateAndBranchId businessDateAndBranchId, Long tradeNumber) {
+
+        List<EmployeeClosingCreate> employeeClosingCreateList = workerDataList.stream().map(workerData -> EmployeeClosingCreate.of(workerData,businessDateToChange, businessDateAndBranchId, tradeNumber))
+                .toList();
+
+        businessDayCloseMapper.batchInsertEmployeeClosing(employeeClosingCreateList);
 
     }
 

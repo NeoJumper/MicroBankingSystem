@@ -103,7 +103,7 @@ public class BusinessDayCloseService {
                 .targetBranchId(Long.valueOf(businessDateAndBranchId.getBranchId()))
                 .modifierId(loginMemberId)
                 .status("CLOSED")
-                .vaultCash(vaultCashRequest.getVaultCash()) // 임의의 값 수정해줘야함
+                .vaultCash(vaultCashRequest.getVaultCash())
                 .build();
 
         businessDayCloseMapper.updateBranchClosing(branchClosingUpdate);

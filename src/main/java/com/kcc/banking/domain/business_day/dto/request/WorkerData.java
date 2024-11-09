@@ -18,7 +18,6 @@ public class WorkerData {
     @Builder
     public WorkerData(String id, BigDecimal prevCashBalance, String status) {
         this.id = id;
-
         this.prevCashBalance = prevCashBalance;
         this.status = status;
     }

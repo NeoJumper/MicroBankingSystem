@@ -544,12 +544,13 @@ function savingAccountFlexibleCloseRequest() {
 
     // 자유적금 해지를 위한 계좌 세부 정보
     // return CloseSavingsFlexibleAccountTotal
-    /*    $.ajax({
-            url: '/api/employee/close-trade',
+
+        $.ajax({
+            url: '/api/employee/flexible-savings-account-close',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                accId: accountNumber,
+                accId: accountId,
                 amount: totalAmount,
                 status: "CLS",
                 description: "자유 적금 계좌 해지",
@@ -558,7 +559,7 @@ function savingAccountFlexibleCloseRequest() {
             }),
             success: function (response) {
 
-                console.log("자유적금 계좌 해지 DATA", response);
+                console.log("!!!!!!!!!!!!!자유적금 계좌 해지 DATA", response);
                 swal({
                     title: "해지 성공",
                     text: "계좌 해지 완료되었습니다.",
@@ -566,5 +567,5 @@ function savingAccountFlexibleCloseRequest() {
                 });
 
             }
-        })*/
+        })
 }
