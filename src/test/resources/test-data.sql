@@ -48,12 +48,12 @@ VALUES (customer_seq.NEXTVAL, 1, '김태훈', '010-2222-3333', 'MALE', '850615-2
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
 VALUES (product_seq.NEXTVAL, 1, '네오자유행복적금', 2.5, SYSDATE, '12',
-        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
+        0.154, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
 --2
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
 VALUES (product_seq.NEXTVAL, 1, '네오자유청년행복적금', 3.5, SYSDATE, '12',
-        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
+        0.154, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
 
 
 -- 자율적금 복리
@@ -61,12 +61,12 @@ VALUES (product_seq.NEXTVAL, 1, '네오자유청년행복적금', 3.5, SYSDATE, 
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
 VALUES (product_seq.NEXTVAL, 1, '다달이더하는자유적금', 0.4, SYSDATE, '12',
-        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
+        0.154, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
 --4
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
 VALUES (product_seq.NEXTVAL, 1, '다달이행복청년자유적금', 0.6, SYSDATE, '12',
-        0.15, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
+        0.154, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
 
 ---------- 단리 자율 적금 생성 ----------
 -- 1번 상품

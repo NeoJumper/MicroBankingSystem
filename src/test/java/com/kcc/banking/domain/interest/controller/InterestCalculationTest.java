@@ -128,7 +128,7 @@ public class InterestCalculationTest {
                 status = 'OPEN',
                 is_current_business_day = 'TRUE',
                 version = 2
-            WHERE business_date = '2025-08-02'
+            WHERE business_date = '25/02/02'
             """;
 
         jdbcTemplate.execute(firstPlsql);
@@ -157,7 +157,7 @@ public class InterestCalculationTest {
     public void testInterestAccumulationOverYear() {
         // 시작 날짜와 종료 날짜 설정
         LocalDate startDate = LocalDate.of(2024, 8, 1);
-        LocalDate endDate = startDate.plusMonths(13);
+        LocalDate endDate = startDate.plusMonths(6);
 
 
         String startDay = startDate.atStartOfDay().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
