@@ -8,6 +8,13 @@ $(document).ready(function () {
     // 계좌정보
     searchAutoTransferAccountData();
 
+    // flatpickr("#auto-transfer-start-date-input", {
+    //     minDate: "2024-11-10",  // 최소 날짜 설정
+    //     dateFormat: "Y-m-d",     // 날짜 형식 설정
+    //     onChange: function(selectedDates, dateStr, instance) {
+    //         console.log("선택된 날짜:", dateStr);  // 선택된 날짜 출력
+    //     }
+    // });
 
     $('#search-modal-product-select-btn').click(function () {
         selectProduct();  // 선택된 상품 정보 입력 함수 호출
@@ -81,13 +88,25 @@ $(document).ready(function () {
         createSavingAccount();
     });
 
+
+    // 라디오 버튼과 버튼 요소 가져오기
+    const yesRadio = document.getElementById("yes-automatic-transfer");
+    const noRadio = document.getElementById("no-automatic-transfer");
+    // 라디오 버튼에 이벤트 리스너 추가
+    yesRadio.addEventListener("change", updateButtonState);
+    noRadio.addEventListener("change", updateButtonState);
+
+    // 초기 상태 설정 (초기에는 "아니오"가 선택되어 있으므로 활성화)
+    updateButtonState();
+
     // 입력 금액 포맷 변경
-    handleAmountInputFormat();
+  //  handleAmountInputFormat();
 });
-function handleAmountInputFormat(){
-    $('#auto-transfer-amount-input').on('input', function() {
+/*function handleAmountInputFormat(){
+    $('#expected-maturity-interest-input').on('input', function() {
         handleAmountFormat($(this));
     });
+
 }
 function handleAmountFormat(element){
 
@@ -116,7 +135,7 @@ function handleAmountFormat(element){
     // 변환된 값을 다시 input에 설정
     element.val(value);
 
-}
+}*/
 
 // 잔액 부족 알림 띄우기
 function checkBalance() {
@@ -179,6 +198,12 @@ function calculateTotalInterest() {
     $('#total-interest-input').val(totalInterest.toFixed(2)); // 소수점 2자리까지 출력
 }
 
+// 콤마를 추가하는 함수
+function addCommas(number) {
+    return number.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
 
 // 만기 예상 이자 계산 함수
 function calculateExpectedInterest() {
@@ -186,31 +211,46 @@ function calculateExpectedInterest() {
     const annualRate = parseFloat($('#total-interest-input').val());
     const months = parseInt($('#product-period-input').val().replace('월', '').trim(), 10); // '월' 제거
 
+    console.log(principal+"principal"+annualRate+"annualRate"+months+"months");
 
     // 만기 계산
-    const {interest, totalAmount} = calculateMaturity(principal, annualRate, months);
+    const interest = calculateMaturity(principal, annualRate, months);
+
+    const totalAmount  = interest + months*principal;
 
     // 이자와 총 금액 설정
-    $('#expected-maturity-interest-input').val(interest.toFixed(2)).css('color', 'green'); // 이자 입력
-    // 입력값 검증
-    // if (isNaN(principal) || isNaN(annualRate) || isNaN(months)) {
-    //     alert('모든 입력값이 숫자여야 합니다.');
-    //     return; // 잘못된 입력 시 함수 종료
-    // }
+    $('#expected-maturity-interest-input').val(addCommas(interest.toFixed(0))).css('color', 'green'); // 이자 입력
+
+    $('#expected-maturity-totalAmount-input').val(addCommas(totalAmount.toFixed(0))).css('color', 'blue'); // 이자 입력
 
 
 }
 
-// 만기 시 이자를 계산하고 총 금액을 반환하는 함수
-function calculateMaturity(principal, annualRate, months) {
-    // 월 단위 이자 계산: 원금 x 연이율 x 월수 / 12
-    const interest = (principal * (annualRate / 100) * months) / 12;
-    const totalAmount = principal + interest;
 
-    return {
-        interest: interest,      // 만기 시 주는 이자
-        totalAmount: totalAmount // 총 금액(원금 + 이자)
-    };
+function removeCommas(numberString) {
+    return numberString.replace(/,/g, '');
+}
+// 만기 시 이자를 계산하고 총 금액을 반환하는 함수
+function calculateMaturity(principal, finalInterestRate, months) {
+    let totalInterest = 0;
+
+    // 첫 번째 달: 연이율 * 12/12
+    let firstMonthInterestRate = finalInterestRate * (12 / 12);
+    let firstMonthInterest = principal * (firstMonthInterestRate / 100);
+    totalInterest += firstMonthInterest;
+
+    // 두 번째 달부터는 연이율 * 남은개월/12
+    for (let i = 2; i <= months; i++) {
+        let remainingMonths = months - i + 1; // 남은 개월 수 (12 -> 11 -> 10 ...)
+        let monthlyInterestRate = finalInterestRate * (remainingMonths / 12);
+
+        // 해당 달 이자 계산
+        let interestForMonth = principal * (monthlyInterestRate / 100);
+        totalInterest += interestForMonth;
+    }
+
+    // 소수점 4자리로 반올림 (round down equivalent)
+    return parseFloat(totalInterest.toFixed(4));
 }
 
 
@@ -412,8 +452,19 @@ function checkTransferPassword() {
 
 function AddInfoOfAutoTransferAccount(result) {
     const addTransferAccountInfo = document.getElementById("checked-transfer-account-div");
+    const savingsAccountCreateBtn = document.getElementById("savings-account-create-btn"); // 버튼 요소
 
-    addTransferAccountInfo.style.display = result ? "block" : "none";
+    if (result) {
+        // result가 true일 경우 (보이게 하고 버튼 활성화)
+        addTransferAccountInfo.style.display = "block"; // div 보이기
+        savingsAccountCreateBtn.disabled = false; // 버튼 활성화
+        savingsAccountCreateBtn.classList.remove("disabled"); // 비활성화 스타일 제거
+    } else {
+        // result가 false일 경우 (숨기고 버튼 비활성화)
+        addTransferAccountInfo.style.display = "none"; // div 숨기기
+        savingsAccountCreateBtn.disabled = true; // 버튼 비활성화
+        savingsAccountCreateBtn.classList.add("disabled"); // 비활성화 스타일 추가
+    }
 }
 
 // 적금 계좌 개설 함수
@@ -427,7 +478,7 @@ function AddInfoOfAutoTransferAccount(result) {
 //     });
 // }
 
-function createSavingAccount(){
+function createSavingAccount() {
 
     const customerId = $('#customer-id-input').val();
     const productId = $('#product-id-input').val();
@@ -438,6 +489,99 @@ function createSavingAccount(){
     const branchId = $('#branch-id-hidden').val();
     const accountType = "PRIVATE";
 
+    $.ajax({
+        type: 'POST',
+        url: '/api/employee/accounts',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            branchId: branchId,
+            customerId: customerId,
+            registerId: empId,
+            productId: productId,
+            preferentialInterestRate: preferentialInterestRate.replace('%', ''),
+            password: password,
+            balance: balance,
+            accountType: accountType,
+            tradeType: "OPEN"
+        }),
+        success: function (accountId) {
+            swal({
+                title: " 계좌 생성 성공",
+                text: "계좌가 성공적으로 개설되었습니다.",
+                icon: "success",
+                button: "닫기",
+            }).then(() => {
+                // swal의 닫기 버튼이 클릭된 후 실행
+                accountOpenResult(accountId); // 개설된 계좌 정보 성공 모달 호출
+            });
+
+        },
+        error: function (error) {
+            swal({
+                title: "검증 실패",
+                text: error.responseText,
+                icon: "error",
+                buttons: {
+                    cancel: true,
+                    confirm: false,
+                },
+            });
+        }
+
+    });//
+}
+function accountOpenResult(accountId) {
+
+    $.ajax({
+        url: '/api/employee/accounts/' + accountId,
+        method: 'GET',
+        success: function (data) {
+            console.log(data);
+
+            $('#savings-result-account-id-input').val(data.accId);
+            $('#savings-result-customer-name-input').val(data.customerName);
+            $('#savings-result-customer-number-input').val(data.customerId);
+            $('#savings-result-phone-number-input').val(data.phoneNumber); // 필요시 추가
+
+            $('#savings-result-product-name-input').val(data.productName);
+
+            $('#savings-result-start-date-input').val(data.startDate.split(' ')[0]);
+
+            $('#savings-result-branch-name-input').val(data.branchName);
+            $('#savings-result-registrant-name-input').val(data.registrantName);
+
+            $('#savings-result-product-interest-input').val(data.interestRate);
+            $('#savings-result-preferred-interest-input').val(data.preferentialInterestRate);
+
+            $('#savings-result-balance-input').val(data.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+            $('#savings-result-total-interest-input').val(data.totalInterestRate);
+
+            $("#savings-result-modal").modal("show");
+
+
+        },
+        error: function (error) {
+            $('#product-interest-input').val('error');
+        }
+    });
+}
+// 초기 상태에 맞게 버튼을 설정하는 함수
+function updateButtonState() {
+    const savingsAccountCreateBtn = document.getElementById("savings-account-create-btn");
+    const yesRadio = document.getElementById("yes-automatic-transfer");
+
+    if (yesRadio.checked) {
+        savingsAccountCreateBtn.disabled = true;  // 버튼 비활성화
+        savingsAccountCreateBtn.classList.add('disabled');  // 비활성화 스타일 추가
+    } else {
+        savingsAccountCreateBtn.disabled = false;  // 버튼 활성화
+        savingsAccountCreateBtn.classList.remove('disabled');  // 비활성화 스타일 제거
+    }
+}
+
+
+
+/*
     var savingsAccount = {
         branchId: branchId,
         customerId: customerId,
@@ -445,7 +589,7 @@ function createSavingAccount(){
         productId: productId,
         preferentialInterestRate: preferentialInterestRate,
         password: password,
-        balance: removeCommas(balance),
+        balance: balance,
         accountType: accountType,
         tradeType: "OPEN"
     };
@@ -494,4 +638,53 @@ function createSavingAccount(){
 
     });
 
-}
+*/
+
+
+// 특정 날짜 설정 (예: 2024년 11월 10일)
+  /*  const specificDate = new Date('2024-11-10');
+
+    // '예' 버튼이 선택된 경우 한 달 뒤 날짜 계산
+    function getNextMonthDate(date) {
+        const nextMonthDate = new Date(date);
+        nextMonthDate.setMonth(date.getMonth() + 1); // 한 달 뒤로 설정
+        return nextMonthDate;
+    }
+
+    // 날짜 선택기 설정
+    function setFlatpickr() {
+        const isYesSelected = document.getElementById('yes-cash-transfer').checked; // '예' 버튼이 선택되었는지 여부
+        const dateInput = document.getElementById('auto-transfer-start-date-input');
+
+        // '예' 버튼 선택 시: specificDate의 다음 달 이후 날짜만 선택 가능
+        if (isYesSelected) {
+            const nextMonthDate = getNextMonthDate(specificDate);
+            flatpickr(dateInput, {
+                minDate: nextMonthDate.toISOString().split('T')[0], // 다음 달부터 선택 가능
+                dateFormat: "Y-m-d", // 날짜 형식 (YYYY-MM-DD)
+                onChange: function(selectedDates, dateStr, instance) {
+                    // '예' 버튼을 선택한 경우 선택된 날짜가 한 달 뒤의 날짜 이상이어야 한다는 조건 확인
+                    if (new Date(dateStr) <= nextMonthDate) {
+                        alert('입력된 날짜는 ' + nextMonthDate.toISOString().split('T')[0] + ' 이후여야 합니다.');
+                        dateInput.value = ''; // 잘못된 날짜 입력을 지운다
+                    }
+                }
+            });
+        }
+        // '아니오' 버튼 선택 시: specificDate 이후 날짜만 선택 가능
+        else {
+            flatpickr(dateInput, {
+                minDate: specificDate.toISOString().split('T')[0], // specificDate 이후 날짜만 선택 가능
+                dateFormat: "Y-m-d", // 날짜 형식 (YYYY-MM-DD)
+                onChange: function(selectedDates, dateStr, instance) {
+                    // '아니오' 버튼을 선택한 경우 선택된 날짜가 specificDate 이후여야 한다는 조건 확인
+                    if (new Date(dateStr) <= specificDate) {
+                        alert('입력된 날짜는 ' + specificDate.toISOString().split('T')[0] + ' 이후여야 합니다.');
+                        dateInput.value = ''; // 잘못된 날짜 입력을 지운다
+                    }
+                }
+            });
+        }
+    }*/
+
+

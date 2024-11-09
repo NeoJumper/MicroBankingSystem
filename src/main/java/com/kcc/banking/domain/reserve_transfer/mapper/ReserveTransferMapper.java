@@ -14,16 +14,17 @@ public interface ReserveTransferMapper {
 
     void createReserveTransfer(ReserveTransferCreate reserveTransferCreate);
 
-    void updateTransferStatus(@Param("reserveTransferId") String reserveTransferId, @Param("status") String status, @Param("failureReason") String failureReason);
+    void updateReserveTransferStatus(@Param("reserveTransferId") String reserveTransferId, @Param("status") String status, @Param("failureReason") String failureReason);
 
     List<TransferTradeCreate> getPendingTransfers(SearchReserve searchReserve);
     
     // 당일 자동이체 -> 예약이체로 등록하기
     void insertScheduledAutoTransfer(ReserveTransferCreate reserveTransferCreate);
 
-    void countMissedTransferOfAutoTransfer(String reserveTransferId);
+    void updateMissedTransferOfAutoTransfer(String reserveTransferId);
 
     Timestamp findAutoReserveDate(String reserveTransferId);
 
+    String countAutoReserveSuccess(String autoTransferId);
 }
 

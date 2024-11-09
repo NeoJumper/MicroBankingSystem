@@ -357,7 +357,8 @@ function getSavingsAccount(data, accountId) {
             }
 
             console.log("FINAL INTEREST::", finalInterestRate);
-            savingAccountFixedCloseRequest(data);
+            findSavingAccountFixedCloseInfo(data);
+            addFixedInterest(data, finalInterestRate);
 
         },
         error: function (error) {
@@ -368,89 +369,6 @@ function getSavingsAccount(data, accountId) {
 
 }
 
-
-// 일수 계산 : 적금 해지시 해지일까지의 총 개월 수 & 일 수 계산
-/*
-function calculateSavingsMonths(nowDate, startDate) {
-    const currentDate = new Date(nowDate);
-    const startDateObj = new Date(startDate);
-
-    const startMonth = startDateObj.getMonth(); // 시작 월 (0부터 시작)
-    const endMonth = currentDate.getMonth(); // 현재 월 (0부터 시작)
-
-    // 월별 일수
-    const daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-    // 윤년을 고려하여 2월의 일수
-    if ((currentDate.getFullYear() % 4 === 0 && currentDate.getFullYear() % 100 !== 0) ||
-        (currentDate.getFullYear() % 400 === 0)) {
-        daysInMonths[1] = 29; // 윤년인 경우 2월은 29일
-    }
-
-    let totalDays = 0;
-
-    // 시작 월의 남은 일수 계산
-    if (startMonth === endMonth) {
-        totalDays = currentDate.getDate() - startDateObj.getDate() + 1;
-    } else {
-        // 시작 월의 남은 일수
-        totalDays += daysInMonths[startMonth] - startDateObj.getDate() + 1;
-
-        // 중간 월의 전체 일수 계산
-        for (let month = startMonth + 1; month < endMonth; month++) {
-            totalDays += daysInMonths[month];
-        }
-
-        // 해지시 총 일수
-        totalDays += currentDate.getDate();
-    }
-
-    // 총 적금 개월 수
-    const monthsSaved = endMonth - startMonth + 1;
-
-    return {
-        totalDays,
-        monthsSaved
-    };
-}
-
-function calculateSelectedRate(openDate, businessDate, period, interestRateSum) {
-    // 기존 함수 호출
-    const rateData = calculateRateData(openDate, businessDate, period, interestRateSum);
-
-    // 각 조건에 대해 체크하고 첫 번째 맞는 값 반환
-    if (rateData["under-1m"]) {
-        return rateData["under-1m"];
-    }
-    if (rateData["under-3m"]) {
-        return rateData["under-3m"];
-    }
-    if (rateData["under-6m"]) {
-        return rateData["under-6m"];
-    }
-    if (rateData["over-6m"]) {
-        return rateData["over-6m"];
-    }
-    if (rateData["between-9-11m"]) {
-        return rateData["between-9-11m"];
-    }
-    if (rateData["over-11m"]) {
-        return rateData["over-11m"];
-    }
-    if (rateData["maturity"]) {
-        return rateData["maturity"];
-    }
-    if (rateData["post-maturity-1m"]) {
-        return rateData["post-maturity-1m"];
-    }
-    if (rateData["post-maturity-1m-plus"]) {
-        return rateData["post-maturity-1m-plus"];
-    }
-
-    return "조건에 맞는 이율이 없습니다"; // 모든 조건이 만족하지 않을 경우
-}
-
-*/
 
 function checkAccountId() {
     const inputId = $('#savings-account-close-password').val();
@@ -506,7 +424,99 @@ function submitSavingAccountClose() {
 
 // 정기적금 해지 프로세스
 function savingAccountFixedCloseRequest() {
+    var accountId = $('#savings-account-close-number').val();
+    // 첫 번째 행에서 "finalInterestRate"와 "totalAmount" 값 가져오기
+    var firstRow = $('#savings-fixed-account-result tbody tr').eq(0); // 첫 번째 tr 선택
 
+    var closeType = firstRow.find('#fixed-closed-type').text();  // closeType
+    var totalAmount = firstRow.find('#fixed-amount').text();
+    //해지 버튼 클릭
+    $.ajax({
+            url: "/api/employee/fixed-savings-account-close",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                accId: accountId,
+                amount: totalAmount,
+                status: "CLS",
+                description: "정기 적금 계좌 해지",
+                tradeType: "CLOSE",
+                closeType: closeType
+            }),
+            success: function (response) {
+
+                console.log("정기적금 계좌 해지 DATA", response);
+                swal({
+                    title: "해지 성공",
+                    text: "계좌 해지 완료되었습니다.",
+                    icon: "success",
+                });
+
+            }
+    
+        }
+    );
+
+
+}
+
+// 정기적금 정보 출력하기
+function findSavingAccountFixedCloseInfo(data) {
+    /* ------자동이체 데이터------*/
+
+    console.log(data.targetAccId + 'data.targetAccId');
+
+    $('#saving-account-result-account-number').text(data.autoAccId);
+    $('#saving-account-result-amount').text(data.fixedAmount);
+    $('#saving-account-result-total-payCount').text(data.autoTransferCount);
+    $('#saving-account-result-start-date').text(data.autoTransferStartDate);
+    $('#saving-account-result-end-date').text(data.autoTransferEndDate);
+
+    // 계약이율
+    const realTotalInsert = (data.productInterestRate) + (data.accountInterestRate)
+    $('#saving-account-result-total-interest').text(realTotalInsert);
+
+    /* ------상품 데이터------*/
+    $('#saving-account-result-interest-type').text(data.productType);
+
+    $('#saving-account-result-product-interest').text(data.productInterestRate);
+    $('#saving-account-result-account-interest').text(data.accountInterestRate);
+    $('#saving-account-result-tax-interest').text(data.productTaxRate);
+}
+
+
+function addFixedInterest(data, finalInterestRate) {
+    // tbody 준비
+    let tbody = $('#savings-fixed-account-result').find('tbody');
+    tbody.empty();
+
+    if (data == null || data.length === 0) {
+        // 데이터가 없을 경우 기본 메시지를 추가
+        tbody.append(`
+                <tr class="saving-account-close-empty-message">
+                    <td colspan="6" style="text-align: center; color: gray; border-bottom: none; height: 100px">
+                        이자 내역이 존재하지 않습니다.
+                    </td>
+                </tr>
+            `);
+    } else {
+        // data 리스트의 각 항목을 tbody에 추가
+
+        var row = "<tr>" +
+            "<td id ='fixed-closed-type' style='width: 5%;'>" + data.closeType + "</td>" +
+            "<td id ='fixedFinalInterestRate' style='width: 20%;'>" + data.finalInterestRate + "</td>" +
+            "<td style='width: 15%;'>" + data.productTaxRate + "</td>" +
+            "<td style='width: 25%'>" + data.interestCashSum + " 원</td>" +
+            "<td style='width: 20%;'>" + data.totalInterestAfterTax + " 원</td>" +
+            "<td id ='fixed-amount' style='width: 17%;'>" + data.totalAmount + "</td>" +  <!-- 세후 이자 -->
+
+            "</tr>";
+
+        // tbody에 추가
+        $('#savings-fixed-account-result').append(row);
+
+
+    }
 }
 
 // 자유적금 해지 프로세스
@@ -522,11 +532,11 @@ function savingAccountFlexibleCloseRequest() {
             success: function (data) {
                 console.log("RE_DATA", data);
             }, error: function (error) {
-            swal({
-                title: "해지 실패",
-                text: error,
-                icon: "error",
-            });
+                swal({
+                    title: "해지 실패",
+                    text: error,
+                    icon: "error",
+                });
             }
         }
     );
@@ -534,27 +544,27 @@ function savingAccountFlexibleCloseRequest() {
 
     // 자유적금 해지를 위한 계좌 세부 정보
     // return CloseSavingsFlexibleAccountTotal
-/*    $.ajax({
-        url: '/api/employee/close-trade',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            accId: accountNumber,
-            amount: totalAmount,
-            status: "CLS",
-            description: "자유 적금 계좌 해지",
-            tradeType: "CLOSE",
-            closeType: closeType
-        }),
-        success: function (response) {
+    /*    $.ajax({
+            url: '/api/employee/close-trade',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                accId: accountNumber,
+                amount: totalAmount,
+                status: "CLS",
+                description: "자유 적금 계좌 해지",
+                tradeType: "CLOSE",
+                closeType: closeType
+            }),
+            success: function (response) {
 
-            console.log("자유적금 계좌 해지 DATA", response);
-            swal({
-                title: "해지 성공",
-                text: "계좌 해지 완료되었습니다.",
-                icon: "success",
-            });
+                console.log("자유적금 계좌 해지 DATA", response);
+                swal({
+                    title: "해지 성공",
+                    text: "계좌 해지 완료되었습니다.",
+                    icon: "success",
+                });
 
-        }
-    })*/
+            }
+        })*/
 }

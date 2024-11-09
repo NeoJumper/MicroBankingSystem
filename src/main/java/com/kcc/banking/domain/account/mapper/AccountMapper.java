@@ -53,4 +53,8 @@ public interface AccountMapper {
 
     // 자유적금 해지 시 조회
     CloseSavingsFlexibleAccountTotal findCloseSavingsFlexibleAccountById(String accountId);
+
+    // 정기적금 정기 입금 금액 + 거래횟수 조회
+    CloseFixedAccountDetail findFixedDetailOfSavingsAccount(String accId);
+
 }
