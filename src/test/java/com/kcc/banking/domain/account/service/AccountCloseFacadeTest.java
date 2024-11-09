@@ -177,13 +177,13 @@ public class AccountCloseFacadeTest {
                     interestDetails.setPreferentialInterestRate(BigDecimal.ZERO);  // 중도 해지 시 우대금리 제거
 
                     // 첫 번째 달은 이전 잔액이 없으므로 계산하지 않음
-                    BigDecimal subtractBalance;
-                    if (i == 0) {
+                    BigDecimal subtractBalance = interestDetails.getBalance();
+/*                    if (i == 0) {
                         subtractBalance = interestDetails.getBalance();  // 첫 번째 달의 잔액을 그대로 사용
                     } else {
                         // 현재 잔액에서 이전 잔액을 뺀 값 (이번 달 새로 추가된 금액)
                         subtractBalance = interestDetails.getBalance().subtract(interestDetailsList.get(i - 1).getBalance());
-                    }
+                    }*/
 
                     // 단리 이자 계산: 이번 달 새로 추가된 금액 * 월 이율(이율 / 12)
                     BigDecimal interestAmount = subtractBalance.multiply(finalInterestRate.divide(BigDecimal.valueOf(12), 4, RoundingMode.DOWN)).setScale(4, RoundingMode.DOWN);

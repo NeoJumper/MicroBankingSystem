@@ -293,7 +293,6 @@ function addInterestList(interestDetailsList, finalInterestRate) {
                         <td><input type="text" value="${item.amount.toLocaleString()}" disabled /> 원</td>
                     </tr>
                 `;
-            interestSum += item.amount;
             tbody.append(row);
         });
     }

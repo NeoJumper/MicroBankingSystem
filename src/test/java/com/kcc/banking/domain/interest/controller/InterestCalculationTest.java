@@ -81,7 +81,7 @@ public class InterestCalculationTest {
         String firstPlsql = """
             DECLARE
                 v_date DATE := TO_DATE('2024-08-01', 'YYYY-MM-DD');
-                v_end_date DATE := TRUNC(ADD_MONTHS(v_date, 3));
+                v_end_date DATE := TRUNC(ADD_MONTHS(v_date, 12));
             BEGIN
                 WHILE v_date <= v_end_date LOOP
                     INSERT INTO Business_day (business_date, status, is_current_business_day, version)
@@ -128,7 +128,7 @@ public class InterestCalculationTest {
                 status = 'OPEN',
                 is_current_business_day = 'TRUE',
                 version = 2
-            WHERE business_date = '24/08/02'
+            WHERE business_date = '25/02/02'
             """;
 
         jdbcTemplate.execute(firstPlsql);
@@ -247,10 +247,10 @@ public class InterestCalculationTest {
         //assertEquals(totalExpectedInterestCompound.setScale(4, RoundingMode.DOWN), accumulatedInterestCompound.setScale(4, RoundingMode.DOWN));
 
         // 이자내역 log
-        //interestLog(accountSimple, expectedSimpleInterests, totalExpectedInterestSimple, accountCompound, expectedCompoundInterests, totalExpectedInterestCompound);
+        interestLog(accountSimple, expectedSimpleInterests, totalExpectedInterestSimple, accountCompound, expectedCompoundInterests, totalExpectedInterestCompound);
 
         // 해지 테스트
-        closeTest(endDate);
+        //closeTest(endDate);
 
     }
 
