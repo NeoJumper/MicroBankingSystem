@@ -277,7 +277,8 @@
         p.account_type,
         p.product_type,
         p.interest_calculation_method,
-        p.period
+        p.period,
+        ac.open_date
         FROM account ac
         JOIN product p ON ac.product_id = p.id
         WHERE ac.branch_id = #{branchId}

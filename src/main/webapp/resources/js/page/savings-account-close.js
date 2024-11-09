@@ -541,6 +541,7 @@ function savingAccountFlexibleCloseRequest() {
         }
     );
 
+
     // 자유적금 해지를 위한 계좌 세부 정보
     // return CloseSavingsFlexibleAccountTotal
     /*    $.ajax({

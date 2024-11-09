@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -77,7 +78,29 @@ public class InterestService {
                             .findFirst()
                             .orElse(null); // 일치하는 InterestSum이 없을 경우 null 반환
 
-                    return SavingInterestCreate.of(account, currentData.getEmployeeId(), businessDateAndBranchId, tradeNumber, matchingInterestSum);
+                    // currentBusinessDate 만기일을 넘겼을 경우
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                    LocalDate openDateParsed = LocalDate.parse(account.getOpenDate(), formatter);
+                    LocalDate maturityDate = openDateParsed.plusMonths(Integer.parseInt(account.getPeriod()));
+                    LocalDate currentDate = LocalDate.parse(currentData.getCurrentBusinessDate(), formatter);
+
+                    // 만기일의 다음 달 1일을 기준으로 시작
+                    LocalDate oneMonthAfterMaturityFirstDay = maturityDate.plusMonths(1).withDayOfMonth(1);
+                    LocalDate twoMonthsAfterMaturityFirstDay = maturityDate.plusMonths(2).withDayOfMonth(1);
+
+                    // 기본을 만기 전으로 설정
+                    SavingInterestCreate.MaturityStatus afterType = SavingInterestCreate.MaturityStatus.BEFORE_MATURITY;
+                    if (currentDate.isBefore(maturityDate)) {
+                        afterType = SavingInterestCreate.MaturityStatus.BEFORE_MATURITY;
+                    } else if (!currentDate.isBefore(oneMonthAfterMaturityFirstDay) && currentDate.isBefore(twoMonthsAfterMaturityFirstDay)) {
+                        afterType = SavingInterestCreate.MaturityStatus.AFTER_MATURITY_WITHIN_ONE_MONTH;
+                    } else if (!currentDate.isBefore(twoMonthsAfterMaturityFirstDay)) {
+                        afterType = SavingInterestCreate.MaturityStatus.AFTER_MATURITY_BEYOND_ONE_MONTH;
+                    }
+
+
+                    return SavingInterestCreate.of(account, currentData.getEmployeeId(), businessDateAndBranchId, tradeNumber, matchingInterestSum, afterType);
                 })
                 .toList();
 

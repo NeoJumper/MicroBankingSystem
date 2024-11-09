@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+
 @NoArgsConstructor
 @Setter
 @Getter
@@ -28,6 +29,13 @@ public class SavingInterestCreate {
     private Long registrantId; // 생성한 사람
     private String creationDate; // 생성일
     private Long version;
+
+    public enum MaturityStatus {
+        BEFORE_MATURITY,
+        AFTER_MATURITY_WITHIN_ONE_MONTH,
+        AFTER_MATURITY_BEYOND_ONE_MONTH
+    }
+
 
     @Builder
     public SavingInterestCreate(Long id, String accId, BigDecimal amount, BigDecimal balance,BigDecimal interestRate, BigDecimal preferentialInterestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, String creationDate, Long version) {
@@ -58,15 +66,32 @@ public class SavingInterestCreate {
      * 3. 지급 상태는 모두 N
      * 4. branchId와 registrantId는 마감 진행자인 매니저 ID
      */
-    public static SavingInterestCreate of(AccountDetailForInterest accountDetail, Long loginMemberId, BusinessDateAndBranchId businessDateAndBranchId, String tradeNumber, InterestSum interestSavingSum) {
+    public static SavingInterestCreate of(AccountDetailForInterest accountDetail, Long loginMemberId, BusinessDateAndBranchId businessDateAndBranchId, String tradeNumber, InterestSum interestSavingSum, MaturityStatus afterType) {
         // 잔액 및 이자율 합산
         BigDecimal balance = accountDetail.getBalance();
         // 이자율을 퍼센트에서 소수로 변환 후 합산 (2.6% -> 0.026)
         BigDecimal interestRateSum = accountDetail.getInterestRate().add(accountDetail.getPreferentialInterestRate())
                 .divide(BigDecimal.valueOf(100));
 
+        // 만기 후 한달 이내일 때
+        if (afterType.equals(MaturityStatus.AFTER_MATURITY_WITHIN_ONE_MONTH)) {
+            // 금리 절반 변경
+            interestRateSum = interestRateSum.multiply(BigDecimal.valueOf(0.5)).setScale(4, RoundingMode.DOWN); // 기본금리의 1/2
+            accountDetail.setInterestRate(interestRateSum);
+            // 우대이율 ZERO로 변경
+            accountDetail.setPreferentialInterestRate(BigDecimal.ZERO);
+        }
+        // 만기 후 한달 초과일 때
+        else if (afterType.equals(MaturityStatus.AFTER_MATURITY_BEYOND_ONE_MONTH)) {
+            interestRateSum = interestRateSum.multiply(BigDecimal.valueOf(0.25)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/4
+            accountDetail.setInterestRate(interestRateSum);
+            // 우대이율 ZERO로 변경
+            accountDetail.setPreferentialInterestRate(BigDecimal.ZERO);
+        }
+
         // 월 이자율 계산 (연 이자율을 12로 나눔, 소수점 자릿수 유지)
         BigDecimal monthlyInterestRate = interestRateSum.divide(BigDecimal.valueOf(12), 4, RoundingMode.DOWN);
+
 
 
         // 이자 계산 (단리 또는 복리)

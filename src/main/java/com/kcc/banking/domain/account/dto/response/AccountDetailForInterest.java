@@ -3,12 +3,14 @@ package com.kcc.banking.domain.account.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class AccountDetailForInterest {
     private String accId;
     private Long branchId;
@@ -17,6 +19,7 @@ public class AccountDetailForInterest {
     private BigDecimal interestRate;
     private BigDecimal preferentialInterestRate;
     private BigDecimal balance;
+    private String openDate;
 
     // 예금 적금 유형 구분
     private String period;
@@ -29,7 +32,7 @@ public class AccountDetailForInterest {
 
 
     @Builder
-    public AccountDetailForInterest(String accId, Long branchId, Long productId, Long registrantId, BigDecimal interestRate, BigDecimal preferentialInterestRate, BigDecimal balance, String period, String productType, String interestCalculationMethod) {
+    public AccountDetailForInterest(String accId, Long branchId, Long productId, Long registrantId, BigDecimal interestRate, BigDecimal preferentialInterestRate, BigDecimal balance, String period, String productType, String interestCalculationMethod, String openDate) {
         this.accId = accId;
         this.branchId = branchId;
         this.productId = productId;
@@ -40,5 +43,6 @@ public class AccountDetailForInterest {
         this.period = period;
         this.productType = productType;
         this.interestCalculationMethod = interestCalculationMethod;
+        this.openDate = openDate;
     }
 }
