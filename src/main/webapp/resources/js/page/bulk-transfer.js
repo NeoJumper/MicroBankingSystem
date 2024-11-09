@@ -350,16 +350,24 @@ function updateEmployeeTable() {
         const krwText = isValidTransferAmount ?  convertToKoreanNumber(employee.transferAmount): '';
 
         const targetAccIdStyle = isValidTargetAccId ? {} : { color: '#D40000' };
-        const targetStatus = isValidTargetAccId ? {} : { color: '#D40000' };
+        const targetAccIdBackgroundStyle = isValidTargetAccId ? {} : { backgroundColor: '#ffa6a6' };
+
         const transferAmountStyle = isValidTransferAmount ? {} : { color: '#D40000' };
-        const depositorStyle = employee.status === '예금주 불일치' ? { color: '#FFA500'  } : {};
+        const transferAmountBackgroundStyle = isValidTransferAmount ? {} : { backgroundColor: '#ffa6a6' };
+
+        const depositorStyle = employee.status === '예금주 불일치' ? { color: '#ff7700'  } : {};
+        const depositorBackgroundStyle = employee.status === '예금주 불일치' ? { backgroundColor: '#ffe8a7'  } : {};
+        console.log(depositorBackgroundStyle);
+        console.log(depositorStyle);
+
+        const targetStatus = isValidTargetAccId ? {} : { color: '#D40000' };
 
         const transferInfoRow = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
         transferInfoRow.append($('<td>').text(index + 1));
-        transferInfoRow.append($('<td>').text(employee.targetAccId).css(targetAccIdStyle));
-        transferInfoRow.append($('<td>').text(transferAmountText).css(transferAmountStyle));
+        transferInfoRow.append($('<td>').text(employee.targetAccId).css(targetAccIdStyle).css(targetAccIdBackgroundStyle));
+        transferInfoRow.append($('<td>').text(transferAmountText).css(transferAmountStyle).css(transferAmountBackgroundStyle));
         transferInfoRow.append($('<td>').text(krwText));
-        transferInfoRow.append($('<td>').text(employee.depositor).css(depositorStyle));
+        transferInfoRow.append($('<td>').text(employee.depositor).css(depositorStyle).css(depositorBackgroundStyle));
         transferInfoRow.append($('<td>').text(''));
         transferInfoRow.append($('<td>').text(employee.description));
         transferInfoRow.append($('<td>').text(employee.status).css(targetStatus));
@@ -478,6 +486,15 @@ function uploadEmployeePreview() {
 }
 
 function validationExecution() {
+    if (validPassword === "")
+    {
+        swal({
+            title: "비밀번호 인증을 진행해주세요.",
+            // text: "비밀번호 인증 성공",
+            icon: "warning",
+        });
+        return;
+    }
     $.ajax({
         type: "POST",
         url: "/api/employee/bulk-transfer/validation",
@@ -498,10 +515,18 @@ function validationExecution() {
                     errorIndices.add(index);
                     statusStyle = {color: '#D40000'}
                 }
+                else if (employee.status === '예금주 불일치')
+                {
+                    statusStyle = {color: '#ff7700'}
+                }
                 // 예금주 불일치 확인
                 employee.validDepositor = employee.validDepositor === null ? '' : employee.validDepositor;
 
-                const depositorStyle = employee.status === '예금주 불일치' ? { color: '#FFA500'  } : {};
+
+
+
+                const depositorStyle = employee.status === '예금주 불일치' ? { color: '#ff7700'  } : {};
+                const depositorBackgroundStyle = employee.status === '예금주 불일치' ? { backgroundColor: '#ffe8a7'  } : {};
                 const depositorText = employee.status === '예금주 불일치' ? employee.validDepositor : employee.validDepositor;
                 totalTransferAmount += parseInt(employee.transferAmount);
                 totalCount += 1;
@@ -512,8 +537,8 @@ function validationExecution() {
                 row.append($('<td>').text(employee.targetAccId));
                 row.append($('<td>').text(comma(employee.transferAmount)));
                 row.append($('<td>').text(convertToKoreanNumber(employee.transferAmount)));
-                row.append($('<td>').text(employee.depositor).css(depositorStyle));
-                row.append($('<td>').text(depositorText).css(depositorStyle));
+                row.append($('<td>').text(employee.depositor).css(depositorStyle).css(depositorBackgroundStyle));
+                row.append($('<td>').text(depositorText).css(depositorStyle).css(depositorBackgroundStyle));
                 row.append($('<td>').text(employee.description));
                 row.append($('<td>').text(employee.status).css(statusStyle));
 
@@ -598,6 +623,8 @@ function transferExecution() {
 
     console.log("이체가능금액: "  + transferableAmount);
     console.log("총 이체 금액: " + totalTransferAmount);
+    console.log(JSON.stringify(employeeDataForUpload, null, 2));
+
     if(parseInt(comma(totalTransferAmount)) > transferableAmount){
         swal({
             title: " 대량 이체 등록 실패",
@@ -611,12 +638,12 @@ function transferExecution() {
                 const transferableAmount = $('#transferable-amount');
 
                 // 빨간색으로 변경
-                transferableAmount.css('color', 'red');
+                transferableAmount.attr('style', 'color: red !important; margin-left: 20px;');
 
                 // 2초 후에 원래 색상으로 복구
                 setTimeout(function() {
-                    transferableAmount.css('color', '#073082');
-                }, 2500); // 2000ms = 2초
+                    transferableAmount.attr('style', 'color: #073082 !important; margin-left: 20px;');
+                }, 2000);
             });
         });
     }

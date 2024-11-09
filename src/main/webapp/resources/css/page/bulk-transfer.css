@@ -88,7 +88,7 @@ section h4 {
     margin-top: 50px;
     border-radius: 15px;
     font-weight: bold;
-    font-size: 1.0rem;
+    font-size: 1.3rem;
     color: white;
     background-color: #093378;
     padding: 30px 0px;
@@ -448,7 +448,7 @@ p {
 }
 
 .employee-element:hover {
-    background-color: #f0f8ff; /* 연한 파란색 배경 */
+    background-color: #daeeff; /* 연한 파란색 배경 */
     color: #333; /* 텍스트 색상 */
     cursor: pointer; /* 클릭 가능한 커서 모양 */
 }
