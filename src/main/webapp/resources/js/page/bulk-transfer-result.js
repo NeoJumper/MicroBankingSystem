@@ -358,14 +358,21 @@ function fillBulkTransferInfoListBody(bulkTransferId) {
 function createRow(bulkTransferInfo, index) {
     const row = $('<tr>').addClass('bulk-transfer-info-element').attr('data-trade-id', bulkTransferInfo.id);
 
+    var bulkTransferInfoStatus = '';
+    if (bulkTransferInfo.status === 'NOR')
+        bulkTransferInfoStatus = '정상';
+    else if (bulkTransferInfo.status === 'FAIL')
+        bulkTransferInfoStatus = '실패';
+
+
     row.append($('<td><label><input type="checkbox"/></label></td>'));
     row.append($('<td>').text(index));
-    row.append($('<td>').text(bulkTransferInfo.status).css('color', bulkTransferInfo.status === 'FAIL' ? '#D40000' : ''));
+    row.append($('<td>').text(bulkTransferInfoStatus).css('color', bulkTransferInfo.status === 'FAIL' ? '#D40000' : ''));
     row.append($('<td>').text(bulkTransferInfo.targetAccId));
     row.append($('<td>').text(bulkTransferInfo.amount.toLocaleString()));
     row.append($('<td>').text(bulkTransferInfo.targetName));
     row.append($('<td>').text(bulkTransferInfo.description));
-    row.append($('<td>').text(bulkTransferInfo.failureReason));
+    row.append($('<td>').text(bulkTransferInfo.failureReason).css('color', bulkTransferInfo.status === 'FAIL' ? '#D40000' : ''));
 
     return row;
 }
