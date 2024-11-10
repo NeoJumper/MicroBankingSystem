@@ -711,7 +711,7 @@ VALUES (AUTO_TRANSFER_SEQ.nextval, '001-0000005-5678', '001-0000004-4567', 1000,
         TO_TIMESTAMP(TO_CHAR(SYSTIMESTAMP, 'YYYY/MM/DD'), 'YYYY/MM/DD'),
         1, 1, 0,
         TO_TIMESTAMP('2024/11/06 00:00:00', 'YYYY/MM/DD HH24:MI:SS'),
-        'ACTIVE')
+        'ACTIVE');
 -- 1회차 자동이체 설정
 INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
                            auto_transfer_start_date,
