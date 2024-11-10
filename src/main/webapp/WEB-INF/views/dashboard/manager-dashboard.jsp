@@ -4,12 +4,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8">
     <title>지점 관리 > 지점 운영</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/page/manager-dashboard.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -27,6 +30,7 @@
         <button class="basic-btn">
             조회
         </button>
+        <button class="basic-btn" onclick="saveChartsAsPDF()">차트 저장</button>
     </div>
 
     <div id="cash-transfer-amount" class="rounded-boxes">

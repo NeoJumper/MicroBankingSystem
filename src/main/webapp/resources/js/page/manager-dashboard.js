@@ -480,3 +480,117 @@ function getColor(index) {
     ];
     return colors[index % colors.length];
 }
+
+function saveChartsAsPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const options = { scale: 2, useCORS: true }; // 이미지 해상도 및 CORS 설정
+
+    // 웹 폰트 로드 완료 후 실행
+    document.fonts.ready.then(function () {
+        // 1. 표지 생성
+        const coverPage = document.createElement('div');
+        coverPage.style.width = '210mm'; // A4 사이즈
+        coverPage.style.height = '297mm';
+        coverPage.style.display = 'flex';
+        coverPage.style.flexDirection = 'column';
+        coverPage.style.justifyContent = 'center';
+        coverPage.style.alignItems = 'center';
+        coverPage.style.fontFamily = "'Noto Sans KR', sans-serif";
+        coverPage.style.fontSize = '14pt';
+
+        const title = document.createElement('h1');
+        title.innerText = '차트 보고서';
+        title.style.fontSize = '24pt';
+        title.style.marginBottom = '20px';
+
+        const date = document.createElement('p');
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        date.innerText = `생성 날짜: ${formattedDate}`;
+
+        const description = document.createElement('p');
+        description.innerText = '이 보고서는 일별, 주간별, 월별 거래량과 직원별 거래 현황을 포함합니다.\n아래 차트는 다양한 거래량과 거래 유형을 시각화한 것입니다.';
+        description.style.textAlign = 'center';
+        description.style.marginTop = '20px';
+
+        coverPage.appendChild(title);
+        coverPage.appendChild(date);
+        coverPage.appendChild(description);
+
+        document.body.appendChild(coverPage); // 렌더링을 위해 DOM에 추가
+
+        html2canvas(coverPage, options).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+            pdf.addPage();
+
+            document.body.removeChild(coverPage); // 표지 제거
+
+            // 2. 각 차트 처리
+            const charts = [
+                { element: document.getElementById('dailyTransactionVolumeChart'), title: '일별 거래량' },
+                { element: document.getElementById('dailyTransactionChart'), title: '일별 거래 유형' },
+                { element: document.getElementById('employeeTransactionChart'), title: '직원별 거래량 비교' },
+                { element: document.getElementById('employeeTransactionTypeChart'), title: '사원별 거래 유형 및 거래량' }
+            ];
+
+            charts.reduce((promiseChain, chartObj, index) => {
+                return promiseChain.then(() => {
+                    return new Promise((resolve) => {
+                        if (chartObj.element) {
+                            // 차트와 제목을 포함하는 컨테이너 생성
+                            const chartContainer = document.createElement('div');
+                            chartContainer.style.width = '800px';
+                            chartContainer.style.display = 'flex';
+                            chartContainer.style.flexDirection = 'column';
+                            chartContainer.style.alignItems = 'center';
+                            chartContainer.style.fontFamily = "'Noto Sans KR', sans-serif";
+                            chartContainer.style.marginBottom = '40px';
+
+                            const chartTitle = document.createElement('h2');
+                            chartTitle.innerText = chartObj.title;
+                            chartTitle.style.marginBottom = '20px';
+
+                            // 차트 캔버스 복제
+                            const chartCanvas = document.createElement('canvas');
+                            chartCanvas.width = chartObj.element.width;
+                            chartCanvas.height = chartObj.element.height;
+                            const ctx = chartCanvas.getContext('2d');
+                            ctx.drawImage(chartObj.element, 0, 0);
+
+                            chartContainer.appendChild(chartTitle);
+                            chartContainer.appendChild(chartCanvas);
+
+                            document.body.appendChild(chartContainer);
+
+                            html2canvas(chartContainer, options).then(canvas => {
+                                const imgData = canvas.toDataURL('image/png');
+                                const imgWidth = 180; // 페이지에 맞게 조정
+                                const imgHeight = canvas.height * imgWidth / canvas.width;
+
+                                if (index > 0) pdf.addPage();
+                                pdf.addImage(imgData, 'PNG', 15, 15, imgWidth, imgHeight);
+
+                                document.body.removeChild(chartContainer); // 컨테이너 제거
+                                resolve();
+                            }).catch(error => {
+                                console.error("캔버스 캡처 중 에러:", error);
+                                document.body.removeChild(chartContainer); // 컨테이너 제거
+                                resolve();
+                            });
+                        } else {
+                            resolve();
+                        }
+                    });
+                });
+            }, Promise.resolve()).then(() => {
+                pdf.save('차트 보고서.pdf');
+            });
+
+        }).catch(error => {
+            console.error("표지 캔버스 캡처 중 에러:", error);
+            document.body.removeChild(coverPage); // 표지 제거
+        });
+    });
+}
