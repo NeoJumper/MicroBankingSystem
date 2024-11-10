@@ -11,6 +11,7 @@
 	<groupId>com</groupId>
 	<artifactId>microBankingSystem</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>microBankingSystem</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -181,6 +182,7 @@
 		</dependency>
 
 
+
 	</dependencies>
 
 	<build>
@@ -196,6 +198,8 @@
 						</exclude>
 					</excludes>
 				</configuration>
+
+
 			</plugin>
 		</plugins>
 	</build>
