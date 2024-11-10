@@ -2671,61 +2671,61 @@ WHERE id = '004-0000060-6060';
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
 VALUES (customer_seq.NEXTVAL, 1, '김태희', '010-8080-9090', 'FEMALE', '881010-1234567', '서울특별시 강남구 삼성동 101-1',
-        '1988-10-10', 2);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), 2);
 
 -- 62번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '이민호', '010-8181-9191', 'MALE', '891011-2345678', '서울특별시 강남구 역삼동 202-2', '1989-10-11',
+VALUES (customer_seq.NEXTVAL, 1, '이민호', '010-8181-9191', 'MALE', '891011-2345678', '서울특별시 강남구 역삼동 202-2', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         3);
 
 -- 63번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '박보검', '010-8282-9292', 'MALE', '901012-3456789', '서울특별시 강남구 논현동 303-3', '1990-10-12',
+VALUES (customer_seq.NEXTVAL, 1, '박보검', '010-8282-9292', 'MALE', '901012-3456789', '서울특별시 강남구 논현동 303-3', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         4);
 
 -- 64번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
 VALUES (customer_seq.NEXTVAL, 1, '최지우', '010-8383-9393', 'FEMALE', '911013-4567890', '서울특별시 강남구 선릉동 404-4',
-        '1991-10-13', 5);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), 5);
 
 -- 65번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '정해인', '010-8484-9494', 'MALE', '921014-5678901', '서울특별시 강남구 청담동 505-5', '1992-10-14',
+VALUES (customer_seq.NEXTVAL, 1, '정해인', '010-8484-9494', 'MALE', '921014-5678901', '서울특별시 강남구 청담동 505-5', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         6);
 
 -- 66번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '송중기', '010-8585-9595', 'MALE', '931015-6789012', '서울특별시 강남구 신사동 606-6', '1993-10-15',
+VALUES (customer_seq.NEXTVAL, 1, '송중기', '010-8585-9595', 'MALE', '931015-6789012', '서울특별시 강남구 신사동 606-6', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         2);
 
 -- 67번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
 VALUES (customer_seq.NEXTVAL, 1, '전지현', '010-8686-9696', 'FEMALE', '941016-7890123', '서울특별시 강남구 압구정동 707-7',
-        '1994-10-16', 3);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), 3);
 
 -- 68번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '강동원', '010-8787-9797', 'MALE', '951017-8901234', '서울특별시 강남구 역삼동 808-8', '1995-10-17',
+VALUES (customer_seq.NEXTVAL, 1, '강동원', '010-8787-9797', 'MALE', '951017-8901234', '서울특별시 강남구 역삼동 808-8', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         4);
 
 -- 69번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
 VALUES (customer_seq.NEXTVAL, 1, '손예진', '010-8888-9898', 'FEMALE', '961018-9012345', '서울특별시 강남구 삼성동 909-9',
-        '1996-10-18', 5);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), 5);
 
 -- 70번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       registrant_id)
 VALUES (customer_seq.NEXTVAL, 1, '이준기', '010-8989-9999', 'MALE', '971019-0123456', '서울특별시 강남구 논현동 1010-10',
-        '1997-10-19', 6);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), 6);
 
 
 -- [계좌 생성: 고객 61번]
