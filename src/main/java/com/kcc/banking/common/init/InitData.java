@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+//@Profile("local") // "local" 프로파일에서만 실행
 @Configuration
 @RequiredArgsConstructor
-@Profile("local") // "local" 프로파일에서만 실행
 public class InitData {
 
     private final JdbcTemplate jdbcTemplate;
