@@ -18,73 +18,73 @@ VALUES (branch_seq.NEXTVAL, '강남동5호점', '서울시 강남구 강남동 2
 
 -- 지점 1 매니저
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '김철수', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '김철수', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-1111-1111', 'ROLE_MANAGER', 1);
 
 -- 지점 1 행원
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '김하늘', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '김하늘', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-5678-9101', 'ROLE_EMPLOYEE', 1);
 
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '이수진', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '이수진', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-2345-6789', 'ROLE_EMPLOYEE', 1);
 
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '박준호', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '박준호', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-3456-7890', 'ROLE_EMPLOYEE', 1);
 
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '정미래', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '정미래', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-4567-8901', 'ROLE_EMPLOYEE', 1);
 
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '최유리', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '최유리', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-5678-9012', 'ROLE_EMPLOYEE', 1);
 
 -- 지점 2 매니저
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '박영희', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '박영희', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-2222-2222', 'ROLE_MANAGER', 2);
 
 -- 지점 2 행원
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '임도현', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '임도현', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-6789-0123', 'ROLE_EMPLOYEE', 2);
 
 
 -- 지점 3 매니저
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '이민호', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '이민호', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-3333-3333', 'ROLE_MANAGER', 3);
 -- 지점 3 행원
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '홍서연', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '홍서연', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-7890-1234', 'ROLE_EMPLOYEE', 3);
 
 
 -- 지점 4 매니저
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '최지훈', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '최지훈', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-4444-4444', 'ROLE_MANAGER', 4);
 -- 지점 4 행원
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '정세진', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '정세진', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-8901-2345', 'ROLE_EMPLOYEE', 4);
 
 
 -- 지점 5 매니저
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '정유진', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '정유진', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-5555-5555', 'ROLE_MANAGER', 5);
 
 -- 지점 5 행원
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '민정호', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '민정호', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-9012-3456', 'ROLE_EMPLOYEE', 5);
 
 INSERT INTO Employee (id, name, birth_date, password, email, phone_number, roles, branch_id)
-VALUES (employee_seq.NEXTVAL, '이경호', '1999-02-14', '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
+VALUES (employee_seq.NEXTVAL, '이경호', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
         'test1@gmail.com', '010-0123-4567', 'ROLE_EMPLOYEE', 5);
 
 ---------- 고객 데이터 ----------
@@ -131,13 +131,13 @@ VALUES (employee_seq.NEXTVAL, '이경호', '1999-02-14', '$2a$12$KEC0twTfMAlrbch
 -- 남성
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '이준호', '010-5355-4406', 'MALE', '901125-1234567', '서울특별시 강남구 역삼동 123-45', '1990-11-25',
+VALUES (customer_seq.NEXTVAL, 1, '이준호', '010-5355-4406', 'MALE', '901125-1234567', '서울특별시 강남구 역삼동 123-45', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         '2등급', 2);
 
 -- 2번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '김태훈', '010-2222-3333', 'MALE', '850615-2345678', '부산광역시 해운대구 우동 456-78', '1985-06-15',
+VALUES (customer_seq.NEXTVAL, 1, '김태훈', '010-2222-3333', 'MALE', '850615-2345678', '부산광역시 해운대구 우동 456-78', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         '2등급', 2);
 
 -- 3번 고객
@@ -145,85 +145,85 @@ VALUES (customer_seq.NEXTVAL, 1, '김태훈', '010-2222-3333', 'MALE', '850615-2
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
 VALUES (customer_seq.NEXTVAL, 1, '박지연', '010-3333-4444', 'FEMALE', '920301-3456789', '대구광역시 수성구 범어동 234-56',
-        '1992-03-01', '2등급', 2);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 2);
 
 -- 4번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
 VALUES (customer_seq.NEXTVAL, 1, '정은주', '010-4444-5555', 'FEMALE', '971215-4567890', '인천광역시 남동구 구월동 567-89',
-        '1997-12-15', '2등급', 2);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 2);
 
 -- 5번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
 VALUES (customer_seq.NEXTVAL, 1, '최민아', '010-5555-6666', 'FEMALE', '880110-5678901', '경기도 성남시 분당구 정자동 789-12',
-        '1988-01-10', '2등급', 2);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 2);
 
 -- 6번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '김태민', '010-2345-6789', 'MALE', '890123-1234567', '서울특별시 강남구 논현동 123-45', '1989-01-23',
+VALUES (customer_seq.NEXTVAL, 2, '김태민', '010-2345-6789', 'MALE', '890123-1234567', '서울특별시 강남구 논현동 123-45', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         '2등급', 8);
 
 -- 7번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
 VALUES (customer_seq.NEXTVAL, 2, '박지윤', '010-3456-7890', 'FEMALE', '760204-2345678', '서울특별시 송파구 가락동 678-90',
-        '1976-02-04', '2등급', 8);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 8);
 
 -- 8번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
 VALUES (customer_seq.NEXTVAL, 2, '이수민', '010-4567-8901', 'FEMALE', '950310-3456789', '서울특별시 서초구 반포동 345-67',
-        '1995-03-10', '2등급', 8);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 8);
 
 -- 9번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, '정하늘', '010-5678-9012', 'MALE', '880521-4567890', '서울특별시 동작구 상도동 890-12', '1988-05-21',
+VALUES (customer_seq.NEXTVAL, 2, '정하늘', '010-5678-9012', 'MALE', '880521-4567890', '서울특별시 동작구 상도동 890-12', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         '2등급', 8);
 
 -- 10번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '최민호', '010-6789-0123', 'MALE', '720606-5678901', '서울특별시 마포구 상암동 123-45', '1972-06-06',
+VALUES (customer_seq.NEXTVAL, 3, '최민호', '010-6789-0123', 'MALE', '720606-5678901', '서울특별시 마포구 상암동 123-45', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         '2등급', 10);
 
 -- 11번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
 VALUES (customer_seq.NEXTVAL, 3, '강영희', '010-7890-1234', 'FEMALE', '990417-6789012', '서울특별시 강북구 수유동 345-67',
-        '1999-04-17', '2등급', 10);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 10);
 
 -- 12번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 3, '김하늘', '010-8901-2345', 'FEMALE', '880724-7890123', '서울특별시 중구 명동 456-78', '1988-07-24',
+VALUES (customer_seq.NEXTVAL, 3, '김하늘', '010-8901-2345', 'FEMALE', '880724-7890123', '서울특별시 중구 명동 456-78', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         '2등급', 10);
 
 -- 13번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
 VALUES (customer_seq.NEXTVAL, 3, '이동훈', '010-9012-3456', 'MALE', '930512-8901234', '서울특별시 영등포구 신길동 567-89',
-        '1993-05-12', '2등급', 10);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 10);
 
 -- 14번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 4, '박준호', '010-0123-4567', 'MALE', '860730-9012345', '서울특별시 관악구 봉천동 678-90', '1986-07-30',
+VALUES (customer_seq.NEXTVAL, 4, '박준호', '010-0123-4567', 'MALE', '860730-9012345', '서울특별시 관악구 봉천동 678-90', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
         '2등급', 12);
 
 -- 15번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
 VALUES (customer_seq.NEXTVAL, 4, '정미래', '010-1234-5678', 'FEMALE', '950812-0123456', '서울특별시 용산구 이태원동 789-12',
-        '1995-08-12', '2등급', 12);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 12);
 
 -- 16번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
 VALUES (customer_seq.NEXTVAL, 4, '이현정', '010-2345-6789', 'FEMALE', '880305-1234567', '서울특별시 서대문구 연희동 890-23',
-        '1988-03-05', '2등급', 12);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 12);
 
 ---------- 상품 생성 ----------
 /*
