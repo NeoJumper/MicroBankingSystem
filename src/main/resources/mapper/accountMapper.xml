@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.account.mapper.AccountMapper">
+
+    <select id="findPasswordByAccNumber" parameterType="String">
+        SELECT
+            a.password AS accountNumber
+        FROM
+            Account a
+        WHERE a.id = #{accountNumber}
+    </select>
+
+    <resultMap id="AccountAllResultMap" type="AccountDetail">
+        <id property="id" column="id" />
+        <result property="branchId" column="branch_id" />
+        <result property="customerId" column="customer_id" />
+        <result property="productId" column="product_id" />
+        <result property="registrantId" column="registrant_id" />
+        <result property="startDate" column="start_date" />
+        <result property="preferentialInterestRate" column="preferential_interest_rate" />
+        <result property="expireDate" column="expire_date" />
+        <result property="password" column="password" />
+        <result property="balance" column="balance" />
+        <result property="openDate" column="open_date" />
+        <result property="status" column="status" />
+        <result property="tradeNumber" column="trade_number" />
+        <result property="registrationDate" column="registration_date" />
+        <result property="registrant" column="registrant" />
+        <result property="modificationDate" column="modification_date" />
+        <result property="modifierId" column="modifier_id" />
+        <result property="version" column="version" />
+    </resultMap>
+
+    <resultMap id="AccountModalResultMap" type="AccountOfModal">
+        <result property="accId" column="acc_id" />
+        <result property="openDate" column="open_date" />
+        <result property="status" column="status" />
+        <result property="customerName" column="customer_name" />
+        <result property="customerId" column="customer_id" />
+        <result property="securityLevel" column="security_level" />
+        <result property="productName" column="product_name" />
+        <result property="balance" column="balance" />
+    </resultMap>
+
+    <resultMap id="AccountProductInfoMap" type="AccountProductInfo">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="interestRate" column="interest_rate" />
+    </resultMap>
+
+    <select id="findAll" resultMap="AccountAllResultMap">
+        SELECT * FROM account
+    </select>
+
+    <select id="getAccountSeq" resultType="int">
+        SELECT account_seq.NEXTVAL
+        FROM dual
+    </select>
+
+    <insert id="openAccount" parameterType="AccountCreate">
+        INSERT INTO Account
+        (
+            id,
+            branch_id,
+            customer_id,
+            product_id,
+            registrant_id,
+            start_date,
+            preferential_interest_rate,
+            password,
+            balance,
+            per_trade_limit,
+            daily_limit,
+            open_date,
+            status,
+            account_type,
+            registration_date,
+            trade_number,
+            version
+
+        ) VALUES
+        (
+             #{id},
+             #{branchId},
+             #{customerId},
+             #{productId},
+             #{registrantId},
+             #{startDate},
+             #{preferentialInterestRate},
+             #{password},
+             #{balance},
+             #{perTradeLimit, jdbcType=DECIMAL},
+             #{dailyLimit, jdbcType=DECIMAL},
+             #{openDate},
+             'OPN',
+             #{accountType},
+             SYSTIMESTAMP,
+             #{tradeNumber},
+             1
+
+         )
+    </insert>
+
+
+    <select id="findAccountsBySearchOption" resultMap="AccountModalResultMap">
+        SELECT
+        a.id AS acc_id,
+        a.open_date AS open_date,
+        a.status,
+        c.name AS customer_name,
+        c.id AS customer_id,
+        c.security_level AS security_level,
+        p.name AS product_name,
+        a.balance AS balance,
+        a.per_trade_limit,
+        a.daily_limit,
+        p.product_type,
+        p.interest_calculation_method
+        FROM
+        Account a
+        JOIN
+        Customer c ON a.customer_id = c.id
+        JOIN
+        Product p ON a.product_id = p.id
+        <where>
+        <if test="status != null and !status.equals('')">
+            a.status = #{status}
+        </if>
+        <if test="accId != null and !accId.equals('')">
+            AND a.id LIKE #{accId} || '%'
+        </if>
+        <if test="productName != null and !productName.equals('')">
+            AND p.name LIKE  #{productName} || '%'
+        </if>
+        <!-- 예금일때 period = 00 / 적금일때  period != 00인 모든경우 -->
+        <if test="period != null and !period.equals('')">
+            <if test="period.equals('00')">
+                AND p.period = '00'
+            </if>
+            <if test="!period.equals('00')">
+                AND p.period != '00'
+            </if>
+        </if>
+        </where>
+    </select>
+
+    <select id="findCloseSavingsAccountDetail" resultType="CloseSavingsAccountTotal">
+        SELECT
+            a.id as account_id,
+            a.status as account_status,
+            c.name as customer_name,
+            c.id as customer_id,
+            p.name as product_name,
+            a.start_date as start_date,
+            a.open_date as open_date,
+            a.preferential_interest_rate as account_interest_rate,
+            a.balance as account_balance,
+            p.interest_rate as product_interest_rate,
+            p.tax_rate as product_tax_rate,
+            p.product_type as product_type,
+            p.period as product_period,
+            auto.amount as fixed_amount,
+            auto.auto_transfer_start_date as auto_transfer_start_date,
+            auto.auto_transfer_end_date as auto_transfer_end_date,
+            auto.auto_transfer_period as auto_transfer_period,
+            auto.create_date as create_date,
+            auto.acc_id as autoAccId,
+            auto.create_date as create_date,
+            auto.id as auto_transfer_id
+
+        FROM Account a  JOIN Customer c ON a.customer_id = c.id
+                        JOIN Product p ON a.product_id = p.id
+                        JOIN Auto_transfer auto on a.id = auto.target_acc_id
+        WHERE a.id  = #{accountId}
+    </select>
+
+    <select id="findFixedDetailOfSavingsAccount" resultType="CloseFixedAccountDetail">
+        SELECT
+            amount,                         -- 각 거래 금액
+            COUNT(*) AS total_transfer_count -- 각 금액의 거래 횟수
+        FROM trade
+        WHERE acc_id = #{accId}
+        GROUP BY amount
+    </select>
+
+
+
+    <resultMap id="AccountOpenModalResultMap" type="AccountOpenResultOfModal">
+        <result property="accId" column="acc_id" />
+        <result property="accountType" column="account_type" />
+        <result property="password" column="password" />
+        <result property="customerName" column="customer_name" />
+        <result property="securityLevel" column="security_level" />
+        <result property="customerId" column="customer_id" />
+        <result property="phoneNumber" column="phone_number" />
+        <result property="productName" column="product_name" />
+        <result property="startDate" column="start_date" />
+        <result property="balance" column="balance" />
+        <result property="branchName" column="branch_name" />
+        <result property="registrantName" column="registrant_name" />
+        <result property="preferentialInterestRate" column="preferential_interest_rate" />
+        <result property="interestRate" column="interest_rate" />
+        <result property="totalInterestRate" column="total_interest_rate" />
+    </resultMap>
+
+    <select id="findAccountOpenResultOfModal" resultMap="AccountOpenModalResultMap">
+        SELECT
+            a.id AS acc_id,
+            a.account_type AS account_type,
+            a.password AS password,
+            c.name AS customer_name,
+            c.security_level,
+            c.id AS customer_id,
+            c.phone_number AS phone_number,
+            p.name AS product_name,
+            a.start_date AS start_date,
+            a.balance AS balance,
+            b.name AS branch_name,
+            e.name AS registrant_name,
+            a.per_trade_limit,
+            a.daily_limit,
+            a.preferential_interest_rate AS preferential_interest_rate,
+            p.interest_rate AS interest_rate,
+            (a.preferential_interest_rate +p.interest_rate) AS total_interest_rate
+        FROM
+            Account a
+                JOIN
+            Customer c ON a.customer_id = c.id
+                JOIN
+            Product p ON a.product_id = p.id
+                JOIN
+            Branch b ON a.branch_id = b.id
+                JOIN
+            EMPLOYEE e ON a.registrant_id = e.id
+        WHERE a.id = #{accId}
+    </select>
+
+    <select id="getAccountDetail" resultType="AccountDetail">
+        SELECT
+            a.id AS id,
+            a.branch_id AS branchId,
+            a.customer_id AS customerId,
+            a.product_id AS productId,
+            a.registrant_id AS registrantId,
+            a.start_date AS startDate,
+            a.preferential_interest_rate AS preferentialInterestRate,
+            a.expire_date AS expireDate,
+            a.password AS password,
+            a.balance AS balance,
+            a.open_date AS openDate,
+            a.status AS status,
+            a.per_trade_limit,
+            a.daily_limit,
+            a.trade_number AS tradeNumber,
+            a.registration_date AS registrationDate,
+            a.modification_date AS modificationDate,
+            a.modifier_id AS modifierId,
+            a.version AS version,
+            c.name AS customerName
+        FROM Account a
+                 JOIN Customer c ON a.customer_id = c.id
+        WHERE a.id = #{accountId} FOR UPDATE
+    </select>
+
+
+    <select id="findAccountByBranchId" parameterType="Long">
+        SELECT
+        ac.id as acc_id,
+        ac.branch_id,
+        ac.product_id,
+        ac.registrant_id,
+        ac.preferential_interest_rate as preferential_interest_rate,
+        p.interest_rate as interest_rate,
+        ac.balance,
+        p.account_type,
+        p.product_type,
+        p.interest_calculation_method,
+        p.period,
+        ac.open_date
+        FROM account ac
+        JOIN product p ON ac.product_id = p.id
+        WHERE ac.branch_id = #{branchId}
+    </select>
+
+
+    <!--    해지 대상 계좌 상태 조회-->
+    <resultMap id="closeAccountMap" type="CloseAccount">
+        <id column="account_id" property="accountId" />
+        <result column="account_status" property="accountStatus" />
+        <result column="customer_name" property="customerName" />
+        <result column="customer_id" property="customerId" />
+        <result column="product_name" property="productName" />
+        <result column="open_date" property="openDate" />
+        <result column="account_pre_inter_rate" property="accountPreInterRate" />
+        <result column="product_inter_rate" property="productInterRate" />
+        <result column="account_bal" property="accountBal" />
+        <result column="product_tax_rate" property="productTaxRate" />
+    </resultMap>
+
+
+    <select id="findCloseAccount" parameterType="java.lang.String" resultMap="closeAccountMap">
+        SELECT
+        a.id as account_id,
+        a.status as account_status,
+        c.name as customer_name,
+        c.id as customer_id,
+        p.name as product_name,
+        a.open_date as open_date,
+        a.preferential_interest_rate as account_pre_inter_rate,
+        p.interest_rate as product_inter_rate,
+        a.balance as account_bal,
+        p.tax_rate as product_tax_rate
+        FROM Account a JOIN Customer c ON a.customer_id = c.id
+        JOIN Product p ON a.product_id = p.id
+        WHERE a.id = #{accountId}
+    </select>
+
+    <!-- 계좌 해지일 조회 -->
+    <select id="findExpireDateById" parameterType="java.lang.String">
+        SELECT expire_date
+        FROM ACCOUNT
+        WHERE id = #{id}
+    </select>
+    <!-- 계좌 잔액 변경 -->
+    <update id="partialUpdateAccount" parameterType="AccountUpdate">
+        UPDATE Account
+        SET
+        <if test="balance != null and !balance.equals('')">
+            balance = #{balance},
+        </if>
+        <if test="perTradeLimit != null and !perTradeLimit.equals('')">
+            per_trade_limit =  #{perTradeLimit},
+        </if>
+        <if test="dailyLimit != null and !dailyLimit.equals('')">
+            daily_limit =  #{dailyLimit},
+        </if>
+        <if test="status != null and !status.equals('')">
+            status =  #{status},
+        </if>
+        <if test="expireDate != null and !expireDate.equals('')">
+            expire_date =  #{expireDate},
+        </if>
+        <if test="expireDate == null">
+            expire_date =  NULL,
+        </if>
+        modification_date = SYSTIMESTAMP,
+        modifier_id = #{modifierId},
+        version = version + 1
+        WHERE id = #{targetAccId}
+    </update>
+
+    <!-- 정기적금(자동이체) / 한고객에 대한 입출금 통장 선택 (적금 x) 쿼리 -->
+    <select id="findAllAccountOfOneCustomer" parameterType="String" resultMap="AccountModalResultMap">
+        SELECT
+            a.id AS acc_id,
+            a.open_date AS open_date,
+            a.status,
+            c.name AS customer_name,
+            p.name AS product_name,
+            a.balance AS balance
+        FROM
+            Account a
+                JOIN
+            Customer c ON a.customer_id = c.id
+                JOIN
+            Product p ON a.product_id = p.id
+        where a.status = 'OPN'
+          and c.id = #{customerId}
+          and p.period = '00'
+        order by a.balance desc
+    </select>
+
+
+    <!-- 저축/예금 상품 찾기 -->
+    <select id="findAccountProductList" parameterType="SearchProductOfModal">
+        select
+            p.id as product_id,
+            p.name as product_name,
+            p.period as product_period,
+            p.interest_rate as product_interest_rate,
+            p.tax_rate as product_tax_rate,
+            b.name as branch_name
+        from product p
+        join branch b
+        on p.branch_id = b.id
+        <where>
+            b.id = #{branchId}
+
+            <choose>
+                <!-- 조건 1: 보통예금 전체 조회 (기간이 '00') -->
+                <when test="period == '00'">
+                    and p.period = '00'
+                </when>
+
+                <!-- 조건 2: 특정 기간별 적금 조회 (입력된 기간에 맞는 계좌) -->
+                <when test="period != '00' and period != '' and period != null">
+                    and p.period = #{period}
+                </when>
+
+                <!-- 조건 3: 적금 전체 조회 (기간이 '00'이 아닌 모든 계좌) -->
+                <otherwise>
+                    and p.period != '00'
+                </otherwise>
+            </choose>
+
+            <!-- 상품 이름 검색 조건 -->
+            <if test="productName != '' and productName != null">
+                and p.name LIKE '%' || #{productName} || '%'
+            </if>
+        </where>
+        <!-- 정렬 기준 -->
+        <if test="sortOrder !='' and sortOrder != null ">
+            <choose>
+                <when test="sortOrder == 'high'">
+                    ORDER BY p.interest_rate DESC
+                </when>
+                <when test="sortOrder == 'low'">
+                    ORDER BY p.interest_rate ASC
+                </when>
+            </choose>
+        </if>
+    </select>
+
+
+
+    <select id="findCloseSavingsFlexibleAccountById" parameterType="java.lang.String">
+       SELECT
+            a.id,
+            a.open_date,
+            a.balance,
+            a.status,
+            a.preferential_interest_rate,
+            c.id AS customerId,
+            c.name AS customerName,
+            c.security_level,
+            p.name AS productName,
+            p.product_type,
+            p.interest_calculation_method,
+            p.period,
+            p.interest_rate,
+            p.tax_rate
+            FROM Account a
+                JOIN Customer c ON a.customer_id = c.id
+                JOIN Product p ON a.product_id = p.id
+            WHERE a.id = #{accountId}
+    </select>
+
+</mapper>

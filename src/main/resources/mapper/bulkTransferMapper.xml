@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.bulk_transfer.mapper.BulkTransferMapper">
+
+
+
+    <select id="findNextBulkTransferId">
+        SELECT  bulk_transfer_seq.NEXTVAL FROM dual
+    </select>
+
+
+    <select id="findBulkTransferList" parameterType="BulkTransferSearch">
+        SELECT *
+        FROM (
+            SELECT ROWNUM rn, id,acc_id, registration_date, amount, registered_amount, status, success_cnt, failure_cnt, total_cnt, description
+            FROM (
+                SELECT
+                    id,
+                    acc_id,
+                    registration_date,
+                    registered_amount,
+                    amount,
+                    status,
+                    success_cnt,
+                    failure_cnt,
+                    total_cnt,
+                    description
+                FROM Bulk_Transfer
+                <where>
+                    <!-- 계좌번호 조회 -->
+                    <if test="accId != null and accId != ''">
+                        acc_id LIKE #{accId} || '%'
+                    </if>
+                    <!-- 날짜 직접 입력 검색 -->
+                    <if test="startDate != null and endDate != null">
+                        AND trade_date BETWEEN #{startDate} AND #{endDate}
+                    </if>
+                </where>
+                <!-- 정렬 기준 -->
+                <choose>
+                    <when test="sortOrder == 'latest'">
+                        ORDER BY trade_date DESC
+                    </when>
+                    <when test="sortOrder == 'oldest'">
+                        ORDER BY trade_date ASC
+                    </when>
+                </choose>
+            )
+        )
+        WHERE rn BETWEEN #{criteria.amount} * (#{criteria.pageNum} - 1) + 1 AND #{criteria.amount} * #{criteria.pageNum}
+
+    </select>
+
+    <select id="findProgressStatus" parameterType="java.lang.Long">
+        SELECT
+        status,
+        success_cnt,
+        failure_cnt,
+        total_cnt
+        FROM Bulk_Transfer
+        WHERE id = #{bulkTransferId}
+    </select>
+
+    <select id="findBulkTransfer" parameterType="java.lang.Long">
+
+        SELECT
+        ROWNUM rn,
+        bt.acc_id,
+        bt.id,
+        bt.registration_date,
+        e.name as registrant_name,
+        bt.registered_amount,
+        bt.amount,
+        bt.status,
+        bt.success_cnt,
+        bt.failure_cnt,
+        bt.total_cnt,
+        bt.description,
+        bt.registrant_id
+        FROM Bulk_Transfer bt
+        JOIN EMPLOYEE e ON bt.registrant_id = e.id
+        WHERE bt.id = #{bulkTransferId}
+
+    </select>
+
+
+    <insert id="insertBulkTransfer" parameterType="BulkTransferCreate">
+        INSERT INTO Bulk_Transfer
+        (
+            id,
+            registrant_id,
+            acc_id,
+            branch_id,
+            trade_date,
+            registered_amount,
+            amount,
+            success_cnt,
+            failure_cnt,
+            total_cnt,
+            status,
+            <if test="description != null and description != ''">
+            description,
+            </if>
+            registration_date,
+            version
+        )
+        VALUES
+        (
+            #{id},
+            #{registrantId},
+            #{accId},
+            #{branchId},
+            #{tradeDate},
+            #{registeredAmount},
+            #{amount},
+            #{successCnt},
+            #{failureCnt},
+            #{totalCnt},
+            #{status},
+            <if test="description != null and description != ''">
+            #{description},
+            </if>
+            SYSTIMESTAMP,
+            1
+        )
+    </insert>
+
+    <update id="updateBulkTransfer" parameterType="BulkTransferUpdate">
+        UPDATE bulk_transfer
+        SET
+            <if test="amount != null and amount != ''">
+                amount = amount + #{amount},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="perTradeStatus == 'SUCCESS'">
+                success_cnt = success_cnt + 1,
+            </if>
+            <if test="perTradeStatus == 'FAIL'">
+                failure_cnt = failure_cnt + 1,
+            </if>
+            modification_date = SYSTIMESTAMP,
+            modifier_id = #{modifierId, jdbcType=BIGINT},
+            version = version + 1
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+<!--    <update id="updateBulkTransfer" parameterType="BulkTransferUpdate">
+        UPDATE bulk_transfer
+        SET
+        acc_id = #{accId, jdbcType=VARCHAR},
+        branch_id = #{branchId, jdbcType=BIGINT},
+        trade_date = #{tradeDate, jdbcType=VARCHAR},
+        amount = #{amount, jdbcType=DECIMAL},
+        status = #{status, jdbcType=VARCHAR},
+        success_cnt = #{successCnt, jdbcType=BIGINT},
+        failure_cnt = #{failureCnt, jdbcType=BIGINT},
+        description = #{description, jdbcType=VARCHAR},
+        registrant_id = #{registrantId, jdbcType=BIGINT},
+        modification_date = SYSTIMESTAMP,
+        modifier_id = #{modifierId, jdbcType=BIGINT},
+        version = 1
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>-->
+</mapper>

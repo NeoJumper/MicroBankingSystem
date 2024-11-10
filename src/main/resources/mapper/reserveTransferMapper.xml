@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.reserve_transfer.mapper.ReserveTransferMapper">
+
+
+
+    <insert id="createReserveTransfer" parameterType="ReserveTransferCreate">
+
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+        SELECT reserve_transfer_seq.nextval FROM dual
+        </selectKey>
+
+        INSERT INTO Reserve_transfer (
+            id,
+            acc_id,
+            target_acc_id,
+            <if test="bulkTransferId != null and !bulkTransferId.equals('')">
+                bulk_transfer_id,
+            </if>
+            amount,
+            transfer_date,
+            transfer_start_time,
+            transfer_end_time,
+            retry_count,
+            transfer_type,
+            description,
+            status,
+            <if test="failureReason != null and !failureReason.equals('')">
+                failure_reason,
+            </if>
+            registrant_id,
+            branch_id,
+            registration_date,
+            version,
+            auto_transfer_id
+
+        ) VALUES (
+            #{id},
+            #{accId},
+            #{targetAccId},
+            <if test="bulkTransferId != null and !bulkTransferId.equals('')">
+                #{bulkTransferId},
+            </if>
+            #{amount},
+            #{transferDate},
+            #{transferStartTime},
+            #{transferEndTime},
+            #{retryCount},
+            #{transferType},
+            #{description},
+            #{status},
+            <if test="failureReason != null and !failureReason.equals('')">
+                #{failureReason},
+            </if>
+            #{registrantId},
+            #{branchId},
+            SYSTIMESTAMP,
+            1,
+            #{autoTransferId}
+        )
+    </insert>
+
+    <select id="getPendingTransfers" parameterType="SearchReserve" resultType="TransferTradeCreate">
+
+        select
+        rt.id as reserve_transfer_id,
+        rt.acc_id as acc_id ,
+        rt.target_acc_id as targetAccId,
+        rt.amount as transfer_amount,
+        a.password as accountPassword,
+        rt.transfer_start_time as transfer_start_time,
+        rt.transfer_end_time as transfer_end_time,
+        rt.retry_count as retry_count,
+        rt.status as status,
+        rt.transfer_date as transfer_date,
+        rt.transfer_type as transfer_type,
+        au.missed_count as missed_count,
+        au.id as auto_transfer_id,
+        a.branch_id as branch_id,
+        a.registrant_id as registrant_id
+
+        from reserve_transfer rt
+        join account a
+        on a.id = rt.acc_id
+        join auto_transfer au
+        on rt.auto_transfer_id = au.id
+        WHERE
+        TO_CHAR(rt.transfer_date, 'YY/MM/DD') = TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD')
+        AND
+        rt.status =#{status}
+        AND
+        TO_DATE(TO_CHAR(SYSTIMESTAMP, 'HH24:MI'), 'HH24:MI')
+        BETWEEN TO_DATE(rt.transfer_start_time, 'HH24:MI')
+        AND TO_DATE(rt.transfer_end_time, 'HH24:MI')
+        <!-- 'status'가 'FAIL'일 경우에만 'transfer_type' 필드를 추가 -->
+        <if test="status == 'FAIL' and transferType != null">
+            and rt.transfer_type = #{transferType}
+        </if>
+
+    </select>
+
+    <update id="updateReserveTransferStatus">
+        UPDATE reserve_transfer
+        SET status = #{status}
+        <if test="failureReason != null and failureReason != ''">
+            ,failure_reason =  #{failureReason}
+        </if>
+        WHERE id = #{reserveTransferId}
+    </update>
+
+    <update id="updateMissedTransferOfAutoTransfer">
+        UPDATE auto_transfer
+        SET
+        missed_count = missed_count + 1
+        WHERE id = #{autoTransferId}
+    </update>
+
+    <!-- 자동이체 실패시 예약일 구하는 함수 -->
+    <select id = "findAutoReserveDate">
+        select ADD_MONTHS(next_transfer_date, missed_count)
+        from auto_transfer
+        WHERE id = #{autoTransferId}
+    </select>
+
+    <!-- 자동이체 예약이체 참고하시오 -->
+    <select id="countAutoReserveSuccess" >
+        select count(*)
+        from reserve_transfer
+        where status = 'SUCCESS'
+        and auto_transfer_id = #{autoTransferId}
+    </select>
+
+
+
+
+</mapper>

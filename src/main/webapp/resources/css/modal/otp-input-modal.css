@@ -1,0 +1,33 @@
+#auth-code-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.auth-code-input {
+    width: 1.0rem;
+    height: 3.0rem;
+    text-align: center;
+    font-size: 1.5rem;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+}
+
+.auth-code-input:focus {
+    border-bottom-color: #007bff;
+}
+
+#lock-icon > i{
+    font-size: 100px;
+    border-bottom-color: #007bff;
+    opacity: 0.5; /* 포커스 시 불투명도를 1로 변경하여 뚜렷하게 보이도록 설정 */
+}
+#otp-authenticate-btn{
+    width: 250px;
+}
+
+#otp-authentication-content2 div{
+    color: #5F5F5F;
+    font-size: 1.0rem;
+}

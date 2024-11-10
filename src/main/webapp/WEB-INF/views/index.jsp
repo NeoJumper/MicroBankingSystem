@@ -8,13 +8,16 @@ pageEncoding="UTF-8"%>
 
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
+
   </head>
 
   <body>
     <%@ include file="/resources/components/header.jsp" %>
     <%@ include file="/resources/components/sidebar.jsp" %>
-    <div id="mainArea">
+    <div id="main-area">
         <h1>${test}</h1>
     </div>
+    <script src="/resources/js/footer.js"></script>
   </body>
+
 </html>

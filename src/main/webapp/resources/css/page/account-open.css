@@ -1,0 +1,53 @@
+.account-open-table input{
+    text-align: right; /* 텍스트를 오른쪽으로 정렬 */
+}
+.account-open-table th{
+    width: 12%;
+}
+.account-open-table td{
+    width: 30%;
+}
+/* 버튼 CSS */
+.button-group {
+    display: flex;
+    gap: 5px;
+}
+
+#select-account-type-button-group input {
+    display: none; /* 기본 라디오 버튼 숨기기 */
+}
+
+.select-account-type-btn {
+    border: 1px solid #007bff; /* 테두리 색상 및 두께 */
+    border-radius: 5px; /* 모서리 둥글기 */
+    padding: 10px; /* 내부 여백 */
+    display: flex; /* 수평 정렬 */
+    gap: 10px; /* 버튼 간격 */
+}
+
+.button-group label {
+    cursor: pointer; /* 마우스 커서 변경 */
+    padding: 10px 15px; /* 내부 여백 */
+    border: 1px solid #007bff; /* 기본 테두리 색상 투명 */
+    border-radius: 5px; /* 모서리 둥글기 */
+    width: 100%;
+    text-align: center;
+}
+
+/* 라디오 버튼이 체크되었을 때 */
+.select-account-type-btn:checked + label {
+    background: linear-gradient(to bottom, var(--basic-color), var(--basic-hover-dark-color));/* 체크 시 배경색 */
+    color: #fff; /* 체크 시 글자색 */
+    border-color: #007bff; /* 체크 시 테두리 색상 */
+}
+#over-daily-limit, #over-per-trade-limit {
+    font-weight: bold;
+    color: #FF0000;
+}
+.krw-amount-input {
+    width: 65%;
+    text-align: right;
+    color: var(--deep-dark-gray);
+    border: none;
+    background-color: white !important;
+}

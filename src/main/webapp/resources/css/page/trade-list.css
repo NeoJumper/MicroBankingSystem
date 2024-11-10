@@ -1,0 +1,187 @@
+.common-table input[type="text"]{
+    max-width: 60%;
+}
+
+.common-table input[type="date"]{
+    max-width: 60%;
+
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+
+.button-group button {
+    padding: 6px 12px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 5px;
+    border: none;
+    color: black;
+    background-color: #efefef;
+
+}
+
+.button-group button:hover {
+    background: #C8C8C8;
+}
+
+#year-search-btn, #month-search-btn {
+    width: 20%;
+    margin-right:10px;
+}
+
+.period-search-container {
+    display :flex;
+    gap:10px;
+    width: 70%;
+    align-items: center;
+    margin-top:10px;
+
+}
+.period-search-container label {
+    white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+    margin-right: 5px;
+
+}
+
+#period-search-area {
+ display: none;
+}
+
+
+.period-search-container button {
+    white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+    width: 40%
+
+}
+
+.button-group label{
+    margin-right: 30px;
+}
+
+#search-monthly-tr {
+    display: none;
+}
+
+#search-period-tr{
+    display: none;
+}
+
+/* 거래내역 상태 활성화 버튼 css */
+.trade-status-search-btn.active {
+    background-color: #8e8e8e;
+    color: white;
+    font-weight: bold;
+}
+
+/* 거래내역 기간조회 활성화 버튼 css */
+.trade-period-search-btn.active{
+    background-color: #8e8e8e;
+    color: white;
+    font-weight: bold;
+}
+
+#trade-total-balance {
+    display: flex;
+    align-items: center;
+    justify-content :center;
+    white-space: nowrap;
+    margin-bottom: 50px;
+}
+
+#trade-total-balance label{
+    margin-right: 30px;
+    margin-left: 50px;
+
+}
+
+
+#trade-total-balance input{
+    width: 30%;
+
+}
+.trade-type-close > i{
+    color: #FFCE56;
+    font-size: 12px;
+}
+.trade-type-deposit > i{
+    color: #0079D4;
+    font-size: 12px;
+}
+.trade-type-withdrawal > i{
+    color: #cc0000;
+    font-size: 12px;
+}
+.trade-type-open > i{
+    color: #3AB764;
+    font-size: 12px;
+}
+
+
+.cash-text {
+    padding: 10px;
+    color: var(--point-green);
+    font-weight: bold !important;
+}
+
+.withdrawal-trade-text {
+    padding: 10px;
+    color: black;
+    font-weight: bold !important;
+}
+
+.deposit-trade-text {
+    padding: 10px;
+    color: #0079D4;
+    font-weight: bold !important;
+}
+
+
+/* 진한 파란색 버튼 스타일 2 */
+.status-nor {
+    background: linear-gradient(to bottom, var(--basic-color), var(--basic-hover-dark-color));
+    color: #F5F5F5;
+    font-size: 0.9rem;
+    padding: 5px 8px;
+    margin: 0 6px;
+    border: none;
+    border-radius: 5px;
+}
+
+
+.status-nor:hover {
+    background-color: var(--basic-hover-dark-color); /* 마우스 오버 시 배경색 */
+}
+
+.status-nor:active {
+    background-color: var(--basic-color);
+}
+.status-can {
+    padding: 10px 15px;
+    background-color: var(--point-yellow);
+    font-weight: bold;
+    display: inline-block; /* 버튼처럼 보이도록 설정 */
+}
+
+.status-rvk {
+    padding: 10px 15px;
+    background-color: var(--point-red);
+    font-weight: bold;
+    display: inline-block;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+.common-table  th, .common-table  td {
+    text-align: center;
+}

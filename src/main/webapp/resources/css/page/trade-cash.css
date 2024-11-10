@@ -1,0 +1,141 @@
+.common-table input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+    max-width: 60%;
+}
+body, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+h3 {
+    font-weight: bold;
+}
+p {
+    margin: 0;
+}
+#select-account-form span , #modal-result-deposit-amount{
+    color: #073082;
+}
+
+
+.common-table input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+    max-width: 60%;
+}
+
+.button-group {
+    display: flex;
+    gap: 5px;
+}
+
+/* 공통 버튼 스타일 */
+.button-group button {
+    padding: 6px 12px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 5px;
+    border: none;
+}
+
+.button-group button:hover {
+    background: #C8C8C8;
+}
+
+/* 버튼이 disabled 상태일 때는 hover 효과를 없앰 */
+.button-group button:disabled:hover {
+    background: initial;
+}
+
+#account-balance-label {
+    /*border: 1px solid #C8C8C8;*/
+    padding: 8px;
+}
+.account-balance span{
+    font-weight: bold;
+}
+#over-account-balance {
+    color: var(--point-red);
+}
+
+.amount-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+.amount-btn.active:hover {
+    background: #0069d9;
+}
+
+
+/* 등록 페이지 css */
+#select-account-form {
+    border: 2px solid #adb5bd;
+    border-radius: 10px;
+    overflow: hidden;
+
+    margin-bottom: 30px;
+}
+
+.account-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 40px;
+}
+
+.account-balance {
+    background-color: #F5F5F5;
+    padding: 20px 40px;
+}
+
+input[type="button"][value="계좌조회 >"] {
+    border: none;
+    background-color: white;
+}
+
+#description {
+    margin-top: 12px;
+}
+#cash-trade-account-number{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* 버튼 CSS */
+#select-trade-type-button-group input {
+    display: none; /* 기본 라디오 버튼 숨기기 */
+}
+
+.select-trade-type-radio-btn {
+    border: 1px solid #007bff; /* 테두리 색상 및 두께 */
+    border-radius: 5px; /* 모서리 둥글기 */
+    padding: 10px; /* 내부 여백 */
+    display: flex; /* 수평 정렬 */
+    gap: 10px; /* 버튼 간격 */
+}
+
+.button-group label {
+    cursor: pointer; /* 마우스 커서 변경 */
+    padding: 10px 15px; /* 내부 여백 */
+    border: 1px solid #007bff; /* 기본 테두리 색상 투명 */
+    border-radius: 5px; /* 모서리 둥글기 */
+    width: 100%;
+    text-align: center;
+}
+
+/* 라디오 버튼이 체크되었을 때 */
+.select-trade-type-radio-btn:checked + label {
+    background: linear-gradient(to bottom, var(--basic-color), var(--basic-hover-dark-color));/* 체크 시 배경색 */
+    color: #fff; /* 체크 시 글자색 */
+    border-color: #007bff; /* 체크 시 테두리 색상 */
+}
+.krw-amount-input {
+    width: 60%;
+    text-align: right;
+    color: var(--deep-dark-gray);
+    border: none;
+    background-color: white !important;
+}

@@ -1,30 +1,170 @@
-/* header.css */
+/*------------------------------------------------------------*/
+@font-face {
+  font-family: 'TheJamsil5Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
 #customHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  z-index: 30;
+  min-height: 108.594px;
+  background: var(--light-gray);
+
+}
+/*------- informationHeader : 정보 전달 헤더 css -----------*/
+#informationHeader {
   display: flex;
   align-items: center;
-  height: 52.22px;
-  position: fixed;
-  left: 0;
-  right: 0;
-  border-bottom: 1px solid #dee2e6;
-  z-index: 10;
-  font-weight: bold;
-  font-style: italic;
-  background-color: #073082;
-  padding: 0.5rem;
-  margin-bottom: 50px;
+  flex-grow: 1;
+  padding: 0px 10px;
+  background: white;
 }
-
+/*------- 회사 로고 / 이미지 css -----------*/
 #imgContainer {
-  margin-right: 0.5rem; /* 'me-2' class equivalent */
-}
-
-#imgContainer img {
+  margin-left: 9px;
+  margin-right: 9px;
   width: 40px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-#customHeader p {
-  margin: 10px; /* Remove default margin for consistency */
+#header-logo-img{
+  max-width: 90%; /* 부모 컨테이너의 너비에 맞추기 */
+  max-height: 90%; /* 부모 컨테이너의 높이에 맞추기 */
+  object-fit: contain;
+}
+
+/*------- userInfoHeader : 유저 정보 및 직급 표시 css -----------*/
+#userInfoHeader {
+  display: flex;
+  flex-direction: column;
+  flex:1;
+  height: 100%;
+  text-align:left;
+}
+
+#systemName {
+  flex: 1;
+  font-size: 30px;
+  overflow: hidden;
+  font-weight: bold ;
+  align-items: baseline;
+  font-family: 'TheJamsil5Bold';
+}
+
+#systemInfo {
+  flex:1;
+  height: 100%;
+  overflow: hidden;
+  display:flex;
+  gap: 5px;
+  justify-content: left;
+  align-items: center;
+  margin :0;
+  padding-bottom:5.8px;
+  font-size: medium;
+}
+
+#colContianer{
+  padding: 20px 12px 0px 0px;
+}
+
+#user-roles{
+  padding : 2px 5px;
+  color: var(--basic-color);
+
+}
+
+#logoutButton{
+  background: linear-gradient(var(--dark-gray), var(--deep-dark-gray));
   color: white;
-  font-size: 28px;
+  padding : 2px 5px;
+  border-radius: 5px;
+}
+#logoutButton > a{
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 텍스트 색상 상속 (부모 요소의 색상을 따름) */
+  cursor: pointer; /* 커서를 포인터로 변경 */
+  font-size: inherit; /* 폰트 크기를 상속받음 */
+}
+#logoutButton:hover {
+  background: var(--deep-dark-gray); /* 배경색 변경 */
+}
+
+#business-day-header{
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+}
+#business-day-date {
+  flex:4;
+  height: 100%;
+  display:flex;
+  justify-content: right;
+  gap:10px;
+  align-items: center;
+  font-size: medium;
+  font-weight: bold;
+  padding: 5px;
+}
+#business-day-status {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  font-size: medium;
+}
+#business-day-status > span{
+  padding:0 10px;
+  border: 2px solid var(--basic-color);
+  color: var(--basic-color);
+  font-weight:bold;
+}
+
+
+/* ------------- 메뉴 바 헤더 ------------- */
+#navbar {
+  background: linear-gradient(var(--basic-color), var(--basic-hover-dark-color));
+  border-top: 1px solid var(--little-dark-gray);
+  border-bottom: 1px solid var(--little-dark-gray);
+  flex-grow: 1;
+  min-height: 35px;
+}
+
+#navbar-globalMenu {
+  list-style: none;
+  margin: 0px 0px 0px 50px;
+  padding: 0;
+  display: flex;
+  height: 100%;
+}
+
+#navbar-globalMenu li {
+  margin: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+
+#navbar-globalMenu a {
+  text-decoration: none;
+  min-height: 35px;
+  display: flex;
+  align-items: center;
+  padding-left : 40px;
+  padding-right : 40px;
+  color: white;
+}
+
+#navbar-globalMenu a:hover{
+  background: linear-gradient(#003c95, #357ac1); /* 그라데이션 방향 반전 */
+  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1); /* 내부 그림자 */
 }

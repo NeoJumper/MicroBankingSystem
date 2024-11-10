@@ -1,0 +1,64 @@
+#search-modal-account .modal-dialog {
+    min-width: 60%;
+}
+
+#search-modal-account .modal-body {
+    padding: 2% 4%;
+}
+
+#search-modal-account .modal-body h5,
+#search-modal-account .modal-header h1 {
+    font-weight: bold;
+}
+
+#search-modal-account hr {
+    margin: 0;
+}
+
+#search-modal-center-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    gap: 10px;
+}
+
+#search-modal-common-table td {
+    text-align: center;
+}
+
+#search-modal-account .modal-body table {
+    width: 100%;
+}
+
+#search-modal-account .modal-body th {
+    text-align: left;
+    padding: 8px;
+}
+
+#search-modal-account .modal-body th {
+    text-align: center;
+}
+
+#search-modal-select-button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+#scrollable-table-container {
+    position: relative;
+}
+
+#scrollable-tbody-wrapper {
+    max-height: 245px;
+    height: 245px;
+    overflow-y: auto;
+    display: block;
+}
+
+
+#search-modal-common-table {
+    text-align: center;
+}

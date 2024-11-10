@@ -1,0 +1,57 @@
+#search-modal-transfer-account .modal-dialog {
+    min-width: 60%;
+}
+
+#search-modal-transfer-account .modal-body {
+    padding: 5%;
+}
+
+#search-modal-transfer-account .modal-body h5,
+#search-modal-transfer-account .modal-header h1 {
+    font-weight: bold;
+}
+
+#search-modal-transfer-account hr {
+    margin: 0;
+    border: 2px solid black;
+}
+
+#search-modal-transfer-account .modal-body #search-modal-input-box {
+    background-color: #F5F5F5;
+    padding: 10px;
+}
+
+#search-modal-center-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    gap: 10px;
+}
+
+#search-modal-common-table td {
+    text-align: center;
+}
+
+#search-modal-transfer-account .modal-body label {
+    font-weight: bold;
+}
+
+#search-modal-transfer-account .modal-body table {
+    width: 100%;
+}
+
+#search-modal-transfer-account .modal-body th {
+    text-align: left;
+    padding: 8px;
+}
+
+#search-modal-transfer-account .modal-body th {
+    text-align: center;
+}
+
+#search-modal-select-button {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}

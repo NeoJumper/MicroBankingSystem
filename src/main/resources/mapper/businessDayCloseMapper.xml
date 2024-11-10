@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.business_day_close.mapper.BusinessDayCloseMapper">
+
+    <!-- ****************************** SELECT ****************************** -->
+
+
+    <select id="findClosingData" parameterType="BusinessDateAndEmployeeId" >
+        select e.id, e.name, ec.prev_cash_balance, ec.total_deposit, ec.total_withdrawal, ec.vault_cash, ec.status
+        from employee_closing ec
+        join employee e on ec.registrant_id = e.id
+        where ec.registrant_id = #{employeeId} and ec.closing_date = #{businessDate}
+    </select>
+
+    <select id="findEmployeeClosingTotalDeposit" parameterType="BusinessDateAndEmployeeId" >
+        select total_deposit
+        from employee_closing
+        where registrant_id = #{employeeId} and closing_date = #{businessDate}
+    </select>
+
+    <select id="findEmployeeClosingTotalWithdrawal" parameterType="BusinessDateAndEmployeeId" >
+        select total_withdrawal
+        from employee_closing
+        where registrant_id = #{employeeId} and closing_date = #{businessDate}
+    </select>
+
+    <select id="findBranchClosingStatusByDate" parameterType="BusinessDateAndBranchId" >
+        select status
+        from branch_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
+    </select>
+
+
+
+    <select id="findClosingDataList" parameterType="BusinessDateAndBranchId" >
+        select e.id, e.name, e.roles, ec.prev_cash_balance, ec.total_deposit, ec.total_withdrawal, ec.vault_cash, ec.status
+        from employee_closing ec
+        join employee e on ec.registrant_id = e.id
+        where ec.branch_id = #{branchId} and ec.closing_date = #{businessDate}
+    </select>
+
+
+    <select id="getNextTradeNumberVal">
+        SELECT  trade_num_seq.NEXTVAL FROM dual
+    </select>
+
+    <select id="findClosingTradeNumber" parameterType="BusinessDateAndBranchId" >
+        select trade_number from branch_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
+    </select>
+
+    <select id="findBranchClosingStatus" parameterType="BusinessDateAndBranchId" >
+        select status from branch_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
+    </select>
+
+    <select id="findBranchClosingVaultCash" parameterType="BusinessDateAndBranchId" >
+        select vault_cash from branch_closing
+        where branch_id = #{branchId} and closing_date = #{businessDate}
+    </select>
+
+
+    <!-- ****************************** INSERT ****************************** -->
+
+
+    <insert id="batchInsertEmployeeClosing" parameterType="list">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO EMPLOYEE_CLOSING
+            (
+            closing_date,
+            branch_id,
+            status,
+            prev_cash_balance,
+            total_deposit,
+            total_withdrawal,
+            vault_cash,
+            trade_number,
+            registrant_id,
+            registration_date,
+            version
+            )
+            VALUES
+            (
+            #{item.closingDate},
+            #{item.branchId},
+            #{item.status},
+            #{item.prevCashBalance},
+            0,
+            0,
+            0,
+            #{item.tradeNumber},
+            #{item.registrantId},
+            SYSTIMESTAMP,
+            1
+            )
+        </foreach>
+        SELECT * FROM DUAL
+    </insert>
+
+    <insert id="insertBranchClosing" parameterType="BranchClosingCreate">
+
+            INSERT INTO BRANCH_CLOSING
+            (closing_date, registrant_id, branch_id, status, prev_cash_balance, vault_cash, trade_number, registration_date, version)
+            VALUES
+            (
+            #{closingDate},
+            #{registrantId},
+            #{branchId},
+            #{status},
+            #{prevCashBalance},
+            0,
+            #{tradeNumber},
+            SYSTIMESTAMP,
+            1
+            )
+
+    </insert>
+
+    <select id="getStatusById"  parameterType="BusinessDateAndEmployeeId">
+        select status from employee_closing where registrant_id = #{employeeId} AND closing_date = #{businessDate}
+    </select>
+
+    <!-- ****************************** UPDATE ****************************** -->
+
+    <update id="updateEmployeeClosing" parameterType="EmployeeClosingUpdate" >
+        update employee_closing
+        set
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="totalDeposit != null">
+            total_deposit = #{totalDeposit},
+        </if>
+        <if test="totalWithdrawal != null">
+            total_withdrawal = #{totalWithdrawal},
+        </if>
+        <if test="vaultCash != null">
+            vault_cash = #{vaultCash},
+        </if>
+        modifier_id = #{modifierId},
+        modification_date = SYSTIMESTAMP,
+        version = version + 1
+        where registrant_id = #{targetEmployeeId} and closing_date = #{targetClosingDate}
+    </update>
+
+    <update id="updateBranchClosing" parameterType="BranchClosingUpdate" >
+        update branch_closing
+        set
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="vaultCash != null">
+            vault_cash = #{vaultCash},
+        </if>
+        modifier_id = #{modifierId},
+        modification_date = SYSTIMESTAMP,
+        version = version + 1
+        where branch_id = #{targetBranchId} and closing_date = #{targetClosingDate}
+    </update>
+
+    <update id="updateAdditionalCashExchange" parameterType="EmployeeAdditionalUpdate">
+        update employee_closing
+        set
+        <if test="transactionType == 'ADD'">
+            total_deposit = total_deposit + #{amount},
+        </if>
+        <if test="transactionType == 'SUBTRACT'">
+            total_withdrawal = total_withdrawal + #{amount},
+        </if>
+        modifier_id = #{modifierId},
+        modification_date = SYSTIMESTAMP,
+        version = version + 1
+        where registrant_id = #{registrantId} and closing_date = #{closingDate}
+    </update>
+
+
+
+    <!-- ****************************** DELETE ****************************** -->
+    <delete id="deleteEmployeeClosing" parameterType="String">
+        delete from employee_closing
+        where trade_number = #{tradeNumber}
+    </delete>
+
+    <delete id="deleteBranchClosing" parameterType="String">
+        delete from branch_closing
+        where trade_number = #{tradeNumber}
+    </delete>
+
+</mapper>

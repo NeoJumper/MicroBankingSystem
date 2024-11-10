@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.cash_exchange.mapper.CashExchangeMapper">
+
+    <select id="getCashExchangeData" parameterType="BusinessDateAndEmployeeId">
+        select id, amount, exchange_type
+        from cash_exchange
+        where emp_id = #{employeeId}
+          and exchange_date = #{businessDate}
+    </select>
+
+    <select id="getCashExchangeDataForManager" parameterType="BusinessDateAndEmployeeId">
+        select ex.id, ex.amount, ex.exchange_type, ex.emp_id, e.name AS emp_name, ex.emp_cash_balance, ex.manager_cash_balance
+        from cash_exchange ex
+                 JOIN Employee e ON e.id = ex.emp_id
+        where ex.registrant_id = #{employeeId}
+          and ex.exchange_date = #{businessDate}
+    </select>
+
+    <insert id="createCashExchange" parameterType="CashExchangeCreate">
+        insert into CASH_EXCHANGE (id, registrant_id, emp_id, branch_id, amount, emp_cash_balance, manager_cash_balance,
+                                   exchange_date, registration_date, exchange_type, version)
+        values (#{id}, #{registrantId}, #{empId}, #{branchId}, #{amount}, #{afterEmployeeCash},
+                #{afterManagerCash}, #{exchangeDate}, SYSTIMESTAMP, #{exchangeType}, 1)
+    </insert>
+
+    <select id="getNextCashExchangeSeq">
+        select cash_exchange_seq.NEXTVAL from dual
+    </select>
+
+    <select id="getCashExchangeDataByID" parameterType="java.lang.Long">
+        select * from cash_exchange where id=#{cashExchangeId}
+    </select>
+
+
+</mapper>

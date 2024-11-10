@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.trade.mapper.TradeMapper">
+
+    <resultMap id="TradeOfListMap" type="TradeOfList">
+        <result property="tradeDate" column="trade_date"/>
+        <result property="accId" column="acc_id"/>
+        <result property="targetAccId" column="target_acc_id"/>
+        <result property="tradeType" column="trade_type"/>
+        <result property="cashIndicator" column="cash_indicator"/>
+        <result property="amount" column="amount"/>
+        <result property="balance" column="balance"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="findTradeListOfAccId" parameterType="TradeSearch" resultMap="TradeOfListMap">
+        SELECT *
+        FROM (
+            SELECT ROWNUM rn, trade_date, acc_id, target_acc_id, trade_type, cash_indicator, amount, balance, status, trade_number
+            FROM (
+                SELECT trade_date, acc_id, target_acc_id, trade_type, cash_indicator, amount, balance, status, trade_number
+                FROM Trade
+                <where>
+                    <!-- 계좌번호 조회 -->
+                    <if test="accId != null and accId != ''">
+                        acc_id LIKE #{accId} || '%'
+                    </if>
+
+                    <!-- 거래유형 조회 -->
+                    <if test="tradeType != null and tradeType != ''">
+                        AND trade_type LIKE #{tradeType}
+                    </if>
+
+                    <!-- 날짜 직접 입력 검색 -->
+                    <if test="startDate != null and endDate != null">
+                        AND trade_date BETWEEN #{startDate} AND #{endDate}
+                    </if>
+                </where>
+                <!-- 정렬 기준 -->
+                <choose>
+                    <when test="sortOrder == 'latest'">
+                        ORDER BY trade_date DESC
+                    </when>
+                    <when test="sortOrder == 'oldest'">
+                        ORDER BY trade_date ASC
+                    </when>
+                </choose>
+            )
+        )
+        WHERE rn BETWEEN #{criteria.amount} * (#{criteria.pageNum} - 1) + 1 AND #{criteria.amount} * #{criteria.pageNum}
+    </select>
+
+    <resultMap id="TradeInfoOfPerAccountMap" type="TradeInfoOfPerAccount">
+
+        <result property="accId" column="acc_id"/>
+        <result property="tradeType" column="trade_type"/>
+        <result property="amount" column="amount"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="getTotalSumOfTradeList" parameterType="TradeSearch" resultMap="TradeInfoOfPerAccountMap">
+        SELECT
+        acc_id,
+        trade_type,
+        amount,
+        status
+        FROM Trade
+        <where>
+            <!-- 계좌번호 조회 -->
+            acc_id LIKE #{accId}
+            <!-- status 조건: 'NOR' 또는 'RVK' -->
+            AND (status = 'NOR' OR status = 'RVK')
+
+            <!-- 거래유형 조회 (선택적) -->
+            <if test="tradeType != null and tradeType != ''">
+                AND trade_type LIKE #{tradeType}
+            </if>
+
+            <!-- 날짜 직접 입력 검색 (선택적) -->
+            <if test="startDate != null and endDate != null">
+                AND trade_date BETWEEN #{startDate} AND #{endDate}
+            </if>
+
+
+        </where>
+    </select>
+
+    <select id="getTradeCount" parameterType="TradeSearch" resultType="int">
+        SELECT COUNT(*)
+        FROM Trade
+        <where>
+            <if test="accId != null and !accId.equals('')">
+                acc_id LIKE #{accId} || '%'
+            </if>
+
+            <if test="tradeType != null and !tradeType.equals('')">
+                and trade_type LIKE #{tradeType}
+            </if>
+
+            <if test="startDate != null and endDate != null">
+                and trade_date BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="findTransferAmountOfToday" parameterType="TradeSearch">
+        SELECT sum(amount) FROM trade WHERE
+        trade_date = #{tradeDate} and
+        acc_id = #{accId} and
+        cash_indicator = 'FALSE' and
+        trade_type = 'WITHDRAWAL' and
+        status IN ('NOR', 'RVK')
+    </select>
+
+    <select id="findTradeByCashList" parameterType="BusinessDateAndEmployeeId">
+
+        select trade_date, acc_id, trade_type, amount, e.name as "registrant_name", b.name as "branch_name" from trade t
+        join employee e on t.registrant_id = e.id
+        join branch b on t.branch_id = b.id
+        where cash_indicator = 'TRUE' and t.registrant_id = #{employeeId} and trade_date = #{businessDate}
+
+    </select>
+
+    <select id="findNextTradeNumberVal">
+        SELECT trade_num_seq.NEXTVAL FROM dual
+    </select>
+
+
+    <select id="findPaidAmount" parameterType="AccountIdWithExpireDate" resultType="java.math.BigDecimal">
+        SELECT amount
+        FROM TRADE
+        WHERE acc_id = #{accountId} AND trade_date = #{expireDate} AND trade_type = 'CLOSE'
+    </select>
+
+
+    <select id="getTradeDetailsByTradeNumber" parameterType="java.lang.Long" resultType="TransferDetail">
+        SELECT
+        t.id,
+        t.registrant_id,
+        t.acc_id,
+        t.target_acc_id,
+        t.branch_id,
+        t.trade_date,
+        t.amount,
+        t.balance,
+        t.trade_type,
+        t.status,
+        t.cash_indicator,
+        t.description,
+        t.trade_number,
+        t.registration_date,
+        t.modification_date,
+        t.modifier_id,
+        t.version,
+        acc_customer.name AS customerName,
+        target_customer.name AS targetCustomerName
+        FROM Trade t
+        JOIN Account acc ON t.acc_id = acc.id
+        JOIN Customer acc_customer ON acc.customer_id = acc_customer.id
+        LEFT JOIN Account target_acc ON t.target_acc_id = target_acc.id
+        LEFT JOIN Customer target_customer ON target_acc.customer_id = target_customer.id
+        WHERE t.trade_number = #{tradeNumber}
+    </select>
+
+    <select id="findTradeListByBulkTransfer" parameterType="java.lang.Long">
+
+        select t.id, t.target_acc_id, t.status, t.amount, c.name as target_name, description, t.failure_reason
+        from trade t
+        join account a on t.target_acc_id = a.id
+        join customer c on a.customer_id = c.id
+        where bulk_transfer_id = #{bulkTransferId} and t.trade_type = 'WITHDRAWAL'
+
+    </select>
+
+
+    <update id="updateTradeStatusToCancel" parameterType="java.lang.Long">
+        UPDATE Trade
+        SET status = 'CAN'
+        WHERE trade_number = #{tradeNumber}
+    </update>
+
+
+    <insert id="insertTrade" parameterType="TradeCreate">
+        INSERT INTO Trade
+        (
+        id,
+        registrant_id,
+        acc_id,
+        <if test="targetAccId != null and targetAccId != ''">
+            target_acc_id,
+        </if>
+        <if test="bulkTransferId != null and bulkTransferId != ''">
+            bulk_transfer_id,
+        </if>
+        branch_id,
+        trade_date,
+        amount,
+        balance,
+        trade_type,
+        status,
+        cash_indicator,
+        <if test="description != null and description != ''">
+            description,
+        </if>
+        <if test="failureReason != null and failureReason != ''">
+            failure_reason,
+        </if>
+        trade_number,
+        registration_date,
+        version
+        )
+        VALUES
+        (
+        trade_seq.nextval,
+        #{registrantId},
+        #{accId},
+        <if test="targetAccId != null and targetAccId != ''">
+            #{targetAccId},
+        </if>
+        <if test="bulkTransferId != null and bulkTransferId != ''">
+            #{bulkTransferId},
+        </if>
+        #{branchId},
+        #{tradeDate},
+        #{amount},
+        #{balance},
+        #{tradeType},
+        #{status},
+        #{cashIndicator},
+        <if test="description != null and description != ''">
+            #{description},
+        </if>
+        <if test="failureReason != null and failureReason != ''">
+            #{failureReason},
+        </if>
+        #{tradeNumber},
+        SYSTIMESTAMP,
+        1
+        )
+    </insert>
+
+    <update id="updateAllTrade" parameterType="TradeUpdate">
+        UPDATE trade
+        SET
+            acc_id = #{accId, jdbcType=VARCHAR},
+            target_acc_id = #{targetAccId, jdbcType=VARCHAR},
+            registrant_id = #{registrantId, jdbcType=BIGINT},
+            branch_id = #{branchId, jdbcType=BIGINT},
+            bulk_transfer_id = #{bulkTransferId, jdbcType=BIGINT},
+            trade_date = #{tradeDate, jdbcType=VARCHAR},
+            amount = #{amount, jdbcType=DECIMAL},
+            balance = #{balance, jdbcType=DECIMAL},
+            trade_type = #{tradeType, jdbcType=VARCHAR},
+            status = #{status, jdbcType=VARCHAR},
+            cash_indicator = #{cashIndicator, jdbcType=VARCHAR},
+            description = #{description, jdbcType=VARCHAR},
+            failure_reason = #{failureReason, jdbcType=VARCHAR},
+            trade_number = #{tradeNumber, jdbcType=BIGINT},
+            modification_date = SYSTIMESTAMP,
+            modifier_id = #{modifierId, jdbcType=VARCHAR},
+            version = version + 1
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="findBulkTransferFailTradeList" parameterType="java.lang.Long" resultType="TransferDetail">
+        SELECT
+        t.id,
+        t.registrant_id,
+        t.acc_id,
+        t.target_acc_id,
+        t.branch_id,
+        t.trade_date,
+        t.amount,
+        t.balance,
+        t.trade_type,
+        t.status,
+        t.cash_indicator,
+        t.description,
+        t.trade_number,
+        t.registration_date,
+        t.modification_date,
+        t.modifier_id,
+        t.version,
+        target_customer.name AS targetCustomerName
+        FROM Trade t
+        LEFT JOIN Account target_acc ON t.target_acc_id = target_acc.id
+        LEFT JOIN Customer target_customer ON target_acc.customer_id = target_customer.id
+        WHERE
+        t.bulk_transfer_id = #{bulkTransferId} AND
+        t.status = 'FAIL'
+    </select>
+
+</mapper>

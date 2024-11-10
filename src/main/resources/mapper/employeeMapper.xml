@@ -4,26 +4,111 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcc.banking.domain.employee.mapper.EmployeeMapper">
 
-    <resultMap id="EmployeeResultMap" type="EmployeeDetail">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="password" column="password"/>
-        <result property="hireDate" column="hire_date"/>
-        <result property="email" column="email"/>
-        <result property="phoneNumber" column="phone_number"/>
-        <result property="vacationDays" column="vacation_days"/>
-        <result property="joinState" column="join_state"/>
-        <result property="deptName" column="dept_name"/>
-        <result property="position" column="position"/>
-        <result property="authority" column="authority"/>
-        <result property="verified" column="verified"/>
-    </resultMap>
-
-    <select id="findAll" parameterType="int" resultMap="EmployeeResultMap">
-        SELECT e.id, e.name, e.password, e.hire_date, e.email, e.phone_number,
-        e.vacation_days, e.join_state, d.name AS dept_name,
-        e.position, e.authority, e.verified
-        FROM employee e
-        JOIN department d ON e.dept_id = d.id
+    <select id="findEmployees" parameterType="EmployeeSearch">
+        SELECT *
+        FROM (
+        SELECT ROWNUM AS rn, id, name, email, phone_number, (address || detail_address) AS address, branch_name, roles
+        FROM (
+            SELECT e.id, e.name, e.email, e.phone_number, e.address, e.detail_address, b.name AS branch_name, e.roles
+            FROM employee e
+            join branch b on e.branch_id = b.id
+            WHERE e.branch_id = #{branchId}
+            <if test="searchOption != null and !searchOption.equals('')">
+                AND e.${searchOption} LIKE '%' || #{searchValue} || '%'
+            </if>
+        )
+        )
+        <if test="criteria != null and !criteria.equals('')">
+            WHERE rn BETWEEN #{criteria.amount} * (#{criteria.pageNum} - 1) + 1 AND #{criteria.amount} * #{criteria.pageNum}
+        </if>
     </select>
+
+
+    <select id="findById" parameterType="java.lang.Long">
+        select e.*, b.name as "branch_name"
+        from employee e
+        join branch b on e.branch_id = b.id
+        WHERE e.id = #{id}
+    </select>
+
+    <select id="findEmpDetailById" parameterType="java.lang.Long">
+        select e.*, b.name as "branch_name"
+        from employee e
+        join branch b on e.branch_id = b.id
+        WHERE e.id = #{id}
+    </select>
+
+    <select id="findAuthDataById" parameterType="java.lang.Long">
+
+        select e.id as "id", e.name as "name", e.roles as "roles",b.id as "branch_id", b.name as "branch_name"
+        from employee e
+        join branch b on e.branch_id = b.id
+        WHERE e.id = #{id}
+
+
+    </select>
+
+    <select id="getEmployeeSeq" resultType="int">
+        SELECT employee_seq.nextval
+        FROM dual
+    </select>
+
+    <insert id="save" parameterType="EmployeeCreate">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT employee_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO Employee (id, branch_id, name, phone_number, email,birth_date, password, address, detail_address, identification_code, roles, registrant_id, registration_date, version)
+        VALUES (
+        #{id},
+        #{branchId},
+        #{name},
+        #{phoneNumber},
+        #{email},
+        #{birthDate},
+        #{password},
+        #{address},
+        #{detailAddress},
+        #{identificationCode},
+        #{roles},
+        #{registrantId},
+        SYSTIMESTAMP,
+        1
+        )
+    </insert>
+
+    <update id="update" parameterType="EmployeeUpdate">
+        UPDATE Employee
+        SET branch_id = #{branchId},
+        name = #{name},
+        phone_number = #{phoneNumber},
+        email = #{email},
+        birth_date = #{birthDate},
+        password = #{password},
+        address = #{address},
+        detail_address = #{detailAddress},
+        identification_code = #{identificationCode},
+        roles = #{roles},
+        modifier_id = #{modifierId},
+        modification_date = SYSTIMESTAMP,
+        version = version + 1
+        WHERE id = #{id}
+    </update>
+
+
+
+    <select id="findAllOfBranch"  parameterType="java.lang.Long">
+        select e.id as "id", e.name as "name", e.birth_date, e.phone_number ,e.email, roles
+        from employee e
+        where e.branch_id = #{branchId}
+    </select>
+
+    <select id="getEmployeeCount" parameterType="EmployeeSearch">
+        SELECT COUNT(*)
+        FROM employee
+        WHERE branch_id = #{branchId}
+        <if test="searchOption != null and !searchOption.equals('')">
+            AND ${searchOption} LIKE '%' || #{searchValue} || '%'
+        </if>
+    </select>
+
 </mapper>

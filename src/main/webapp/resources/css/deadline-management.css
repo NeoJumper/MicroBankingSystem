@@ -1,0 +1,61 @@
+#employee-close-page-user-branch-name,
+#manager-close-page-user-branch-name {
+    background-color: var(--basic-color);
+    color: white;
+    font-size: 1.2rem;
+    padding: 7px 10px;
+    margin: 0 10px;
+}
+
+#manager-close-page-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#employee-list-table td:nth-child(n+3) {
+    width: max-content !important;
+    text-align: center;
+}
+
+#employee-list-table td input {
+    min-width: 80%;
+}
+
+#employee-add-list-thead th,
+#employee-add-list-thead td {
+    text-align: center !important;
+}
+
+#employee-add-list {
+    overflow-y: scroll;
+    max-height: 700px;
+}
+
+#employee-list-table {
+    margin-bottom: 0;
+}
+
+#manager-close-table td {
+    text-align: left !important;
+}
+
+#manager-close-table td input {
+    width: 100%;
+}
+
+.status-open {
+    color: var(--basic-color);
+}
+
+.status-closed {
+    color: var(--point-red);
+}
+
+.warning-text {
+    color: var(--point-red) !important;
+}
+
+.tooltip-span {
+    cursor: pointer;
+}

@@ -1,0 +1,24 @@
+
+#scrollable-tbody-wrapper {
+    max-height: 250px;
+    overflow-y: auto;
+    display: block;
+}
+
+.selected {
+    background-color: var(--light-blue-input-background);
+}
+
+.selected input:not(:disabled) {
+    color: var(--basic-color);
+}
+
+#business-day-manager-list tr td input {
+    width: 90% !important;
+}
+
+.form-check.form-switch{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kcc.banking.domain.auto_transfer.mapper.AutoTransferMapper">
+
+    <insert id="insertAutoTransfer" parameterType="AutoTransferCreate">
+        INSERT INTO Auto_transfer (
+            id,
+            acc_id,
+            target_acc_id,
+            amount,
+            auto_transfer_start_date,
+            auto_transfer_end_date,
+            create_date,
+            registration_date,
+            registrant_id,
+            modification_date,
+            modifier_id,
+            version,
+            missed_count,
+            next_transfer_date,
+            status
+        ) VALUES (
+                     auto_transfer_seq.NEXTVAL,
+                     #{acc_id},
+                     #{target_acc_id},
+                     #{amount},
+                     #{auto_transfer_start_date},
+                     #{auto_transfer_end_date},
+                     #{auto_transfer_period},
+                     #{create_date},  -- create_date
+                     SYSTIMESTAMP,  -- registration_date
+                     #{registrant_id},
+                     NULL,  -- modification_date
+                     NULL,  -- modifier_id
+                     1,      -- version
+                     0,
+                     next_transfer_date,
+                    'WAIT'
+                 )
+    </insert>
+
+    <select id="findScheduledAutoTransferList">
+        select
+            au.id as id,
+            au.acc_id as acc_id,
+            au.target_acc_id as target_acc_id,
+            au.amount as amount,
+            au.auto_transfer_start_date as auto_transfer_start_date,
+            au.auto_transfer_period as auto_transfer_period,
+            au.status as status,
+            au.missed_count as missed_count,
+            au.next_transfer_date as next_transfer_date,
+            a.registrant_id as registrantId,
+            a.branch_id as branch_id
+
+        from Auto_transfer au
+                 join Account a
+                      on au.acc_id = a.id
+        where
+            au.status = 'WAIT'
+          and
+            TO_CHAR(au.next_transfer_date, 'YY/MM/DD') = TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD')
+    </select>
+
+
+</mapper>

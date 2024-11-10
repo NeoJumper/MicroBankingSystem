@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.business_day.mapper.BusinessDayMapper">
+
+    <select id="findByDate" parameterType="String">
+        select * from business_day where business_date = #{businessDate}
+    </select>
+
+    <select id="findCurrentBusinessDay" >
+        select * from business_day where is_current_business_day = 'TRUE'
+    </select>
+
+    <select id="findNextBusinessDay" >
+        SELECT *
+        FROM (
+        SELECT *
+        FROM business_day b
+        WHERE b.business_date > (SELECT BUSINESS_DATE
+        FROM business_day
+        WHERE is_current_business_day = 'TRUE')
+        AND b.status = 'SCHEDULED'
+        ORDER BY b.business_date ASC
+        )
+        WHERE ROWNUM = 1
+    </select>
+
+    <select id="findPrevBusinessDay" >
+        SELECT *
+        FROM (
+        SELECT *
+        FROM business_day b
+        WHERE b.business_date &lt; (SELECT BUSINESS_DATE
+        FROM business_day
+        WHERE is_current_business_day = 'TRUE')
+        AND b.status = 'CLOSED'
+        ORDER BY b.business_date DESC
+        )
+        WHERE ROWNUM = 1
+    </select>
+
+<!--    <update id="updateStatus" parameterType="BusinessDayUpdate">
+        update business_day set
+        is_current_business_day = #{isCurrentBusinessDay},
+        status = #{status}
+        where business_date = #{targetDate}
+    </update>-->
+
+    <update id="update" parameterType="BusinessDayUpdate">
+        update business_day
+        <set>
+            <if test="isCurrentBusinessDay != null">
+                is_current_business_day = #{isCurrentBusinessDay},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="modifierId != null">
+                modifier_id = #{modifierId},
+            </if>
+            modification_date = SYSTIMESTAMP,
+            version = version + 1
+        </set>
+        where business_date = #{targetDate}
+    </update>
+
+</mapper>

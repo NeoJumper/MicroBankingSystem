@@ -1,0 +1,35 @@
+#savings-fixed-detail-info {
+    display: flex;                /* 두 테이블을 가로로 배치 */
+    justify-content: space-between; /* 테이블 사이에 간격을 두고 양쪽으로 배치 */
+    gap: 10px;                     /* 테이블 간 간격 */
+    width: 100%;                    /* div의 너비를 100%로 설정 */
+    box-sizing: border-box;         /* 여백 포함하여 전체 너비로 설정 */
+}
+
+#savings-table1, #savings-table2 {
+    width: calc(50% - 10px);  /* 각 테이블의 너비를 50%에서 간격만큼 빼서 설정 */
+    margin-bottom: 30px;      /* 테이블 간 아래쪽 간격 */
+    box-sizing: border-box;   /* padding과 border를 너비에 포함시켜서 테이블 너비를 맞춤 */
+}
+
+
+.th-gray-style {
+    padding: 12px 15px;  /* 셀 내부 여백 */
+    text-align: center;  /* 텍스트 가운데 정렬 */
+    background: #f2f2f2; /* 배경 색 */
+    font-weight: bold;   /* 글자 두껍게 */
+}
+
+.th-gray-style:nth-child(1) {
+    /* "상품정보"의 크기만 다르게 조정 */
+    width: 20%;  /* 너비를 20%로 설정 */
+}
+
+.th-gray-style:nth-child(2) {
+    /* "고객정보"의 너비를 80%로 설정 */
+    width: 80%;  /* 나머지 80%를 차지하게 설정 */
+}
+
+.before-select-account-none {
+    display : none;
+}

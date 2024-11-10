@@ -1,0 +1,37 @@
+#employee-search-modal .modal-dialog {
+    min-width: 65%;
+}
+
+
+#search-modal-select {
+    padding: 5px;
+    height : 46px !important;
+}
+
+
+#search-modal-select-btn {
+    flex: 0 1 auto;
+}
+
+#search-modal-select-btn button {
+    padding: 5px 10px;
+    height : 43px;
+    width : 50px;
+}
+
+#search-modal-center-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    gap: 10px;
+}
+#employee-add-list .common-table{
+    margin: 0;
+}
+#employee-add-list {
+    max-height: 245px;
+    height: 245px;
+    overflow-y: auto;
+    display: block;
+}

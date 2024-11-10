@@ -1,0 +1,220 @@
+body, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+h3 {
+    font-weight: bold;
+}
+#select-account-form span {
+    color: #073082;
+}
+#registration-page{
+    position: relative;
+}
+
+
+.common-table input[type="text"], input[type="number"], input[type="date"], input[type="password"] {
+    max-width: 100%;
+}
+
+.button-group {
+    display: flex;
+    justify-content: start;
+    gap: 5px;
+    width: 65%;
+}
+
+/* 공통 버튼 스타일 */
+.button-group button {
+    padding: 6px 12px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 5px;
+    border: none;
+}
+
+.button-group button:hover {
+    background: #C8C8C8;
+}
+
+/* 버튼이 disabled 상태일 때는 hover 효과를 없앰 */
+.button-group button:disabled:hover {
+    background: initial;
+}
+
+.account-balance span{
+    font-weight: bold;
+}
+#account-balance-label {
+    /*border: 1px solid #C8C8C8;*/
+    padding: 8px;
+}
+
+#over-account-balance {
+    font-weight: bold;
+    color: #FF0000;
+}
+.amount-btn{
+    height: 42px;
+}
+
+.amount-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+.amount-btn.active:hover {
+    background: #0069d9;
+}
+
+
+/* 등록 페이지 css */
+#select-account-form {
+    border: 2px solid #adb5bd;
+    border-radius: 10px;
+    overflow: hidden;
+
+    margin-bottom: 30px;
+}
+
+.account-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 40px;
+}
+
+.account-balance {
+    background-color: #F5F5F5;
+    padding: 20px 40px;
+}
+
+input[type="button"][value="계좌조회 >"] {
+    border: none;
+    background-color: white;
+}
+
+#description {
+    margin-top: 12px;
+}
+
+#bulk-transfer-info td, #bulk-transfer-info th {
+    font-weight: bold;
+    text-align: center;
+}
+
+p {
+    margin: 0;
+}
+
+#total-registrations, #valid-recipients, #mismatch-recipients, #error-recipients{
+    color: white;
+}
+#reserve-time-select-div{
+    max-width: 100%;
+    display: flex;
+}
+#time-search-btn {
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url('https://example.com/custom-icon.png') no-repeat right center;
+    background-size: 16px 16px; /* 아이콘 크기 조정 */
+    padding-right: 30px; /* 아이콘 공간을 위한 패딩 */
+}
+
+#time-search-container{
+    width: 300px;
+    height: 50px;
+    position: relative;
+    display: flex;
+}
+.search-icon {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 16px;
+    bottom: 5px;
+    right: 9px;
+    border-radius: 15px;
+    background-position: center;
+}
+
+.account-transfer-page-table th{
+    width: 25%;
+}
+#withdrawal-account-number{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+#select-transfer-limit {
+    margin-left: auto;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+    padding: 8px 12px;
+    width: fit-content;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    cursor: pointer;
+}
+#select-transfer-limit:hover {
+    background-color: #ececec;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 툴팁 option */
+#select-transfer-limit-tooltip {
+    border: 1px solid #073082;
+    border-radius: 6px;
+    background-color: white;
+    position: absolute;
+    color: #fff;
+    padding: 15px 15px;
+    width: auto;
+    right: 40px;
+    top: 28%;
+    opacity: 0;
+    transition: all 0.5s linear;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+#select-transfer-limit-tooltip span{
+    font-size: 1.1rem;
+    color: #212529;
+    font-weight: normal;
+}
+#select-transfer-limit-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%; /* 툴팁 위쪽에 위치 */
+    left: 83%; /* 중앙에 위치 */
+    margin-left: -6px; /* 화살표의 중앙을 맞추기 위해 좌우로 이동 */
+    border-width: 12px;
+    border-style: solid;
+    border-color: #073082 transparent transparent transparent; /* 위쪽 화살표 색상 설정 */
+}
+.amount-span{
+    color: #073082 !important;
+    font-weight: bold!important;
+    margin-left: auto;
+    width: 160px;
+    text-align: right;
+    display: inline-block;
+}
+
+.krw-amount-input {
+    width: 65%;
+    text-align: right;
+    color: var(--deep-dark-gray);
+    border: none;
+    background-color: white !important;
+}

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcc.banking.domain.interest.mapper.InterestMapper">
+
+
+    <!--  세전 이자액 합계(해지 시 사용)  -->
+    <select id="findInterestSum" parameterType="java.lang.String">
+        SELECT acc_id      AS account_id,
+               sum(amount) AS amount_sum
+        FROM Interest
+        WHERE acc_id = #{accountId}
+          AND payment_status = 'N'
+        GROUP BY acc_id
+    </select>
+
+    <!--  세전 이자액 합계(해지 취소 시 사용)  -->
+    <select id="findPreTaxInterestSum" parameterType="AccountIdWithExpireDate">
+        SELECT acc_id      AS account_id,
+               sum(amount) AS amount_sum
+        FROM Interest
+        WHERE acc_id = #{accountId}
+          AND payment_date = #{expireDate}
+        GROUP BY acc_id
+    </select>
+
+    <select id="findInterestDetails" parameterType="java.lang.String">
+        SELECT creation_date, balance, interest_rate, preferential_interest_rate, amount
+        FROM Interest
+        WHERE acc_id = #{accountId}
+    </select>
+
+
+    <insert id="save" parameterType="EmployeeCreate">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT employee_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO Employee (id, branch_id, name, phone_number, email,birth_date, password, roles)
+        VALUES (#{id}, #{branchId}, #{name}, #{phoneNumber}, #{email},#{birthDate}, #{password}, #{roles})
+    </insert>
+
+    <insert id="createInterest" parameterType="InterestCreate">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT interest_seq.nextval FROM dual
+        </selectKey>
+
+
+        INSERT INTO interest
+        (
+        id,
+        acc_id,
+        branch_id,
+        amount,
+        balance,
+        interest_rate,
+        preferential_interest_rate,
+        payment_status,
+        trade_number,
+        creation_date,
+        registrant_id,
+        registration_date,
+        version
+        ) VALUES
+        (
+        #{id},
+        #{accId, jdbcType=VARCHAR},
+        #{branchId, jdbcType=BIGINT},
+        #{amount, jdbcType=DECIMAL},
+        #{balance, jdbcType=DECIMAL},
+        #{interestRate, jdbcType=FLOAT},
+        #{preferentialInterestRate, jdbcType=FLOAT},
+        #{paymentStatus, jdbcType=VARCHAR},
+        #{tradeNumber, jdbcType=BIGINT},
+        #{creationDate},
+        #{registrantId, jdbcType=BIGINT},
+        SYSTIMESTAMP,
+        #{version}
+        )
+    </insert>
+
+    <insert id="createInterestSaving" parameterType="savingInterestCreate">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT interest_seq.nextval FROM dual
+        </selectKey>
+
+        INSERT INTO interest
+        (
+        id,
+        acc_id,
+        branch_id,
+        amount,
+        balance,
+        interest_rate,
+        preferential_interest_rate,
+        payment_status,
+        trade_number,
+        creation_date,
+        registrant_id,
+        registration_date,
+        version
+        ) VALUES
+        (
+        #{id},
+        #{accId, jdbcType=VARCHAR},
+        #{branchId, jdbcType=BIGINT},
+        #{amount, jdbcType=DECIMAL},
+        #{balance, jdbcType=DECIMAL},
+        #{interestRate, jdbcType=FLOAT},
+        #{preferentialInterestRate, jdbcType=FLOAT},
+        #{paymentStatus, jdbcType=VARCHAR},
+        #{tradeNumber, jdbcType=BIGINT},
+        #{creationDate},
+        #{registrantId, jdbcType=BIGINT},
+        SYSTIMESTAMP,
+        #{version}
+        )
+    </insert>
+
+    <!--    해지에 의한 이자 테이블 상태 및 지급일 변경  -->
+    <update id="updateByClose" parameterType="PaymentStatusUpdate">
+        UPDATE INTEREST
+        SET payment_date   = #{payDate},
+            payment_status = 'Y',
+            branch_id      = #{branchId},
+            modifier_date  = SYSDATE,
+            modifier_id    = #{modifierId},
+            version        = version + 1
+        WHERE acc_id = #{accId}
+          AND payment_status = 'N'
+    </update>
+
+    <update id="updateByCloseWithInterestList" parameterType="PaymentUpdate">
+        UPDATE INTEREST
+        SET payment_date = #{payDate},
+            payment_status = 'Y',
+            branch_id      = #{branchId},
+            balance = #{balance},
+            interest_rate = #{interestRate},
+            preferential_interest_rate = #{preferentialInterestRate},
+            amount = #{amount},
+            modifier_date  = SYSDATE,
+            modifier_id    = #{modifierId},
+            version        = version + 1
+        WHERE
+            acc_id = #{accId}
+        AND
+            creation_date = #{creationDate}
+        AND
+            payment_status = 'N'
+    </update>
+
+    <!--    해지 취소에 의한 이자 테이블 상태 및 지급일 변경-->
+    <update id="updateByCloseCancel" parameterType="PaymentStatusRollback">
+        UPDATE INTEREST
+        SET payment_date   = NULL,
+            payment_status = 'N',
+            branch_id      = #{branchId},
+            modifier_date  = SYSDATE,
+            modifier_id    = #{modifierId},
+            version        = version + 1
+        WHERE acc_id = #{accId}
+          AND payment_date = #{expireDate}
+    </update>
+
+    <delete id="deleteInterest" parameterType="BusinessDateAndBranchId">
+        delete
+        from interest
+        where branch_id = #{branchId}
+          and creation_date = #{businessDate}
+    </delete>
+</mapper>

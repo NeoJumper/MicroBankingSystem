@@ -1,0 +1,61 @@
+#search-customer-modal .modal-dialog {
+    min-width: 65%;
+}
+#search-modal-account .modal-body {
+    padding: 2% 4%;
+}
+.modal-body h5,
+.modal-header h1 {
+    font-weight: bold;
+}
+
+#search-modal-title {
+    font-weight: bold;
+}
+
+
+#search-modal-center-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    gap: 10px;
+}
+
+#search-modal-select {
+    padding: 5px;
+    height: 46.5px;
+}
+
+#search-modal-input {
+    height: 46.5px;
+    width: 100%;
+}
+
+#search-modal-input input {
+    width: 100%;
+    padding: 5px;
+}
+
+#scrollable-table-container {
+    position: relative;
+}
+
+#scrollable-tbody-wrapper {
+    max-height: 245px;
+    height: 245px;
+    overflow-y: auto;
+    display: block;
+}
+#scrollable-tbody-wrapper .common-table{
+    margin: 0;
+}
+
+#search-modal-customer-information tr td {
+    text-align: center;
+}
+
+#search-modal-table th {
+    text-align: center;
+}
+

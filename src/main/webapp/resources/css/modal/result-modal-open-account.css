@@ -1,0 +1,31 @@
+#account-open-result-img-container {
+    margin-left: 9px;
+    margin-right: 9px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+#account-open-result-img{
+    max-width: 40%; /* 부모 컨테이너의 너비에 맞추기 */
+    max-height: 40%; /* 부모 컨테이너의 높이에 맞추기 */
+    object-fit: contain;
+}
+h5{
+    font-weight: bold;
+    margin-top: 8px;
+}
+.account-open-result-modal-table input{
+    text-align: right; /* 텍스트를 오른쪽으로 정렬 */
+    width: 90%;
+}
+.account-open-result-modal-table th{
+    width: 15%;
+}
+.account-open-result-modal-table td{
+    width: 35%;
+}
+#result-modal-open-account .modal-body{
+    padding: 0px 16px;
+}

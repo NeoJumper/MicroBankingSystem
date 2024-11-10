@@ -1,0 +1,42 @@
+#employee-detail-modal .modal-dialog {
+    min-width: 65%;
+}
+
+#employee-detail-modal .modal-body {
+    padding: 3% 3%;
+}
+
+#employee-detail-modal .modal-body h5,
+#employee-detail-modal .modal-header h1 {
+    font-weight: bold;
+}
+
+#employee-detail-modal hr {
+    margin: 0;
+    border: 2px solid black;
+    margin-bottom: 30px;
+}
+#modalCenterBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#employee-detail-modal .modal-body label {
+    font-weight: bold;
+}
+
+
+#employee-detail-modal .modal-body table {
+    width: 100%;
+}
+
+#employee-detail-modal .modal-body th {
+    text-align: center;
+}
+#employee-add-list {
+    max-height: 245px;
+    height: 245px;
+    overflow-y: auto;
+    display: block;
+}
