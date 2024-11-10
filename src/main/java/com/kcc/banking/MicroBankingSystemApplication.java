@@ -11,8 +11,8 @@ import org.springframework.retry.annotation.EnableRetry;
 public class MicroBankingSystemApplication extends SpringBootServletInitializer {
 
 	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(MicroBankingSystemApplication.class);
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(MicroBankingSystemApplication.class);
 	}
 
 	public static void main(String[] args) {

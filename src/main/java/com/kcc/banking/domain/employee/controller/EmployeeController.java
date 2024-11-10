@@ -19,7 +19,7 @@ public class EmployeeController {
                             @RequestParam(value = "exception", required = false) String exception,  Model model) {
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
-        return "auth/login-form";
+        return "/auth/login-form";
     }
 
     @GetMapping("/page/manager/employee-save")
