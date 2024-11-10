@@ -700,14 +700,18 @@ VALUES (trade_seq.nextval, '001-0000016-7116', 2, 1, TO_TIMESTAMP('2024-12-05 00
 
 
 
-INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount, auto_transfer_start_date, auto_transfer_end_date, create_date, registration_date, registrant_id, version, missed_count, next_transfer_date, status)
+INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
+                           auto_transfer_start_date, auto_transfer_end_date,
+                           create_date, registration_date, registrant_id,
+                           version, missed_count, next_transfer_date, status)
 VALUES (AUTO_TRANSFER_SEQ.nextval, '001-0000005-5678', '001-0000004-4567', 1000,
         TO_TIMESTAMP('2024/11/06 00:00:00', 'YYYY/MM/DD HH24:MI:SS'),
         TO_TIMESTAMP('2025/11/06 00:00:00', 'YYYY/MM/DD HH24:MI:SS'),
         TO_TIMESTAMP('2024/11/06 00:00:00', 'YYYY/MM/DD HH24:MI:SS'),
-        TO_CHAR(SYSTIMESTAMP, 'YYYY/MM/DD'), 1, 1, 0,
+        TO_TIMESTAMP(TO_CHAR(SYSTIMESTAMP, 'YYYY/MM/DD'), 'YYYY/MM/DD'),
+        1, 1, 0,
         TO_TIMESTAMP('2024/11/06 00:00:00', 'YYYY/MM/DD HH24:MI:SS'),
-        'ACTIVE');
+        'ACTIVE')
 -- 1회차 자동이체 설정
 INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
                            auto_transfer_start_date,
