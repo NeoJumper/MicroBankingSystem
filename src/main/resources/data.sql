@@ -700,36 +700,15 @@ VALUES (trade_seq.nextval, '001-0000016-7116', 2, 1, TO_TIMESTAMP('2024-12-05 00
 
 
 
-INSERT INTO Auto_transfer (
-    id,
-    acc_id,
-    target_acc_id,
-    amount,
-    auto_transfer_start_date,
-    auto_transfer_end_date,
-    create_date,
-    registration_date,
-    registrant_id,
-    version,
-    missed_count,
-    next_transfer_date,
-    status
-) VALUES (
-             AUTO_TRANSFER_SEQ.nextval,
-             '001-0000005-5678',            -- 이준호 예금
-             '001-0000004-4567',            -- 이준호 적금
-             1000,                  -- 이체 금액 (예: 10,000원)
-             TO_TIMESTAMP('24/11/06 00:00:00', 'DD/MM/YY HH24:MI:SS'),  -- 자동 이체 시작 날짜
-             TO_TIMESTAMP('25/11/06 00:00:00', 'DD/MM/YY HH24:MI:SS'),-- 이체 날짜
-             TO_TIMESTAMP('24/11/06 00:00:00', 'YY/MM/DD HH24:MI:SS'),
-             TO_CHAR(SYSTIMESTAMP, 'YY/MM/DD'),
-             1,                       -- 재시도 횟수 (예: 0)          -- 이체 유형 (예: 'AUTOMATIC', 'MANUAL')
-             1,
-             0,
-             TO_TIMESTAMP('24/11/06 00:00:00', 'YY/MM/DD HH24:MI:SS'),
-             'ACTIVE'
-         );
-
+INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount, auto_transfer_start_date, auto_transfer_end_date, create_date, registration_date, registrant_id, version, missed_count, next_transfer_date, status)
+VALUES (AUTO_TRANSFER_SEQ.nextval, '001-0000005-5678', '001-0000004-4567', 1000,
+        TO_TIMESTAMP('2024/11/06 00:00:00', 'YYYY/MM/DD HH24:MI:SS'),
+        TO_TIMESTAMP('2025/11/06 00:00:00', 'YYYY/MM/DD HH24:MI:SS'),
+        TO_TIMESTAMP('2024/11/06 00:00:00', 'YYYY/MM/DD HH24:MI:SS'),
+        TO_CHAR(SYSTIMESTAMP, 'YYYY/MM/DD'), 1, 1, 0,
+        TO_TIMESTAMP('2024/11/06 00:00:00', 'YYYY/MM/DD HH24:MI:SS'),
+        'ACTIVE');
+-- 1회차 자동이체 설정
 INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
                            auto_transfer_start_date,
                            auto_transfer_end_date, auto_transfer_period,
@@ -737,11 +716,9 @@ INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
                            modification_date, modifier_id, version)
 VALUES (AUTO_TRANSFER_SEQ.nextval, '001-0010000-7777', '001-0010001-3687', 10000,
         TO_TIMESTAMP('2024-01-15 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
-
         NULL, 1,
         SYSTIMESTAMP, SYSTIMESTAMP, 2,
         NULL, NULL, 1);
-
 
 -- 1회차 자동이체 설정 (고객 ID: 1)
 INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
@@ -761,13 +738,11 @@ INSERT INTO Auto_transfer (id, acc_id, target_acc_id, amount,
                            auto_transfer_end_date, auto_transfer_period,
                            create_date, registration_date, registrant_id,
                            modification_date, modifier_id, version)
-
 VALUES (AUTO_TRANSFER_SEQ.nextval, '001-0000015-7777', '001-0000014-8954', 100000,
         TO_TIMESTAMP('2023-04-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
         NULL, 1,
         SYSTIMESTAMP, SYSTIMESTAMP, 2,
         NULL, NULL, 1);
-
 
 
 
