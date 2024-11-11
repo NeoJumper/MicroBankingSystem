@@ -4,12 +4,14 @@ import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
 import com.kcc.banking.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
+@Log4j2
 public class EmployeeController {
     private final EmployeeService employeeService;
     private final CommonService commonService;
@@ -17,9 +19,10 @@ public class EmployeeController {
     @GetMapping("/page/anonymous/login-form")
     public String loginForm(@RequestParam(value = "error", required = false) String error,
                             @RequestParam(value = "exception", required = false) String exception,  Model model) {
+       log.info("/page/anonymous/login-form");
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
-        return "/auth/login-form";
+        return "auth/login-form";
     }
 
     @GetMapping("/page/manager/employee-save")
