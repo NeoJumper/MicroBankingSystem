@@ -16,6 +16,12 @@ $(document).ready(function () {
     $('#input-confirm').click(function () {
         checkAccountId();
     })
+
+    $('#transfer-result-modal').on('hidden.bs.modal', function () {
+        // 모달이 닫힐 때 테이블 내용 비우기
+        $('#table-content tbody').empty();
+    });
+
 });
 
 function getAccountDetail() {

@@ -53,8 +53,18 @@ public class CloseSavingsFlexibleAccountTotal {
     // 해지 종류 Enum을 public으로 선언
     public enum CloseType {
         EARLY_TERMINATION("중도 해지"),
+
+        LESS_THAN_ONE_MONTH("1개월 미만"),
+        ONE_TO_THREE_MONTHS("1개월 이상 ~ 3개월 미만"),
+        THREE_TO_SIX_MONTHS("3개월 이상 ~ 6개월 미만"),
+        SIX_TO_NINE_MONTHS("6개월 이상 ~ 9개월 미만"),
+        NINE_TO_ELEVEN_MONTHS("9개월 이상 ~ 11개월 미만"),
+        MORE_THAN_ELEVEN_MONTHS("11개월 이상"),
         MATURITY_TERMINATION("만기 해지"),
-        POST_MATURITY_TERMINATION("만기 후 해지");
+        POST_MATURITY_TERMINATION("만기 후 해지"),
+        OVER_ONE_MONTH_POST_MATURITY("만기 후 1개월 초과");
+
+
 
         private final String description;
 
