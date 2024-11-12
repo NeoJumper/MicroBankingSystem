@@ -5,16 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @NoArgsConstructor
 @Getter
 @Setter
 public class BusinessDateAndEmployeeId {
 
-    private String businessDate;
+    private Timestamp businessDate;
     private Long employeeId;
 
     @Builder
-    public BusinessDateAndEmployeeId(String businessDate, Long employeeId) {
+    public BusinessDateAndEmployeeId(Timestamp businessDate, Long employeeId) {
         this.businessDate = businessDate;
         this.employeeId = employeeId;
     }
