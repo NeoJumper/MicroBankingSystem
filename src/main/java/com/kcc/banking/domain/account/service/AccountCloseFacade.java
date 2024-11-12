@@ -103,29 +103,36 @@ public class AccountCloseFacade {
 
         // 조건 비교
         if (businessDate.isBefore(maturityDateOnly)) {
+
             System.out.println("중도 해지");
             isEarlyTermination = true;
 
             // 중도 해지에 따른 이율 계산
             if (diffDays < 30) {
+                closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.LESS_THAN_ONE_MONTH);
                 finalInterestRate = BigDecimal.valueOf(0.001);  // 연 0.1%
             } else if (diffDays < 90) {
+                closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.ONE_TO_THREE_MONTHS);
                 finalInterestRate = BigDecimal.valueOf(0.0015);  // 연 0.15%
             } else if (diffDays < 180) {
+                closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.THREE_TO_SIX_MONTHS);
                 finalInterestRate = BigDecimal.valueOf(0.002);  // 연 0.2%
             } else if (diffDays < 270) {
+                closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.SIX_TO_NINE_MONTHS);
                 BigDecimal calculatedRate = BigDecimal.valueOf(0.6)
                         .multiply(BigDecimal.valueOf(diffDays))
                         .divide(BigDecimal.valueOf(contractDays), 4, RoundingMode.DOWN)
                         .multiply(baseInterestRate);
                 finalInterestRate = calculatedRate.max(BigDecimal.valueOf(0.002));
             } else if (diffDays < 330) {
+                closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.NINE_TO_ELEVEN_MONTHS);
                 BigDecimal calculatedRate = BigDecimal.valueOf(0.7)
                         .multiply(BigDecimal.valueOf(diffDays))
                         .divide(BigDecimal.valueOf(contractDays), 4, RoundingMode.DOWN)
                         .multiply(baseInterestRate);
                 finalInterestRate = calculatedRate.max(BigDecimal.valueOf(0.002));
             } else {
+                closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.MORE_THAN_ELEVEN_MONTHS);
                 BigDecimal calculatedRate = BigDecimal.valueOf(0.9)
                         .multiply(BigDecimal.valueOf(diffDays))
                         .divide(BigDecimal.valueOf(contractDays), 4, RoundingMode.DOWN)
@@ -134,6 +141,7 @@ public class AccountCloseFacade {
             }
         } else if (businessDate.isEqual(maturityDateOnly)) {
             System.out.println("만기 해지");
+            closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.MATURITY_TERMINATION);
             finalInterestRate = baseInterestRate;
             isMaturityTermination = true;
         } else {
@@ -143,8 +151,10 @@ public class AccountCloseFacade {
             long diffDaysAfterMaturity = ChronoUnit.DAYS.between(maturityDateOnly, businessDate);
 
             if (diffDaysAfterMaturity <= 30) {
+                closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.POST_MATURITY_TERMINATION);
                 //finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.5)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/2
             } else {
+                closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.OVER_ONE_MONTH_POST_MATURITY);
                 //finalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.25)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/4
             }
         }
@@ -162,7 +172,6 @@ public class AccountCloseFacade {
         List<InterestDetails> interestDetailsList = interestService.getInterestDetailsByAccountId(accountId);
         // 중도 해지 시
         if (isEarlyTermination) {
-            closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.EARLY_TERMINATION);
             // 1개월 미만일 시
             if (interestDetailsList.isEmpty()) {
                 // 연 이자율로 나눠서 계산
@@ -214,9 +223,9 @@ public class AccountCloseFacade {
                 }
             }
         } else if (isMaturityTermination) {
-            closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.MATURITY_TERMINATION);
+            //closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.MATURITY_TERMINATION);
         } else {
-            closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.POST_MATURITY_TERMINATION);
+            //closeSavingsFlexibleAccountTotal.setCloseType(CloseSavingsFlexibleAccountTotal.CloseType.POST_MATURITY_TERMINATION);
         }
         return CloseSavingsFlexibleAccountTotal.of(closeSavingsFlexibleAccountTotal, interestDetailsList);
     }

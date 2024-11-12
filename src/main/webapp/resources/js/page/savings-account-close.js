@@ -4,13 +4,18 @@ $(document).ready(function () {
     });
 
     $('#savings-account-close-validate').click(function () {
-        checkAccountId();
+        checkSavingsAccountId();
     });
 
     $('#saving-account-close-submit-btn').click(function () {
         submitSavingAccountClose();
     })
 
+
+    $('#transfer-result-modal').on('hidden.bs.modal', function () {
+        // 이곳에 리다이렉트하고 싶은 URL을 입력하세요
+        window.location.href = "/page/employee/savings-account-close";
+    });
 });
 
 
@@ -195,6 +200,28 @@ function calculateRateData(openDate, businessDate, period, interestRateSum) {
     return rateData;
 }
 
+function applyHighlightBasedOnMaturityType(maturityType) {
+    const maturityMap = {
+        "LESS_THAN_ONE_MONTH": "under-1m",
+        "ONE_TO_THREE_MONTHS": "under-3m",
+        "THREE_TO_SIX_MONTHS": "under-6m",
+        "SIX_TO_NINE_MONTHS": "over-6m",
+        "NINE_TO_ELEVEN_MONTHS": "between-9-11m",
+        "MORE_THAN_ELEVEN_MONTHS": "over-11m",
+        "MATURITY_TERMINATION": "maturity",
+        "POST_MATURITY_TERMINATION": "post-maturity-1m",
+        "OVER_ONE_MONTH_POST_MATURITY": "post-maturity-1m-plus"
+    };
+
+    const selectedId = maturityMap[maturityType]; // 응답 데이터의 유형을 통해 id를 가져옵니다.
+
+    // 모든 행의 배경색과 글자색을 초기화
+    $('.common-table tr').css('background-color', '').css('color', '');
+
+    // 해당하는 행에만 배경색과 글자색 적용
+    $(`#${selectedId}`).css('background-color', '#f6f9fc').css('color', '#3f5ba9');
+}
+
 
 // 자유적금 해지 프로세스
 function getSavingsFlexibleAccount(data, accountId) {
@@ -217,26 +244,7 @@ function getSavingsFlexibleAccount(data, accountId) {
                 interestRateSum
             );
 
-            let highlightedKey = ""; // 해당 케이스 키
-
-            // 이율 데이터에 대해 반복하며 적용 이율과 일치하는 키 찾기
-            for (const [key, rate] of Object.entries(rateData)) {
-                if (parseFloat(rate) === data.finalInterestRate * 100) { // 금리를 퍼센트로 변환하여 비교
-                    highlightedKey = key;
-                    break; // 일치하는 키를 찾으면 반복 중단
-                }
-            }
-
-            for (const [key, rate] of Object.entries(rateData)) {
-                const rateElement = $(`#${key} .dynamic-rate`);
-                rateElement.text(rate);
-
-                // 해당하는 키의 <td>에만 배경색 적용
-                if (key === highlightedKey) {
-                    rateElement.closest('tr').css('background-color', '#f6f9fc'); // 하이라이트 색상 설정
-                    rateElement.closest('tr').css('color', '#3f5ba9');
-                }
-            }
+            applyHighlightBasedOnMaturityType(data.closeType); // AJAX 응답으로 받은 maturityType을 사용하여 배경색 적용
 
             // 계좌 해지 정보 추가 - 만기일 추가 예정
             addCloseInfo(data, businessDate);
@@ -245,6 +253,8 @@ function getSavingsFlexibleAccount(data, accountId) {
         }
     })
 }
+
+
 
 function addCloseInfo(data, businessDate) {
 
@@ -259,8 +269,8 @@ function addCloseInfo(data, businessDate) {
     $('#flex-final-rate').text((data.finalInterestRate * 100) + " %");
 
     $('#flex-product-tax-rate').text((data.taxRate * 100) + " %");
-    $('#flex-total-before-interest-sum').val(data.totalInterestSum);
-    $('#flex-total-after-interest-sum').val(data.totalInterestSumAfterTax);
+    $('#flex-total-before-interest-sum').val(data.totalInterestSum.toLocaleString());
+    $('#flex-total-after-interest-sum').val(data.totalInterestSumAfterTax.toLocaleString());
 
     $('#flex-balance').val(data.balance.toLocaleString());
     $('#flex-total-amount').val(data.totalAmount.toLocaleString());
@@ -370,9 +380,9 @@ function getSavingsAccount(data, accountId) {
 }
 
 
-function checkAccountId() {
-    const inputId = $('#savings-account-close-password').val();
+function checkSavingsAccountId() {
     var accountNumber = $('#savings-account-close-number').val();
+    var accountPassword = $('#savings-account-close-password').val();
 
     $.ajax({
         url: '/api/employee/account-validate',
@@ -380,7 +390,7 @@ function checkAccountId() {
         type: "POST",
         data: {
             accountNumber: accountNumber,
-            password: inputId
+            password: accountPassword
         },
         success: function (response) {
             swal({
@@ -522,15 +532,14 @@ function addFixedInterest(data, finalInterestRate) {
 // 자유적금 해지 프로세스
 function savingAccountFlexibleCloseRequest() {
     var accountId = $('#savings-account-close-number').val();
-    var totalAmount = parseFloat($('#flex-total-amount').val().replace(/,/g, ''));
-    // "중도 해지" 텍스트
-    var closeType = $('#flex-close-type').text();
+
 
     $.ajax({
             url: "/api/employee/flexible-savings-account/" + accountId,
             type: "GET",
             success: function (data) {
                 console.log("RE_DATA", data);
+                reqeustFlexibleClose(data);
             }, error: function (error) {
                 swal({
                     title: "해지 실패",
@@ -540,31 +549,65 @@ function savingAccountFlexibleCloseRequest() {
             }
         }
     );
+}
 
+function reqeustFlexibleClose(data){
+    var totalAmount = parseFloat($('#flex-total-amount').val().replace(/,/g, ''));
+    // "중도 해지" 텍스트
+    var closeType = $('#flex-close-type').text();
 
     // 자유적금 해지를 위한 계좌 세부 정보
     // return CloseSavingsFlexibleAccountTotal
-    /*    $.ajax({
-            url: '/api/employee/close-trade',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                accId: accountNumber,
-                amount: totalAmount,
-                status: "CLS",
-                description: "자유 적금 계좌 해지",
-                tradeType: "CLOSE",
-                closeType: closeType
-            }),
-            success: function (response) {
+    $.ajax({
+        url: '/api/employee/flexible-savings-account-close',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            accId: data.id,
+            amount: totalAmount,
+            status: "CLS",
+            description: "자유 적금 계좌 해지",
+            tradeType: "CLOSE",
+            closeType: closeType,
+            interestDetailsList: data.interestDetailsList
+        }),
+        success: function (response) {
 
-                console.log("자유적금 계좌 해지 DATA", response);
-                swal({
-                    title: "해지 성공",
-                    text: "계좌 해지 완료되었습니다.",
-                    icon: "success",
-                });
+            console.log("자유적금 계좌 해지 DATA", response);
 
-            }
-        })*/
+            // Trigger the modal to show
+
+
+            // Update modal content
+            $('#modal-account-close-customerName').text(response.customerName);
+            $('#modal-account-close-accountId').text(response.accountId);
+            $('#modal-account-close-productName').text(response.productName);
+            $('#modal-account-close-accountBal').text(response.accountBal);
+            $('#modal-account-close-productInterRate').text(response.productInterRate);
+            $('#modal-account-close-accountPreInterRate').text(response.accountPreInterRate );
+            $('#modal-account-close-productTaxRate').text((response.productTaxRate * 100));
+
+            // 세전이자
+            $('#modal-account-close-amountSum').text($('#flex-total-before-interest-sum').val().toLocaleString());
+            // 세후이자
+            $('#modal-account-close-textAfterInter').text($('#flex-total-after-interest-sum').val().toLocaleString());
+            // 지급 총 금액
+            $('#modal-account-close-totalPayment').text(response.amountSum.toLocaleString());
+
+            $('#transfer-result-modal').modal('show');
+
+            swal({
+                title: "해지 성공",
+                text: "계좌 해지 완료되었습니다.",
+                icon: "success",
+            });
+
+        }, error: function (error) {
+            swal({
+                title: "해지 실패",
+                text: error,
+                icon: "error",
+            });
+        }
+    })
 }

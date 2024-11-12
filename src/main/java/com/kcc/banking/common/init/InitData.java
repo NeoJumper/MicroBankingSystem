@@ -46,7 +46,7 @@ public class InitData {
                 v_end_date DATE := TO_DATE('2024-08-01', 'YYYY-MM-DD');
                 v_start_date DATE := TRUNC(ADD_MONTHS(v_end_date, -3));
             BEGIN
-                WHILE v_start_date <= v_end_date LOOP
+                WHILE v_start_date < v_end_date LOOP
                     INSERT INTO Business_day (business_date, status, is_current_business_day, version)
                     VALUES (
                         TRUNC(v_start_date),
@@ -350,11 +350,34 @@ public class InitData {
 
             """;
 
+            String interestPlsql = """
+                    -- Insert 15 Interest records with monthly decreasing creation dates starting from August 1, 2024.
+                    BEGIN
+                        FOR i IN 1..15 LOOP
+                            INSERT INTO Interest (
+                                id, acc_id, registrant_id, branch_id, creation_date,
+                                amount, balance, interest_rate, preferential_interest_rate, payment_status,
+                                trade_number, registration_date, modifier_date, modifier_id, version
+                            )
+                            VALUES (
+                                interest_seq.NEXTVAL,
+                                '001-0000073-7373', 2, 1,
+                                TO_TIMESTAMP('2024-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS') - INTERVAL '1' MONTH * (i - 1),\s
+                                300, 120000, 2.6, 0.1, 'N',
+                                1, TO_TIMESTAMP('2024-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS') - INTERVAL '1' MONTH * (i - 1),\s
+                                CURRENT_TIMESTAMP, 2, 1
+                            );
+                        END LOOP;
+                    END;
+                    
+                    """;
+
             // SQL 실행
             jdbcTemplate.execute(firstPlsql);
             jdbcTemplate.execute(secondPlsql);
             jdbcTemplate.execute(updateSql);
             jdbcTemplate.execute(transactionPlsql);
+            jdbcTemplate.execute(interestPlsql);
         };
     }
 }

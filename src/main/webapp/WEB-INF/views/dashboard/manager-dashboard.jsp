@@ -26,14 +26,14 @@
     </div>
 
     <div style="display: flex; align-items: center">
-        <input type="date" style="border-radius: 5px; color: var(--dark-gray); width: 300px; margin-left: 10px">
+  <%--      <input type="date" style="border-radius: 5px; color: var(--dark-gray); width: 300px; margin-left: 10px">
         <button class="basic-btn">
             조회
-        </button>
+        </button>--%>
         <button class="basic-btn" onclick="saveChartsAsPDF()">차트 저장</button>
     </div>
 
-    <div id="cash-transfer-amount" class="rounded-boxes">
+<%--    <div id="cash-transfer-amount" class="rounded-boxes">
         <div class="rounded-box red">
             현금 입금: <span>54,368,000,000</span>원
         </div>
@@ -46,7 +46,7 @@
         <div class="rounded-box blue">
             현재 거래량: <span>3,131,132</span> 건
         </div>
-    </div>
+    </div>--%>
 
 
     <div class="row">
@@ -67,11 +67,11 @@
                     role="tab" aria-controls="daily" aria-selected="true">일별 거래량
             </button>
         </li>
-        <li class="nav-item" role="presentation">
+<%--        <li class="nav-item" role="presentation">
             <button class="nav-link" id="weekly-tab" data-bs-toggle="tab" data-bs-target="#weekly" type="button"
                     role="tab" aria-controls="weekly" aria-selected="false">주간별 거래량
             </button>
-        </li>
+        </li>--%>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#monthly" type="button"
                     role="tab" aria-controls="monthly" aria-selected="false">월별 거래량
@@ -102,19 +102,19 @@
                             </tr>
                             <tr>
                                 <th>출금</th>
-                                <td></td>
+                                <td>test</td>
                             </tr>
                             <tr>
                                 <th>송금</th>
-                                <td></td>
+                                <td>test</td>
                             </tr>
                             <tr>
                                 <th>가입</th>
-                                <td></td>
+                                <td>test</td>
                             </tr>
                             <tr>
                                 <th>해지</th>
-                                <td></td>
+                                <td>test</td>
                             </tr>
                             </tbody>
                         </table>
@@ -140,6 +140,39 @@
                 <div class="col-5 chart-container">
                     <h3 class="tab-title">월별 거래량</h3>
                     <canvas id="monthlyTransactionVolumeChart" width="400" height="200"></canvas>
+                </div>
+                <div class="col-5 chart-container chart-table-combo">
+                    <div>
+                    <h3 class="tab-title">월별 거래 유형</h3>
+                    <canvas id="monthlyTransactionChart"></canvas>
+                    </div>
+                    <div>
+                    <table id="monthly-transaction-table" class="common-table">
+
+                        <tbody>
+                        <tr>
+                            <th>입금</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>출금</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>송금</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>가입</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>해지</th>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
                 </div>
             </div>
         </div>

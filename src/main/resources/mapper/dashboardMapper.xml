@@ -5,6 +5,82 @@
 <mapper namespace="com.kcc.banking.domain.dashboard.mapper.DashboardMapper">
 
 
+    <select id="findMonthlyTransactionTypes" parameterType="map" resultType="TransactionTypeCount">
+        SELECT
+            CASE
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN trade_type = 'WITHDRAWAL' THEN '출금'
+                WHEN trade_type = 'DEPOSIT' THEN '입금'
+                WHEN trade_type = 'OPEN' THEN '가입'
+                WHEN trade_type = 'CLOSE' THEN '해지'
+                ELSE trade_type
+                END AS transactionType,
+            COUNT(*) AS transactionCount
+        FROM
+            trade
+        WHERE
+            branch_id = #{branchId}
+          AND trade_date &gt;= TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'MM')
+          AND trade_date &lt; ADD_MONTHS(TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'MM'), 1)
+        GROUP BY
+            CASE
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN trade_type = 'WITHDRAWAL' THEN '출금'
+                WHEN trade_type = 'DEPOSIT' THEN '입금'
+                WHEN trade_type = 'OPEN' THEN '가입'
+                WHEN trade_type = 'CLOSE' THEN '해지'
+                ELSE trade_type
+                END
+        ORDER BY
+            transactionType
+    </select>
+
+    <select id="findCurrentMonthTransactionTypes" parameterType="map" resultType="TransactionTypeCount">
+        SELECT
+            CASE
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN trade_type = 'WITHDRAWAL' THEN '출금'
+                WHEN trade_type = 'DEPOSIT' THEN '입금'
+                WHEN trade_type = 'OPEN' THEN '가입'
+                WHEN trade_type = 'CLOSE' THEN '해지'
+                ELSE trade_type
+                END AS transactionType,
+            COUNT(*) AS transactionCount
+        FROM
+            trade
+        WHERE
+            registrant_id = #{employeeId}
+          AND TO_CHAR(trade_date, 'YYYY-MM') = TO_CHAR(TO_DATE(#{today}, 'YYYY-MM-DD'), 'YYYY-MM')
+        GROUP BY
+            CASE
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN trade_type = 'WITHDRAWAL' THEN '출금'
+                WHEN trade_type = 'DEPOSIT' THEN '입금'
+                WHEN trade_type = 'OPEN' THEN '가입'
+                WHEN trade_type = 'CLOSE' THEN '해지'
+                ELSE trade_type
+                END
+        ORDER BY
+            transactionType
+    </select>
+
+    <!-- 직원의 이번 달 일별 거래량 조회 -->
+    <select id="findEmployeeDailyTransactionVolume" parameterType="map" resultType="DailyEmployeeTransactionVolumeChart">
+        SELECT
+            TO_CHAR(trade_date, 'YYYY-MM-DD') AS tradeDate,
+            COUNT(*) AS transactionCount
+        FROM
+            trade
+        WHERE
+            registrant_id = #{employeeId}
+          AND TO_CHAR(trade_date, 'YYYY-MM') = TO_CHAR(TO_DATE(#{today}, 'YYYY-MM-DD'), 'YYYY-MM')
+        GROUP BY
+            TO_CHAR(trade_date, 'YYYY-MM-DD')
+        ORDER BY
+            tradeDate
+    </select>
+
+
     <select id="findAccountOpenRatioByRegistrantId" parameterType="java.lang.Long" resultType="AccountOpenRatioChart">
         SELECT
             TO_CHAR(trade_date, 'YYYY-MM') AS tradeMonth,
