@@ -32,7 +32,147 @@ $(document).ready(function () {
             console.error("거래량 비교 데이터를 가져오는 데 실패했습니다:", error);
         }
     });
+
+    // 월별 나의 거래 유형 차트 데이터 요청
+    $.ajax({
+        url: '/api/dashboard/currentMonthTransactionTypes',
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            renderMonthlyTransactionTypeChart(response);
+        },
+        error: function (xhr, status, error) {
+            console.error("이번 달 거래 유형 데이터를 가져오는 데 실패했습니다:", error);
+        }
+    });
+
+    $.ajax({
+        url: '/api/dashboard/dailyEmployeeTransactionVolume',
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            renderDailyTransactionVolumeChart(response);
+        },
+        error: function (xhr, status, error) {
+            console.error("일별 거래량 데이터를 가져오는 데 실패했습니다:", error);
+        }
+    });
 });
+
+// 일별 거래량 차트를 그리는 함수
+function renderDailyTransactionVolumeChart(data) {
+    const labels = generateDailyLabels(); // 이번 달의 일별 라벨 생성
+    const transactionCounts = labels.map(label => {
+        const foundData = data.find(item => item.tradeDate === label);
+        return foundData ? foundData.transactionCount : 0;
+    });
+
+    const chartData = {
+        labels: labels,
+        datasets: [{
+            label: '나의 일별 거래량',
+            data: transactionCounts,
+            backgroundColor: 'rgba(75, 192, 192, 0.4)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.1
+        }]
+    };
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    const ctx = document.getElementById('myDailyTransactionVolumeChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: chartOptions
+    });
+}
+
+// 이번 달의 일별 라벨을 생성하는 함수
+function generateDailyLabels() {
+    const labels = [];
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); // 0부터 시작하므로 주의
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(currentYear, currentMonth, day);
+        const label = date.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+        labels.push(label);
+    }
+    return labels;
+}
+
+
+
+// 이번 달 거래량 유형 차트
+function renderMonthlyTransactionTypeChart(data) {
+    const transactionTypes = data.map(item => item.transactionType);
+    const transactionCounts = data.map(item => item.transactionCount);
+
+    const backgroundColors = generateBackgroundColors(transactionTypes.length);
+
+    const chartData = {
+        labels: transactionTypes,
+        datasets: [{
+            data: transactionCounts,
+            backgroundColor: backgroundColors
+        }]
+    };
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    };
+
+    const ctx = document.getElementById('myMonthlyTransactionTypeChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: chartData,
+        options: chartOptions
+    });
+}
+
+// 색상 배열을 생성하는 함수
+function generateBackgroundColors(count) {
+    const colors = [
+        'rgba(255, 99, 132, 0.6)',    // Red
+        'rgba(54, 162, 235, 0.6)',    // Blue
+        'rgba(255, 206, 86, 0.6)',    // Yellow
+        'rgba(75, 192, 192, 0.6)',    // Green
+        'rgba(153, 102, 255, 0.6)',   // Purple
+        'rgba(255, 159, 64, 0.6)',    // Orange
+        'rgba(199, 199, 199, 0.6)'    // Grey
+    ];
+    if (count <= colors.length) {
+        return colors.slice(0, count);
+    } else {
+        // 필요한 색상이 더 많을 경우 랜덤 색상 생성
+        let extraColors = [];
+        for (let i = 0; i < count - colors.length; i++) {
+            extraColors.push('rgba(' + Math.floor(Math.random() * 255) + ', ' +
+                Math.floor(Math.random() * 255) + ', ' +
+                Math.floor(Math.random() * 255) + ', 0.6)');
+        }
+        return colors.concat(extraColors);
+    }
+}
 
 // 계좌 개설 차트를 그리는 함수
 function renderAccountOpenRatioChart(data) {

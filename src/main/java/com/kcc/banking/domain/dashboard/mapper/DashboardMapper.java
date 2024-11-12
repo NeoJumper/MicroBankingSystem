@@ -3,6 +3,7 @@ package com.kcc.banking.domain.dashboard.mapper;
 
 import com.kcc.banking.domain.dashboard.dto.response.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ public interface DashboardMapper {
 
     List<DailyTransactionTypeChart> findDailyTransactionTypes(Map<String, Object> params);
 
-    List<DailyTransactionVolumeChart> findDailyTransactionVolume(String branchId, String today);
+    List<DailyTransactionVolumeChart> findDailyTransactionVolume(@Param("branchId") String branchId, @Param("today") String today);
 
     List<WeeklyTransactionVolumeChart> findWeeklyTransactionVolume(String branchId, String today);
 
@@ -31,6 +32,28 @@ public interface DashboardMapper {
      */
     List<EmployeeTransactionVolumeChart> findEmployeeTransactionTypes(Long branchId);
 
+    /**
+     * 직원의 이번달 거래 유형
+     * @param employeeId
+     * @return
+     */
+    List<TransactionTypeCount> findCurrentMonthTransactionTypes(@Param("employeeId") Long employeeId, @Param("today") String today);
+
+    /**
+     * 직원의 이번 달 일별 거래량 추이
+     * @param employeeId
+     * @param today
+     * @return
+     */
+    List<DailyTransactionVolumeChart> findEmployeeDailyTransactionVolume(@Param("employeeId") Long employeeId, @Param("today") String today);
+
+    /**
+     * 매니저용 월별 거래 유형
+     * @param branchId
+     * @param today
+     * @return
+     */
+    List<TransactionTypeCount> findMonthlyTransactionTypes(@Param("branchId") Long branchId, @Param("today") String today);
 }
 
 
