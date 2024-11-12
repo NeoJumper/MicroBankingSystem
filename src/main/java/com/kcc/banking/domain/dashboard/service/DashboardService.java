@@ -37,23 +37,36 @@ public class DashboardService {
         return dashboardMapper.findDailyTransactionTypes(params);
     }
 
+// DashboardService.java
+    public List<TransactionTypeCount> getCurrentMonthTransactionTypes(String today) {
+        BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
+        Long employeeId = currentBusinessDateAndEmployeeId.getEmployeeId();
+        String businessDate = currentBusinessDateAndEmployeeId.getBusinessDate().substring(0, 10);
+        return dashboardMapper.findCurrentMonthTransactionTypes(employeeId, businessDate);
+    }
+
+
+
 
     // 일별 거래량 조회 (오늘 날짜가 포함된 한 달간)
-    public List<DailyTransactionVolumeChart> getDailyTransactionVolume(String today) {
+    public List<DailyTransactionVolumeChart> getDailyTransactionVolume() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        return dashboardMapper.findDailyTransactionVolume(currentBusinessDateAndBranchId.getBranchId(), today);
+        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().substring(0, 10);
+        return dashboardMapper.findDailyTransactionVolume(currentBusinessDateAndBranchId.getBranchId(), businessDate);
     }
 
     // 주간별 거래량 조회 (12주)
-    public List<WeeklyTransactionVolumeChart> getWeeklyTransactionVolume(String today) {
+    public List<WeeklyTransactionVolumeChart> getWeeklyTransactionVolume() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        return dashboardMapper.findWeeklyTransactionVolume(currentBusinessDateAndBranchId.getBranchId(), today);
+        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().substring(0, 10);
+        return dashboardMapper.findWeeklyTransactionVolume(currentBusinessDateAndBranchId.getBranchId(), businessDate);
     }
 
     // 월별 거래량 조회 (1월부터 12월까지)
-    public List<MonthlyTransactionVolumeChart> getMonthlyTransactionVolume(String today) {
+    public List<MonthlyTransactionVolumeChart> getMonthlyTransactionVolume() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        return dashboardMapper.findMonthlyTransactionVolume(currentBusinessDateAndBranchId.getBranchId(), today);
+        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().substring(0, 10);
+        return dashboardMapper.findMonthlyTransactionVolume(currentBusinessDateAndBranchId.getBranchId(), businessDate);
     }
 
     // 직원별 거래량 비교
@@ -63,6 +76,14 @@ public class DashboardService {
 
     public List<EmployeeTransactionVolumeChart> getEmployeeTransactionTypes(Long branchId) {
         return dashboardMapper.findEmployeeTransactionTypes(branchId);
+    }
+
+
+    public List<DailyTransactionVolumeChart> getEmployeeDailyTransactionVolume() {
+        BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
+        Long employeeId = currentBusinessDateAndEmployeeId.getEmployeeId();
+        String businessDate = currentBusinessDateAndEmployeeId.getBusinessDate().substring(0, 10);
+        return dashboardMapper.findEmployeeDailyTransactionVolume(employeeId, businessDate);
     }
 }
 
