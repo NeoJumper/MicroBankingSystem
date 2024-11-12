@@ -16,7 +16,7 @@ public interface DashboardMapper {
 
     List<DailyTransactionTypeChart> findDailyTransactionTypes(Map<String, Object> params);
 
-    List<DailyTransactionVolumeChart> findDailyTransactionVolume(String branchId, String today);
+    List<DailyTransactionVolumeChart> findDailyTransactionVolume(@Param("branchId") String branchId, @Param("today") String today);
 
     List<WeeklyTransactionVolumeChart> findWeeklyTransactionVolume(String branchId, String today);
 
@@ -46,6 +46,14 @@ public interface DashboardMapper {
      * @return
      */
     List<DailyTransactionVolumeChart> findEmployeeDailyTransactionVolume(@Param("employeeId") Long employeeId, @Param("today") String today);
+
+    /**
+     * 매니저용 월별 거래 유형
+     * @param branchId
+     * @param today
+     * @return
+     */
+    List<TransactionTypeCount> findMonthlyTransactionTypes(@Param("branchId") Long branchId, @Param("today") String today);
 }
 
 

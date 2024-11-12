@@ -5,6 +5,36 @@
 <mapper namespace="com.kcc.banking.domain.dashboard.mapper.DashboardMapper">
 
 
+    <select id="findMonthlyTransactionTypes" parameterType="map" resultType="TransactionTypeCount">
+        SELECT
+            CASE
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN trade_type = 'WITHDRAWAL' THEN '출금'
+                WHEN trade_type = 'DEPOSIT' THEN '입금'
+                WHEN trade_type = 'OPEN' THEN '가입'
+                WHEN trade_type = 'CLOSE' THEN '해지'
+                ELSE trade_type
+                END AS transactionType,
+            COUNT(*) AS transactionCount
+        FROM
+            trade
+        WHERE
+            branch_id = #{branchId}
+          AND trade_date &gt;= TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'MM')
+          AND trade_date &lt; ADD_MONTHS(TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'MM'), 1)
+        GROUP BY
+            CASE
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN trade_type = 'WITHDRAWAL' THEN '출금'
+                WHEN trade_type = 'DEPOSIT' THEN '입금'
+                WHEN trade_type = 'OPEN' THEN '가입'
+                WHEN trade_type = 'CLOSE' THEN '해지'
+                ELSE trade_type
+                END
+        ORDER BY
+            transactionType
+    </select>
+
     <select id="findCurrentMonthTransactionTypes" parameterType="map" resultType="TransactionTypeCount">
         SELECT
             CASE

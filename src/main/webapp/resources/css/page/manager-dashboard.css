@@ -21,6 +21,11 @@ canvas {
     margin-top: 65px;
 }
 
+#monthly-transaction-table{
+    margin-top: 65px;
+    min-width: 200px;
+}
+
 
 .chart-container {
     background: white;

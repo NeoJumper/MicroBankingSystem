@@ -85,5 +85,12 @@ public class DashboardService {
         String businessDate = currentBusinessDateAndEmployeeId.getBusinessDate().substring(0, 10);
         return dashboardMapper.findEmployeeDailyTransactionVolume(employeeId, businessDate);
     }
+
+    public List<TransactionTypeCount> getMonthlyTransactionTypes() {
+        BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
+        Long branchId = Long.valueOf(currentBusinessDateAndBranchId.getBranchId());
+        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().substring(0, 10);
+        return dashboardMapper.findMonthlyTransactionTypes(branchId, businessDate);
+    }
 }
 

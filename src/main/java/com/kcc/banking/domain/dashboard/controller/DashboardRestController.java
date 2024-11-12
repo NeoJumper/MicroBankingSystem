@@ -104,5 +104,12 @@ public class DashboardRestController {
         List<EmployeeTransactionVolumeChart> chartData = dashboardService.getEmployeeTransactionTypes(branchId);
         return ResponseEntity.ok(chartData);
     }
+
+    // 월별 거래 유형 데이터를 제공하는 엔드포인트
+    @GetMapping("/api/dashboard/monthlyTransactionTypes")
+    public ResponseEntity<List<TransactionTypeCount>> getMonthlyTransactionTypes() {
+        List<TransactionTypeCount> data = dashboardService.getMonthlyTransactionTypes();
+        return ResponseEntity.ok(data);
+    }
 }
 
