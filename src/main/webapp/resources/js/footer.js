@@ -68,15 +68,18 @@ function isClosed(){
         url: '/api/common/business-day-close/status',
         type: 'GET',
         success: function (response) {
-            if(response == "CLOSED"){
-                document.getElementById("close-overlay").style.display = "flex";
-            }else if(response =="OPEN"){
-                document.getElementById("close-overlay").style.display = "none";
+            var closeOverlay = document.getElementById("close-overlay");
+            if(closeOverlay) { // close-overlay 요소가 존재하는지 확인
+                if(response == "CLOSED"){
+                    closeOverlay.style.display = "flex";
+                } else if(response =="OPEN"){
+                    closeOverlay.style.display = "none";
+                }
             }
-
         }
     })
 }
+
 function getParameterByName(name, url) {
     // URL에서 쿼리 파라미터를 찾기 위한 정규식 생성
     const urlParams = new URLSearchParams(new URL(url).search);
