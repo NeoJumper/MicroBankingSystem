@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     $('#saving-account-close-submit-btn').click(function () {
         submitSavingAccountClose();
-        resultCloseRedirect();
+  /*      resultCloseRedirect();*/
     })
 
 
@@ -19,9 +19,9 @@ $(document).ready(function () {
     });
 });
 
-function resultCloseRedirect() {
+/*function resultCloseRedirect() {
     window.location.href = `/page/employee/savings-account-close`;
-}
+}*/
 
 function selectSavingsAccount() {
     var selectedRow = $('input[name="select-account"]:checked').closest('tr');
