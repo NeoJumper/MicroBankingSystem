@@ -164,7 +164,10 @@ function fillCustomerDataOfDetailModal(updatedCustomer){
 
     $('#detail-modal-customer-branch-name').val($('#customer-branch-id').val());
     $('#detail-modal-customer-registrant-name').val($('#emp-name-input').val());
-    $('#detail-modal-customer-start-date').val($('#start-date-input').val());
+    console.log("1 : " + $('#start-date-input').val());
+    console.log("2 : " + $('#start-date-input').val().split('T')[0]);
+
+    $('#detail-modal-customer-start-date').val($('#start-date-input').val().split('T')[0]);
 
 }
 function handleAuthDataOfCustomerUpdateForm(){

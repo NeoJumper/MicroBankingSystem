@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (element.classList.contains('HANDOVER')) {
             handoverTotal += amount;
-        } else if (element.classList.contains('RECEIPT')) {
+        } else if (element.classList.contains('RECEIVE')) {
             receiptTotal += amount;
         }
     });

@@ -72,7 +72,7 @@ public class EmployeeClosingData {
                         .reduce(BigDecimal.ZERO, BigDecimal::add)
                 )
                 .totalWithdrawalOfCashExchange(cashExchangeList.stream()
-                        .filter(cashExchangeData -> "RECEIPT".equals(cashExchangeData.getExchangeType()))
+                        .filter(cashExchangeData -> "RECEIVE".equals(cashExchangeData.getExchangeType()))
                         .map(CashExchangeResultData::getAmount)
                         .reduce(BigDecimal.ZERO, BigDecimal::add)
                 )

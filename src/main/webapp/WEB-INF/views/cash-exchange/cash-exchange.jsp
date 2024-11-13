@@ -18,7 +18,7 @@
 <div id="main-area">
     <div id="title">
         <h5>시재 관리 ></h5>
-        <h5>&nbsp시재금 거래</h5>
+        <h5>&nbsp인수도 거래</h5>
     </div>
 
     <div class="mb-3" style="display: flex; gap: 5px">

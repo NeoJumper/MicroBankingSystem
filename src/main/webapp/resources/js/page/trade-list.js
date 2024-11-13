@@ -558,16 +558,18 @@ function calculateOfPeriodDate() {
     let periodStartDate
     let periodEndDate
 
+
     if (!selectPeriod) {
+
         console.log("직접 기간 입력 선택 >>>>");
-        periodStartDate = $('#period-start-input').val();
-        periodEndDate = $('#period-end-input').val();
+        periodStartDate = formatDateToYYYYMMDD($('#period-start-input').val());
+        periodEndDate = formatDateToYYYYMMDD($('#period-end-input').val());
 
     } else {
         console.log("선택된 기간: " + selectPeriod);
-        periodStartDate = startDateOfPeriod(getCurrentDate, selectPeriod); // 선택된 기간으로 시작일 계산
+        periodStartDate = formatDateToYYYYMMDD(startDateOfPeriod(getCurrentDate, selectPeriod)); // 선택된 기간으로 시작일 계산
         console.log("계산된 시작일: " + periodStartDate);
-        periodEndDate = getCurrentDate; // 종료일은 현재 영업일
+        periodEndDate = formatDateToYYYYMMDD(getCurrentDate); // 종료일은 현재 영업일
         console.log("종료일: " + periodEndDate);
     }
 
@@ -618,4 +620,10 @@ function registerClickEventOfTradeCancelBtn() {
 }
 
 
-
+function formatDateToYYYYMMDD(dateString) {
+    var date = new Date(dateString);  // 문자열로부터 Date 객체 생성
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 +1 해줍니다.
+    var day = ("0" + date.getDate()).slice(-2);
+    return year + "-" + month + "-" + day;
+}

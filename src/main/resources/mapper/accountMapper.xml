@@ -129,10 +129,11 @@
             a.status = #{status}
         </if>
         <if test="accId != null and !accId.equals('')">
-            AND a.id LIKE #{accId} || '%'
+            AND a.id LIKE '%' || #{accId} || '%'
+
         </if>
         <if test="productName != null and !productName.equals('')">
-            AND p.name LIKE  #{productName} || '%'
+            AND p.name LIKE '%' || #{productName} || '%'
         </if>
         <!-- 예금일때 period = 00 / 적금일때  period != 00인 모든경우 -->
         <if test="period != null and !period.equals('')">
@@ -144,6 +145,7 @@
             </if>
         </if>
         </where>
+        order by a.id desc
     </select>
 
     <select id="findCloseSavingsAccountDetail" resultType="CloseSavingsAccountTotal">

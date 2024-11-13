@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -68,7 +70,7 @@ public class AccountRestController {
     public ResponseEntity<AccountOpenResultOfModal> getAccountInfo(@PathVariable String accountId) {
         AccountOpenResultOfModal accountInfo = accountService.getAccountOpenResultOfModal(accountId);
         BigDecimal transferAmountOfToday = tradeService.getTransferAmountOfToday(TradeSearch.builder()
-                .tradeDate(commonService.getCurrentData().getCurrentBusinessDate())
+                .tradeDate(new Date(commonService.getCurrentData().getCurrentBusinessDate().getTime()))
                 .accId(accountId)
                 .build()
         );

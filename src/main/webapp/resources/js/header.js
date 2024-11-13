@@ -35,10 +35,10 @@ function handleBusinessDay(){
         success: function(response) {
             // 성공 시 처리할 로직 작성
 
-            var formattedDate = response.businessDate.substring(0, 10);
+            businessDay = new Date(response.businessDate).toLocaleDateString('ko-KR');
 
-            $('#business-day-date').text(formattedDate);
-            $('#business-day-date').val(formattedDate);
+            $('#business-day-date').text(businessDay);
+            $('#business-day-date').val(businessDay);
             currentBusinessDayStatus = response.status;
             $('#business-day-status > span').text(currentBusinessDayStatus);
         },

@@ -40,6 +40,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -415,7 +416,7 @@ public class AccountTradeFacade {
         // 출금 계좌 잔액 조회
         BigDecimal withdrawalAccountBalance = withdrawalAccount.getBalance();
         // 오늘의 이체 출금총액 조회
-        BigDecimal transferAmountOfToday = tradeService.getTransferAmountOfToday(TradeSearch.builder().accId(withdrawalAccount.getId()).tradeDate(currentData.getCurrentBusinessDate()).build());
+        BigDecimal transferAmountOfToday = tradeService.getTransferAmountOfToday(TradeSearch.builder().accId(withdrawalAccount.getId()).tradeDate(new Date(currentData.getCurrentBusinessDate().getTime())).build());
         transferAmountOfToday = (transferAmountOfToday != null) ? transferAmountOfToday : BigDecimal.ZERO;
 
 
@@ -1028,7 +1029,7 @@ public class AccountTradeFacade {
         // 출금 계좌 잔액 조회
         BigDecimal withdrawalAccountBalance = withdrawalAccount.getBalance();
         // 오늘의 이체 출금총액 조회
-        BigDecimal transferAmountOfToday = tradeService.getTransferAmountOfToday(TradeSearch.builder().accId(withdrawalAccount.getId()).tradeDate(currentData.getCurrentBusinessDate()).build());
+        BigDecimal transferAmountOfToday = tradeService.getTransferAmountOfToday(TradeSearch.builder().accId(withdrawalAccount.getId()).tradeDate(new Date(currentData.getCurrentBusinessDate().getTime())).build());
         transferAmountOfToday = (transferAmountOfToday != null) ? transferAmountOfToday : BigDecimal.ZERO;
 
 

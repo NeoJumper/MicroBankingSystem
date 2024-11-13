@@ -262,8 +262,12 @@ function getSavingsFlexibleAccount(data, accountId) {
 
 function addCloseInfo(data, businessDate) {
 
-    $('#flex-open-date-td').val(data.openDate.split(" ")[0]);
-    $('#flex-expired-date-td').val(data.expectedExpireDate.split(" ")[0]);
+    var tradeDate = new Date(data.openDate).toLocaleDateString('ko-KR');
+    var expiredDate = new Date(data.expectedExpireDate.split(" ")[0]).toLocaleDateString('ko-KR');
+    businessDate = new Date(businessDate.split(" ")[0]).toLocaleDateString('ko-KR');
+
+    $('#flex-open-date-td').val(tradeDate);
+    $('#flex-expired-date-td').val(expiredDate);
     $('#flex-close-request-date').val(businessDate);
     $('#flex-close-type').text(data.closeTypeDescription);
     $('#flex-close-type').val(data.closeType);

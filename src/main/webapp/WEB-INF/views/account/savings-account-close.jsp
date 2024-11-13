@@ -225,13 +225,13 @@
             <tbody>
             <tr>
                 <th>개설일</th>
-                <td><input id="flex-open-date-td" type="date" disabled/></td>
+                <td><input id="flex-open-date-td" type="text" disabled/></td>
                 <th>만기일</th>
-                <td><input id="flex-expired-date-td" type="date" disabled></td>
+                <td><input id="flex-expired-date-td" type="text" disabled></td>
             </tr>
             <tr>
                 <th>해지 신청일</th>
-                <td><input id="flex-close-request-date" type="date" disabled/></td>
+                <td><input id="flex-close-request-date" type="text" disabled/></td>
                 <th>해지 종류</th>
                 <td><span id="flex-close-type"></span></td>
             </tr>
