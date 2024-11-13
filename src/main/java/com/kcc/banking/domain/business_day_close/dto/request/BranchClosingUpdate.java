@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
@@ -14,10 +15,10 @@ public class BranchClosingUpdate {
     private BigDecimal vaultCash;
     private Long modifierId;
     private Long targetBranchId;
-    private String targetClosingDate;
+    private Timestamp targetClosingDate;
 
     @Builder
-    public BranchClosingUpdate(String status, BigDecimal vaultCash, Long modifierId, Long targetBranchId, String targetClosingDate) {
+    public BranchClosingUpdate(String status, BigDecimal vaultCash, Long modifierId, Long targetBranchId, Timestamp targetClosingDate) {
         this.status = status;
         this.vaultCash = vaultCash;
         this.modifierId = modifierId;

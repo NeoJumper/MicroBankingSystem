@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -182,14 +183,14 @@ public class InterestCalculationTest {
         for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
             // for문 내부에서 date는 1일씩 증가
             LocalDateTime startDateTime = date.atStartOfDay();
-            String businessDate = startDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            BusinessDateAndBranchId businessDateAndBranchId = new BusinessDateAndBranchId(businessDate, "1");
+
+            BusinessDateAndBranchId businessDateAndBranchId = new BusinessDateAndBranchId(Timestamp.valueOf(startDateTime), "1");
             CurrentData currentData = CurrentData.builder()
                     .branchId(1L)
                     .branchName("TEST BRANCH")
                     .employeeId(1L)
                     .employeeName("김철수")
-                    .currentBusinessDate(businessDate).build();
+                    .currentBusinessDate(businessDateAndBranchId.getBusinessDate()).build();
 
             // 영업일 마감 시뮬레이션 - 내부 로직에서 interest 테이블에 마감 시 이자내역 생성
             businessDayCloseControllerTest.businessDayCloseOfManagerForTest(businessDateAndBranchId, currentData);
@@ -223,7 +224,7 @@ public class InterestCalculationTest {
 
                 // 계산된 이자 내역 저장
                 expectedSimpleInterests.add(InterestDetails.builder()
-                        .creationDate(businessDate)
+                        .creationDate(businessDateAndBranchId.getBusinessDate())
                         .balance(accountSimple.getBalance())
                         .amount(expectedInterestSimple)
                         .interestRate(accountSimple.getInterestRate())
@@ -231,7 +232,7 @@ public class InterestCalculationTest {
                         .build());
 
                 expectedCompoundInterests.add(InterestDetails.builder()
-                        .creationDate(businessDate)
+                        .creationDate(businessDateAndBranchId.getBusinessDate())
                         .balance(accountCompound.getBalance())
                         .amount(expectedInterestCompound)
                         .interestRate(accountCompound.getInterestRate())
@@ -317,8 +318,8 @@ public class InterestCalculationTest {
                 .closeType(accountCompound.getCloseType().getDescription())
                 .interestDetailsList(accountCompound.getInterestDetailsList())
                 .build();
-
-        String businessDate = endDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        endDate.plusDays(1);
+        Timestamp businessDate = Timestamp.valueOf(endDate.atStartOfDay());
         BusinessDay businessDay = new BusinessDay();
         businessDay.setBusinessDate(businessDate);
         businessDay.setStatus("OPEN");

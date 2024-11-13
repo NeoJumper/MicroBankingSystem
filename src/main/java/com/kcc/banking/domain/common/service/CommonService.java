@@ -13,6 +13,8 @@ import com.kcc.banking.domain.employee.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 @RequiredArgsConstructor
 public class CommonService {
@@ -24,7 +26,7 @@ public class CommonService {
 
     public BusinessDateAndEmployeeId getCurrentBusinessDateAndEmployeeId(){
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
-        String currentBusinessDate = businessDayMapper.findCurrentBusinessDay().getBusinessDate();
+        Timestamp currentBusinessDate = businessDayMapper.findCurrentBusinessDay().getBusinessDate();
 
         return BusinessDateAndEmployeeId.builder()
                 .businessDate(currentBusinessDate)
@@ -32,7 +34,7 @@ public class CommonService {
     }
     public BusinessDateAndBranchId getCurrentBusinessDateAndBranchId(){
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
-        String currentBusinessDate = businessDayMapper.findCurrentBusinessDay().getBusinessDate();
+        Timestamp currentBusinessDate = businessDayMapper.findCurrentBusinessDay().getBusinessDate();
         String branchId = employeeMapper.findAuthDataById(loginMemberId).getBranchId();
 
 
@@ -54,7 +56,7 @@ public class CommonService {
         AuthData authData = employeeMapper.findAuthDataById(AuthenticationUtils.getLoginMemberId());
 
         // 등록 일자
-        String currentBusinessDate = businessDayMapper.findCurrentBusinessDay().getBusinessDate();
+        Timestamp currentBusinessDate = businessDayMapper.findCurrentBusinessDay().getBusinessDate();
 
         CurrentData currentData = CurrentData.builder()
                 .employeeId(Long.valueOf(authData.getId()))
@@ -64,7 +66,7 @@ public class CommonService {
                 .branchName(authData.getBranchName()).build();
 
 
-        if (currentData.getCurrentBusinessDate().isEmpty()) {
+        if (currentData.getCurrentBusinessDate() == null) {
             throw new BadRequestException(ErrorCode.NOT_FOUND_BUSINESS_DATE);
         }
 

@@ -990,17 +990,15 @@ public class AccountTradeFacade {
         log.info("트랜잭션 시작: 계좌 {}에서 계좌 {}로 이체 금액 {}", transferTradeCreate.getAccId(), transferTradeCreate.getTargetAccId(), transferTradeCreate.getTransferAmount());
 
         BusinessDay businessDay = new BusinessDay();
-        businessDay.setBusinessDate("OPEN");
+        businessDay.setStatus("OPEN");
         businessDay.setIsCurrentBusinessDay("TRUE");
 
 
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time = sdf.format(currentTimestamp);
 
         // 시스템 id 0 , branchid 가져오기
-        CurrentData currentData = new CurrentData(1L,1L,time);
+        CurrentData currentData = new CurrentData(1L,1L,currentTimestamp);
         // 입출금 계좌 조회
         // 출금 계좌: accId
         // 입금 계좌: targetAccId

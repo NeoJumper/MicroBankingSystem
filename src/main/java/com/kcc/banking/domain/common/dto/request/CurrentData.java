@@ -3,16 +3,18 @@ package com.kcc.banking.domain.common.dto.request;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.sql.Timestamp;
+
 @Getter
 public class CurrentData {
     private Long branchId;
     private String branchName;
     private Long employeeId;
     private String employeeName;
-    private String currentBusinessDate;
+    private Timestamp currentBusinessDate;
 
     @Builder
-    public CurrentData(Long branchId, String branchName, Long employeeId, String employeeName, String currentBusinessDate) {
+    public CurrentData(Long branchId, String branchName, Long employeeId, String employeeName, Timestamp currentBusinessDate) {
         this.branchId = branchId;
         this.branchName = branchName;
         this.employeeId = employeeId;
@@ -21,7 +23,7 @@ public class CurrentData {
     }
 
 
-    public CurrentData(Long branchId,  Long employeeId,  String currentBusinessDate) {
+    public CurrentData(Long branchId, Long employeeId, Timestamp currentBusinessDate) {
         this.branchId = branchId;
 
         this.employeeId = employeeId;

@@ -68,7 +68,7 @@ public class AccountCloseFacade {
         CloseSavingsFlexibleAccountTotal closeSavingsFlexibleAccountTotal = accountService.getCloseSavingsFlexibleAccountById(accountId);
 
         // 해지 종류 판별
-        String businessDateStr = commonService.getCurrentBusinessDay().getBusinessDate();
+        Timestamp businessDateStr = commonService.getCurrentBusinessDay().getBusinessDate();
         String openDateStr = closeSavingsFlexibleAccountTotal.getOpenDate();
         String periodStr = closeSavingsFlexibleAccountTotal.getPeriod();
 
@@ -76,7 +76,7 @@ public class AccountCloseFacade {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         // String을 LocalDate, LocalDateTime으로 변환
-        LocalDate businessDate = LocalDateTime.parse(businessDateStr, dateTimeFormatter).toLocalDate();
+        LocalDate businessDate = businessDateStr.toLocalDateTime().toLocalDate();
         LocalDateTime openDate = LocalDateTime.parse(openDateStr, dateTimeFormatter);
         // period 값을 개월로 더하기
         int periodMonths = Integer.parseInt(periodStr);
@@ -377,7 +377,7 @@ public class AccountCloseFacade {
         CloseSavingsAccountTotal closeSavingsAccountTotal = accountMapper.findCloseSavingsAccountDetail(accountId);
 
         // 해지 종류 판별
-        String businessDateStr = commonService.getCurrentBusinessDay().getBusinessDate();
+        Timestamp businessDateStr = commonService.getCurrentBusinessDay().getBusinessDate();
         String openDateStr = closeSavingsAccountTotal.getOpenDate();
         String periodStr = closeSavingsAccountTotal.getProductPeriod();
 
@@ -385,7 +385,7 @@ public class AccountCloseFacade {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         // String을 LocalDate, LocalDateTime으로 변환
-        LocalDate businessDate = LocalDateTime.parse(businessDateStr, dateTimeFormatter).toLocalDate();
+        LocalDate businessDate = businessDateStr.toLocalDateTime().toLocalDate();
         LocalDateTime openDate = LocalDateTime.parse(openDateStr, dateTimeFormatter);
         // period 값을 개월로 더하기
         int periodMonths = Integer.parseInt(periodStr);

@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -61,8 +62,8 @@ public class TradeService {
     }
 
 
-    public String getBusinessDay() {
-        String getDay = businessDayService.getCurrentBusinessDay().getBusinessDate();
+    public Timestamp getBusinessDay() {
+        Timestamp getDay = businessDayService.getCurrentBusinessDay().getBusinessDate();
         System.out.println("businessDayService.getCurrentBusinessDay().getBusinessDate()"+ getDay);
         return businessDayService.getCurrentBusinessDay().getBusinessDate();
     }

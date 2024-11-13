@@ -16,10 +16,10 @@ public class BusinessDayUpdate {
 
 
     @Builder
-    public BusinessDayUpdate(String status, String isCurrentBusinessDay, String targetDate, String modifierId) {
+    public BusinessDayUpdate(String status, String isCurrentBusinessDay, Timestamp targetDate, String modifierId) {
         this.status = status;
         this.isCurrentBusinessDay = isCurrentBusinessDay;
-        this.targetDate = Timestamp.valueOf(targetDate);
+        this.targetDate = targetDate;
         this.modifierId = modifierId;
     }
 }

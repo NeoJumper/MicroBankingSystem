@@ -4,12 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @NoArgsConstructor
 @Getter
 @Setter
 public class BusinessDay {
 
-    private String businessDate;
+    private Timestamp businessDate;
     private String status;
     private String isCurrentBusinessDay;
 

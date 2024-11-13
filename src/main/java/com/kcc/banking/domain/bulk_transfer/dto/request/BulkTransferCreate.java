@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ public class BulkTransferCreate {
     private Long registrantId;
     private String accId;
     private Long branchId;
-    private String tradeDate;
+    private Timestamp tradeDate;
     private BigDecimal registeredAmount;
     private BigDecimal amount;
     private Integer successCnt;
@@ -25,7 +26,7 @@ public class BulkTransferCreate {
     private String description;
 
     @Builder
-    public BulkTransferCreate(Long id, Long registrantId, String accId, Long branchId, String tradeDate, BigDecimal registeredAmount, BigDecimal amount, Integer successCnt, Integer failureCnt,Integer totalCnt, String status, String description) {
+    public BulkTransferCreate(Long id, Long registrantId, String accId, Long branchId, Timestamp tradeDate, BigDecimal registeredAmount, BigDecimal amount, Integer successCnt, Integer failureCnt,Integer totalCnt, String status, String description) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;

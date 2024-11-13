@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
@@ -18,11 +19,11 @@ public class AccountUpdate {
     private BigDecimal perTradeLimit;
     private BigDecimal dailyLimit;
     private String status;
-    private String expireDate;
+    private Timestamp expireDate;
 
 
     @Builder
-    public AccountUpdate(String targetAccId, Long modifierId, BigDecimal balance, BigDecimal perTradeLimit, BigDecimal dailyLimit, String status, String expireDate) {
+    public AccountUpdate(String targetAccId, Long modifierId, BigDecimal balance, BigDecimal perTradeLimit, BigDecimal dailyLimit, String status, Timestamp expireDate) {
         this.targetAccId = targetAccId;
         this.modifierId = modifierId;
         this.balance = balance;

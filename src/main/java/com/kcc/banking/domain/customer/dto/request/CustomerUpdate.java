@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @NoArgsConstructor
 @Getter
 public class CustomerUpdate {
 
     private Long id;
-    private String birthDate;
+    private Timestamp birthDate;
     private String name;
     private String phoneNumber;
     private String address;
@@ -21,7 +23,7 @@ public class CustomerUpdate {
     private String modifierId;
 
     @Builder
-    public CustomerUpdate(Long id, String birthDate, String name, String phoneNumber, String address, String gender, String detailAddress, String identificationCode, String email, String modifierId) {
+    public CustomerUpdate(Long id, Timestamp birthDate, String name, String phoneNumber, String address, String gender, String detailAddress, String identificationCode, String email, String modifierId) {
         this.id = id;
         this.birthDate = birthDate;
         this.name = name;

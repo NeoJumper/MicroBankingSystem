@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,8 +19,8 @@ public class UpdatedCustomer {
     private Long id;
     private String branchName;
     private String registrantName;
-    private String currentBusinessDate;
-    private String birthDate;
+    private Timestamp currentBusinessDate;
+    private Timestamp birthDate;
     private String name;
     private String phoneNumber;
     private String address;
@@ -29,7 +31,7 @@ public class UpdatedCustomer {
     private String securityLevel;
 
     @Builder
-    public UpdatedCustomer(Long id, String branchName, String registrantName, String currentBusinessDate, String birthDate, String name, String phoneNumber, String address, String gender, String detailAddress, String identificationCode, String email, String securityLevel) {
+    public UpdatedCustomer(Long id, String branchName, String registrantName, Timestamp currentBusinessDate, Timestamp birthDate, String name, String phoneNumber, String address, String gender, String detailAddress, String identificationCode, String email, String securityLevel) {
         this.id = id;
         this.branchName = branchName;
         this.registrantName = registrantName;

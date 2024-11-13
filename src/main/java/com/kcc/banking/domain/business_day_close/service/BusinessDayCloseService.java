@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -156,7 +157,7 @@ public class BusinessDayCloseService {
      * @Description
      * 이전 영업일의 현재 지점에 있는 모든 사원의 마감 상태를 되돌린다.
      */
-    public void resetEmployeeClosing(CurrentData currentData, String prevBusinessDate) {
+    public void resetEmployeeClosing(CurrentData currentData, Timestamp prevBusinessDate) {
         BusinessDateAndBranchId prevBusinessDateAndBranchId = BusinessDateAndBranchId.builder()
                 .businessDate(prevBusinessDate)
                 .branchId(String.valueOf(currentData.getBranchId()))
@@ -181,7 +182,7 @@ public class BusinessDayCloseService {
 
     }
 
-    public void resetBranchClosing(CurrentData currentData, String prevBusinessDate) {
+    public void resetBranchClosing(CurrentData currentData, Timestamp prevBusinessDate) {
         BranchClosingUpdate branchClosingUpdate = BranchClosingUpdate.builder()
                 .targetClosingDate(prevBusinessDate)
                 .targetBranchId(currentData.getBranchId())

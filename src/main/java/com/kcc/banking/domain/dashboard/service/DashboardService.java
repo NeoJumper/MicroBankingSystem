@@ -8,6 +8,7 @@ import com.kcc.banking.domain.employee.dto.request.BusinessDateAndBranchId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class DashboardService {
     public List<TransactionTypeCount> getCurrentMonthTransactionTypes(String today) {
         BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
         Long employeeId = currentBusinessDateAndEmployeeId.getEmployeeId();
-        String businessDate = currentBusinessDateAndEmployeeId.getBusinessDate().substring(0, 10);
+        String businessDate = currentBusinessDateAndEmployeeId.getBusinessDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return dashboardMapper.findCurrentMonthTransactionTypes(employeeId, businessDate);
     }
 
@@ -51,21 +52,21 @@ public class DashboardService {
     // 일별 거래량 조회 (오늘 날짜가 포함된 한 달간)
     public List<DailyTransactionVolumeChart> getDailyTransactionVolume() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().substring(0, 10);
+        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return dashboardMapper.findDailyTransactionVolume(currentBusinessDateAndBranchId.getBranchId(), businessDate);
     }
 
     // 주간별 거래량 조회 (12주)
     public List<WeeklyTransactionVolumeChart> getWeeklyTransactionVolume() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().substring(0, 10);
+        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return dashboardMapper.findWeeklyTransactionVolume(currentBusinessDateAndBranchId.getBranchId(), businessDate);
     }
 
     // 월별 거래량 조회 (1월부터 12월까지)
     public List<MonthlyTransactionVolumeChart> getMonthlyTransactionVolume() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().substring(0, 10);
+        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return dashboardMapper.findMonthlyTransactionVolume(currentBusinessDateAndBranchId.getBranchId(), businessDate);
     }
 
@@ -82,14 +83,14 @@ public class DashboardService {
     public List<DailyTransactionVolumeChart> getEmployeeDailyTransactionVolume() {
         BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
         Long employeeId = currentBusinessDateAndEmployeeId.getEmployeeId();
-        String businessDate = currentBusinessDateAndEmployeeId.getBusinessDate().substring(0, 10);
+        String businessDate = currentBusinessDateAndEmployeeId.getBusinessDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return dashboardMapper.findEmployeeDailyTransactionVolume(employeeId, businessDate);
     }
 
     public List<TransactionTypeCount> getMonthlyTransactionTypes() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
         Long branchId = Long.valueOf(currentBusinessDateAndBranchId.getBranchId());
-        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().substring(0, 10);
+        String businessDate = currentBusinessDateAndBranchId.getBusinessDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return dashboardMapper.findMonthlyTransactionTypes(branchId, businessDate);
     }
 }
