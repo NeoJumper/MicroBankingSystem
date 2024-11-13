@@ -744,8 +744,8 @@ function handleBusinessDayDateInput() {
         url: '/api/common/current-business-day',
         type: 'GET',
         success: function (response) {
-            const formattedDate = response.businessDate.substring(0, 10);
-            $('#business-day-date-input').val(formattedDate);
+            var tradeDate = new Date(response.businessDate).toLocaleDateString('ko-KR');
+            $('#business-day-date-input').val(tradeDate);
         },
         error: function (xhr, status, error) {
             console.error('에러 발생:', error);
