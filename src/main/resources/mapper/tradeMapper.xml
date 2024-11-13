@@ -41,10 +41,10 @@
                 <!-- 정렬 기준 -->
                 <choose>
                     <when test="sortOrder == 'latest'">
-                        ORDER BY trade_date DESC
+                        ORDER BY trade_date DESC, id DESC
                     </when>
                     <when test="sortOrder == 'oldest'">
-                        ORDER BY trade_date ASC
+                        ORDER BY trade_date ASC, id DESC
                     </when>
                 </choose>
             )
