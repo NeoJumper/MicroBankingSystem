@@ -66,4 +66,46 @@
     </select>
 
 
+    <select id="findSelectedAutoTransferList">
+        select
+            au.id as id,
+            au.acc_id as acc_id,
+            au.target_acc_id as target_acc_id,
+            au.amount as amount,
+            au.auto_transfer_start_date as auto_transfer_start_date,
+            au.auto_transfer_period as auto_transfer_period,
+            au.status as status,
+            au.missed_count as missed_count,
+            au.next_transfer_date as next_transfer_date,
+            a.registrant_id as registrantId,
+            a.branch_id as branch_id
+        from Auto_transfer au
+        join Account a
+        on au.acc_id = a.id
+        where
+            au.status = 'ACTIVE'
+    </select>
+
+    <select id="findReserveList">
+        select
+            r.id as id,
+            r.transfer_type as transfer_type,
+            r.acc_id as acc_id,
+            r.target_acc_id as target_acc_id,
+            r.TRANSFER_DATE as TRANSFER_DATE,
+            r.transfer_start_time as transfer_start_time,
+            r.transfer_end_time as transfer_end_time,
+            r.amount as amount,
+            r.description as description,
+            r.STATUS as STATUS,
+            a.missed_count as missed_count,
+            a.id as auto_transfer_id
+        from reserve_transfer r
+        left join auto_transfer a
+        on r.auto_transfer_id = a.id
+
+    </select>
+
+
+
 </mapper>

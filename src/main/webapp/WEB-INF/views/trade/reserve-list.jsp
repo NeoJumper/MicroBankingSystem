@@ -54,7 +54,7 @@
 
             </td>
         </tr>
-        <tr>
+        <%--<tr>
             <th>시간대 조건</th>
             <td id = "select-time-td">
                 <select id="start-time-btn">
@@ -97,6 +97,7 @@
             <th>고객 검색</th>
 
         </tr>
+--%>
     </table>
 
 

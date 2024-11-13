@@ -773,7 +773,7 @@ public class AccountTradeFacade {
 
 
 
-    // 자동이체 리스트 -> 예약이체등록하기
+    // 자동이체 리스트 -> 예약이git 체등록하기
     // 예약이체에 자동이체거래내역 넣기, (9:00 ~10:00)
     private void registerReserveTransfers(List<AutoTransferList> todayAutoList) {
         List<ReserveTransferCreate> reserveTransfers = new ArrayList<>();
@@ -782,6 +782,7 @@ public class AccountTradeFacade {
         for (AutoTransferList autoTransfer : todayAutoList) {
             System.out.println("for (AutoTransferList >>>>>"+autoTransfer.getAccId());
             ReserveTransferCreate reserveTransfer = new ReserveTransferCreate();
+
 
             reserveTransfer.setAutoTransferId(autoTransfer.getId().toString());
             reserveTransfer.setAccId(autoTransfer.getAccId());
