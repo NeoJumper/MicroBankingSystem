@@ -32,7 +32,7 @@ function handleCurrentBusinessDay(){
         url: '/api/common/current-business-day',
         type: 'GET',
         success: function(response) {
-            currentBusinessDay = response.businessDate.substring(0, 10);
+            currentBusinessDay = new Date(response.businessDate).toLocaleDateString('ko-KR')
             currentStatus = response.status;
 
             $('#current-business-day').val(currentBusinessDay);
@@ -63,8 +63,10 @@ function handleNextBusinessDay(){
         url: '/api/common/next-business-day',
         type: 'GET',
         success: function(response) {
-            // 성공 시 처리할 로직 작성
-            nextBusinessDay = response.businessDate.substring(0, 10);
+
+
+
+            nextBusinessDay = new Date(response.businessDate).toLocaleDateString('ko-KR');
             $('#next-business-day').val(nextBusinessDay);
             $('#business-day-update-modal-next-business-day').html("다음 영업일&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" + nextBusinessDay);
         },

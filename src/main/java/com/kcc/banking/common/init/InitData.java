@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.TimeZone;
+
 //@Profile("local") // "local" 프로파일에서만 실행
 @Configuration
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class InitData {
     @Bean
     public CommandLineRunner init() {
         return args -> {
-
+            System.out.println(TimeZone.getDefault().getID());
             // 3개월 이후 영업일
             String firstPlsql = """
             DECLARE
