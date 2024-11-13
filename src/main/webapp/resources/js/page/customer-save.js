@@ -96,7 +96,7 @@ function fillCustomerDataOfDetailModal(createdCustomer){
     $('#detail-modal-customer-branch-name').val(createdCustomer.branchName); // 지점명은 id로 받음, 필요 시 변환
     $('#detail-modal-customer-security-level').val(createdCustomer.securityLevel); // 지점명은 id로 받음, 필요 시 변환
     $('#detail-modal-customer-registrant-name').val(createdCustomer.registrantName); // 지점명은 id로 받음, 필요 시 변환
-    $('#detail-modal-customer-start-date').val(createdCustomer.currentBusinessDate); // 지점명은 id로 받음, 필요 시 변환
+    $('#detail-modal-customer-start-date').val(createdCustomer.currentBusinessDate.split('T')[0]); // 지점명은 id로 받음, 필요 시 변환
     maskResidentNumber(); // 현재 상태에 따라 업데이트
     hyphenPhoneNumber();
 }
