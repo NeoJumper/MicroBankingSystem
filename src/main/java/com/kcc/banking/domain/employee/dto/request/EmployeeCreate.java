@@ -1,8 +1,9 @@
 package com.kcc.banking.domain.employee.dto.request;
 
-import com.kcc.banking.domain.business_day_close.dto.request.BusinessDateAndEmployeeId;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import lombok.*;
+
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -10,7 +11,7 @@ import lombok.*;
 public class EmployeeCreate {
     private Long id;
     private Long branchId;
-    private String birthDate;
+    private Timestamp birthDate;
     private String name;
     private String phoneNumber;
     private String email;
@@ -20,11 +21,11 @@ public class EmployeeCreate {
     private String password;
     private String roles;
     private String registrantId;
-    private String registrationDate;
+    private Timestamp registrationDate;
     private Long version;
 
     @Builder
-    public EmployeeCreate(Long id, Long branchId, String birthDate, String name, String phoneNumber, String email, String address, String detailAddress, String identificationCode, String password, String roles, String registrantId, String registrationDate, Long version) {
+    public EmployeeCreate(Long id, Long branchId, Timestamp birthDate, String name, String phoneNumber, String email, String address, String detailAddress, String identificationCode, String password, String roles, String registrantId, Timestamp registrationDate, Long version) {
         this.id = id;
         this.branchId = branchId;
         this.birthDate = birthDate;

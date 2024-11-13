@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
@@ -18,11 +19,11 @@ public class EmployeeClosingUpdate {
     private BigDecimal vaultCash;
     private Long modifierId;
     private Long targetEmployeeId;
-    private String targetClosingDate;
+    private Timestamp targetClosingDate;
 
 
     @Builder
-    public EmployeeClosingUpdate(String status, BigDecimal totalDeposit, BigDecimal totalWithdrawal, BigDecimal vaultCash, Long modifierId, Long targetEmployeeId, String targetClosingDate) {
+    public EmployeeClosingUpdate(String status, BigDecimal totalDeposit, BigDecimal totalWithdrawal, BigDecimal vaultCash, Long modifierId, Long targetEmployeeId, Timestamp targetClosingDate) {
         this.status = status;
         this.totalDeposit = totalDeposit;
         this.totalWithdrawal = totalWithdrawal;

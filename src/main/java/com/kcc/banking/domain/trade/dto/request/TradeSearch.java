@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 public class TradeSearch {
@@ -13,16 +15,16 @@ public class TradeSearch {
 
     private String accId;
     private String tradeType;
-    private String tradeDate;
-    private String startDate;
-    private String endDate;
+    private Timestamp tradeDate;
+    private Timestamp startDate;
+    private Timestamp endDate;
     private String sortOrder;
 
     private Criteria criteria;
 
 
     @Builder
-    public TradeSearch(String accId, String tradeType, String tradeDate, String startDate, String endDate, String sortOrder, Criteria criteria) {
+    public TradeSearch(String accId, String tradeType, Timestamp tradeDate, Timestamp startDate, Timestamp endDate, String sortOrder, Criteria criteria) {
         this.accId = accId;
         this.tradeType = tradeType;
         this.tradeDate = tradeDate;

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Timestamp;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/page/employee")
@@ -20,7 +22,7 @@ public class TradeController {
 
     @GetMapping("/trade-list")
     public String getTradeListPage(Model businessDay){
-        String getBusinessDay = tradeService.getBusinessDay();
+        Timestamp getBusinessDay = tradeService.getBusinessDay();
         System.out.println("tradeList Controller >>>>>>>>>>"+getBusinessDay);
         businessDay.addAttribute("businessDay", getBusinessDay);
 

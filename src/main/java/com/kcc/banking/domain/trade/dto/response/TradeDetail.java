@@ -21,7 +21,7 @@ public class TradeDetail {
     private String targetAccId;
     private String targetCustomerName;
     private Long branchId;
-    private String tradeDate;
+    private Timestamp tradeDate;
     private BigDecimal amount;
     private BigDecimal balance;
     private String tradeType;
@@ -35,7 +35,7 @@ public class TradeDetail {
     private Long version;
 
     @Builder
-    public TradeDetail(Long id, Long registrantId, String accId,String customerName, String targetAccId, Long branchId, String tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version) {
+    public TradeDetail(Long id, Long registrantId, String accId, String customerName, String targetAccId, Long branchId, Timestamp tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, Timestamp registrationDate, Timestamp modificationDate, Long modifierId, Long version) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;

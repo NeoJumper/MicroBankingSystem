@@ -19,7 +19,7 @@ public class TradeCreate {
     private String targetAccId;
     private Long bulkTransferId;
     private Long branchId;
-    private String tradeDate;
+    private Timestamp tradeDate;
     private BigDecimal amount;
     private BigDecimal balance;
     private String tradeType;
@@ -30,7 +30,7 @@ public class TradeCreate {
     private String failureReason;
 
     @Builder
-    public TradeCreate(Long id, Long registrantId, String accId, String targetAccId, Long bulkTransferId, Long branchId, String tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, String failureReason) {
+    public TradeCreate(Long id, Long registrantId, String accId, String targetAccId, Long bulkTransferId, Long branchId, Timestamp tradeDate, BigDecimal amount, BigDecimal balance, String tradeType, String status, String cashIndicator, String description, Long tradeNumber, String failureReason) {
         this.id = id;
         this.registrantId = registrantId;
         this.accId = accId;

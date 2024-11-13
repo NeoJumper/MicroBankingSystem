@@ -1,6 +1,5 @@
 package com.kcc.banking.domain.account.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Date;
 
 @NoArgsConstructor
 @Getter
@@ -22,19 +20,19 @@ public class AccountCreate {
     private Long customerId;
     private Long productId;
     private Long registrantId;
-    private String startDate;
+    private Timestamp startDate;
     private BigDecimal preferentialInterestRate;
     private BigDecimal perTradeLimit;
     private BigDecimal dailyLimit;
     private String password;
     private BigDecimal balance;
-    private String openDate;
+    private Timestamp openDate;
     private String status;
     private String accountType;
     private Long tradeNumber;
 
     @Builder
-    public AccountCreate(String id, Long branchId, Long customerId, Long productId, Long registrantId, String startDate, BigDecimal preferentialInterestRate, BigDecimal perTradeLimit, BigDecimal dailyLimit, String password, BigDecimal balance, String openDate, String status, String accountType, Long tradeNumber) {
+    public AccountCreate(String id, Long branchId, Long customerId, Long productId, Long registrantId, Timestamp startDate, BigDecimal preferentialInterestRate, BigDecimal perTradeLimit, BigDecimal dailyLimit, String password, BigDecimal balance, Timestamp openDate, String status, String accountType, Long tradeNumber) {
         this.id = id;
         this.branchId = branchId;
         this.customerId = customerId;

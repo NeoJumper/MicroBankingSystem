@@ -5,16 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @NoArgsConstructor
 @Getter
 @Setter
 public class BusinessDateAndBranchId {
 
-    private String businessDate;
+    private Timestamp businessDate;
     private String branchId;
 
     @Builder
-    public BusinessDateAndBranchId(String businessDate, String branchId) {
+    public BusinessDateAndBranchId(Timestamp businessDate, String branchId) {
         this.businessDate = businessDate;
         this.branchId = branchId;
     }
