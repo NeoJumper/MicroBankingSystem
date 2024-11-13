@@ -24,11 +24,11 @@ public class InterestCreate {
     private String tradeNumber; // 생성 거래 번호
     private String branchId; // 생성 지점
     private Long registrantId; // 생성한 사람
-    private String creationDate; // 생성일
+    private Timestamp creationDate; // 생성일
     private Long version;
 
     @Builder
-    public InterestCreate(Long id, String accId, BigDecimal amount, BigDecimal balance,BigDecimal interestRate, BigDecimal preferentialInterestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, String creationDate, Long version) {
+    public InterestCreate(Long id, String accId, BigDecimal amount, BigDecimal balance,BigDecimal interestRate, BigDecimal preferentialInterestRate, String paymentStatus, String tradeNumber, String branchId, Long registrantId, Timestamp creationDate, Long version) {
         this.id = id;
         this.accId = accId;
         this.amount = amount;

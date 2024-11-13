@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Component
@@ -64,7 +65,7 @@ public class BusinessDayManagementFacade {
 
         if(branchClosingStatus.equals("OPEN"))
             throw new BadRequestException(ErrorCode.REQUIRED_BRANCH_CLOSING);
-        if(businessDayChange.getBusinessDateToChange().equals(currentBusinessDay.getBusinessDate().split(" ")[0]))
+        if(businessDayChange.getBusinessDateToChange().equals(currentBusinessDay.getBusinessDate()))
             throw new BadRequestException(ErrorCode.ALREADY_CHANGED_BUSINESS_DAY);
 
 
@@ -128,7 +129,7 @@ public class BusinessDayManagementFacade {
     public void closeByManager(VaultCashRequest vaultCashRequest) {
         // 1
         BusinessDateAndBranchId businessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();
-        String currentBusinessDate = businessDateAndBranchId.getBusinessDate();
+        Timestamp currentBusinessDate = businessDateAndBranchId.getBusinessDate();
 
         ManagerClosingData managerClosingData =  businessDayCloseService.getManagerClosingData();
 
@@ -169,7 +170,7 @@ public class BusinessDayManagementFacade {
 
 
         // 2
-        String prevBusinessDate = businessDayService.getPrevBusinessDay().getBusinessDate();
+        Timestamp prevBusinessDate = businessDayService.getPrevBusinessDay().getBusinessDate();
         businessDayCloseService.resetEmployeeClosing(currentData, prevBusinessDate);
         businessDayCloseService.resetBranchClosing(currentData, prevBusinessDate);
 

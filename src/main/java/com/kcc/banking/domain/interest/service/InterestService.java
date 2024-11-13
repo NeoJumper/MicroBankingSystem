@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,7 +54,7 @@ public class InterestService {
         // 이자 생성
         interestCreateList.forEach(interestMapper::createInterest);
         // 4. 매월 1일인지 영업일 확인
-        LocalDateTime date = LocalDateTime.parse(businessDateAndBranchId.getBusinessDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime date = businessDateAndBranchId.getBusinessDate().toLocalDateTime();
 
         // 매월 1일이라면
         if (date.getDayOfMonth() == 1) {
@@ -83,7 +84,7 @@ public class InterestService {
 
                     LocalDate openDateParsed = LocalDate.parse(account.getOpenDate(), formatter);
                     LocalDate maturityDate = openDateParsed.plusMonths(Integer.parseInt(account.getPeriod()));
-                    LocalDate currentDate = LocalDate.parse(currentData.getCurrentBusinessDate(), formatter);
+                    LocalDate currentDate = currentData.getCurrentBusinessDate().toLocalDateTime().toLocalDate();
 
                     // 만기일의 다음 달 1일을 기준으로 시작
                     LocalDate oneMonthAfterMaturityFirstDay = maturityDate.plusMonths(1).withDayOfMonth(1);
@@ -164,7 +165,7 @@ public class InterestService {
         return interestMapper.updateByCloseCancel(paymentStatusRollback);
     }
 
-    public void deleteInterest(CurrentData currentData, String prevBusinessDate) {
+    public void deleteInterest(CurrentData currentData, Timestamp prevBusinessDate) {
         BusinessDateAndBranchId businessDateAndBranchId = BusinessDateAndBranchId.builder()
                 .branchId(String.valueOf(currentData.getBranchId()))
                 .businessDate(prevBusinessDate).build();

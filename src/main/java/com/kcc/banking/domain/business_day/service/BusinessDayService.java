@@ -9,6 +9,8 @@ import com.kcc.banking.domain.business_day.mapper.BusinessDayMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +54,7 @@ public class BusinessDayService {
      * @Description
      * 영업일 변경 -> 현재 영업일 상태를 FALSE처리
      */
-    public int finishCurrentBusinessDay(String targetDate, String modifierId) {
+    public int finishCurrentBusinessDay(Timestamp targetDate, String modifierId) {
         return businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)
                 .isCurrentBusinessDay("FALSE")
@@ -66,7 +68,7 @@ public class BusinessDayService {
      * @Description
      * 현재 영업일을 영업 전으로 돌린다.
      */
-    public int resetBusinessDay(String targetDate, String modifierId) {
+    public int resetBusinessDay(Timestamp targetDate, String modifierId) {
         return businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)
                 .status("SCHEDULED")
@@ -80,7 +82,7 @@ public class BusinessDayService {
      * @Description
      * 영업일 변경 시 사용
      */
-    public int openBusinessDay(String targetDate, String modifierId) {
+    public int openBusinessDay(Timestamp targetDate, String modifierId) {
         return businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)
                 .status("OPEN")
@@ -95,7 +97,7 @@ public class BusinessDayService {
         nextBusinessDay.toOpen();
     }
 
-    public void businessDayStatusToClosed(String targetDate) {
+    public void businessDayStatusToClosed(Timestamp targetDate) {
         String loginMemberId = String.valueOf(AuthenticationUtils.getLoginMemberId());
         businessDayMapper.update(BusinessDayUpdate.builder()
                 .targetDate(targetDate)

@@ -20,11 +20,11 @@ public class CashExchangeCreate {
 
     private Long registrantId;
     private Long branchId;
-    private String exchangeDate;
+    private Timestamp exchangeDate;
     private Long id;
 
     @Builder
-    public CashExchangeCreate(BigDecimal afterManagerCash, BigDecimal afterEmployeeCash, BigDecimal amount, String exchangeType, Long registrantId, Long empId, Long branchId, String exchangeDate, Long id) {
+    public CashExchangeCreate(BigDecimal afterManagerCash, BigDecimal afterEmployeeCash, BigDecimal amount, String exchangeType, Long registrantId, Long empId, Long branchId, Timestamp exchangeDate, Long id) {
         this.afterManagerCash = afterManagerCash;
         this.afterEmployeeCash = afterEmployeeCash;
         this.amount = amount;

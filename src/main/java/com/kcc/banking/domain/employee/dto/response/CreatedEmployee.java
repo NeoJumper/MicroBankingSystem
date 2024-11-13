@@ -6,13 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class CreatedEmployee {
     private Long id;
     private String branchName;
-    private String birthDate;
+    private Timestamp birthDate;
     private String name;
     private String phoneNumber;
     private String email;

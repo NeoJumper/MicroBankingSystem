@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.Year;
 import java.util.List;
 
@@ -69,7 +71,7 @@ public class EmployeeService {
     }
 
     public EmployeeDetail getEmployeeDetail(Long id) {
-        String businessDate = commonService.getCurrentBusinessDay().getBusinessDate();
+        Timestamp businessDate = commonService.getCurrentBusinessDay().getBusinessDate();
 
         EmployeeDetail empDetail = employeeMapper.findEmpDetailById(id);
         empDetail.setCurrentBusinessDate(businessDate);
