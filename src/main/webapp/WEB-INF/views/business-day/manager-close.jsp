@@ -23,7 +23,6 @@
     <div id="manager-close-page-user">
         <h3 class="mb-0">마감 관리(매니저)</h3>
         <span id="manager-close-page-user-branch-name">${managerClosingData.branchName}</span>
-        <h5 class="mb-0">2024-09-24</h5>
     </div>
 
         <div id="table-container" class="mb-5" style="border-bottom: 1px solid var(--little-dark-gray)">
