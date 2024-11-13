@@ -9,6 +9,7 @@ $(document).ready(function () {
 
     $('#saving-account-close-submit-btn').click(function () {
         submitSavingAccountClose();
+        resultCloseRedirect();
     })
 
 
@@ -18,6 +19,9 @@ $(document).ready(function () {
     });
 });
 
+function resultCloseRedirect() {
+    window.location.href = `/page/employee/savings-account-close`;
+}
 
 function selectSavingsAccount() {
     var selectedRow = $('input[name="select-account"]:checked').closest('tr');
@@ -379,7 +383,6 @@ function getSavingsAccount(data, accountId) {
 
 }
 
-
 function checkSavingsAccountId() {
     var accountNumber = $('#savings-account-close-number').val();
     var accountPassword = $('#savings-account-close-password').val();
@@ -494,7 +497,6 @@ function findSavingAccountFixedCloseInfo(data) {
     $('#saving-account-result-tax-interest').text(data.productTaxRate);
 }
 
-
 function addFixedInterest(data, finalInterestRate) {
     // tbody 준비
     let tbody = $('#savings-fixed-account-result').find('tbody');
@@ -510,24 +512,41 @@ function addFixedInterest(data, finalInterestRate) {
                 </tr>
             `);
     } else {
-        // data 리스트의 각 항목을 tbody에 추가
+        // 배경색 및 텍스트 변경 함수
+        function getCloseTypeDetails(closeType) {
+            switch (closeType) {
+                case 'POST_MATURITY_TERMINATION':
+                    return { text: '만기 후 해지', color: 'blue' }; // 파란색
+                case 'MATURITY_TERMINATION':
+                    return { text: '만기 해지', color: 'green' }; // 초록색
+                case 'EARLY_TERMINATION':
+                    return { text: '중도 해지', color: 'darkorange' }; // 다홍색 (주황)
+                default:
+                    return { text: '알 수 없음', color: 'gray' }; // 기본 색상
+            }
+        }
 
+// 새로운 테이블 행 생성 함수
         var row = "<tr>" +
-            "<td id ='fixed-closed-type' style='width: 5%;'>" + data.closeType + "</td>" +
-            "<td id ='fixedFinalInterestRate' style='width: 20%;'>" + data.finalInterestRate + "</td>" +
-            "<td style='width: 15%;'>" + data.productTaxRate + "</td>" +
-            "<td style='width: 25%'>" + data.interestCashSum + " 원</td>" +
+            "<td id ='fixed-closed-type' style='width: 15%;'>" +
+            "<span style='padding: 5px 15px; background-color: " + getCloseTypeDetails(data.closeType).color + "; color: white; border-radius: 20px;'>" + getCloseTypeDetails(data.closeType).text + "</span>" +
+            "</td>" +
+            "<td id ='fixedMaturityInterestRate' style='width: 10%;'>" + data.finalInterestRate + "</td>" +
+            "<td id ='fixedAfterMaturityInterestRate' style='width: 10%;'>" + data.afterFinalInterestRate + "</td>" +
+            "<td id ='fixedMaturityInterest' style='width: 10%;'>" + data.maturityInterest + "</td>" +
+            "<td id ='fixedAfterTotalInterest' style='width: 10%;'>" + data.afterTotalInterest + "</td>" +
+            "<td id ='fixedFinalTotalInterest' style='width: 20%;'>" + data.interestCashSum  + "</td>" +
+            "<td style='width: 10%;'>" + data.productTaxRate + "</td>" +
             "<td style='width: 20%;'>" + data.totalInterestAfterTax + " 원</td>" +
-            "<td id ='fixed-amount' style='width: 17%;'>" + data.totalAmount + "</td>" +  <!-- 세후 이자 -->
-
+            "<td id ='fixed-amount' style='width: 20%;'>" + data.totalAmount + "</td>" +  // 세후 이자
             "</tr>";
 
-        // tbody에 추가
+// tbody에 추가
         $('#savings-fixed-account-result').append(row);
-
-
     }
 }
+
+
 
 // 자유적금 해지 프로세스
 function savingAccountFlexibleCloseRequest() {
@@ -611,3 +630,4 @@ function reqeustFlexibleClose(data){
         }
     })
 }
+
