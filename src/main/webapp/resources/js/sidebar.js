@@ -273,8 +273,8 @@ function createDashboardSidebar(selectedSidebarMenu, roles) {
                 title: '시재 관리',
                 icon: 'bi bi-coin',
                 submenu: [
-                    { name: '시재금 거래', url: '/page/manager/cash-exchange' },
-                    { name: '시재금 거래 마감', url: '/page/manager/cash-exchange-close' }
+                    { name: '인수도 거래', url: '/page/manager/cash-exchange' },
+                    { name: '인수도 거래 마감', url: '/page/manager/cash-exchange-close' }
                 ]
             }
         ];

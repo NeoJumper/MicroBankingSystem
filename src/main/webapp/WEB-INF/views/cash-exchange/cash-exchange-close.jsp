@@ -19,7 +19,7 @@
 <div id="main-area">
     <div id="title">
         <h5>시재 관리 ></h5>
-        <h5>&nbsp시재금 거래 마감</h5>
+        <h5>&nbsp인수도 거래 마감</h5>
     </div>
 
     <h3>시재금 거래 내역</h3>
@@ -49,7 +49,7 @@
                         <c:when test="${cashExchange.exchangeType == 'HANDOVER'}">
                             인도
                         </c:when>
-                        <c:when test="${cashExchange.exchangeType == 'RECEIPT'}">
+                        <c:when test="${cashExchange.exchangeType == 'RECEIVE'}">
                             인수
                         </c:when>
                         <c:otherwise>
