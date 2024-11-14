@@ -22,19 +22,19 @@ public class CoolSmsService {
 
 
 
-    //@Value("${coolsms.api.key}")
+    @Value("${coolsms.api.key}")
     private String apiKey;
 
-    //@Value("${coolsms.api.secret}")
+    @Value("${coolsms.api.secret}")
     private String apiSecret;
 
-    //@Value("${coolsms.api.number}")
+    @Value("${coolsms.api.number}")
     private String fromPhoneNumber;
 
     // 단일 메시지 발송
     public void sendSMS(String to, HttpServletRequest request){
 
-/*        DefaultMessageService messageService =  NurigoApp.INSTANCE.initialize(
+        DefaultMessageService messageService =  NurigoApp.INSTANCE.initialize(
                 apiKey,
                 apiSecret,
                 "https://api.coolsms.co.kr");
@@ -42,6 +42,8 @@ public class CoolSmsService {
         Message message = new Message();
         message.setFrom(fromPhoneNumber);
         message.setTo(to);
+        log.info(apiSecret);
+        log.info(apiKey);
         log.info(to);
         log.info(fromPhoneNumber);
         message.setText("인증번호는 [" + randomNumber + "] 입니다.");
@@ -58,14 +60,14 @@ public class CoolSmsService {
             System.out.println(exception.getMessage());
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
-        }*/
+        }
 
-        String randomNumber = generateRandomNumber();
+/*        String randomNumber = generateRandomNumber();
         HttpSession session = request.getSession();
         session.setAttribute(to, randomNumber);
         session.setMaxInactiveInterval(60 * 3); // 세션만료시간 3분
         log.info("수신자 : " + to);
-        log.info("인증번호 : " + randomNumber);
+        log.info("인증번호 : " + randomNumber);*/
 
     }
 

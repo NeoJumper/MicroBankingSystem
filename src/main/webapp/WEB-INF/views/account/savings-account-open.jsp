@@ -128,20 +128,12 @@
             <td><input type="text" id="total-interest-input" disabled style="text-align: right"> %</td>
         </tr>
         <tr>
-            <th>원금</th>
+            <th>납입금액</th>
             <td>
 
                 <input type="text" id="auto-transfer-amount-input" style="text-align: right">원
                 <input id = "init-balance-span" class="mt-1 krw-amount-input" style="display: none">
-                <div class="button-group">
-                    <button type="button" class="amount-btn" data-amount="1000000">100만</button>
-                    <button type="button" class="amount-btn" data-amount="500000">50만</button>
-                    <button type="button" class="amount-btn" data-amount="300000">30만</button>
-                    <button type="button" class="amount-btn" data-amount="100000">10만</button>
-                    <button type="button" class="amount-btn" data-amount="50000">5만</button>
-                    <button type="button" class="amount-btn" data-amount="10000">1만</button>
 
-                </div>
 
             </td>
         </tr>
@@ -266,7 +258,7 @@
                     <th><label for="auto-transfer-amount">자동이체금액</label></th>
                     <td>
                         <div><span id="over-account-balance"></span></div>
-                        <input  type="text" id="auto-transfer-amount"> 원
+                        <input  type="text" id="auto-transfer-amount" disabled> 원
                         <label id="account-balance-label" style="display: none">
                             | 계좌 잔액: <span id="account-balance"></span> 원
                         </label>
