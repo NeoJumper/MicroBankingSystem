@@ -885,12 +885,12 @@ INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, bal
 VALUES (trade_seq.nextval, '001-0000003-3456', 2, 1, TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
         200000, 0, 'CLOSE', 'NOR', 'TRUE', '계좌해지', trade_num_seq.NEXTVAL);
 
--- 6번 해지신청 취소 고객 계좌
+/*-- 6번 해지신청 취소 고객 계좌
 INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status,
                    cash_indicator, description, trade_number)
 VALUES (trade_seq.nextval, '001-0000006-6789', 2, 1, TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
         200000, 0, 'CLOSE', 'NOR', 'TRUE', '계좌해지', trade_num_seq.NEXTVAL);
-
+*/
 
 -- 계좌 상태(해지) 및 잔액 업데이트
 UPDATE Account
