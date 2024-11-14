@@ -24,7 +24,7 @@
           AND trade_date &lt; ADD_MONTHS(TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'MM'), 1)
         GROUP BY
             CASE
-                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
                 WHEN trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN trade_type = 'DEPOSIT' THEN '입금'
                 WHEN trade_type = 'OPEN' THEN '가입'
@@ -38,7 +38,7 @@
     <select id="findCurrentMonthTransactionTypes" parameterType="map" resultType="TransactionTypeCount">
         SELECT
             CASE
-                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
                 WHEN trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN trade_type = 'DEPOSIT' THEN '입금'
                 WHEN trade_type = 'OPEN' THEN '가입'
@@ -53,7 +53,7 @@
           AND TO_CHAR(trade_date, 'YYYY-MM') = TO_CHAR(TO_DATE(#{today}, 'YYYY-MM-DD'), 'YYYY-MM')
         GROUP BY
             CASE
-                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
                 WHEN trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN trade_type = 'DEPOSIT' THEN '입금'
                 WHEN trade_type = 'OPEN' THEN '가입'
@@ -125,7 +125,7 @@
             CASE
                 WHEN trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN trade_type = 'DEPOSIT' THEN '입금'
-                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
                 WHEN trade_type = 'OPEN' THEN '가입'
                 WHEN trade_type = 'CLOSE' THEN '해지'
                 END AS transactionType,
@@ -140,7 +140,7 @@
             CASE
                 WHEN trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN trade_type = 'DEPOSIT' THEN '입금'
-                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
                 WHEN trade_type = 'OPEN' THEN '가입'
                 WHEN trade_type = 'CLOSE' THEN '해지'
                 END
@@ -239,7 +239,7 @@
         SELECT
             e.name AS employeeName,
             CASE
-                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
                 WHEN t.trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN t.trade_type = 'DEPOSIT' THEN '입금'
                 WHEN t.trade_type = 'OPEN' THEN '가입'
@@ -256,7 +256,7 @@
         GROUP BY
             e.name,
             CASE
-                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN t.cash_indicator = 'FALSE' AND t.trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
                 WHEN t.trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN t.trade_type = 'DEPOSIT' THEN '입금'
                 WHEN t.trade_type = 'OPEN' THEN '가입'
