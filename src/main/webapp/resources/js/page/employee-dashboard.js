@@ -101,7 +101,7 @@ function renderDailyTransactionVolumeChart(data) {
 // 이번 달의 일별 라벨을 생성하는 함수
 function generateDailyLabels() {
     const labels = [];
-    const currentDate = new Date();
+    const currentDate = new Date('2024-08-02');
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth(); // 0부터 시작하므로 주의
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
