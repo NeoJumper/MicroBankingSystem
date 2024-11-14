@@ -646,11 +646,12 @@ INSERT INTO Cash_exchange (id, registrant_id, emp_id, branch_id, amount, emp_cas
 VALUES (cash_exchange_seq.NEXTVAL, 1, 3, 1, 500000, 6000000, 500000, 'HANDOVER', TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1);
 
 -- 행원 업데이트
-UPDATE EMPLOYEE_CLOSING SET total_deposit=600000, modifier_id = 1, modification_date =TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), version = version + 1   WHERE registrant_id = 3 AND closing_date = TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS');
+UPDATE EMPLOYEE_CLOSING SET total_deposit=600000, modifier_id = 1, modification_date=TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), version = version + 1   WHERE registrant_id = 3 AND closing_date = TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS');
 -- 매니저 업데이트
-UPDATE EMPLOYEE_CLOSING SET total_withdrawal=500000, modifier_id = 1, modification_date =TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), version = version + 1   WHERE registrant_id = 1 AND closing_date = TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS');
+UPDATE EMPLOYEE_CLOSING SET total_withdrawal=500000, modifier_id = 1, modification_date=TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), version = version + 1   WHERE registrant_id = 1 AND closing_date = TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS');
 
-
+-- 3번 매니저 마감
+UPDATE EMPLOYEE_CLOSING SET status='CLOSED',vault_cash=10550000, modifier_id = 1,registration_date=TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), modification_date =TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), version = version + 1   WHERE registrant_id = 3 AND closing_date = TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS');
 
 ---------- [ 추가 SQL문 ] ----------
 

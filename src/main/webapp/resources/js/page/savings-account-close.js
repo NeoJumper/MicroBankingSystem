@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    isClosed();
+
     $('#search-modal-select-account-btn').click(function () {
         selectSavingsAccount();
     });
