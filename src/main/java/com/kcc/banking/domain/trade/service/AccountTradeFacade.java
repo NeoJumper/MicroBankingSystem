@@ -40,7 +40,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -716,9 +715,6 @@ public class AccountTradeFacade {
     }
 
 
-
-
-
     /**
      * @Description
      *  자동이체 관련 : 동일한 금액을 동일한 계좌에 이체하는 거래 서비스
@@ -750,8 +746,8 @@ public class AccountTradeFacade {
      *  시간 설정 x -> 날짜 주기 정함 -> 자동이체됨
      *
      */
-   // @Scheduled(fixedRate = 6000)
-  @Scheduled(cron = "0 0 0 * * MON-FRI")
+    @Scheduled(fixedRate = 60000)
+  //@Scheduled(cron = "0 0 0 * * MON-FRI")
     public void scheduleAutoTransfers(){
         System.out.println("scheduleReserveTransfers >>>>>> ");
 
@@ -777,8 +773,8 @@ public class AccountTradeFacade {
 
 
 
-    // 자동이체 리스트 -> 예약이체등록하기
-    // 예약이체에 자동이체거래내역 넣기,
+    // 자동이체 리스트 -> 예약이git 체등록하기
+    // 예약이체에 자동이체거래내역 넣기, (9:00 ~10:00)
     private void registerReserveTransfers(List<AutoTransferList> todayAutoList) {
         List<ReserveTransferCreate> reserveTransfers = new ArrayList<>();
 
@@ -786,6 +782,7 @@ public class AccountTradeFacade {
         for (AutoTransferList autoTransfer : todayAutoList) {
             System.out.println("for (AutoTransferList >>>>>"+autoTransfer.getAccId());
             ReserveTransferCreate reserveTransfer = new ReserveTransferCreate();
+
 
             reserveTransfer.setAutoTransferId(autoTransfer.getId().toString());
             reserveTransfer.setAccId(autoTransfer.getAccId());
@@ -830,6 +827,7 @@ public class AccountTradeFacade {
                 } catch (Exception e) {
                     System.err.println("Error inserting scheduled transfer for ID " + transfer.getId() + ": " + e.getMessage());
                 }
+
             }
         }
 
@@ -847,21 +845,21 @@ public class AccountTradeFacade {
      *
      */
 
-  /*
-  *
-  *
-   *  조건 :
-   *      현재 영업일 = 예약일
-   *      & 상태 = WAIT
-   *      & 예약 시간대
-   *         ->  start time > 현재 실행 시간 > end time
-   *  실행 해야 하는 전체 예약이체 정보 리스트 가져오기
+    /*
+     *
+     *
+     *  조건 :
+     *      현재 영업일 = 예약일
+     *      & 상태 = WAIT
+     *      & 예약 시간대
+     *         ->  start time > 현재 실행 시간 > end time
+     *  실행 해야 하는 전체 예약이체 정보 리스트 가져오기
 
-   * */
+     * */
 
 
     // 오늘 실행할 거래 조회 기능 0
-  // @Scheduled(fixedRate = 10000)
+    // @Scheduled(fixedRate = 10000)
     public void todayScheduleReserveTransfers() {
 
         SearchReserve searchWait = new SearchReserve();
@@ -921,8 +919,8 @@ public class AccountTradeFacade {
 
                 // 실패 상태로 변경 + ( missedCount +1)
                 reserveTransferService.updateReserveTransferStatus(autoId, "FAIL", transferTradeCreate.getFailureReason());
-                
-                // 실패했을 때 자동이체 로직 시작 
+
+                // 실패했을 때 자동이체 로직 시작
                 //   1. 미납 횟수 조회
                 //   2. 미납 횟수에따른 분기처리
                 //   -> 미납 횟수 카운팅 및 새로운 예약 이체 생성 로직
@@ -932,7 +930,7 @@ public class AccountTradeFacade {
                     // 미납 횟수 조회
                     Long currentMissedCount = transferTradeCreate.getMissedCount();
 
-                     //미납이 3 초과이면
+                    //미납이 3 초과이면
                     if(currentMissedCount > 3){
                         System.out.println("자동이체 중지 stop 로직 >>>>> ");
 
@@ -945,7 +943,7 @@ public class AccountTradeFacade {
 
                     } else {
                         System.out.println("예약이체 실패 로직 진행 >>>");
-                        
+
                         // missCount = +1
                         System.out.println("예약이체 update missCount +1 >>>");
                         reserveTransferService.updateMissedTransferOfAutoTransfer(autoId);
@@ -997,6 +995,8 @@ public class AccountTradeFacade {
 
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String time = sdf.format(currentTimestamp);
 
         // 시스템 id 0 , branchid 가져오기
         CurrentData currentData = new CurrentData(1L,1L,currentTimestamp);
@@ -1080,3 +1080,4 @@ public class AccountTradeFacade {
         return Arrays.asList(withdrawalTrade, depositTrade);
     }
 }
+

@@ -139,6 +139,7 @@
     <table class="common-table">
         <tbody>
         <tr>
+            <label style="color: var(--basic-color); margin-bottom: 10px"> * 금일 현금 마감금액 = 인수도 거래 금액 + 금일 거래내역 마감 금액</label>
             <th style="width: 13.5%"><label>금일 현금 마감 금액</label></th>
             <td>
                 <input id="emp-close-today-vault-cash"

@@ -71,6 +71,6 @@
         </div>
     </div>
 </div>
-<script src="/resources/js/modal/account-open-result-modal.js"></script>
+<script src="/resources/js/modal/savings-account-open-result-modal.js"></script>
 </body>
 </html>

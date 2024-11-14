@@ -140,17 +140,10 @@
                         <td  id="saving-account-result-amount" rowspan="1"></td>
                     </tr>
                     <tr>
-                        <th class="th-gray-style" rowspan="1">자동이체 총 횟수</th>
-                        <td id="saving-account-result-total-payCount" rowspan="1"></td>
-                    </tr>
-                    <tr>
                         <th class="th-gray-style" rowspan="1">자동이체 시작일</th>
                         <td  id="saving-account-result-start-date" rowspan="1"></td>
                     </tr>
-                    <tr>
-                        <th class="th-gray-style" rowspan="1">자동이체 종료일</th>
-                        <td  id="saving-account-result-end-date" rowspan="1"></td>
-                    </tr>
+
 
                     </thead>
 
@@ -200,10 +193,13 @@
             <thead>
             <tr>
                 <th>해지 종류</th>
-                <th>최종이율</th>
+                <th>만기 이율</th>
+                <th>만기 이후 이율</th>
+                <th>만기 이자</th>
+                <th>만기 이후 이자</th>
+                <th>총이자</th>
                 <th>세율</th>
-                <th>이자 (세전)</th>
-                <th>이자 (세후)</th>
+                <th>지급 이자</th>
                 <th>지급 총 금액</th>
 
             </tr>

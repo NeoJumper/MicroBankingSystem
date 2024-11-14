@@ -33,7 +33,13 @@ $(document).ready(function () {
     // 정기적금 금액 값이 변경될 때마다 자동으로 업데이트
     $('#auto-transfer-amount-input').on('input', function () {
         updateTransferAmount(); // 값 업데이트 함수 호출
-        checkBalance();
+
+        document.getElementById("yes-automatic-transfer");
+        if (yesRadio.checked) {
+            checkBalance();
+        } else {
+        }
+
     });
 
     // 출금금액 변경될 때 정기적금 금액 변경
@@ -136,6 +142,7 @@ function handleAmountFormat(element){
     element.val(value);
 
 }*/
+
 
 // 잔액 부족 알림 띄우기
 function checkBalance() {

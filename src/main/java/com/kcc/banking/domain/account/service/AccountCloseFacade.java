@@ -368,7 +368,7 @@ public class AccountCloseFacade {
      *   만기 해지
      *   만기 후 해지 : 만기까지 약정이율의 이자 + 만기 이후 새로운 이율의 이자
      *   총 이율 구하는 함수
-     * 
+     *
      * @param accountId
      * @return
      */
@@ -402,11 +402,15 @@ public class AccountCloseFacade {
         long diffDays = ChronoUnit.DAYS.between(openDate.toLocalDate(), businessDate);
         long contractDays = ChronoUnit.DAYS.between(openDate.toLocalDate(), maturityDateOnly);
 
+        // 남은 일수 계산 : 경과일수 - 계약일수
+        long remainingDays = diffDays- contractDays ;
+
+
         // 최종 이율 계산
         BigDecimal finalInterestRate;
         // 만기후 이율 계산
-        BigDecimal afterFinalInterestRate;
-        
+        BigDecimal afterFinalInterestRate = null;
+
         boolean isEarlyTermination = false;
         boolean isMaturityTermination = false;
 
@@ -453,17 +457,22 @@ public class AccountCloseFacade {
 
             finalInterestRate = baseInterestRate;
             // 만기 후 해지 이율 계산
-            long diffDaysAfterMaturity = ChronoUnit.DAYS.between(maturityDateOnly, businessDate);
+            //long diffDaysAfterMaturity = ChronoUnit.DAYS.between(maturityDateOnly, businessDate);
 
-            if (diffDaysAfterMaturity <= 30) {
+            if (remainingDays <= 30) {
                 afterFinalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.5)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/2
             } else {
                 afterFinalInterestRate = baseInterestRate.multiply(BigDecimal.valueOf(0.25)).setScale(4, RoundingMode.DOWN);  // 기본금리의 1/4
             }
+
+            System.out.println("finalInterestRate"+finalInterestRate+"만기 후 해지 "+ "remainingDays" + remainingDays+ "afterFinalInterestRate" + afterFinalInterestRate);
+
         }
 
         // 최종 적용 이율
         closeSavingsAccountTotal.setFinalInterestRate(finalInterestRate);
+        // 만기후 해지 이율
+        closeSavingsAccountTotal.setAfterFinalInterestRate(afterFinalInterestRate);
 
         System.out.println("최종 적용 이율 finalInterestRate >>>>>>>>>>>"+finalInterestRate);
 
@@ -471,6 +480,10 @@ public class AccountCloseFacade {
         System.out.println("중도 해지 여부: " + isEarlyTermination);
         System.out.println("만기 해지 여부: " + isMaturityTermination);
         System.out.println("경과 일수: " + diffDays);
+        System.out.println("경과일수-계약일수:"+"remainingDays" + remainingDays);
+        System.out.println("만기 해지이자율 :"+"finalInterestRate"+finalInterestRate);
+        System.out.println("만기후 이자윻"+"afterFinalInterestRate" + afterFinalInterestRate);
+
 
         // 정기 입금 금액 및 정기 입금 총 횟수
         // 해지 계좌번호
@@ -517,18 +530,31 @@ public class AccountCloseFacade {
             totalInterest = calculateFixedInterest(amount,finalInterestRate,parseIntWithoutZero(closeSavingsAccountTotal.getProductPeriod()));
 
 
-            afterFinalInterestRate = baseInterestRate;
             // 만기 이후 입금 개월 수 : totalDepositCount - productPeriod
             // 만기 이후 이자:BigDecimal principal, BigDecimal annualInterestRate, int months
-            int afterMonth = (totalDepositCount-parseIntWithoutZero(closeSavingsAccountTotal.getProductPeriod()));
-            BigDecimal afterTotalInterest = calculateMonthlyInterest(amount,afterFinalInterestRate,afterMonth);
+            // 전체 개월 수 계산
+            // 전체 만기일까지의 개월 수
+            long totalMonths = ChronoUnit.MONTHS.between(openDate.toLocalDate(), maturityDateOnly);
 
+            // 경과한 개월 수
+            long elapsedMonths = ChronoUnit.MONTHS.between(openDate.toLocalDate(), businessDate);
+
+
+            // 30일 이하일 경우 남은 개월 수를 1로 간주
+            long remainingMonths = (remainingDays <= 30) ? 1 : (totalMonths - elapsedMonths);
+
+            // 이자 계산
+            BigDecimal afterTotalInterest = calculateMonthlyInterest(amount, afterFinalInterestRate, (int) remainingMonths);
+
+            System.out.println("총 개월 수: " + totalMonths + ", 경과 개월 수: " + elapsedMonths + ", 남은 개월 수: " + remainingMonths);
+            System.out.println("이자 계산 결과: " + afterTotalInterest);
             System.out.println("만기 후 이율 계산  >>>>> "+closeSavingsAccountTotal.getCloseType());
             System.out.println("totalInterest >>>> "+totalInterest);
-            System.out.println("afterTotalInterest ,afterMonth >>>> "+afterTotalInterest+","+afterMonth);
+            System.out.println("afterTotalInterest ,remainingMonths >>>> "+afterTotalInterest+","+remainingMonths);
             System.out.println("afterTotalInterest+totalInterest >>>> "+ afterTotalInterest.add(totalInterest));
 
-
+            closeSavingsAccountTotal.setMaturityInterest(totalInterest);
+            closeSavingsAccountTotal.setAfterTotalInterest(afterTotalInterest);
             closeSavingsAccountTotal.setInterestCashSum(afterTotalInterest.add(totalInterest));
 
         }
@@ -624,6 +650,7 @@ public class AccountCloseFacade {
             // 적절한 예외 처리 또는 기본값 설정
             throw new IllegalArgumentException("계좌 ID에 대한 정보를 찾을 수 없습니다: " + accountId);
         }
+
         String autoTransferId = csat.getAutoTransferId();
 
         //이체 횟수조회(거래내역조회)
@@ -639,6 +666,7 @@ public class AccountCloseFacade {
         return csat;
 
     }
+
 
 
 
