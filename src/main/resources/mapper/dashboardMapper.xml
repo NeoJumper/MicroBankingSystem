@@ -8,7 +8,7 @@
     <select id="findMonthlyTransactionTypes" parameterType="map" resultType="TransactionTypeCount">
         SELECT
             CASE
-                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '송금'
+                WHEN cash_indicator = 'FALSE' AND trade_type IN ('WITHDRAWAL', 'DEPOSIT') THEN '이체'
                 WHEN trade_type = 'WITHDRAWAL' THEN '출금'
                 WHEN trade_type = 'DEPOSIT' THEN '입금'
                 WHEN trade_type = 'OPEN' THEN '가입'
