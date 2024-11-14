@@ -88,4 +88,15 @@ public class EmployeeService {
 
         return employeeMapper.findAuthDataById(loginMemberId);
     }
+
+    public EmployeeSearchResult getEmployeeListByOption2(EmployeeSearch employeeSearch) {
+        String branchId = commonService.getCurrentBusinessDateAndBranchId().getBranchId();
+        employeeSearch.setBranchId(branchId);
+
+        int totalCount = employeeMapper.getEmployeeCount(employeeSearch);
+        PageDTO pageDTO = new PageDTO(employeeSearch.getCriteria(), totalCount);
+
+        List<EmployeeSearchInfo> employees = employeeMapper.findEmployees2(employeeSearch);
+        return EmployeeSearchResult.of(employees, pageDTO);
+    }
 }

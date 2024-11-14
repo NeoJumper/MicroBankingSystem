@@ -34,4 +34,6 @@ public interface EmployeeMapper {
     int getEmployeeCount(EmployeeSearch employeeSearch);
 
     List<EmployeeSearchInfo> findEmployees(EmployeeSearch searchDTO);
+
+    List<EmployeeSearchInfo> findEmployees2(EmployeeSearch employeeSearch);
 }
