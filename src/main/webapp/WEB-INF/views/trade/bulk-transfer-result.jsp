@@ -216,7 +216,6 @@
             <h4>대량이체 결과확인</h4>
             <div class="table-top-btns">
                 <div>
-                    <input type="button" value="파일등록">
                     <input type="button" value="인쇄">
                 </div>
                 <div>

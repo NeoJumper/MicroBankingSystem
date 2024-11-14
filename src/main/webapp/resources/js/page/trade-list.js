@@ -411,7 +411,7 @@ function renderOfTradeSearchResults(data) {
                     .text(statusInfo.text)
                     .addClass(statusInfo.class));
 
-        if (formattedBusinessDay === formattedTradeDate && trade.status === 'NOR' && (trade.tradeType === 'CLOSE' || trade.tradeType === 'WITHDRAWAL')) {
+        if (formattedBusinessDay === formattedTradeDate && trade.status === 'NOR' && (trade.tradeType === 'CLOSE' || trade.tradeType === 'WITHDRAWAL') && trade.cashIndicator ==='TRUE') {
             // 영업일과 거래일이 동일하고 거래 유형이 'OPEN'이 아닐 경우 버튼 추가
             row.append($('<td>')
                 .addClass('text-center')
