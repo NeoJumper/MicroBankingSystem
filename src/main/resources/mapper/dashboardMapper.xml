@@ -65,7 +65,7 @@
     </select>
 
     <!-- 직원의 이번 달 일별 거래량 조회 -->
-    <select id="findEmployeeDailyTransactionVolume" parameterType="map" resultType="DailyEmployeeTransactionVolumeChart">
+    <select id="findEmployeeDailyTransactionVolume" parameterType="map" resultType="DailyTransactionVolumeChart">
         SELECT
             TO_CHAR(trade_date, 'YYYY-MM-DD') AS tradeDate,
             COUNT(*) AS transactionCount
@@ -73,12 +73,13 @@
             trade
         WHERE
             registrant_id = #{employeeId}
-          AND TO_CHAR(trade_date, 'YYYY-MM') = TO_CHAR(TO_DATE(#{today}, 'YYYY-MM-DD'), 'YYYY-MM')
+          AND TO_CHAR(trade_date, 'YYYY-MM') = TO_CHAR(TO_DATE(#{businessDate}, 'YYYY-MM-DD'), 'YYYY-MM')
         GROUP BY
             TO_CHAR(trade_date, 'YYYY-MM-DD')
         ORDER BY
             tradeDate
     </select>
+
 
 
     <select id="findAccountOpenRatioByRegistrantId" parameterType="java.lang.Long" resultType="AccountOpenRatioChart">

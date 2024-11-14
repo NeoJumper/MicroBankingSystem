@@ -288,7 +288,7 @@ VALUES (product_seq.NEXTVAL, 1, '네오자유청년행복적금', 3.5, SYSDATE, 
 --14
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
-VALUES (product_seq.NEXTVAL, 1, '다달이더한자유적금', 34, SYSDATE, '12',
+VALUES (product_seq.NEXTVAL, 1, '다달이더한자유적금', 4.5, SYSDATE, '12',
         0.154, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
 --15
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
@@ -322,10 +322,9 @@ INSERT INTO Account(id, branch_id, customer_id, product_id, registrant_id, start
                     expire_date, password, balance, account_type, open_date, status,
                     version)
 VALUES ('001-0000073-7373', 1, 2, 14, 2, TO_TIMESTAMP('2023-06-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
-    0.1, TO_TIMESTAMP('2025-06-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+    0.1, TO_TIMESTAMP('2025-06-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
     '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
-    120000, 'PRIVATE', TO_TIMESTAMP('2023-06-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
-
+    120000, 'PRIVATE', TO_TIMESTAMP('2024-06-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 
 
@@ -3025,3 +3024,18 @@ WHERE id = '001-0000069-6969';
 UPDATE Account
 SET balance = 2700000
 WHERE id = '001-0000070-7070';
+
+-- 7월 1일 이자 내역
+INSERT INTO Interest (id, acc_id, registrant_id, branch_id, creation_date, amount, balance, interest_rate,
+                      payment_status, version)
+VALUES (Interest_seq.nextval, '001-0000073-7373', 1, 1,
+
+        TO_TIMESTAMP('2023-07-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+        460, 120000, 4.6, 'N', 1);
+
+-- 8월 1일 이자 내역
+INSERT INTO Interest (id, acc_id, registrant_id, branch_id, creation_date, amount, balance, interest_rate,
+                      payment_status, version)
+VALUES (Interest_seq.nextval, '001-0000073-7373', 1, 1,
+        TO_TIMESTAMP('2023-08-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+        460, 120000, 4.6, 'N', 1);

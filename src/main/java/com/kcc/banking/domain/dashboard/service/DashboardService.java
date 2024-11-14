@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -84,8 +85,14 @@ public class DashboardService {
         BusinessDateAndEmployeeId currentBusinessDateAndEmployeeId = commonService.getCurrentBusinessDateAndEmployeeId();
         Long employeeId = currentBusinessDateAndEmployeeId.getEmployeeId();
         String businessDate = currentBusinessDateAndEmployeeId.getBusinessDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        return dashboardMapper.findEmployeeDailyTransactionVolume(employeeId, businessDate);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("employeeId", employeeId);
+        params.put("businessDate", businessDate);
+
+        return dashboardMapper.findEmployeeDailyTransactionVolume(params);
     }
+
 
     public List<TransactionTypeCount> getMonthlyTransactionTypes() {
         BusinessDateAndBranchId currentBusinessDateAndBranchId = commonService.getCurrentBusinessDateAndBranchId();

@@ -41,11 +41,9 @@ public interface DashboardMapper {
 
     /**
      * 직원의 이번 달 일별 거래량 추이
-     * @param employeeId
-     * @param today
      * @return
      */
-    List<DailyTransactionVolumeChart> findEmployeeDailyTransactionVolume(@Param("employeeId") Long employeeId, @Param("today") String today);
+    List<DailyTransactionVolumeChart> findEmployeeDailyTransactionVolume(Map<String, Object> params);
 
     /**
      * 매니저용 월별 거래 유형
