@@ -32,9 +32,7 @@
             <th>대분류</th>
             <td>
                 <div id = "major-category-button-group" class="button-group">
-                    <input type="radio" id="common-transfer" value="common" name="major-category" checked>
-                    <label for="common-transfer">전체</label>
-                    <input type="radio" id="reserve-transfer" value="reserve" name="major-category" >
+                    <input type="radio" id="reserve-transfer" value="reserve" name="major-category" checked>
                     <label for="reserve-transfer">예약 이체</label>
                     <input type="radio" id="auto-transfer" value="auto" name="major-category">
                     <label for="auto-transfer">자동 이체</label>
