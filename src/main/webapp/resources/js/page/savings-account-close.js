@@ -305,8 +305,8 @@ function addInterestList(interestDetailsList, finalInterestRate) {
                     <tr>
                         <td>${item.creationDate.substring(0,10)}</td>
                         <td><input type="text" value="${item.balance.toLocaleString()}" disabled/> 원</td>
-                        <td>${item.interestRate} %</td>
-                        <td>${item.preferentialInterestRate} %</td>
+                        <td>${item.interestRate * 100} %</td>
+                        <td>${item.preferentialInterestRate * 100} %</td>
                         <td>${finalInterestRate * 100} %</td>
                         <td><input type="text" value="${item.amount.toLocaleString()}" disabled /> 원</td>
                     </tr>
@@ -371,6 +371,9 @@ function getSavingsAccount(data, accountId) {
                     console.log("Highlighted Key:", highlightedKey);
                     rateElement.closest('tr').css('background-color', '#f6f9fc'); // 하이라이트 색상 설정
                     rateElement.closest('tr').css('color', '#3f5ba9');
+                }else{
+                    rateElement.closest('tr').css('background-color', '#ffffff'); // 하이라이트 색상 설정
+                    rateElement.closest('tr').css('color', '#000000');
                 }
             }
 
@@ -536,14 +539,14 @@ function addFixedInterest(data, finalInterestRate) {
             "<td id ='fixed-closed-type' style='width: 15%;'>" +
             "<span style='padding: 5px 15px; background-color: " + getCloseTypeDetails(data.closeType).color + "; color: white; border-radius: 20px;'>" + getCloseTypeDetails(data.closeType).text + "</span>" +
             "</td>" +
-            "<td id ='fixedMaturityInterestRate' style='width: 10%;'>" + data.finalInterestRate + "</td>" +
-            "<td id ='fixedAfterMaturityInterestRate' style='width: 10%;'>" + data.afterFinalInterestRate + "</td>" +
-            "<td id ='fixedMaturityInterest' style='width: 10%;'>" + data.maturityInterest + "</td>" +
-            "<td id ='fixedAfterTotalInterest' style='width: 10%;'>" + data.afterTotalInterest + "</td>" +
-            "<td id ='fixedFinalTotalInterest' style='width: 20%;'>" + data.interestCashSum  + "</td>" +
-            "<td style='width: 10%;'>" + data.productTaxRate + "</td>" +
-            "<td style='width: 20%;'>" + data.totalInterestAfterTax + " 원</td>" +
-            "<td id ='fixed-amount' style='width: 20%;'>" + data.totalAmount + "</td>" +  // 세후 이자
+            "<td id ='fixedMaturityInterestRate'>" + data.finalInterestRate + "</td>" +
+            "<td id ='fixedAfterMaturityInterestRate'>" + data.afterFinalInterestRate + "</td>" +
+            "<td id ='fixedMaturityInterest'>" + data.maturityInterest + "</td>" +
+            "<td id ='fixedAfterTotalInterest'>" + data.afterTotalInterest + "</td>" +
+            "<td id ='fixedFinalTotalInterest'>" + data.interestCashSum  + "</td>" +
+            "<td>" + data.productTaxRate + "</td>" +
+            "<td>" + data.totalInterestAfterTax + " 원</td>" +
+            "<td id ='fixed-amount'>" + data.totalAmount + "</td>" +  // 세후 이자
             "</tr>";
 
 // tbody에 추가
