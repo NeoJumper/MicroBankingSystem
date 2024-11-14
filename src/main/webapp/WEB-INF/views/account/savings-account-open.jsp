@@ -291,7 +291,7 @@
 
 </div>
 
-
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <%@ include file="/resources/components/modal/transfer-account-search-modal.jsp" %>
 <%@ include file="/resources/components/modal/search-modal-customer.jsp" %>
 <%@ include file="/resources/components/modal/search-modal-product.jsp" %>
