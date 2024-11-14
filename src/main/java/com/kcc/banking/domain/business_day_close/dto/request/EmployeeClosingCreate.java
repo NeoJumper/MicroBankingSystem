@@ -34,9 +34,9 @@ public class EmployeeClosingCreate {
 
     }
 
-    public static EmployeeClosingCreate of(WorkerData workerData, String businessDateToChange, BusinessDateAndBranchId businessDateAndBranchId, Long tradeNumber){
+    public static EmployeeClosingCreate of(WorkerData workerData, Timestamp businessDateToChange, BusinessDateAndBranchId businessDateAndBranchId, Long tradeNumber){
         return EmployeeClosingCreate.builder()
-                .closingDate(Timestamp.valueOf(businessDateToChange))
+                .closingDate(businessDateToChange)
                 .branchId(businessDateAndBranchId.getBranchId())
                 .status(workerData.getStatus())
                 .prevCashBalance(workerData.getPrevCashBalance())
