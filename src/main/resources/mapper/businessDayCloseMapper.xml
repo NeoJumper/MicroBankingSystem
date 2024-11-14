@@ -11,25 +11,25 @@
         select e.id, e.name, ec.prev_cash_balance, ec.total_deposit, ec.total_withdrawal, ec.vault_cash, ec.status
         from employee_closing ec
         join employee e on ec.registrant_id = e.id
-        where ec.registrant_id = #{employeeId} and ec.closing_date = #{businessDate}
+        where ec.registrant_id = #{employeeId} and TRUNC(ec.closing_date) = TRUNC(#{businessDate})
     </select>
 
     <select id="findEmployeeClosingTotalDeposit" parameterType="BusinessDateAndEmployeeId" >
         select total_deposit
         from employee_closing
-        where registrant_id = #{employeeId} and closing_date = #{businessDate}
+        where registrant_id = #{employeeId} and TRUNC(closing_date) =TRUNC(#{businessDate})
     </select>
 
     <select id="findEmployeeClosingTotalWithdrawal" parameterType="BusinessDateAndEmployeeId" >
         select total_withdrawal
         from employee_closing
-        where registrant_id = #{employeeId} and closing_date = #{businessDate}
+        where registrant_id = #{employeeId} and TRUNC(closing_date) = TRUNC(#{businessDate})
     </select>
 
     <select id="findBranchClosingStatusByDate" parameterType="BusinessDateAndBranchId" >
         select status
         from branch_closing
-        where branch_id = #{branchId} and closing_date = #{businessDate}
+        where branch_id = #{branchId} and TRUNC(closing_date) = TRUNC(#{businessDate})
     </select>
 
 
@@ -38,7 +38,7 @@
         select e.id, e.name, e.roles, ec.prev_cash_balance, ec.total_deposit, ec.total_withdrawal, ec.vault_cash, ec.status
         from employee_closing ec
         join employee e on ec.registrant_id = e.id
-        where ec.branch_id = #{branchId} and ec.closing_date = #{businessDate}
+        where ec.branch_id = #{branchId} and TRUNC(ec.closing_date) = TRUNC(#{businessDate})
     </select>
 
 
@@ -48,17 +48,17 @@
 
     <select id="findClosingTradeNumber" parameterType="BusinessDateAndBranchId" >
         select trade_number from branch_closing
-        where branch_id = #{branchId} and closing_date = #{businessDate}
+        where branch_id = #{branchId} and TRUNC(closing_date) = TRUNC(#{businessDate})
     </select>
 
     <select id="findBranchClosingStatus" parameterType="BusinessDateAndBranchId" >
         select status from branch_closing
-        where branch_id = #{branchId} and closing_date = #{businessDate}
+        where branch_id = #{branchId} and TRUNC(closing_date) = TRUNC(#{businessDate})
     </select>
 
     <select id="findBranchClosingVaultCash" parameterType="BusinessDateAndBranchId" >
         select vault_cash from branch_closing
-        where branch_id = #{branchId} and closing_date = #{businessDate}
+        where branch_id = #{branchId} and TRUNC(closing_date) = TRUNC(#{businessDate})
     </select>
 
 
@@ -120,7 +120,7 @@
     </insert>
 
     <select id="getStatusById"  parameterType="BusinessDateAndEmployeeId">
-        select status from employee_closing where registrant_id = #{employeeId} AND closing_date = #{businessDate}
+        select status from employee_closing where registrant_id = #{employeeId} AND TRUNC(closing_date) = TRUNC(#{businessDate})
     </select>
 
     <!-- ****************************** UPDATE ****************************** -->
@@ -143,7 +143,7 @@
         modifier_id = #{modifierId},
         modification_date = SYSTIMESTAMP,
         version = version + 1
-        where registrant_id = #{targetEmployeeId} and closing_date = #{targetClosingDate}
+        where registrant_id = #{targetEmployeeId} and TRUNC(closing_date) = TRUNC(#{targetClosingDate})
     </update>
 
     <update id="updateBranchClosing" parameterType="BranchClosingUpdate" >
@@ -158,7 +158,7 @@
         modifier_id = #{modifierId},
         modification_date = SYSTIMESTAMP,
         version = version + 1
-        where branch_id = #{targetBranchId} and closing_date = #{targetClosingDate}
+        where branch_id = #{targetBranchId} and TRUNC(closing_date) = TRUNC(#{targetClosingDate})
     </update>
 
     <update id="updateAdditionalCashExchange" parameterType="EmployeeAdditionalUpdate">
@@ -173,7 +173,7 @@
         modifier_id = #{modifierId},
         modification_date = SYSTIMESTAMP,
         version = version + 1
-        where registrant_id = #{registrantId} and closing_date = #{closingDate}
+        where registrant_id = #{registrantId} and TRUNC(closing_date) = TRUNC(#{closingDate})
     </update>
 
 
