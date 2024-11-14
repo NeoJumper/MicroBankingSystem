@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,11 +35,11 @@ public class BusinessDayCloseService {
 
     }
 
-    private void createBranchClosing(String businessDateToChange, BigDecimal prevCashBalanceOfBranch, Long tradeNumber, BusinessDateAndBranchId businessDateAndBranchId) {
+    private void createBranchClosing(Date businessDateToChange, BigDecimal prevCashBalanceOfBranch, Long tradeNumber, BusinessDateAndBranchId businessDateAndBranchId) {
         Long loginMemberId = AuthenticationUtils.getLoginMemberId();
 
         BranchClosingCreate branchClosingCreate = BranchClosingCreate.builder()
-                .closingDate(businessDateToChange)
+                .closingDate(new Timestamp(businessDateToChange.getTime()))
                 .branchId(businessDateAndBranchId.getBranchId())
                 .status("OPEN")
                 .prevCashBalance(prevCashBalanceOfBranch)
@@ -49,9 +50,9 @@ public class BusinessDayCloseService {
         businessDayCloseMapper.insertBranchClosing(branchClosingCreate);
     }
 
-    public void createEmployeeClosing(List<WorkerData> workerDataList, String businessDateToChange, BusinessDateAndBranchId businessDateAndBranchId, Long tradeNumber) {
+    public void createEmployeeClosing(List<WorkerData> workerDataList, Date businessDateToChange, BusinessDateAndBranchId businessDateAndBranchId, Long tradeNumber) {
 
-        List<EmployeeClosingCreate> employeeClosingCreateList = workerDataList.stream().map(workerData -> EmployeeClosingCreate.of(workerData,businessDateToChange, businessDateAndBranchId, tradeNumber))
+        List<EmployeeClosingCreate> employeeClosingCreateList = workerDataList.stream().map(workerData -> EmployeeClosingCreate.of(workerData,new Timestamp(businessDateToChange.getTime()), businessDateAndBranchId, tradeNumber))
                 .toList();
 
         businessDayCloseMapper.batchInsertEmployeeClosing(employeeClosingCreateList);
