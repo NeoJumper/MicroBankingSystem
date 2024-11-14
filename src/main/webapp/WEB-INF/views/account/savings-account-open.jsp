@@ -103,7 +103,7 @@
         </tr>
         <tr>
             <th>신규일자/가입일자</th>
-            <td><input type="date" id="savings-account-start-date-input" disabled></td>
+            <td><input type="text" id="savings-account-start-date-input" disabled></td>
         </tr>
         <tr>
             <th>만기일자</th>

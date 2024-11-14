@@ -40,6 +40,10 @@ canvas {
 
 }
 
+#dailyTransactionChart {
+    max-width: 300px;
+}
+
 #daily-transaction-table {
     min-width: 200px;
 }

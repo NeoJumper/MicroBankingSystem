@@ -266,7 +266,8 @@ function setCurrentData() {
             $('#branch-name-input').val(data.branchName);
             $('#branch-id-hidden').val(data.branchId);
 
-            var formattedDate = data.currentBusinessDate.substring(0, 10);
+
+            var formattedDate= new Date(data.currentBusinessDate).toLocaleDateString('ko-KR');
             $('#savings-account-start-date-input').val(formattedDate);
 
 
