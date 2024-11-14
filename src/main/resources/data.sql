@@ -676,13 +676,13 @@ UPDATE EMPLOYEE_CLOSING SET status='CLOSED',vault_cash=10550000, modifier_id = 1
 -- 17번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 1, '(주)DataSphere', '02-3456-7890', 'NONE', '000001-000001', '서울특별시 종로구 혜화동 901-34',
+VALUES (customer_seq.NEXTVAL, 1, '(주)DataSphere', '010-5355-4406', 'NONE', '000001-000001', '서울특별시 종로구 혜화동 901-34',
         TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 4);
 
 -- 18번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
                       security_level, registrant_id)
-VALUES (customer_seq.NEXTVAL, 2, 'CodeWave Company', '02-4567-8901', 'NONE', '000001-000002', '서울특별시 종로구 무악동 012-45',
+VALUES (customer_seq.NEXTVAL, 2, 'CodeWave Company', '010-5355-4406', 'NONE', '000001-000002', '서울특별시 종로구 무악동 012-45',
         TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), '2등급', 8);
 
 -- 19번 고객
