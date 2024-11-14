@@ -322,9 +322,9 @@ INSERT INTO Account(id, branch_id, customer_id, product_id, registrant_id, start
                     expire_date, password, balance, account_type, open_date, status,
                     version)
 VALUES ('001-0000073-7373', 1, 2, 14, 2, TO_TIMESTAMP('2023-06-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
-    0.1, TO_TIMESTAMP('2025-06-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+    0.1, TO_TIMESTAMP('2025-06-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
     '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6',
-    120000, 'PRIVATE', TO_TIMESTAMP('2023-06-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
+    120000, 'PRIVATE', TO_TIMESTAMP('2024-06-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 
 

@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     $('#saving-account-close-submit-btn').click(function () {
         submitSavingAccountClose();
-        resultCloseRedirect();
+        //resultCloseRedirect();
     })
 
 
@@ -264,7 +264,7 @@ function addCloseInfo(data, businessDate) {
 
     var tradeDate = new Date(data.openDate).toLocaleDateString('ko-KR');
     var expiredDate = new Date(data.expectedExpireDate.split(" ")[0]).toLocaleDateString('ko-KR');
-    businessDate = new Date(businessDate.split(" ")[0]).toLocaleDateString('ko-KR');
+    businessDate = $('#business-day-date').text();
 
     $('#flex-open-date-td').val(tradeDate);
     $('#flex-expired-date-td').val(expiredDate);
@@ -303,7 +303,7 @@ function addInterestList(interestDetailsList, finalInterestRate) {
         $.each(interestDetailsList, function (index, item) {
             let row = `
                     <tr>
-                        <td>${item.creationDate.split(" ")[0]}</td>
+                        <td>${item.creationDate.substring(0,10)}</td>
                         <td><input type="text" value="${item.balance.toLocaleString()}" disabled/> 원</td>
                         <td>${item.interestRate} %</td>
                         <td>${item.preferentialInterestRate} %</td>
@@ -431,7 +431,7 @@ function submitSavingAccountClose() {
     console.log()
     // 정기적금 해지 프로세스
     if ($('#savings-account-product-type').text() == "FIXED") {
-        savingAccountFixedCloseRequest();
+        savingAccountFixedCloseRequest()
     }
     // 자유적금 해지 프로세스
     else if ($('#savings-account-product-type').text() == "FLEXIBLE") {
@@ -467,8 +467,9 @@ function savingAccountFixedCloseRequest() {
                     title: "해지 성공",
                     text: "계좌 해지 완료되었습니다.",
                     icon: "success",
+                }).then(() => {
+                        resultCloseRedirect();
                 });
-
             }
     
         }
