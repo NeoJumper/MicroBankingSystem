@@ -240,7 +240,7 @@ function renderAccountOpenRatioChart(data) {
 
 // 거래량 비교 차트를 그리는 함수
 function renderYearlyTransactionComparisonChart(data, lastYear, currentYear) {
-    const transactionTypes = ['현금 거래', '이체', '해지'];
+    const transactionTypes = ['가입','해지','현금 거래', '이체'];
 
     // 각 연도별로 데이터를 나누어서 매핑
     const lastYearCounts = [];
