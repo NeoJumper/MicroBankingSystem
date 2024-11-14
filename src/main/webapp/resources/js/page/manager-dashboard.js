@@ -718,7 +718,7 @@ function saveChartsAsPDF() {
 
                 html2canvas(pageContainer, options).then(canvas => {
                     const imgData = canvas.toDataURL('image/png');
-                    const imgWidth = 220;
+                    const imgWidth = 200;
                     const imgHeight = canvas.height * imgWidth / canvas.width;
 
                     if (pageIndex > 1) pdf.addPage();
