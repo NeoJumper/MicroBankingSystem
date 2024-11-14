@@ -23,8 +23,8 @@ public class BranchClosingCreate {
 
 
     @Builder
-    public BranchClosingCreate(String closingDate, String branchId, String status, BigDecimal prevCashBalance, Long tradeNumber, String registrantId) {
-        this.closingDate = Timestamp.valueOf(closingDate);
+    public BranchClosingCreate(Timestamp closingDate, String branchId, String status, BigDecimal prevCashBalance, Long tradeNumber, String registrantId) {
+        this.closingDate = closingDate;
         this.branchId = branchId;
         this.status = status;
         this.prevCashBalance = prevCashBalance;

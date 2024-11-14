@@ -270,7 +270,7 @@ function changeBusinessDay() {
     const businessDayUpdate = {
         workerDataList: data,
         prevCashBalanceOfBranch: $('#business-day-modal-branch-balance').val().trim().replace(/,/g, ''),
-        businessDateToChange: $('#next-business-day').val()
+        businessDateToChange: formatDateToYYYYMMDD($('#next-business-day').val())
     }
 
     $.ajax({
@@ -302,4 +302,12 @@ function changeBusinessDay() {
 
     // 결과 JSON 데이터 출력 (또는 전송)
     console.log(businessDayUpdate);
+}
+
+function formatDateToYYYYMMDD(dateString) {
+    var date = new Date(dateString);  // 문자열로부터 Date 객체 생성
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 +1 해줍니다.
+    var day = ("0" + date.getDate()).slice(-2);
+    return year + "-" + month + "-" + day;
 }

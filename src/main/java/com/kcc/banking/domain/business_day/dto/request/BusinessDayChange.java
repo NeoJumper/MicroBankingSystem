@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public class BusinessDayChange {
     private List<WorkerData> workerDataList;
     private BigDecimal prevCashBalanceOfBranch;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String businessDateToChange;
 
     public BusinessDayChange(List<WorkerData> workerDataList, BigDecimal prevCashBalanceOfBranch, String businessDateToChange) {
