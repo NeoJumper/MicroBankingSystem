@@ -71,7 +71,8 @@ function handleAmount(element){
     value = handleKrwAmount(value);
 
 
-    element.siblings('.krw-amount-input').val(convertToKoreanNumber(parseInt(value)) + '원').show();
+    ele
+    ment.siblings('.krw-amount-input').val(convertToKoreanNumber(parseInt(value)) + '원').show();
 
     // 숫자를 한국 원화 형식으로 변환
     value = String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
