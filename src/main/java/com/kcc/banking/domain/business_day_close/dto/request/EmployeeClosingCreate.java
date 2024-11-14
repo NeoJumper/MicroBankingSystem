@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Setter
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
 public class EmployeeClosingCreate {
 
 
-    private String closingDate; // 마감일
+    private Timestamp closingDate; // 마감일
     private String branchId; // 마감 지점
     private String status; // 상태
     private BigDecimal prevCashBalance;
@@ -23,7 +24,7 @@ public class EmployeeClosingCreate {
     private String registrantId; // 담당자
 
     @Builder
-    public EmployeeClosingCreate(String closingDate, String branchId, String status, BigDecimal prevCashBalance, Long tradeNumber, String registrantId) {
+    public EmployeeClosingCreate(Timestamp closingDate, String branchId, String status, BigDecimal prevCashBalance, Long tradeNumber, String registrantId) {
         this.closingDate = closingDate;
         this.branchId = branchId;
         this.status = status;
@@ -35,7 +36,7 @@ public class EmployeeClosingCreate {
 
     public static EmployeeClosingCreate of(WorkerData workerData, String businessDateToChange, BusinessDateAndBranchId businessDateAndBranchId, Long tradeNumber){
         return EmployeeClosingCreate.builder()
-                .closingDate(businessDateToChange)
+                .closingDate(Timestamp.valueOf(businessDateToChange))
                 .branchId(businessDateAndBranchId.getBranchId())
                 .status(workerData.getStatus())
                 .prevCashBalance(workerData.getPrevCashBalance())

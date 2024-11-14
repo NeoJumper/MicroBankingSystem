@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Setter
 @Getter
 public class BranchClosingCreate {
 
-    private String closingDate;
+    private Timestamp closingDate;
     private String branchId;
     private String status;
     private BigDecimal prevCashBalance;
@@ -23,7 +24,7 @@ public class BranchClosingCreate {
 
     @Builder
     public BranchClosingCreate(String closingDate, String branchId, String status, BigDecimal prevCashBalance, Long tradeNumber, String registrantId) {
-        this.closingDate = closingDate;
+        this.closingDate = Timestamp.valueOf(closingDate);
         this.branchId = branchId;
         this.status = status;
         this.prevCashBalance = prevCashBalance;
