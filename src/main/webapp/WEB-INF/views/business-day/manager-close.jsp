@@ -34,8 +34,8 @@
                     <th style="width: 5%">직책</th>
                     <th style="width: 18%;">현금 초기액</th>
                     <th style="width: 16%;">입금액</th>
-                    <th style="width: 20%;">출금액</th>
-                    <th style="width: 16%;">금일 마감 금액</th>
+                    <th style="width: 23%;">출금액</th>
+                    <th style="width: 18%;">금일 마감 금액</th>
                     <th>마감 상태</th>
                 </tr>
                 </thead>

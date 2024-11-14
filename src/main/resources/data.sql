@@ -275,7 +275,7 @@ VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.
 -- 12
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
-VALUES (product_seq.NEXTVAL, 1, '네오자유행복적금', 2.5, SYSDATE, '12',
+VALUES (product_seq.NEXTVAL, 1, '네오자유적금', 2.5, SYSDATE, '12',
         0.154, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
 --13
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
@@ -288,12 +288,12 @@ VALUES (product_seq.NEXTVAL, 1, '네오자유청년행복적금', 3.5, SYSDATE, 
 --14
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
-VALUES (product_seq.NEXTVAL, 1, '다달이더하는자유적금', 34, SYSDATE, '12',
+VALUES (product_seq.NEXTVAL, 1, '다달이더한자유적금', 34, SYSDATE, '12',
         0.154, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
 --15
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
-VALUES (product_seq.NEXTVAL, 1, '다달이행복청년자유적금', 0.6, SYSDATE, '12',
+VALUES (product_seq.NEXTVAL, 1, '다달이행복자유적금', 0.6, SYSDATE, '12',
         0.154, 1, 'PRIVATE', 'FLEXIBLE', 'COMPOUND');
 
 ---------- 단리 자율 적금 생성 ----------
@@ -865,6 +865,7 @@ INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, bal
 VALUES (trade_seq.nextval, '001-0000005-5678', 2, 1, TO_TIMESTAMP('2024-08-01 00:00:07', 'YYYY-MM-DD HH24:MI:SS'),
         50000, 250000, 'WITHDRAWAL', 'NOR', 'TRUE', '복권 구매', trade_num_seq.NEXTVAL);
 
+
 -- 계좌 해지
 
 -- 1번 고객 계좌
@@ -946,9 +947,24 @@ INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, pr
                               total_withdrawal, vault_cash, trade_number, version)
 VALUES (TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 2, 1, 'OPEN', 11110000, 0, 590000, null, trade_num_seq.NEXTVAL, 1);
 
+-- 5번 계좌에서 50,000원 현금 출금
+-- 8월 2일
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status,
+                   cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000005-5678', 3, 1, TO_TIMESTAMP('2024-08-02 00:00:07', 'YYYY-MM-DD HH24:MI:SS'),
+        50000, 200000, 'WITHDRAWAL', 'NOR', 'TRUE', '복권 구매', trade_num_seq.NEXTVAL);
+
+-- 5번 계좌에서 100,000원 현금 입금
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status,
+                   cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000005-5678', 3, 1, TO_TIMESTAMP('2024-08-02 00:00:07', 'YYYY-MM-DD HH24:MI:SS'),
+        100000, 300000, 'DEPOSIT', 'NOR', 'TRUE', '일당 입금', trade_num_seq.NEXTVAL);
+
+
+
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit,
                               total_withdrawal, vault_cash, trade_number, version)
-VALUES (TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 3, 1, 'OPEN', 10000000, 0, 0, null, trade_num_seq.CURRVAL, 1);
+VALUES (TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 3, 1, 'OPEN', 10000000, 100000, 50000, null, trade_num_seq.CURRVAL, 1);
 
 INSERT INTO EMPLOYEE_CLOSING (closing_date, registrant_id, branch_id, status, prev_cash_balance, total_deposit,
                               total_withdrawal, vault_cash, trade_number, version)
@@ -978,7 +994,7 @@ INSERT INTO Cash_exchange (id, registrant_id, emp_id, branch_id, amount, emp_cas
 VALUES (cash_exchange_seq.NEXTVAL, 1, 3, 1, 500000, 6000000, 500000, 'HANDOVER', TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1);
 
 -- 행원 업데이트
-UPDATE EMPLOYEE_CLOSING SET total_deposit=500000, modifier_id = 1, modification_date =TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), version = version + 1   WHERE registrant_id = 3 AND closing_date = TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS');
+UPDATE EMPLOYEE_CLOSING SET total_deposit=600000, modifier_id = 1, modification_date =TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), version = version + 1   WHERE registrant_id = 3 AND closing_date = TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS');
 -- 매니저 업데이트
 UPDATE EMPLOYEE_CLOSING SET total_withdrawal=500000, modifier_id = 1, modification_date =TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), version = version + 1   WHERE registrant_id = 1 AND closing_date = TO_TIMESTAMP('2024-08-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS');
 
