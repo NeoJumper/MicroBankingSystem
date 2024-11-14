@@ -140,10 +140,6 @@
                         <td  id="saving-account-result-amount" rowspan="1"></td>
                     </tr>
                     <tr>
-                        <th class="th-gray-style" rowspan="1">자동이체 총 횟수</th>
-                        <td id="saving-account-result-total-payCount" rowspan="1"></td>
-                    </tr>
-                    <tr>
                         <th class="th-gray-style" rowspan="1">자동이체 시작일</th>
                         <td  id="saving-account-result-start-date" rowspan="1"></td>
                     </tr>

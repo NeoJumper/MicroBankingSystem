@@ -55,6 +55,13 @@ public class CloseSavingsAccountTotal {
     /*---------- 이율 계산 정보---------- */
     // 해지 시 최종 이율
     private BigDecimal finalInterestRate;
+    // 만기 이후 추가 이율
+    private  BigDecimal afterFinalInterestRate;
+
+    // 만기 이자합
+    private BigDecimal maturityInterest;
+    // 만기 이후 이자합
+    private BigDecimal afterTotalInterest;
     // 세후 이율
     private BigDecimal totalInterestAfterTax;
     // 총 이자액 (잔액 * 이율)
@@ -91,7 +98,10 @@ public class CloseSavingsAccountTotal {
     }
 
     @Builder
-    public CloseSavingsAccountTotal(BigDecimal totalInterestAfterTax,String accountId, String accountStatus, String customerName, long customerId, String productName, BigDecimal accountInterestRate, BigDecimal accountBalance, String openDate, String startDate, String expectedExpireDate, BigDecimal productInterestRate, BigDecimal productTaxRate, String productType, String productPeriod, BigDecimal fixedAmount, String autoTransferStartDate, String autoTransferEndDate, String autoTransferPeriod, String createDate, String autoAccId, String autoTransferId, String autoTransferCount, BigDecimal interestCashSum, BigDecimal totalBalanceSum, BigDecimal finalInterestRate, BigDecimal totalInterestSum, BigDecimal totalInterestSumAfterTax, BigDecimal totalAmount, CloseSavingsFlexibleAccountTotal.CloseType closeType) {
+    public CloseSavingsAccountTotal(BigDecimal maturityInterest,BigDecimal afterTotalInterest,BigDecimal afterFinalInterestRate,BigDecimal totalInterestAfterTax,String accountId, String accountStatus, String customerName, long customerId, String productName, BigDecimal accountInterestRate, BigDecimal accountBalance, String openDate, String startDate, String expectedExpireDate, BigDecimal productInterestRate, BigDecimal productTaxRate, String productType, String productPeriod, BigDecimal fixedAmount, String autoTransferStartDate, String autoTransferEndDate, String autoTransferPeriod, String createDate, String autoAccId, String autoTransferId, String autoTransferCount, BigDecimal interestCashSum, BigDecimal totalBalanceSum, BigDecimal finalInterestRate, BigDecimal totalInterestSum, BigDecimal totalInterestSumAfterTax, BigDecimal totalAmount, CloseSavingsFlexibleAccountTotal.CloseType closeType) {
+        this.maturityInterest = maturityInterest;
+        this.afterTotalInterest = afterTotalInterest;
+        this.afterFinalInterestRate = afterFinalInterestRate;
         this.accountId = accountId;
         this.accountStatus = accountStatus;
         this.customerName = customerName;
@@ -131,7 +141,7 @@ public class CloseSavingsAccountTotal {
         closeSavingsAccountTotal
                 .setTotalBalanceSum(
                         (interestCashSum)
-                        .add(closeSavingsAccountTotal.getAccountBalance())
+                                .add(closeSavingsAccountTotal.getAccountBalance())
                 );
 
         // 세금 계산 (세후 이자 계산: 총 이자 - 세금)
