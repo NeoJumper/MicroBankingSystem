@@ -275,12 +275,12 @@ VALUES (product_seq.NEXTVAL, 1, '3년만기정기적금', 3.5, SYSDATE, '36', 0.
 -- 12
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
-VALUES (product_seq.NEXTVAL, 1, '네오자유적금', 2.5, SYSDATE, '12',
+VALUES (product_seq.NEXTVAL, 1, '네오단리적금', 2.5, SYSDATE, '12',
         0.154, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
 --13
 INSERT INTO Product (id, branch_id, name, interest_rate, effective_date, period, tax_rate, registrant_id, account_type,
                      product_type, interest_calculation_method)
-VALUES (product_seq.NEXTVAL, 1, '네오자유청년행복적금', 3.5, SYSDATE, '12',
+VALUES (product_seq.NEXTVAL, 1, '네오단리적금', 3.5, SYSDATE, '12',
         0.154, 1, 'PRIVATE', 'FLEXIBLE', 'SIMPLE');
 
 
