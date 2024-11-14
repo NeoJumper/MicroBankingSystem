@@ -10,6 +10,7 @@ import com.kcc.banking.domain.auto_transfer.dto.response.AutoTransferList;
 import com.kcc.banking.domain.auto_transfer.mapper.AutoTransferMapper;
 import com.kcc.banking.domain.common.dto.request.CurrentData;
 import com.kcc.banking.domain.common.service.CommonService;
+import com.kcc.banking.domain.reserve_transfer.dto.request.ReserveList;
 import com.kcc.banking.domain.reserve_transfer.dto.request.ReserveTransferCreate;
 import com.kcc.banking.domain.trade.dto.request.CloseAccount;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,13 @@ public class AutoTransferService {
         return autoTransferMapper.findScheduledAutoTransferList();
     }
 
+    public List<AutoTransferList> findSelectedAutoTransferList(){
+        return autoTransferMapper.findSelectedAutoTransferList();
+    }
+
+    public List<ReserveList> findReserveList(){
+        return autoTransferMapper.findReserveList();
+    }
 
 
 }
