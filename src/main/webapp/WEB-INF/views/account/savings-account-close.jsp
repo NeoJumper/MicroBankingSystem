@@ -300,6 +300,7 @@
         <button id="saving-account-close-submit-btn" class="basic-btn col-1" disabled>해지 신청</button>
     </div>
 </div>
+<%@ include file="/resources/components/close-overlay.jsp" %>
 <script src="/resources/js/footer.js"></script>
 <script src="/resources/js/page/savings-account-close.js"></script>
 <%@ include file="/resources/components/modal/account-search-modal.jsp" %>

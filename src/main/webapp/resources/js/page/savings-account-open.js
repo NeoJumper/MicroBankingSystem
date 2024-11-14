@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    isClosed();
     // 담당자/ 담당 지점(id)/영업일 설정 및 지정
     setCurrentData();
 
