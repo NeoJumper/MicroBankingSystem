@@ -51,9 +51,20 @@ function selectSavingsAccount() {
             $('#savings-account-product-name').val(data[0].productName);
             $('#customer-name').val(data[0].customerName);
 
-            $('#savings-account-product-type').text(data[0].productType);
+            if(data[0].productType == 'FIXED'){
+                $('#savings-account-product-type').text('정기적금');
+            }else{
+                $('#savings-account-product-type').text('자유적금');
+            }
+
             $('#savings-account-product-type').val(data[0].productType);
-            $('#savings-account-interest-calculation-method').text(data[0].interestCalculationMethod);
+
+            if(data[0].interestCalculationMethod == 'SIMPLE'){
+                $('#savings-account-interest-calculation-method').text('단리');
+            }else{
+                $('#savings-account-interest-calculation-method').text('복리');
+            }
+
             $('#savings-account-interest-calculation-method').val(data[0].interestCalculationMethod);
             $('#search-modal-account').modal('hide');
 
@@ -250,6 +261,31 @@ function getSavingsFlexibleAccount(data, accountId) {
                 interestRateSum
             );
 
+            let highlightedKey = ""; // 해당 케이스 키
+
+            // 이율 데이터에 대해 반복하며 적용 이율과 일치하는 키 찾기
+            for (const [key, rate] of Object.entries(rateData)) {
+                if (parseFloat(rate) === interestRateSum * 100) { // 금리를 퍼센트로 변환하여 비교
+                    highlightedKey = key;
+                    break; // 일치하는 키를 찾으면 반복 중단
+                }
+            }
+
+            for (const [key, rate] of Object.entries(rateData)) {
+                const rateElement = $(`#${key} .dynamic-rate`);
+                rateElement.text(rate);
+
+                // 해당하는 키의 <td>에만 배경색 적용
+                if (key === highlightedKey) {
+                    console.log("Highlighted Key:", highlightedKey);
+                    rateElement.closest('tr').css('background-color', '#f6f9fc'); // 하이라이트 색상 설정
+                    rateElement.closest('tr').css('color', '#3f5ba9');
+                }else{
+                    rateElement.closest('tr').css('background-color', '#ffffff'); // 하이라이트 색상 설정
+                    rateElement.closest('tr').css('color', '#000000');
+                }
+            }
+
             applyHighlightBasedOnMaturityType(data.closeType); // AJAX 응답으로 받은 maturityType을 사용하여 배경색 적용
 
             // 계좌 해지 정보 추가 - 만기일 추가 예정
@@ -307,8 +343,8 @@ function addInterestList(interestDetailsList, finalInterestRate) {
                     <tr>
                         <td>${item.creationDate.substring(0,10)}</td>
                         <td><input type="text" value="${item.balance.toLocaleString()}" disabled/> 원</td>
-                        <td>${item.interestRate * 100} %</td>
-                        <td>${item.preferentialInterestRate * 100} %</td>
+                        <td>${item.interestRate} %</td>
+                        <td>${item.preferentialInterestRate} %</td>
                         <td>${finalInterestRate * 100} %</td>
                         <td><input type="text" value="${item.amount.toLocaleString()}" disabled /> 원</td>
                     </tr>
@@ -435,11 +471,11 @@ function submitSavingAccountClose() {
 
     console.log()
     // 정기적금 해지 프로세스
-    if ($('#savings-account-product-type').text() == "FIXED") {
+    if ($('#savings-account-product-type').val() == "FIXED") {
         savingAccountFixedCloseRequest()
     }
     // 자유적금 해지 프로세스
-    else if ($('#savings-account-product-type').text() == "FLEXIBLE") {
+    else if ($('#savings-account-product-type').val() == "FLEXIBLE") {
         savingAccountFlexibleCloseRequest();
     }
 }
