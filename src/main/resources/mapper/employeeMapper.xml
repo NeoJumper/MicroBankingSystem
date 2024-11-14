@@ -24,6 +24,27 @@
     </select>
 
 
+    <select id="findEmployees2" parameterType="EmployeeSearch">
+        SELECT *
+        FROM (
+        SELECT ROWNUM AS rn, id, name, email, phone_number, (address || detail_address) AS address, branch_name, roles
+        FROM (
+        SELECT e.id, e.name, e.email, e.phone_number, e.address, e.detail_address, b.name AS branch_name, e.roles
+        FROM employee e
+        join branch b on e.branch_id = b.id
+        WHERE e.branch_id = #{branchId} AND e.roles = 'ROLE_EMPLOYEE'
+        <if test="searchOption != null and !searchOption.equals('')">
+            AND e.${searchOption} LIKE '%' || #{searchValue} || '%'
+        </if>
+        )
+        )
+        <if test="criteria != null and !criteria.equals('')">
+            WHERE rn BETWEEN #{criteria.amount} * (#{criteria.pageNum} - 1) + 1 AND #{criteria.amount} * #{criteria.pageNum}
+        </if>
+    </select>
+
+
+
     <select id="findById" parameterType="java.lang.Long">
         select e.*, b.name as "branch_name"
         from employee e

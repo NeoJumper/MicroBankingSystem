@@ -34,6 +34,10 @@ public class EmployeeRestController {
     public EmployeeSearchResult getEmployeeList(@ModelAttribute EmployeeSearch employeeSearch) {
          return employeeService.getEmployeeListByOption(employeeSearch);
     }
+    @GetMapping("/api/manager/employee2")
+    public EmployeeSearchResult getEmployeeList2(@ModelAttribute EmployeeSearch employeeSearch) {
+        return employeeService.getEmployeeListByOption2(employeeSearch);
+    }
 
     @GetMapping("/api/common/auth-data")
     public AuthData getAuthData() {
