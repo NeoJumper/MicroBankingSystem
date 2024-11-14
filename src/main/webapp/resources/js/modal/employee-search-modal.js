@@ -51,7 +51,7 @@ function searchEmployee(){
     console.log("value : "+searchValue);
     // Ajax 요청
     $.ajax({
-        url: '/api/manager/employee',
+        url: '/api/manager/employee2',
         type: 'GET',
         data: {
             searchOption: searchOption,

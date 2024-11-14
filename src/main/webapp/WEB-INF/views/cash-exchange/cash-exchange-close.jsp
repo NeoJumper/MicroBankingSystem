@@ -11,6 +11,7 @@
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/common-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/page/cash-exchange-close.css"/>
 </head>
 
 <body>
@@ -47,10 +48,12 @@
                 <td>
                     <c:choose>
                         <c:when test="${cashExchange.exchangeType == 'HANDOVER'}">
-                            인도
+                            <i class="trade-type-withdrawal bi bi-circle-fill me-2"></i>
+                            인도거래
                         </c:when>
                         <c:when test="${cashExchange.exchangeType == 'RECEIVE'}">
-                            인수
+                            <i class="trade-type-deposit bi bi-circle-fill me-2"></i>
+                            인수거래
                         </c:when>
                         <c:otherwise>
                             기타
