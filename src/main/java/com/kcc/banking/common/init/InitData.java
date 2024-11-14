@@ -378,7 +378,7 @@ public class InitData {
             jdbcTemplate.execute(firstPlsql);
             jdbcTemplate.execute(secondPlsql);
             jdbcTemplate.execute(updateSql);
-            jdbcTemplate.execute(transactionPlsql);
+            //jdbcTemplate.execute(transactionPlsql);
 //            jdbcTemplate.execute(interestPlsql);
         };
     }

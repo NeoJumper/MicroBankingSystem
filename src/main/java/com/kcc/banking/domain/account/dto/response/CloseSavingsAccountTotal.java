@@ -150,7 +150,9 @@ public class CloseSavingsAccountTotal {
 
         closeSavingsAccountTotal.setTotalInterestAfterTax(totalInterestAfterTax);
         // 최종 지급액 = 원금 + 세후 이자
-        closeSavingsAccountTotal.setTotalAmount(closeSavingsAccountTotal.getAccountBalance().add(totalInterestAfterTax));
+        BigDecimal totalAmount = closeSavingsAccountTotal.getAccountBalance().add(totalInterestAfterTax).setScale(0, BigDecimal.ROUND_DOWN)
+                .multiply(BigDecimal.TEN);
+        closeSavingsAccountTotal.setTotalAmount(totalAmount);
 
         return closeSavingsAccountTotal;
     }
