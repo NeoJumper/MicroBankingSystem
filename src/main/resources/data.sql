@@ -963,55 +963,55 @@ VALUES (customer_seq.NEXTVAL, 4, '정예은', '010-7979-8080', 'FEMALE', '000101
 -- 통계용 더미
 -- 61번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
-                      registrant_id)
+                      registrant_id, security_level)
 VALUES (customer_seq.NEXTVAL, 1, '김태희', '010-8080-9090', 'FEMALE', '881010-1234567', '서울특별시 강남구 삼성동 101-1',
-        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), 2);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), 2, '2등급');
 
 -- 62번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
-                      registrant_id)
+                      registrant_id, security_level)
 VALUES (customer_seq.NEXTVAL, 1, '이민호', '010-8181-9191', 'MALE', '891011-2345678', '서울특별시 강남구 역삼동 202-2', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
-        3);
+        3, '2등급');
 
 -- 63번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
-                      registrant_id)
+                      registrant_id, security_level)
 VALUES (customer_seq.NEXTVAL, 1, '박보검', '010-8282-9292', 'MALE', '901012-3456789', '서울특별시 강남구 논현동 303-3', TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'),
-        4);
+        4, '2등급');
 
 -- 64번 고객
 INSERT INTO Customer (id, branch_id, name, phone_number, gender, identification_code, address, birth_date,
-                      registrant_id)
+                      registrant_id, security_level)
 VALUES (customer_seq.NEXTVAL, 1, '최지우', '010-8383-9393', 'FEMALE', '911013-4567890', '서울특별시 강남구 선릉동 404-4',
-        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), 5);
+        TO_TIMESTAMP('1999-02-14', 'YYYY-MM-DD'), 5, '2등급');
 
 
 -- [계좌 생성: 고객 61번]
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
-                     expire_date, password, balance, open_date, status, version)
+                     expire_date, password,account_type, balance,per_trade_limit, daily_limit,  open_date, status, version)
 VALUES ('001-0000061-6161', 1, 61, 3, 2, TO_TIMESTAMP('2024-02-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.5, NULL,
-        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1000000,
+        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','PRIVATE', 1000000,5000000, 10000000,
         TO_TIMESTAMP('2024-02-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 -- [계좌 생성: 고객 62번]
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
-                     expire_date, password, balance, open_date, status, version)
+                     expire_date, password,account_type, balance,per_trade_limit, daily_limit, open_date, status, version)
 VALUES ('001-0000062-6262', 1, 62, 2, 3, TO_TIMESTAMP('2024-02-01 09:05:00', 'YYYY-MM-DD HH24:MI:SS'), 0.3, NULL,
-        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 1500000,
+        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 'PRIVATE',1500000,5000000, 10000000,
         TO_TIMESTAMP('2024-02-01 09:05:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 -- [계좌 생성: 고객 63번]
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
-                     expire_date, password, balance, open_date, status, version)
+                     expire_date, password,account_type, balance,per_trade_limit, daily_limit, open_date, status, version)
 VALUES ('001-0000063-6363', 1, 63, 4, 4, TO_TIMESTAMP('2024-02-01 09:10:00', 'YYYY-MM-DD HH24:MI:SS'), 0.6, NULL,
-        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 2000000,
+        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','PRIVATE', 2000000,5000000, 10000000,
         TO_TIMESTAMP('2024-02-01 09:10:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 -- [계좌 생성: 고객 64번]
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
-                     expire_date, password, balance, open_date, status, version)
+                     expire_date, password,account_type, balance,per_trade_limit, daily_limit, open_date, status, version)
 VALUES ('001-0000064-6464', 1, 64, 1, 5, TO_TIMESTAMP('2024-02-01 09:15:00', 'YYYY-MM-DD HH24:MI:SS'), 0.2, NULL,
-        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 500000,
+        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6','PRIVATE', 500000,5000000, 10000000,
         TO_TIMESTAMP('2024-02-01 09:15:00', 'YYYY-MM-DD HH24:MI:SS'), 'OPN', 1);
 
 
@@ -1223,12 +1223,26 @@ WHERE id = '001-0000006-7890';
 INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
                      expire_date, password, balance, per_trade_limit, daily_limit, account_type, open_date, status,
                      version)
-VALUES ('001-0000007-8991', 1, 6, 3, 2, TO_TIMESTAMP('2024-03-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.5, NULL,
-        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 100000, 5000000, 10000000, 'PRIVATE', TO_TIMESTAMP('2024-04-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+VALUES ('001-0000007-8991', 1, 17, 6, 2, TO_TIMESTAMP('2024-03-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.5, NULL,
+        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 100000000, 3000000,3000000 , 'CORPORATION', TO_TIMESTAMP('2024-04-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
         'OPN', 1);
 
 -- C 가입 거래내역
 INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status,
                    cash_indicator, description, trade_number)
 VALUES (trade_seq.nextval, '001-0000007-8991', 2, 1, TO_TIMESTAMP('2023-04-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
-        0, 100000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+        0, 100000000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);
+
+-- 통계용 계좌 C
+INSERT INTO Account (id, branch_id, customer_id, product_id, registrant_id, start_date, preferential_interest_rate,
+                     expire_date, password, balance, per_trade_limit, daily_limit, account_type, open_date, status,
+                     version)
+VALUES ('001-0000007-8992', 1, 17, 6, 2, TO_TIMESTAMP('2024-03-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 0.5, NULL,
+        '$2a$12$KEC0twTfMAlrbchL4p4lPOyX7/n0Q/eNZjsLkA0yY5j.udeV6MiO6', 50000000, 5000000000,1000000000 , 'CORPORATION', TO_TIMESTAMP('2024-04-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+        'OPN', 1);
+
+-- C 가입 거래내역
+INSERT INTO TRADE (id, acc_id, registrant_id, branch_id, trade_date, amount, balance, trade_type, status,
+                   cash_indicator, description, trade_number)
+VALUES (trade_seq.nextval, '001-0000007-8992', 2, 1, TO_TIMESTAMP('2023-04-02 00:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+        0, 50000000, 'OPEN', 'NOR', 'TRUE', '계좌개설', trade_num_seq.NEXTVAL);

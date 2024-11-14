@@ -67,7 +67,8 @@ function selectAccount() {
         url: "/api/employee/accounts/" + selectedAccountId,
         type: "GET",
         success: function (data) {
-
+            console.log("1회 한도:  " +  data.perTradeLimit);
+            console.log("1일 한도:  " +  data.dailyLimit);
             securityLevel = data.securityLevel;
             customerId = data.customerId;
             // 출금계좌 처리
